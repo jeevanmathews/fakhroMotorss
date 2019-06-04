@@ -40,7 +40,7 @@ class PurchaseRequestController extends Controller
         $searchModel = new PurchaserequestSearch();
         $dataProvider = $searchModel->search(Yii::$app->request->queryParams);
 
-        return $this->render('index', [
+        return $this->renderAjax('index', [
             'searchModel' => $searchModel,
             'dataProvider' => $dataProvider,
         ]);
@@ -54,7 +54,7 @@ class PurchaseRequestController extends Controller
      */
     public function actionView($id)
     {
-        return $this->render('view', [
+        return $this->renderAjax('view', [
             'model' => $this->findModel($id),
         ]);
     }
@@ -104,10 +104,11 @@ class PurchaseRequestController extends Controller
                 
                 $model1->save(false);
             }
-            return $this->redirect(['view', 'id' => $model->id]);
+            echo json_encode(["success" => true, "message" => "Purchase Requisition has been created."]);
+            exit;
         }
 
-        return $this->render('create', [
+        return $this->renderAjax('create', [
             'model' => $model,
             'modellastnumber'=> $modellastnumber,
             'type'  =>'create',
@@ -161,10 +162,11 @@ class PurchaseRequestController extends Controller
                 
                 $model1->save(false);
             }
-            return $this->redirect(['view', 'id' => $model->id]);
+                echo json_encode(["success" => true, "message" => "Purchase Requisition has been updated."]);
+                exit;
         }
 
-        return $this->render('update', [
+        return $this->renderAjax('update', [
             'model' => $model,
             'type'  =>'update',
         ]);
@@ -188,7 +190,8 @@ class PurchaseRequestController extends Controller
         $model = $this->findModel($id);
         $model->status = ($model->status == 0)?1:0;
         $model->save();
-        return $this->redirect(['index']);
+        echo json_encode(["success" => true, "message" => "Purchase Requisition Status has been created."]);
+        exit;
     }
 
     /**

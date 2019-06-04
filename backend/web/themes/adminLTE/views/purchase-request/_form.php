@@ -12,8 +12,8 @@ use backend\models\PrefixMaster;
 /* @var $form yii\widgets\ActiveForm */
 $vat_format=Yii::$app->common->company->vat_format;
 ?>
-
-<?php $form = AutoForm::begin(); ?>
+<div class="purchase-request-form">
+<?php $form = AutoForm::begin(["id" => "purchse-request-".(($model->isNewRecord)?"create":"update")."-form"]); ?>
 <div class="box-body">
     <div class="row">
         <div class="col-md-12">
@@ -267,3 +267,4 @@ $vat_format=Yii::$app->common->company->vat_format;
 
 
 </script>
+</div>

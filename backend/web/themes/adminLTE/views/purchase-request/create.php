@@ -9,6 +9,7 @@ $this->title = 'Purchase Requisition';
 $this->params['breadcrumbs'][] = ['label' => 'Purchase', 'url' => ['index']];
 $this->params['breadcrumbs'][] = $this->title;
 ?>
+<div class="purchase-request-create main-body" id="purchase-request_create">
 <section class="content-header">
 	<h1>
 		<?= Html::encode($this->title) ?>        
@@ -30,3 +31,4 @@ $this->params['breadcrumbs'][] = $this->title;
 			]) ?>
 		</div>
 	</section>
+</div>
