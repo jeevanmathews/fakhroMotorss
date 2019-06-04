@@ -1,0 +1,198 @@
+<?php
+
+use yii\helpers\Html;
+use yii\widgets\DetailView;
+
+/* @var $this yii\web\View */
+/* @var $model backend\models\Jobcard */
+
+$this->title = $model->id;
+$this->params['breadcrumbs'][] = ['label' => 'Jobcards', 'url' => ['index']];
+$this->params['breadcrumbs'][] = $this->title;
+\yii\web\YiiAsset::register($this);
+?>
+<div class="content-main-wrapper main-body"  id="jobcard_view">
+    <!-- Content Header (Page header) -->
+    <section class="content-header">
+      <h1>
+           Jobcard Number   
+      </h1>
+    </section>
+    
+    <section class="content">
+    <!-- SELECT2 EXAMPLE -->
+        <div class="box box-default">   
+
+        <div class="box-body">
+        <div class="row">
+            <div class="col-md-6">
+				<div class="row">
+                    <div class="col-md-12"> 
+                    <h5 class="heading"><span>Vehicle Details</span> </h5>
+                        <?= DetailView::widget([
+                        'model' => $model,
+                        'options' => ['class' => 'table table-striped table-bordered detail-view table-hover'],
+                        'attributes' => [ 
+							[
+                            'label'=>'Make',
+                            'value' => $model->vehicle->make,
+                            ],
+							[
+                            'label'=>'Model',
+                            'value' => $model->vehicle->model,
+                            ],
+							[
+                            'label'=>'Color',
+                            'value' => $model->vehicle->color,
+                            ],
+							[
+                            'label'=>'Meter Reading',
+                            'value' => $model->meter_reading,
+                            ],
+							[
+                            'label'=>'Fuel level',
+                            'value' => $model->fuel_level,
+                            ],
+							[
+                            'label'=>'Registration Number',
+                            'value' => $model->vehicle->reg_num,
+                            ],
+							[
+                            'label'=>'Chaisis Number',
+                            'value' => $model->vehicle->chasis_num,
+                            ],
+							[
+                            'label'=>'Amc Type',
+                            'value' => (isset($model->vechicle->amcType) ? $model->vehicle->amcType->name : 'NA'),
+                            ],
+							[
+                            'label'=>'Amc Expiry Date',
+                            'value' => (isset($model->vechicle) ? $model->vehicle->amc_expiry_date: 'NA'),
+                            ],
+							[
+                            'label'=>'Extended Warranty Type',
+                            'value' => (isset($model->vechicle->extendedWarrantyType) ? $model->vehicle->extendedWarrantyType->name : 'NA'),
+                            ],
+							[
+                            'label'=>'Ew Expiry Date',
+                            'value' => (isset($model->vechicle) ? $model->vehicle->ew_expiry_date: 'NA'),
+                            ],
+							[
+                            'label'=>'Ew Expiry Kms',
+                            'value' => (isset($model->vechicle) ? $model->vehicle->ew_expiry_kms: 'NA'),
+                            ],
+							[
+                            'label'=>'Service Schedule',
+                            'value' => (isset($model->vechicle) ? $model->vehicle->service_schedule: 'NA'),
+                            ],
+							
+							
+                          
+                        ],
+                    ]) ?>
+                    </div>
+                    <div class="col-md-12"> 
+                    <h5 class="heading"><span>Customer Details</span> </h5>
+					<?= DetailView::widget([
+                            'model' => $model,
+                            'options' => ['class' => 'table table-striped table-bordered detail-view table-hover'],
+                            'attributes' => [ 
+                            [
+                            'label'=>'Name',
+                            'value' => $model->customer->name,
+                            ],
+							[
+                            'label'=>'Contact Name',
+                            'value' => $model->customer->contact_name,
+                            ],
+							[
+                            'label'=>'Contact Number',
+                            'value' => $model->customer->contact_number,
+                            ],
+							[
+                            'label'=>'Alternate Contact Number',
+                            'value' => $model->customer->alt_phone,
+                            ],
+							[
+                            'label'=>'Email',
+                            'value' => $model->customer->email,
+                            ],
+							[
+                            'label' => 'Address',
+                            'format' => 'ntext',
+							'value' =>(isset($model->address)?$model->address:'Nil'),
+                            ],
+                            ],
+                        ]) ?>   
+                     
+                    </div>
+                </div>             
+        </div>
+		        <div class="col-md-6"> 
+            <div class="row">
+                <div class="col-md-12"> 
+                    <h5 class="heading"><span>Jobcard Details</span> </h5>
+                       <?= DetailView::widget([
+                            'model' => $model,
+                            'options' => ['class' => 'table table-striped table-bordered detail-view table-hover'],
+                            'attributes' => [ 
+                            [
+                            'label'=>'Branch',
+                            'value' => $model->branch->name,
+                            ], 
+							[
+                            'label'=>'Service Advisor',
+							'value' => (isset($model->invoice->advisor) ? $model->invoice->advisor->first_name."\t".$model->invoice->advisor->last_name:'Nil'),
+                            ],
+							[
+                            'label'=>'Service Manager',
+							'value' => (isset($model->invoice->manager) ? $model->invoice->manager->first_name."\t".$model->invoice->manager->last_name:'Nil'),
+                            ],
+							[
+                            'label'=>'Vehicle Tested By',
+							'value' => (isset($model->invoice->testedby) ? $model->invoice->testedby->first_name."\t".$model->invoice->testedby->last_name:'Nil'),
+                            ],
+							[
+                            'label'=>'Service Type',
+							'value' => (isset($model->invoice->serviceType) ? $model->invoice->serviceType->name:'Nil'),
+                            ],
+                            [
+                            'label'=>'Next Service Type',
+							'value' => (isset($model->invoice->NextServiceType) ? $model->invoice->NextServiceType->name:'Nil'),
+                            ], 
+							[
+                            'label'=>'Jobcard Status',
+							'value' => (isset($model->invoice->jobcardStatus) ? $model->invoice->jobcardStatus->name:'Nil'),
+                            ],
+							[
+                            'label'=>'Promised Date',
+							'value' =>$model->invoice->promised_date,
+                            ],
+							[
+                            'label'=>'Advance Paid',
+							'value' =>$model->invoice->advance_paid,
+                            ],
+							[
+                            'label'=>'Receipt No',
+							'value' =>$model->invoice->receipt_num,
+                            ],
+							[
+                            'label' => 'Comment',
+                            'format' => 'ntext',
+							'value' =>(isset($model->invoice->comment)?$model->invoice->comment:'Nil'),
+                            ],
+                            ],
+                        ]) ?>     
+                    <p>
+                    <?= Html::a('<span class="glyphicon glyphicon-pencil"></span> Edit Jobcard', ['update', 'id' => $model->id], ['class' => 'btn btn-primary']) ?>        
+                    </p>
+                </div>
+            </div>
+        </div>
+		</div>
+		
+		</div>
+		</div>
+		</section>
+</div>		
+            
