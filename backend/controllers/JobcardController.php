@@ -98,8 +98,8 @@ class JobcardController extends Controller
               }  
             }
             if($model->save()){
-                Yii::$app->session->setFlash('success', 'Jobcard Created.');
-                return $this->redirect(['update', 'id' => $model->id]); 
+                echo json_encode(["success" => true, "message" => "Jobcard has been created"]);
+                exit;
             }            
         }
         return $this->renderAjax('create', [
