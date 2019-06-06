@@ -12,6 +12,7 @@ $this->params['breadcrumbs'][] = ['label' => 'Purchase Requisition', 'url' => ['
 $this->params['breadcrumbs'][] = $this->title;
 \yii\web\YiiAsset::register($this);
 ?>
+<div class="purchase-request-view main-body" id="purchase-request_view">
 <div class="content-main-wrapper">
     <!-- Content Header (Page header) -->
     <section class="content-header">
@@ -127,5 +128,6 @@ $this->params['breadcrumbs'][] = $this->title;
 </div>
 <!-- /.box -->
 </section>
+</div>
 </div>
 

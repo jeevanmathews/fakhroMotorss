@@ -15,18 +15,26 @@ use backend\models\Itemgroup;
 <div class="itemgroup-form">
 
     <?php $form = AutoForm::begin(); ?>
-<?=
-	 $form->field($model, 'type')->dropDownList(
-				['accessories' => 'Accessories', 'spares' => 'Spares'],
-				 ['prompt' => 'Select Type','class' => 'form-control select2 type']	
-				
-		); ?>
-		
-  <?= $form->field($model, 'parent_id')->dropDownList(
-                         $itemtypes=ArrayHelper::map(Itemgroup::find()->where(['parent_id'=>0])->all(), 'id', 'category_name'),
-                         ['class' => 'form-control select2 parent_id','prompt'=>'Select Parent']);
-                         ?>
 
+		
+<?=
+$form->field($model, 'type')->dropDownList(
+				['accessories' => 'Accessories', 'spares' => 'Spares'],
+				 ['prompt' => 'Select Type','class' => 'form-control select2 type',	
+				
+		    'onchange'=>'
+                $.get( "'.Yii::$app->getUrlManager()->createUrl('itemgroup/lists').'&type="+$(this).val(), function( data ) {
+			  $( "select#itemgroup-parent_id" ).html(data);
+           });
+      ']);
+    
+      //$dataPost=ArrayHelper::map(Itemgroup::find()->asArray()->all(), 'id', 'category_name');?>
+      <?=$form->field($model, 'parent_id')
+           ->dropDownList(
+
+                ['prompt' => 'Select ParentId']
+           );
+		   ?>
     <?= $form->field($model, 'category_name')->textInput(['maxlength' => true]) ?>
 
     <?= $form->field($model, 'status')->textInput() ?>
@@ -38,31 +46,3 @@ use backend\models\Itemgroup;
    <?php AutoForm::end(); ?>
 
 </div>
-<script>
-$('body').on('change','.type',function(){
-	 var types=$(this).val();
-	 data={'type':types};
-	if(types == 'spares'){
-        typedisplay="Spares";
-		var Url ="<?php echo Yii::$app->getUrlManager()->createUrl(['itemgroup/spares']);?>";
-	}
-	else if(types == 'accessories')
-	{
-         typedisplay="Accessories";
-		var Url ="<?php echo Yii::$app->getUrlManager()->createUrl(['itemgroup/accessory']);?>";
-
-	}
-	else{
-		
-	}
-	    $.ajax({
-        'type':'post',
-        'url':Url,
-        'data':data,
-        success:function(s){
-			console.log(s);
-		}
-        
-        });
-});
-</script>

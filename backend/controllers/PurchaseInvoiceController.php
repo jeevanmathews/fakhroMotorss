@@ -42,7 +42,7 @@ class PurchaseInvoiceController extends Controller
         $searchModel = new PurchaseInvoiceSearch();
         $dataProvider = $searchModel->search(Yii::$app->request->queryParams);
 
-        return $this->render('index', [
+        return $this->renderAjax('index', [
             'searchModel' => $searchModel,
             'dataProvider' => $dataProvider,
         ]);
@@ -56,7 +56,7 @@ class PurchaseInvoiceController extends Controller
      */
     public function actionView($id)
     {
-        return $this->render('view', [
+        return $this->renderAjax('view', [
             'model' => $this->findModel($id),
         ]);
     }
@@ -138,7 +138,8 @@ class PurchaseInvoiceController extends Controller
                 
                 $model1->save(false);
             }
-            return $this->redirect(['view', 'id' => $model->id]);
+             echo json_encode(["success" => true, "message" => "Invoice has been created."]);
+            exit;
 
 
         // $model = new PurchaseInvoice();
@@ -148,7 +149,7 @@ class PurchaseInvoiceController extends Controller
         // }
     }
 
-        return $this->render('create', [
+        return $this->renderAjax('create', [
             'model' => $model,
             'type'=>'create',
             'modellastnumber'=>$modellastnumber,
@@ -212,9 +213,10 @@ class PurchaseInvoiceController extends Controller
                 $model->process_status='processing';
             }
             $model->save(false);
-            return $this->redirect(['view', 'id' => $model->id]);
+            echo json_encode(["success" => true, "message" => "Invoice has been created."]);
+            exit;
         }
-        return $this->render('createinv', [
+        return $this->renderAjax('createinv', [
             'modelpr' => $modelpr,
             'model'=> $model,
              'modellastnumber'=>$modellastnumber,
@@ -284,9 +286,10 @@ class PurchaseInvoiceController extends Controller
                 $model->process_status='processing';
             }
             $model->save(false);
-            return $this->redirect(['view', 'id' => $model1->id]);
+             echo json_encode(["success" => true, "message" => "Invoice has been created."]);
+            exit;
         }
-        return $this->render('createpoinv', [
+        return $this->renderAjax('createpoinv', [
             'modelpr' => $modelpr,
             'model'=> $model,
             'model1'=> $model1,
@@ -360,10 +363,11 @@ class PurchaseInvoiceController extends Controller
                 $model->process_status='processing';
             }
             $model->save(false);
-            return $this->redirect(['view', 'id' => $model->id]);
+            echo json_encode(["success" => true, "message" => "Invoice has been updated."]);
+            exit;
         }
 
-        return $this->render('update', [
+        return $this->renderAjax('update', [
             'model' => $model,
             'type'  =>'update',
         ]);
@@ -386,7 +390,7 @@ class PurchaseInvoiceController extends Controller
     public function actionPodetails(){
         $do_id=Yii::$app->request->post('do_id');
         $modelpr=GoodsReceiptNote::find()->where(['id'=>(int) $do_id])->one();
-         return $this->render('create', [
+         return $this->renderAjax('create', [
             'modelpr' => $modelpr,
         ]);
     }
@@ -395,7 +399,8 @@ class PurchaseInvoiceController extends Controller
         $model = $this->findModel($id);
         $model->status = ($model->status == 0)?1:0;
         $model->save();
-        return $this->redirect(['index']);
+         echo json_encode(["success" => true, "message" => "Invoice Status has been changed."]);
+            exit;
     }
     /**
      * Finds the PurchaseInvoice model based on its primary key value.

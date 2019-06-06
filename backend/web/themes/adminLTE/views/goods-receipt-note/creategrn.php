@@ -9,6 +9,7 @@ $this->title = 'Create GRN';
 $this->params['breadcrumbs'][] = ['label' => 'GRN', 'url' => ['index']];
 $this->params['breadcrumbs'][] = $this->title;
 ?>
+<div class="goods-receipt-note-creategrn main-body" id="goods-receipt-note_creategrn">
 <section class="content-header">
 	<h1>
 		<?= Html::encode($this->title) ?>        
@@ -31,3 +32,4 @@ $this->params['breadcrumbs'][] = $this->title;
 			]) ?>
 		</div>
 	</section>
+</div>

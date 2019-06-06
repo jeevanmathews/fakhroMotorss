@@ -10,6 +10,7 @@ $this->params['breadcrumbs'][] = ['label' => 'Purchase Invoice', 'url' => ['inde
 $this->params['breadcrumbs'][] = ['label' => $model->id, 'url' => ['view', 'id' => $model->id]];
 $this->params['breadcrumbs'][] = 'Update';
 ?>
+<div class="purchase-invoice-update main-body" id="purchase-invoice_update">
 <section class="content-header">
 	<h1>
 		<?= Html::encode($this->title) ?>        
@@ -29,3 +30,4 @@ $this->params['breadcrumbs'][] = 'Update';
 			]) ?>
 		</div>
 	</section>
+	</div>

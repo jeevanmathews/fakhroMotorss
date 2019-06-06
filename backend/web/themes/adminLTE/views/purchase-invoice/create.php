@@ -9,6 +9,7 @@ $this->title = 'Create Purchase Invoice';
 $this->params['breadcrumbs'][] = ['label' => 'Purchase Invoice', 'url' => ['index']];
 $this->params['breadcrumbs'][] = $this->title;
 ?>
+<div class="purchase-invoice-create main-body" id="purchase-invoice_create">
 <section class="content-header">
 	<h1>
 		<?= Html::encode($this->title) ?>        
@@ -30,3 +31,4 @@ $this->params['breadcrumbs'][] = $this->title;
 			]) ?>
 		</div>
 	</section>
+	</div>

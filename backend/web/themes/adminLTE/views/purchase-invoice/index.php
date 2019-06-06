@@ -14,6 +14,7 @@ use backend\models\User;
 $this->title = 'Purchase Invoice';
 $this->params['breadcrumbs'][] = $this->title;
 ?>
+<div class="content-main-wrapper main-body"  id="purchase-invoice_index">
 <div class="content-main-wrapper">
 
     <section class="content-header">
@@ -130,5 +131,5 @@ $this->params['breadcrumbs'][] = $this->title;
      <!-- /.box -->
  </section>
 </div>
-
+</div>
 

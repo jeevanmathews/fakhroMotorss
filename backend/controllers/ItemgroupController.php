@@ -93,16 +93,15 @@ class ItemgroupController extends Controller
             'model' => $model,
         ]);
     }
-	public function actionAccessories()
+	/*public function actionAccessories()
 	{
 	    $type=Yii::$app->request->post('type');
 		//$results= Itemgroup::find()->select(['id','name'])->asArray()->all();
 		//echo $results->createCommand()->getRawSql();
-		$results=ArrayHelper::map(Itemgroup::find()->where(['type'=>$type,'parent_id'=>0 ])->all(), 'id', 'category_name');
+		$results=ArrayHelper::map(Itemgroup::find()->where(['type'=>$type,'parent_id'=>0])->all(), 'id', 'category_name');
 		echo $results->createCommand()->getRawSql();
-		die;
-        return json_encode($results); 
-	}
+		return json_encode($results); 
+	}*/
 
     /**
      * Deletes an existing itemgroup model.
@@ -111,6 +110,31 @@ class ItemgroupController extends Controller
      * @return mixed
      * @throws NotFoundHttpException if the model cannot be found
      */
+	 public function actionLists($type) 
+	 {
+		  //echo $type;exit;
+		$countPosts = Itemgroup::find()
+          ->where(['type' => $type,'parent_id' =>0])
+          ->count();
+     $posts = Itemgroup::find()
+          ->where(['type' => $type])
+          ->orderBy('id DESC')
+          ->all();
+     if($countPosts>0) {
+		 $text='Select Parent';
+		echo "<option value=''>".$text."</option>";
+          foreach($posts as $post){
+			
+               echo "<option value='".$post->id."'>".$post->category_name."</option>";
+			 
+          }
+		  
+     }
+     else{
+          echo "<option>-</option>";
+     }
+		 
+	 }
     public function actionDelete($id)
     {
         $this->findModel($id)->delete();

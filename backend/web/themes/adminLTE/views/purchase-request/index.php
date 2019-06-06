@@ -14,7 +14,7 @@ use backend\models\User;
 $this->title = 'Purchase Requisition';
 $this->params['breadcrumbs'][] = $this->title;
 ?>
-<div class="content-main-wrapper" id="purchsae-request_index">
+<div class="content-main-wrapper main-body" id="purchsae-request_index">
 
     <section class="content-header">
       <h1>

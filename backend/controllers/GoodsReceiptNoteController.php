@@ -42,7 +42,7 @@ class GoodsReceiptNoteController extends Controller
         $searchModel = new GoodsReceiptNoteSearch();
         $dataProvider = $searchModel->search(Yii::$app->request->queryParams);
 
-        return $this->render('index', [
+        return $this->renderAjax('index', [
             'searchModel' => $searchModel,
             'dataProvider' => $dataProvider,
         ]);
@@ -56,7 +56,7 @@ class GoodsReceiptNoteController extends Controller
      */
     public function actionView($id)
     {
-        return $this->render('view', [
+        return $this->renderAjax('view', [
             'model' => $this->findModel($id),
         ]);
     }
@@ -130,7 +130,8 @@ class GoodsReceiptNoteController extends Controller
                 $modelitem->current_stock=$modelstocksave->current_stock;
                 $modelitem->save(false);
             }
-            return $this->redirect(['view', 'id' => $model->id]);
+            echo json_encode(["success" => true, "message" => "Goods Receipt Note has been created."]);
+            exit;
 
 
         // $model = new GoodsReceiptNote();
@@ -140,7 +141,7 @@ class GoodsReceiptNoteController extends Controller
         // }
     }
 
-        return $this->render('create', [
+        return $this->renderAjax('create', [
             'model' => $model,
             'modellastnumber'=>$modellastnumber,
             'type'=>'create',
@@ -201,9 +202,10 @@ class GoodsReceiptNoteController extends Controller
                 $model->process_status='processing';
             }
             $model->save(false);
-            return $this->redirect(['view', 'id' => $model1->id]);
+            echo json_encode(["success" => true, "message" => "Goods Receipt Note has been created."]);
+            exit;
         }
-        return $this->render('creategrn', [
+        return $this->renderAjax('creategrn', [
             'modelpr' => $modelpr,
             'model'=> $model,
             'modellastnumber'=>$modellastnumber,
@@ -271,10 +273,11 @@ class GoodsReceiptNoteController extends Controller
                 $model->process_status='processing';
             }
             $model->save(false);
-            return $this->redirect(['view', 'id' => $model->id]);
+            echo json_encode(["success" => true, "message" => "Goods Receipt Note has been updated."]);
+            exit;
         }
 
-        return $this->render('update', [
+        return $this->renderAjax('update', [
             'model' => $model,
             'type'  =>'update',
         ]);
@@ -297,7 +300,7 @@ class GoodsReceiptNoteController extends Controller
     public function actionPodetails(){
         $po_id=Yii::$app->request->post('po_id');
         $modelpr=Purchaseorder::find()->where(['id'=>(int) $po_id])->one();
-         return $this->render('create', [
+         return $this->renderAjax('create', [
             'modelpr' => $modelpr,
         ]);
     }
@@ -306,7 +309,8 @@ class GoodsReceiptNoteController extends Controller
         $model = $this->findModel($id);
         $model->status = ($model->status == 0)?1:0;
         $model->save();
-        return $this->redirect(['index']);
+        echo json_encode(["success" => true, "message" => "Goods Receipt Note Status has been changed."]);
+            exit;
     }
     /**
      * Finds the GoodsReceiptNote model based on its primary key value.

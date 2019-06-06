@@ -45,6 +45,7 @@ class GoodsReceiptNote extends \yii\db\ActiveRecord
             [['prefix_id','po_id', 'grn_created_by', 'supplier_id', 'status','branch_id'], 'integer'],
             [['prefix_id','grn_number', 'grn_date', 'grn_created_by', 'supplier_id'], 'required'],//, 'subtotal', 'total_tax', 'grand_total'
             [['grn_created_date'], 'safe'],
+            [['remarks'], 'string'],
             [['subtotal','discount','discount_percent','vat_percent','total_tax','grand_total'], 'number'],
             [['grn_number'], 'string', 'max' => 200],
             [['grn_date', 'subtotal', 'total_tax', 'grand_total'], 'string', 'max' => 300],

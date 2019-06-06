@@ -1,15 +1,7 @@
-$(function() {
+$(document).ready(function() {
 
 
-  $(".datepicker").datepicker({
-    defaultDate: new Date(),
-    dateFormat: "dd/mm/yy",
-    changeMonth: true,
-    changeYear: true,
-    setDate: new Date(),
-    yearRange: "1930:2030",
-  });
-  $(".datepicker").datepicker("setDate", new Date());
+  
   $('body').on('click','.btn_add_new',function(e){
     e.preventDefault();
     var clone = $('.item_row:last').clone();

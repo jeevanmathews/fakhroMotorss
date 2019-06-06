@@ -41,7 +41,7 @@ class PurchaseOrderController extends Controller
         $searchModel = new PurchaseorderSearch();
         $dataProvider = $searchModel->search(Yii::$app->request->queryParams);
 
-        return $this->render('index', [
+        return $this->renderAjax('index', [
             'searchModel' => $searchModel,
             'dataProvider' => $dataProvider,
         ]);
@@ -55,7 +55,7 @@ class PurchaseOrderController extends Controller
      */
     public function actionView($id)
     {
-        return $this->render('view', [
+        return $this->renderAjax('view', [
             'model' => $this->findModel($id),
         ]);
     }
@@ -108,7 +108,8 @@ class PurchaseOrderController extends Controller
                 
                 $model1->save(false);
             }
-            return $this->redirect(['view', 'id' => $model->id]);
+            echo json_encode(["success" => true, "message" => "Purchase Order has been created."]);
+            exit;
 
 
         // $model = new Purchaseorder();
@@ -118,7 +119,7 @@ class PurchaseOrderController extends Controller
         // }
     }
 
-        return $this->render('create', [
+        return $this->renderAjax('create', [
             'model' => $model,
             'type'=>'create',
             'modellastnumber'=>$modellastnumber,
@@ -178,9 +179,10 @@ class PurchaseOrderController extends Controller
                 $model->process_status='processing';
             }
             $model->save(false);
-            return $this->redirect(['view', 'id' => $model1->id]);
+            echo json_encode(["success" => true, "message" => "Purchase Order has been created."]);
+            exit;
         }
-        return $this->render('createpo', [
+        return $this->renderAjax('createpo', [
             'modelpr' => $modelpr,
             'model'=> $model,
             'modellastnumber'=>$modellastnumber,
@@ -235,10 +237,11 @@ class PurchaseOrderController extends Controller
                 $model->process_status='processing';
             }
             $model->save(false);
-            return $this->redirect(['view', 'id' => $model->id]);
+             echo json_encode(["success" => true, "message" => "Purchase Order has been updated."]);
+            exit;
         }
 
-        return $this->render('update', [
+        return $this->renderAjax('update', [
             'model' => $model,
             'type'  =>'update',
         ]);
@@ -261,7 +264,7 @@ class PurchaseOrderController extends Controller
     public function actionPrdetails(){
         $pr_id=Yii::$app->request->post('pr_id');
         $modelpr=Purchaserequest::find()->where(['id'=>(int) $pr_id])->one();
-         return $this->render('create', [
+         return $this->renderAjax('create', [
             'modelpr' => $modelpr,
         ]);
     }
@@ -270,7 +273,8 @@ class PurchaseOrderController extends Controller
         $model = $this->findModel($id);
         $model->status = ($model->status == 0)?1:0;
         $model->save();
-        return $this->redirect(['index']);
+         echo json_encode(["success" => true, "message" => "Purchase Order Status has been changed."]);
+            exit;
     }
 
     /**

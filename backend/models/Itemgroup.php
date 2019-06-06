@@ -30,8 +30,8 @@ class Itemgroup extends \yii\db\ActiveRecord
     {
         return [
             [['id', 'type', 'parent_id', 'category_name', 'status'], 'required'],
-            [['id', 'type', 'parent_id', 'status'], 'integer'],
-            [['category_name'], 'string', 'max' => 50],
+            [['id', 'parent_id', 'status'], 'integer'],
+            [['type','category_name'], 'string', 'max' => 50],
         ];
     }
 

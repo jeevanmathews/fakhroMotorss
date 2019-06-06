@@ -11,6 +11,7 @@ $this->params['breadcrumbs'][] = ['label' => 'GRN', 'url' => ['index']];
 $this->params['breadcrumbs'][] = $this->title;
 \yii\web\YiiAsset::register($this);
 ?>
+<div class="goods-receipt-note-view main-body" id="goods-receipt-note_view">
 <div class="content-main-wrapper">
     <!-- Content Header (Page header) -->
     <section class="content-header">
@@ -131,4 +132,5 @@ $this->params['breadcrumbs'][] = $this->title;
 </div>
 <!-- /.box -->
 </section>
+</div>
 </div>

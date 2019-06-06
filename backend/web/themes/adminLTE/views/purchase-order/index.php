@@ -10,6 +10,7 @@ use yii\grid\GridView;
 $this->title = 'Purchaseorders';
 $this->params['breadcrumbs'][] = $this->title;
 ?>
+<div class="purchase-order-index main-body" id="purchase-order_index">
 <div class="content-main-wrapper">
 
     <section class="content-header">
@@ -113,4 +114,4 @@ $this->params['breadcrumbs'][] = $this->title;
    </section>
 </div>
 
-
+</div>

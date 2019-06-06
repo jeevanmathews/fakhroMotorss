@@ -14,6 +14,7 @@ use backend\models\User;
 $this->title = 'GRN';
 $this->params['breadcrumbs'][] = $this->title;
 ?>
+<div class="content-main-wrapper main-body"  id="goods-receipt-note_index">
 <div class="content-main-wrapper">
 
     <section class="content-header">
@@ -114,5 +115,5 @@ $this->params['breadcrumbs'][] = $this->title;
      <!-- /.box -->
  </section>
 </div>
-
+</div>
 

@@ -10,6 +10,7 @@ $this->params['breadcrumbs'][] = ['label' => 'GRN', 'url' => ['index']];
 $this->params['breadcrumbs'][] = ['label' => $model->id, 'url' => ['view', 'id' => $model->id]];
 $this->params['breadcrumbs'][] = 'Update';
 ?>
+<div class="goods-receipt-note-update main-body" id="goods-receipt-note_update">
 <section class="content-header">
 	<h1>
 		<?= Html::encode($this->title) ?>        
@@ -29,3 +30,4 @@ $this->params['breadcrumbs'][] = 'Update';
 			]) ?>
 		</div>
 	</section>
+</div>	
