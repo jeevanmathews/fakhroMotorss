@@ -73,32 +73,37 @@ class TasksController extends Controller
      * If creation is successful, the browser will be redirected to the 'view' page.
      * @return mixed
      */
-    public function actionCreate()
+    public function actionCreate($jobcard_id="")
     {
+        //echo json_encode(["success" => true, "message" => "Task has been created and assigned to this jobcard", 'redirect' => ['jobcard/update', 'id' => $res['jobcard_id'], 'taskId' => $model->id]]);
+        echo json_encode(["success" => true, "message" => "Task has been created", 'redirect' => Yii::$app->getUrlManager()->createUrl(['jobcard/update', 'id' => 1, 'taskId' => 2])]);
+        exit;
         $model = new Tasks();
 	    if ($model->load(Yii::$app->request->post())) {
 		$res = Yii::$app->request->post();
-		//var_dump($res);die;
 		$day_in_min = (intval($res['days'])*1440);
 		$hour_in_min =(intval($res['hours'])*60);
-		$min = (intval($res['minutes']));
-		
+		$min = (intval($res['minutes']));	
 		
 		$total_min = $day_in_min+$hour_in_min+$min;
 		$model->total_time = $total_min;
 			if($model->save())
             {
+                if(isset($res['jobcard_id'])){
+                    if($task_id = $model->assignTask($res['jobcard_id'])){
+                        echo json_encode(["success" => true, "message" => "Task has been created and assigned to this jobcard", 'redirect' => Yii::$app->getUrlManager()->createUrl(['jobcard/update', 'id' => $res['jobcard_id'], 'taskId' => $task_id])]);   
+                        exit;
+                    }  
+                }else{
+                    echo json_encode(["success" => true, "message" => "Task has been created"]);
+                    exit;
+                }
 				return $this->redirect(['view', 'id' => $model->id]);
-			}
-			else
-			{
-				print_r($model->getErrors());
 			}
         }
 		$day=array();	
 	    for($i=1;$i<=20;$i++)
 		{
-		 //$day[]=$i;
 		 $day[$i]=$i;
 		}
 		
@@ -113,12 +118,13 @@ class TasksController extends Controller
 		 $minutes[$i]=$i;
 		}
 		
-        return $this->render('create', [
+        return $this->renderAjax('create', [
             'model' => $model,
 			'day' => $day,
 			'hour' => $hour,
 			'minutes'=>$minutes,
 			'type'=>'create',
+            'jobcard_id' => $jobcard_id
         ]);
 		
 	}

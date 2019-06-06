@@ -437,72 +437,7 @@ $this->registerJs($js, \yii\web\View::POS_HEAD);
     <div class="container container-body">
       
       <ul class="nav nav-tabs closeable-tab" id="myTab" role="tablist">
-        <li class="nav-item active">
-          <a class="nav-link active" id="job-card-tab" data-toggle="tab" href="#" role="tab" aria-controls="jobcard" aria-selected="true">
-            <span>Job Card</span>
-            <b class="close-tab"><i class="fa fa-times-circle" aria-hidden="true"></i></b>
-          </a>
-        </li>
-        <li class="nav-item ">
-          <a class="nav-link " id="task-tab" data-toggle="tab" href="#" role="tab" aria-controls="task" aria-selected="false">
-            <span>Jobcard Tasks</span>
-          </a>
-        </li>
-        <li class="nav-item ">
-          <a class="nav-link " id="material-tab" data-toggle="tab" href="#" role="tab" aria-controls="material" aria-selected="false">
-            <span>Materials</span>
-          </a>
-        </li>
-        <li class="nav-item ">
-          <a class="nav-link " id="total-tab" data-toggle="tab" href="#" role="tab" aria-controls="total" aria-selected="false">
-            <span>Total Charges</span>
-          </a>
-        </li>
-        <li class="nav-item ">
-          <a class="nav-link " id="task-tab" data-toggle="tab" href="#" role="tab" aria-controls="task" aria-selected="false">
-            <span>Jobcard Tasks</span>
-          </a>
-        </li>
-        <li class="nav-item ">
-          <a class="nav-link " id="material-tab" data-toggle="tab" href="#" role="tab" aria-controls="material" aria-selected="false">
-            <span>Materials</span>
-          </a>
-        </li>
-        <li class="nav-item ">
-          <a class="nav-link " id="total-tab" data-toggle="tab" href="#" role="tab" aria-controls="total" aria-selected="false">
-            <span>Total Charges</span>
-          </a>
-        </li>
-        <li class="nav-item ">
-          <a class="nav-link " id="task-tab" data-toggle="tab" href="#" role="tab" aria-controls="task" aria-selected="false">
-            <span>Jobcard Tasks</span>
-          </a>
-        </li>
-        <li class="nav-item ">
-          <a class="nav-link " id="material-tab" data-toggle="tab" href="#" role="tab" aria-controls="material" aria-selected="false">
-            <span>Materials</span>
-          </a>
-        </li>
-        <li class="nav-item ">
-          <a class="nav-link " id="total-tab" data-toggle="tab" href="#" role="tab" aria-controls="total" aria-selected="false">
-            <span>Total Charges</span>
-          </a>
-        </li>
-        <li class="nav-item ">
-          <a class="nav-link " id="task-tab" data-toggle="tab" href="#" role="tab" aria-controls="task" aria-selected="false">
-            <span>Jobcard Tasks</span>
-          </a>
-        </li>
-        <li class="nav-item ">
-          <a class="nav-link " id="material-tab" data-toggle="tab" href="#" role="tab" aria-controls="material" aria-selected="false">
-            <span>Materials</span>
-          </a>
-        </li>
-        <li class="nav-item ">
-          <a class="nav-link " id="total-tab" data-toggle="tab" href="#" role="tab" aria-controls="total" aria-selected="false">
-            <span>Total Charges</span>
-          </a>
-        </li>
+        <!--Tabs -->
       </ul>
 
       <?= Breadcrumbs::widget([
@@ -527,8 +462,21 @@ $this->registerJs($js, \yii\web\View::POS_HEAD);
 
       var supplier='<?php echo Yii::$app->getUrlManager()->createUrl(['supplier/single']);?>';
       var hiddenurl_itemprice= '<?php echo Yii::$app->getUrlManager()->createUrl(['items/itemprice'])?>';
+
+
+      $(document).on('click', "[class='close-tab']", function(){
+        $(this).closest("li").remove(); 
+      })
       
       $(document).on('click', "a", function(){
+
+        if($(this).hasClass("page_tab")){
+          var tab_id = $(this).closest("li").attr("id"); 
+          $(".main-body").addClass("hide");
+          $(document).find('div[tab_id="'+tab_id+'"]').removeClass("hide");         
+          return;
+        }
+        
         event.preventDefault();
 
         var rqst_url = '<?=Yii::$app->getUrlManager()->createUrl(['site'])?>';
@@ -542,7 +490,18 @@ $this->registerJs($js, \yii\web\View::POS_HEAD);
         if(page_id.indexOf("&") != -1){
           relace = true;
           page_id = page_id.replace(page_id.substr(page_id.indexOf("&")),"");
-        }  
+        }
+
+        //Generate Tab        
+        if($(this).closest("div").attr("id") == "myNavbar"){          
+          var tabId = "tab_id_"+($(".nav-item").length+1);
+          $( '<li id="'+tabId+'" class="nav-item"><a class="nav-link page_tab" id="task-tab" data-toggle="tab" role="tab" aria-controls="task" aria-selected="false"><span>'+page_id.replace("_","/")+'</span></a><b class="close-tab"><i class="fa fa-times-circle" aria-hidden="true"></i></b></li>' ).appendTo( $( "#myTab" ) );        
+        }
+
+        if(tabId == undefined){
+         var tabId = $(this).closest(".main-body").attr("tab_id");         
+        }
+          
         if($(document).find("#"+page_id).length && relace == false){
             $(".main-body").addClass("hide");
             $(document).find("#"+page_id).removeClass("hide");
@@ -560,7 +519,9 @@ $this->registerJs($js, \yii\web\View::POS_HEAD);
           dataType: "html",
           success: function(data) {
             $(".main-body").addClass("hide");
-            $(".container-body").append($(data));
+            $('div[tab_id="'+tabId+'"]').remove();
+            $(".container-body").append($(data));            
+            $(document).find("#"+page_id).attr("tab_id", tabId)
           }});
           $.ajaxSetup({async: true}); 
         }

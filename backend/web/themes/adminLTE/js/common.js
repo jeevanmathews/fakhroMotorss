@@ -86,6 +86,15 @@ function validateAttribute(modelName, fieldName, fieldValue, mid, scenario){
                 }else{
                   response_head = "error";                  
                 }
+                if(response.redirect != undefined){ console.log(response.redirect )
+                  var tabId = $(this).closest(".main-body").attr("tab_id");
+                  $.get( response.redirect , function( data ) {
+                    $(".main-body").addClass("hide");
+                    $('div[tab_id="'+tabId+'"]').remove();
+                    $(".container-body").append($(data));            
+                    $(document).find("#"+$(".main-body").attr("id")).attr("tab_id", tabId);                  
+                  });
+                }
                 $.toast({
                   heading: (response_head.toUpperCase()),
                   text: ((response.message != undefined)?response.message:"No response"),
