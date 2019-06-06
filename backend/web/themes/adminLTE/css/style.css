@@ -811,7 +811,7 @@ h2.heading {
 .closeable-tab.nav-tabs > li.nav-item.active > a > span {
     right: 35px;
 }
-.closeable-tab.nav-tabs > li.nav-item > a > .close-tab {
+.closeable-tab.nav-tabs > li.nav-item > .close-tab {
     position: absolute;
     top: 0;
     right: 5px;
