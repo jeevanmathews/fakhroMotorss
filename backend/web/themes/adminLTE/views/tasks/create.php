@@ -9,7 +9,7 @@ $this->title = 'Create Service Tasks';
 $this->params['breadcrumbs'][] = ['label' => 'Tasks', 'url' => ['index']];
 $this->params['breadcrumbs'][] = $this->title;
 ?>
-<div class="content-main-wrapper">
+<div class="content-main-wrapper main-body" id="tasks_create">
 <!-- Content Header (Page header) -->
     <section class="content-header">
       <h1>
@@ -26,6 +26,7 @@ $this->params['breadcrumbs'][] = $this->title;
 		'hour'=> $hour,
 		'minutes'=>$minutes,
 		'type'=>'create',
+    'jobcard_id' => $jobcard_id
     ]) ?>
 		</div>
         <!-- /.box -->

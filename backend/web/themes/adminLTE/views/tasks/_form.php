@@ -228,6 +228,7 @@ use common\components\AutoForm;
 </div>
 <!-- /.box-body -->  
 <div class="box-footer">
+	<?php if(isset($jobcard_id)){ ?><?=Html::hiddenInput('jobcard_id', $jobcard_id)?><?php } ?>
     <?= Html::submitButton('Save', ['class' => 'btn btn-success']) ?>
 </div>
 <!-- /.box-footer -->

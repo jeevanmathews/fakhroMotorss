@@ -66,6 +66,25 @@ class Tasks extends \yii\db\ActiveRecord
         ];
     }
 
+    public function assignTask($jobcard_id){
+        $jobcardTask = new JobcardTask(); 
+        $jobcardTask->jobcard_id = $jobcard_id;
+        $jobcardTask->task_id = $this->id;
+        $jobcardTask->note = "";
+        $jobcardTask->status = "queue";
+        $jobcardTask->billable = $this->billable;
+        if($this->billable == "yes"){
+            $jobcardTask->task_rate = $this->billing_rate;
+            $price = $jobcardTask->task->billing_rate;
+            $jobcardTask->tax_enabled = $this->tax_enabled;
+            $jobcardTask->tax_rate = $this->tax_rate;  
+            $jobcardTask->tax_amount = ($this->tax_rate)?($this->tax_rate *$price/100):""; 
+            //Add Tax to final amount after discount
+            $jobcardTask->billing_rate =  ($this->tax_enabled =="yes")?($price+($price*$this->tax_rate/100)):$price;
+        }
+        return ($jobcardTask->save())?$jobcardTask->id:""; 
+    }
+
     public function getNamewithPrice(){
         return ($this->billable == "yes")?($this->task." - ".Yii::$app->common->company->settings->currency->code. " " .$this->billing_rate):$this->task;
     }

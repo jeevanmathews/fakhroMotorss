@@ -153,6 +153,7 @@ class JobcardController extends Controller
             }
         }else{
             $jobcardTask = new JobcardTask(); 
+            $jobcardTask->jobcard_id = $model->id;
             $task_stat = "assigned";         
         }
 
@@ -176,7 +177,7 @@ class JobcardController extends Controller
                                         
                     $jobcardTask->tax_enabled = $jobcardTask->task->tax_enabled;
                     $jobcardTask->tax_rate = $jobcardTask->task->tax_rate;  
-                    $jobcardTask->tax_amount = ($jobcardTask->tax_rate)?($jobcardTask->tax_rate *$price/100):""; 
+                    $jobcardTask->tax_amount = ($jobcardTask->task->tax_rate)?($jobcardTask->task->tax_rate *$price/100):""; 
                     //Add Tax to final amount after discount
                     $jobcardTask->billing_rate =  ($jobcardTask->task->tax_enabled =="yes")?($price+($price*$jobcardTask->task->tax_rate/100)):$price;
                 }             

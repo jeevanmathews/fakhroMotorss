@@ -17,7 +17,7 @@ use backend\models\Employees;
             <div class="col-md-12">
                 <h5 class="heading"><span><?php echo (!$jobcardTask->isNewRecord)?"Update":"Assign New";?> Task</span> </h5>
                 <div class="col-md-6">
-                    <?= $form->field($jobcardTask, 'task_id', ['inputOptions' => ["class" => "form-control select2"]])->dropDownList(ArrayHelper::map(Tasks::find()->where(["status" => 1])->all(), 'id', 'namewithPrice'), ["prompt" => "Select a Task"]) ?>
+                    <?= $form->field($jobcardTask, 'task_id', ['inputOptions' => ["class" => "form-control select2"]])->dropDownList(['0' => 'Add New Task']+ArrayHelper::map(Tasks::find()->where(["status" => 1])->all(), 'id', 'namewithPrice'), ["prompt" => "Select a Task"]) ?>
 
                      <?= $form->field($jobcardTask, 'mechanic_id', ['inputOptions' => ["class" => "form-control select2"]])->dropDownList(ArrayHelper::map(Employees::find()->where(["status" => 1, "designation_id" => 4, "branch_id" => Yii::$app->user->identity->branch_id])->all(), 'id', 'fullname'), ["prompt" => "Assign a Mechanic"]) ?>                   
 
@@ -31,6 +31,7 @@ use backend\models\Employees;
                     <?= $form->field($jobcardTask, 'note')->textarea(['rows' => 6]) ?>
                     
                     <?= $form->field($jobcardTask, 'status')->dropDownList([ 'open' => 'Open', 'inprogress' => 'Inprogress', 'hold' => 'Hold', 'completed' => 'completed', 'reopen' => 'Reopen'], ['prompt' => '']) ?> 
+                    <a class="hide" id="add-new" href="/fakhromotorss/backend/web/index.php?r=jobcard%2Findex">Jobcard</a>
                 </div>                               
             </div>
         </div>
@@ -93,7 +94,23 @@ use backend\models\Employees;
     }
 
     $("#jobcardtask-task_id").change(function(){
-        var sel = $(this).find("option:selected").html(); 
+        var sel = $(this).find("option:selected").html();
+        if($(this).find("option:selected").val() == "0"){
+
+            $.ajax({
+          url: "<?php echo Yii::$app->getUrlManager()->createUrl(['tasks/create', 'jobcard_id' => $jobcardTask->jobcard_id]);?>",
+          aSync: false,
+          dataType: "html",
+          success: function(data) {
+            var tabId = $(this).closest(".main-body").attr("tab_id");
+            $(".main-body").addClass("hide");
+            $('div[tab_id="'+tabId+'"]').remove();
+            $(".container-body").append($(data));            
+            $(document).find("#"+$(".main-body").attr("id")).attr("tab_id", tabId)
+          }});
+
+           //$("#add-new").trigger("click");
+        }
         loadTaskData(sel);
     }); 
 </script>
