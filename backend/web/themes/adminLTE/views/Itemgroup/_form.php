@@ -29,12 +29,19 @@ $form->field($model, 'type')->dropDownList(
       ']);
     
       //$dataPost=ArrayHelper::map(Itemgroup::find()->asArray()->all(), 'id', 'category_name');?>
+	  <div class="clearfix">		   
+	<?= Html::submitButton('ADD', ['class' => 'btn btn-success','id' =>'submit-btn']) ?>
+	</div>
+	                    <input type="text" id="text" style="visibility:hidden" />
+	  
       <?=$form->field($model, 'parent_id')
            ->dropDownList(
 
                 ['prompt' => 'Select ParentId']
            );
 		   ?>
+    
+
     <?= $form->field($model, 'category_name')->textInput(['maxlength' => true]) ?>
 
     <?= $form->field($model, 'status')->textInput() ?>
@@ -46,3 +53,13 @@ $form->field($model, 'type')->dropDownList(
    <?php AutoForm::end(); ?>
 
 </div>
+<script>
+$( document ).ready(function() {
+$("#submit-btn").click(function() {
+
+    $('#text').css('visibility:visible');
+
+  
+ });
+ });
+</script>

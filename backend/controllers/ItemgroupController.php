@@ -116,11 +116,14 @@ class ItemgroupController extends Controller
 		$countPosts = Itemgroup::find()
           ->where(['type' => $type,'parent_id' =>0])
           ->count();
+		  //echo $countPosts;
+		
      $posts = Itemgroup::find()
-          ->where(['type' => $type])
+          ->where(['type' => $type,'parent_id' =>0])
           ->orderBy('id DESC')
           ->all();
      if($countPosts>0) {
+		 
 		 $text='Select Parent';
 		echo "<option value=''>".$text."</option>";
           foreach($posts as $post){
@@ -131,7 +134,8 @@ class ItemgroupController extends Controller
 		  
      }
      else{
-          echo "<option>-</option>";
+          echo "<option></option>";
+		  //echo "<input type='submit' value='Send Request'>";
      }
 		 
 	 }
