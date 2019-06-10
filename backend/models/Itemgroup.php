@@ -29,8 +29,8 @@ class Itemgroup extends \yii\db\ActiveRecord
     public function rules()
     {
         return [
-            [['id', 'type', 'parent_id', 'category_name', 'status'], 'required'],
-            [['id', 'parent_id', 'status'], 'integer'],
+            [['type','category_name', 'status'], 'required'],
+            [['parent_id', 'status'], 'integer'],
             [['type','category_name'], 'string', 'max' => 50],
         ];
     }
@@ -41,7 +41,6 @@ class Itemgroup extends \yii\db\ActiveRecord
     public function attributeLabels()
     {
         return [
-            'id' => 'ID',
             'type' => 'Type',
             'parent_id' => 'Parent ID',
             'category_name' => 'Category Name',

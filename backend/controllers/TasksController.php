@@ -38,7 +38,7 @@ class TasksController extends Controller
         $searchModel = new TasksSearch();
         $dataProvider = $searchModel->search(Yii::$app->request->queryParams);
         $dataProvider->query->andWhere(['type'=>'service']);
-        return $this->render('index', [
+        return $this->renderAjax('index', [
             'searchModel' => $searchModel,
             'dataProvider' => $dataProvider,
         ]);
@@ -74,12 +74,10 @@ class TasksController extends Controller
      * @return mixed
      */
     public function actionCreate($jobcard_id="")
-    {
-        //echo json_encode(["success" => true, "message" => "Task has been created and assigned to this jobcard", 'redirect' => ['jobcard/update', 'id' => $res['jobcard_id'], 'taskId' => $model->id]]);
-        echo json_encode(["success" => true, "message" => "Task has been created", 'redirect' => Yii::$app->getUrlManager()->createUrl(['jobcard/update', 'id' => 1, 'taskId' => 2])]);
-        exit;
+    {       
         $model = new Tasks();
 	    if ($model->load(Yii::$app->request->post())) {
+          
 		$res = Yii::$app->request->post();
 		$day_in_min = (intval($res['days'])*1440);
 		$hour_in_min =(intval($res['hours'])*60);
@@ -91,7 +89,7 @@ class TasksController extends Controller
             {
                 if(isset($res['jobcard_id'])){
                     if($task_id = $model->assignTask($res['jobcard_id'])){
-                        echo json_encode(["success" => true, "message" => "Task has been created and assigned to this jobcard", 'redirect' => Yii::$app->getUrlManager()->createUrl(['jobcard/update', 'id' => $res['jobcard_id'], 'taskId' => $task_id])]);   
+                        echo json_encode(["success" => true, "message" => "Task has been created", 'redirect' => Yii::$app->getUrlManager()->createUrl(['jobcard/update', 'id' => $res['jobcard_id'], 'taskId' => $task_id])]);exit;
                         exit;
                     }  
                 }else{

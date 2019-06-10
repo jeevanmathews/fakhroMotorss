@@ -9,12 +9,20 @@ $this->title = 'Create Itemgroup';
 $this->params['breadcrumbs'][] = ['label' => 'Itemgroups', 'url' => ['index']];
 $this->params['breadcrumbs'][] = $this->title;
 ?>
-<div class="itemgroup-create">
+<div class="content-main-wrapper">
+<!-- Content Header (Page header) -->
+    <section class="content-header">
 
     <h1><?= Html::encode($this->title) ?></h1>
+  </section>
 
+     <section class="content">
+  	<!-- SELECT2 EXAMPLE -->
+	  	<div class="box box-default">
     <?= $this->render('_form', [
         'model' => $model,
     ]) ?>
 
+</div>
+</section>
 </div>

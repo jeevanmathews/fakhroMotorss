@@ -182,8 +182,8 @@ class JobcardController extends Controller
                     $jobcardTask->billing_rate =  ($jobcardTask->task->tax_enabled =="yes")?($price+($price*$jobcardTask->task->tax_rate/100)):$price;
                 }             
                 $jobcardTask->save();
-                Yii::$app->session->setFlash('success', 'Task has been '.$task_stat.' to this Jobcard.'); 
-                return $this->redirect(['update', 'id' => $model->id, 'tab' => 'task']);
+                echo json_encode(["success" => true, "message" => 'Task has been '.$task_stat.' to this Jobcard.', 'redirect' => Yii::$app->getUrlManager()->createUrl(['jobcard/update', 'id' => $model->id, 'tab' => 'task'])]);
+                exit;                
             }          
             $activeTab = 'task';
         }   
@@ -224,9 +224,9 @@ class JobcardController extends Controller
                    //Add Tax to final amount after discount
                     $jobcardMaterial->rate =  ($jobcardMaterial->material->tax_enabled =="yes")?($mat_price+($mat_price*$jobcardMaterial->material->tax_rate/100)):$mat_price;             
                 }
-                $jobcardMaterial->save(); 
-                Yii::$app->session->setFlash('success', 'Material has been '.$mat_stat.' to this Jobcard.'); 
-                return $this->redirect(['update', 'id' => $model->id, 'tab' => 'material']);
+                $jobcardMaterial->save();                 
+                echo json_encode(["success" => true, "message" => 'Material has been '.$mat_stat.' to this Jobcard.', 'redirect' => Yii::$app->getUrlManager()->createUrl(['jobcard/update', 'id' => $model->id, 'tab' => 'material'])]);
+                exit; 
             }   
             $activeTab = 'material';
         }        

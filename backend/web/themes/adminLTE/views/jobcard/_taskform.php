@@ -10,7 +10,7 @@ use backend\models\Employees;
 /* @var $model backend\models\Jobcard */
 /* @var $form yii\widgets\ActiveForm */
 ?>
-<?php $form = AutoForm::begin(); ?>
+<?php $form = AutoForm::begin(["id" => "task-".time().(($jobcardTask->isNewRecord)?"create":"update")."-form"]); ?>
     <div class="box-body">
 
         <div class="row"> 
@@ -30,8 +30,7 @@ use backend\models\Employees;
 
                     <?= $form->field($jobcardTask, 'note')->textarea(['rows' => 6]) ?>
                     
-                    <?= $form->field($jobcardTask, 'status')->dropDownList([ 'open' => 'Open', 'inprogress' => 'Inprogress', 'hold' => 'Hold', 'completed' => 'completed', 'reopen' => 'Reopen'], ['prompt' => '']) ?> 
-                    <a class="hide" id="add-new" href="/fakhromotorss/backend/web/index.php?r=jobcard%2Findex">Jobcard</a>
+                    <?= $form->field($jobcardTask, 'status')->dropDownList([ 'open' => 'Open', 'inprogress' => 'Inprogress', 'hold' => 'Hold', 'completed' => 'completed', 'reopen' => 'Reopen'], ['prompt' => '']) ?>                   
                 </div>                               
             </div>
         </div>
@@ -45,29 +44,17 @@ use backend\models\Employees;
 
 
 <script type="text/javascript">
+     $(document).ready(function(){
+        var taskId = $("#jobcardtask-task_id:visible").find("option:selected").html(); 
+        taskId = (taskId)?taskId:"";
+        var tabId = $(".main-body:visible").attr("tab_id"); 
+     
+        loadTaskData(taskId, tabId);
 
-    $(document).ready(function(){
-        var taskId = $("#jobcardtask-task_id").find("option:selected").html(); 
-
-        loadTaskData(taskId);
-
-        $("[name='JobcardTask[discount_percent]']").val("<?=$jobcardTask->discount_percent?>");
-        $("[name='JobcardTask[discount_amount]']").val("<?=$jobcardTask->discount_amount?>");
-        $("[value='<?=$jobcardTask->discount?>']").prop('checked', true);
-        showDiscount('<?=$jobcardTask->discount?>');
-
-        $("[name='JobcardTask[discount]']").click(function(){     
-        showDiscount($(this).val());
-        });
-        function showDiscount(discval){
-            if(discval == "discount_amount"){
-                $("[name='JobcardTask[discount_amount]']").removeClass("hide");
-                $("[name='JobcardTask[discount_percent]']").addClass("hide");
-            }else{
-                $("[name='JobcardTask[discount_percent]']").removeClass("hide");
-                $("[name='JobcardTask[discount_amount]']").addClass("hide");
-            }
-        }
+        $("[tab_id='"+tabId+"']").find("[name='JobcardTask[discount_percent]']").val("<?=$jobcardTask->discount_percent?>");
+        $("[tab_id='"+tabId+"']").find("[name='JobcardTask[discount_amount]']").val("<?=$jobcardTask->discount_amount?>");
+        $("[tab_id='"+tabId+"']").find("[value='<?=$jobcardTask->discount?>']").prop('checked', true);
+        showDiscount('<?=$jobcardTask->discount?>', tabId);        
     });
 
     $( function() {
@@ -80,37 +67,6 @@ use backend\models\Employees;
     });
     });  
 
-    function loadTaskData(sel){
-        if(!sel.split("-")[1]){
-            $(".field-jobcardtask-billing_rate").addClass("hide");
-            $(".field-jobcardtask-discount").addClass("hide");
-        } else{
-            $(".field-jobcardtask-billing_rate").removeClass("hide");
-            if(sel.split("-")[1]) $("#jobcardtask-billing_rate").val(sel.split(" ").reverse()[0]);
-            $("#jobcardtask-billing_rate").attr("disabled", "disabled"); 
-            $(".field-jobcardtask-discount").removeClass("hide"); 
-        } 
-        console.log(sel.split(" ").length)
-    }
-
-    $("#jobcardtask-task_id").change(function(){
-        var sel = $(this).find("option:selected").html();
-        if($(this).find("option:selected").val() == "0"){
-
-            $.ajax({
-          url: "<?php echo Yii::$app->getUrlManager()->createUrl(['tasks/create', 'jobcard_id' => $jobcardTask->jobcard_id]);?>",
-          aSync: false,
-          dataType: "html",
-          success: function(data) {
-            var tabId = $(this).closest(".main-body").attr("tab_id");
-            $(".main-body").addClass("hide");
-            $('div[tab_id="'+tabId+'"]').remove();
-            $(".container-body").append($(data));            
-            $(document).find("#"+$(".main-body").attr("id")).attr("tab_id", tabId)
-          }});
-
-           //$("#add-new").trigger("click");
-        }
-        loadTaskData(sel);
-    }); 
+    
+    
 </script>

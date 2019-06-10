@@ -12,54 +12,50 @@ use backend\models\Itemgroup;
 /* @var $form yii\widgets\ActiveForm */
 ?>
 
-<div class="itemgroup-form">
 
-    <?php $form = AutoForm::begin(); ?>
 
-		
+ <?php $form = AutoForm::begin(); ?>
+
+<div class="box-body">
+   <div class="row">
+    <div class="col-md-12">               
+      <div class="row">
+         <div class="col-md-6">  		
 <?=
 $form->field($model, 'type')->dropDownList(
 				['accessories' => 'Accessories', 'spares' => 'Spares'],
 				 ['prompt' => 'Select Type','class' => 'form-control select2 type',	
 				
 		    'onchange'=>'
-                $.get( "'.Yii::$app->getUrlManager()->createUrl('itemgroup/lists').'&type="+$(this).val(), function( data ) {
-			  $( "select#itemgroup-parent_id" ).html(data);
+                $.get( "'.Yii::$app->getUrlManager()->createUrl('itemgroup/lists').'&parent_id=0&type="+$(this).val(), function( data ) {
+			    $( "div#itemlists" ).html(data);
            });
       ']);
     
-      //$dataPost=ArrayHelper::map(Itemgroup::find()->asArray()->all(), 'id', 'category_name');?>
-	  <div class="clearfix">		   
-	<?= Html::submitButton('ADD', ['class' => 'btn btn-success','id' =>'submit-btn']) ?>
-	</div>
-	                    <input type="text" id="text" style="visibility:hidden" />
-	  
-      <?=$form->field($model, 'parent_id')
-           ->dropDownList(
+     ?>
 
-                ['prompt' => 'Select ParentId']
+	<div id="itemlists">  
+      <?=$form->field($model, 'parent_id')
+           ->dropDownList(['choose_type' => 'Please choose type First' ],
+
+                ['prompt' => 'Select ParentId','class' => 'form-control select2 type']
            );
 		   ?>
-    
+    </div>
 
-    <?= $form->field($model, 'category_name')->textInput(['maxlength' => true]) ?>
+	
+	<?= $form->field($model, 'status')->dropDownList([ '0' => 'Disable', '1' => 'Enable', ], ['prompt' => '','class'=>'form-control select2']) ?> 
 
-    <?= $form->field($model, 'status')->textInput() ?>
-
-    <div class="form-group">
-        <?= Html::submitButton('Save', ['class' => 'btn btn-success']) ?>
+	 </div>
+           </div>
+           </div>
+    </div>
+</div>
+ <div class="box-footer">       
+ <?= Html::submitButton('Save', ['class' => 'btn btn-success']) ?>
     </div>
 
    <?php AutoForm::end(); ?>
 
 </div>
-<script>
-$( document ).ready(function() {
-$("#submit-btn").click(function() {
 
-    $('#text').css('visibility:visible');
-
-  
- });
- });
-</script>

@@ -65,9 +65,38 @@ class ItemgroupController extends Controller
     public function actionCreate()
     {
         $model = new itemgroup();
+	
+        if ($model->load(Yii::$app->request->post())) {
+		$Array = Yii::$app->request->post();
+		$res   = end($Array['parent_id']);	
+		if($res=='add_new')
+		{
+			$res =0;
+		}
+        else
+		{
+		$res=end($Array['parent_id']);
+		}
+        $model->parent_id     = $res;
+		
+		if(isset($Array['default_value']))
+		{
+	     $model->category_name = $Array['default_value'];	
 
-        if ($model->load(Yii::$app->request->post()) && $model->save()) {
-            return $this->redirect(['view', 'id' => $model->id]);
+		}
+		else
+		{
+		  $model->category_name =	$Array['category_name'];	
+			
+		}
+		if($model->save())
+        {
+		return $this->redirect(['view', 'id' => $model->id]);
+		}
+		else
+		{
+		print_r($model->getErrors());
+		}
         }
 
         return $this->render('create', [
@@ -110,34 +139,11 @@ class ItemgroupController extends Controller
      * @return mixed
      * @throws NotFoundHttpException if the model cannot be found
      */
-	 public function actionLists($type) 
+	 public function actionLists($type="",$parent_id) 
 	 {
-		  //echo $type;exit;
-		$countPosts = Itemgroup::find()
-          ->where(['type' => $type,'parent_id' =>0])
-          ->count();
-		  //echo $countPosts;
 		
-     $posts = Itemgroup::find()
-          ->where(['type' => $type,'parent_id' =>0])
-          ->orderBy('id DESC')
-          ->all();
-     if($countPosts>0) {
-		 
-		 $text='Select Parent';
-		echo "<option value=''>".$text."</option>";
-          foreach($posts as $post){
-			
-               echo "<option value='".$post->id."'>".$post->category_name."</option>";
-			 
-          }
-		  
-     }
-     else{
-          echo "<option></option>";
-		  //echo "<input type='submit' value='Send Request'>";
-     }
-		 
+
+		return $this->renderPartial('_itemdropdown',compact('parent_id','type')); 
 	 }
     public function actionDelete($id)
     {

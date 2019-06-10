@@ -79,8 +79,8 @@ $vat_format=Yii::$app->common->company->vat_format;
        <?php endif; ?>
        <th>Quantity</th>
        <th>Unit</th>
-        <!--  <th>Price</th>
-         <?php //if($vat_format=="inclusive") :?>
+         <th>Price</th>
+         <!-- <?php //if($vat_format=="inclusive") :?>
          <th>Discount</th>
          <th>Net</th>
          <th>VAT</th>
@@ -98,8 +98,8 @@ $vat_format=Yii::$app->common->company->vat_format;
         
         <td><?= $form->field($model1, 'quantity[]')->textInput(['class'=>'form-control qty'])->label(false) ?></td>
         <td><?= $form->field($model1,'unit_id[]', ['inputOptions' => ["class" => "form-control select2"]])->dropDownList(ArrayHelper::map(Units::find()->where(["status" => 1])->all(), 'id', 'name'), ["prompt" => "Select unit"])->label(false) ?>
-
-          <?= Html::activeTextInput($model1,'price[]',['type'=>'hidden','class'=>'price'])?>
+          </td>
+          <td><?= Html::activeTextInput($model1,'price[]',['type'=>'text','class'=>'form-control price'])?>
           <?php if($vat_format=="inclusive") :?>
           <?= Html::activeTextInput($model1,'vat_rate[]',['type'=>'hidden','class'=>'vatrate'])?>
           <?= Html::activeTextInput($model1,'tax[]',['type'=>'hidden','class'=>'tax'])?>
@@ -144,7 +144,8 @@ $vat_format=Yii::$app->common->company->vat_format;
       <?php } ?>
       <td><?= $form->field($req, 'quantity[]')->textInput(['value'=>$req->quantity,'class'=>'form-control qty'])->label(false) ?></td>
       <td><?= $form->field($req,'unit_id[]', ['inputOptions' => ["class" => "form-control select2"]])->dropDownList(ArrayHelper::map(Units::find()->where(["status" => 1])->all(), 'id', 'name'), ['options' => [$req->unit_id => ['Selected'=>'selected']]], ["prompt" => "Select unit"])->label(false) ?>
-       <?= Html::activeTextInput($req,'price[]',['type'=>'hidden','class'=>'price','value'=>$req->price])?>
+       </td>
+       <td><?= Html::activeTextInput($req,'price[]',['type'=>'text','class'=>'form-control price','value'=>$req->price])?>
        <?php if($vat_format=="inclusive") :?>
        <?= Html::activeTextInput($req,'vat_rate[]',['type'=>'hidden','class'=>'vatrate','value'=>$req->vat_rate])?>
        <?= Html::activeTextInput($req,'tax[]',['type'=>'hidden','class'=>'tax','value'=>$req->tax])?>

@@ -465,7 +465,23 @@ $this->registerJs($js, \yii\web\View::POS_HEAD);
 
 
       $(document).on('click', "[class='close-tab']", function(){
+        //Next or Previous tab to be shown
+        var tab_type = "id";
+        var prev_tab_id = $(this).closest("li").prev("li").attr("id");  
+        if(prev_tab_id == undefined){
+            var prev_tab_id = $(this).closest("li").next("li").attr("id");
+          if(prev_tab_id == undefined){
+            var prev_tab_id = "navbar-header";
+            tab_type = "class";
+          }
+        } 
+        var close_tabId = $(this).closest("li").attr("id");
+        for(var i=0;i<5;i++){
+          $('div[tab_id="'+close_tabId+'"]').next("script").remove();
+        }
         $(this).closest("li").remove(); 
+        $('div[tab_id="'+close_tabId+'"]').remove();
+        (tab_type == "id")?($("#"+prev_tab_id).find("a").trigger("click")):($("."+prev_tab_id).find("a").trigger("click"));
       })
       
       $(document).on('click', "a", function(){
@@ -475,42 +491,34 @@ $this->registerJs($js, \yii\web\View::POS_HEAD);
           $(".main-body").addClass("hide");
           $(document).find('div[tab_id="'+tab_id+'"]').removeClass("hide");         
           return;
+        } else if($(this).hasClass("jc-tabs")){ //Check for other clicks
+          return true;
         }
         
-        event.preventDefault();
-
-        var rqst_url = '<?=Yii::$app->getUrlManager()->createUrl(['site'])?>';
-        var rqst_url = rqst_url.split("=")[0]+"="+$(this).attr("href").split("=")[1];
-        var relace = false;
+        event.preventDefault();        
 
         //Find requested page id
-        var page_id = $(this).attr("href").split("=")[1].replace("%2F","_");  
-        console.log(page_id)
+        var page_id = $(this).attr("href").split("=")[1].replace("%2F","_"); 
         //Extract request action only without arguments
-        if(page_id.indexOf("&") != -1){
-          relace = true;
+        if(page_id.indexOf("&") != -1){         
           page_id = page_id.replace(page_id.substr(page_id.indexOf("&")),"");
         }
 
         //Generate Tab        
-        if($(this).closest("div").attr("id") == "myNavbar"){          
-          var tabId = "tab_id_"+($(".nav-item").length+1);
-          $( '<li id="'+tabId+'" class="nav-item"><a class="nav-link page_tab" id="task-tab" data-toggle="tab" role="tab" aria-controls="task" aria-selected="false"><span>'+page_id.replace("_","/")+'</span></a><b class="close-tab"><i class="fa fa-times-circle" aria-hidden="true"></i></b></li>' ).appendTo( $( "#myTab" ) );        
+        if($(this).closest("div").attr("id") == "myNavbar"){
+          $(".nav-item").removeClass("active");          
+          var tabId = "tab_id_"+($(".page_tab").length+1);
+          $( '<li id="'+tabId+'" class="nav-item active"><a class="nav-link page_tab" data-toggle="tab" role="tab" aria-controls="task" aria-selected="false"><span>'+page_id.replace("_","/")+'</span></a><b class="close-tab"><i class="fa fa-times-circle" aria-hidden="true"></i></b></li>' ).appendTo( $( "#myTab" ) );
         }
 
         if(tabId == undefined){
          var tabId = $(this).closest(".main-body").attr("tab_id");         
         }
           
-        if($(document).find("#"+page_id).length && relace == false){
-            $(".main-body").addClass("hide");
-            $(document).find("#"+page_id).removeClass("hide");
-        }else{
-          if(relace == true){
+         if($('div[tab_id="'+tabId+'"]').length){
             for(var i=0;i<5;i++){
-              $("#"+page_id).next("script").remove();
+              $('div[tab_id="'+tabId+'"]').next("script").remove();
             }
-            $("#"+page_id).remove();
           }
           $.ajaxSetup({async: false}); 
           $.ajax({
@@ -520,11 +528,13 @@ $this->registerJs($js, \yii\web\View::POS_HEAD);
           success: function(data) {
             $(".main-body").addClass("hide");
             $('div[tab_id="'+tabId+'"]').remove();
-            $(".container-body").append($(data));            
-            $(document).find("#"+page_id).attr("tab_id", tabId)
+            $(".container-body").append($(data));
+            $(document).find(".main-body:visible").attr("tab_id", tabId);
+
+            $("#"+tabId).find("span").html(page_id.replace("_","/"));
           }});
           $.ajaxSetup({async: true}); 
-        }
+       
       });
 
       var decimalPlaces=<?= Yii::$app->common->decimalplaces?>;

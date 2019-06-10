@@ -11,31 +11,42 @@ $this->params['breadcrumbs'][] = ['label' => 'Itemgroups', 'url' => ['index']];
 $this->params['breadcrumbs'][] = $this->title;
 \yii\web\YiiAsset::register($this);
 ?>
-<div class="itemgroup-view">
+<div class="content-main-wrapper">
+    <!-- Content Header (Page header) -->
+    <section class="content-header">
+      <h1>
+        <?= Html::encode($this->title) ?>        
+      </h1>
+    </section>
+    
+    <section class="content">
+    <!-- SELECT2 EXAMPLE -->
+        <div class="box box-default">   
 
-    <h1><?= Html::encode($this->title) ?></h1>
-	
-
-    <p>
-        <?= Html::a('Update', ['update', 'id' => $model->id], ['class' => 'btn btn-primary']) ?>
-        <?= Html::a('Delete', ['delete', 'id' => $model->id], [
-            'class' => 'btn btn-danger',
-            'data' => [
-                'confirm' => 'Are you sure you want to delete this item?',
-                'method' => 'post',
-            ],
-        ]) ?>
-    </p>
+        <div class="box-body">
+        <div class="row">
+        <div class="col-md-6"> 
 
     <?= DetailView::widget([
         'model' => $model,
         'attributes' => [
-            'id',
-            'sparetype_id',
             'parent_id',
             'category_name',
-            'status',
+             [                     
+			'label' => 'Status',
+			'format' => 'ntext',
+			'value' => ($model->status == '0'? "Disable":"Enable"),
+			],
         ],
     ]) ?>
 
+<p>
+<?= Html::a('<span class="glyphicon glyphicon-pencil"></span> Edit Details', ['update', 'id' => $model->id], ['class' => 'btn btn-primary']) ?>       
+ </p>
+            </div>
+
+        </div>             
+        </div>
+        </div>
+    </section>
 </div>

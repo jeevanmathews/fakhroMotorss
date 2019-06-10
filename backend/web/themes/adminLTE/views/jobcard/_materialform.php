@@ -11,7 +11,7 @@ use backend\models\Spareparts;
 /* @var $model backend\models\Jobcard */
 /* @var $form yii\widgets\ActiveForm */
 ?>
-<?php $form = AutoForm::begin(); ?>
+<?php $form = AutoForm::begin(["id" => "material-".time().(($jobcardMaterial->isNewRecord)?"create":"update")."-form"]); ?>
     <div class="box-body">
 
         <div class="row"> 
@@ -51,50 +51,19 @@ use backend\models\Spareparts;
 
 <script type="text/javascript">
     $(document).ready(function(){
-        $("#jobcardmaterial-material_id").html($("[name='"+$("#jobcardmaterial-material_type").val()+"']").html());
-        $("#jobcardmaterial-material_id").val("<?php echo $jobcardMaterial->material_id;?>");
-        $("#jobcardmaterial-unit_rate").attr("disabled", "disabled");
-        $("#jobcardmaterial-rate").attr("disabled", "disabled");
+        var tabId = $(".main-body:visible").attr("tab_id"); 
+        $("[tab_id='"+tabId+"']").find("#jobcardmaterial-material_id").html($("[name='"+$("#jobcardmaterial-material_type").val()+"']").html());
+        $("[tab_id='"+tabId+"']").find("#jobcardmaterial-material_id").val("<?php echo $jobcardMaterial->material_id;?>");
+        $("[tab_id='"+tabId+"']").find("#jobcardmaterial-unit_rate").attr("disabled", "disabled");
+        $("[tab_id='"+tabId+"']").find("#jobcardmaterial-rate").attr("disabled", "disabled");
 
-        $("[name='JobcardMaterial[discount_percent]']").val("<?=$jobcardMaterial->discount_percent?>");
-        $("[name='JobcardMaterial[discount_amount]']").val("<?=$jobcardMaterial->discount_amount?>");
-        $("[value='<?=$jobcardMaterial->discount?>']").prop('checked', true);
-        showMatDiscount('<?=$jobcardMaterial->discount?>');
+        $("[tab_id='"+tabId+"']").find("[name='JobcardMaterial[discount_percent]']").val("<?=$jobcardMaterial->discount_percent?>");
+        $("[tab_id='"+tabId+"']").find("[name='JobcardMaterial[discount_amount]']").val("<?=$jobcardMaterial->discount_amount?>");
+        $("[tab_id='"+tabId+"']").find("[value='<?=$jobcardMaterial->discount?>']").prop('checked', true);
+        showMatDiscount('<?=$jobcardMaterial->discount?>', tabId);
     });
 
-    $("[name='JobcardMaterial[discount]']").click(function(){        
-        showMatDiscount($(this).val());
-    });
-    function showMatDiscount(discval){
-        if(discval == "discount_amount"){
-            $("[name='JobcardMaterial[discount_amount]']").removeClass("hide");
-            $("[name='JobcardMaterial[discount_percent]']").addClass("hide");
-        }else{
-            $("[name='JobcardMaterial[discount_percent]']").removeClass("hide");
-            $("[name='JobcardMaterial[discount_amount]']").addClass("hide");
-        }
-    }
-    $("#jobcardmaterial-material_type").change(function(){       
-        $("#jobcardmaterial-material_id").html($("[name='"+$(this).val()+"']").html());
-        $("#jobcardmaterial-num_unit").val("");
-        $("#jobcardmaterial-rate").val("");
-        $("#jobcardmaterial-hidden-rate").val("");
-        $("#jobcardmaterial-unit_rate").val("");
-
-    });
-    $(".accessory,.spare_part").change(function(){
-        var sel = $(this).find("option:selected").html();        
-        $("#jobcardmaterial-unit_rate").val(sel.split(" ").reverse()[1]);
-        $("#jobcardmaterial-unit_rate").attr("disabled", "disabled");
-        $("#jobcardmaterial-num_unit").val("");
-        $("#jobcardmaterial-rate").val("");
-        $("#jobcardmaterial-hidden-rate").val("");
-    });
-    $("#jobcardmaterial-num_unit").on('keyup', function () {
-        $("#jobcardmaterial-rate").val($("#jobcardmaterial-unit_rate").val()*$("#jobcardmaterial-num_unit").val());
-        $("#jobcardmaterial-hidden-rate").val($("#jobcardmaterial-unit_rate").val()*$("#jobcardmaterial-num_unit").val());
-        $("#jobcardmaterial-rate").attr("disabled", "disabled");
-    })
+    
     $( function() {
     $( ".datepicker" ).datepicker({
       defaultDate: new Date(),

@@ -14,7 +14,7 @@ use backend\models\ServiceType;
 /* @var $model backend\models\Jobcard */
 /* @var $form yii\widgets\ActiveForm */
 ?>
-<?php $form = AutoForm::begin(["id" => "jobcard-".(($model->isNewRecord)?"create":"update")."-form"]); ?>
+<?php $form = AutoForm::begin(["id" => "jobcard-".time().(($model->isNewRecord)?"create":"update")."-form"]); ?>
     <div class="box-body">
 
         <div class="row"> 

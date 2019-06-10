@@ -10,12 +10,18 @@ $this->params['breadcrumbs'][] = ['label' => 'Itemgroups', 'url' => ['index']];
 $this->params['breadcrumbs'][] = ['label' => $model->id, 'url' => ['view', 'id' => $model->id]];
 $this->params['breadcrumbs'][] = 'Update';
 ?>
-<div class="itemgroup-update">
-
-    <h1><?= Html::encode($this->title) ?></h1>
-
-    <?= $this->render('_form', [
+<div class="content-main-wrapper">
+<!-- Content Header (Page header) -->
+    <section class="content-header">
+      <h1>
+        <?= Html::encode($this->title) ?>        
+      </h1>
+    </section>
+     <section class="content">
+     <div class="box box-default">
+    	<?= $this->render('_form', [
         'model' => $model,
-    ]) ?>
-
+    	]) ?>
+	</div>
+    </section>
 </div>

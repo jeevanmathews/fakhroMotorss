@@ -18,7 +18,7 @@ $mat_total = 0;
 $task_net_price_tot = 0;
 $net_price_tot = 0;
 ?>
-<div class="main-body" id="jobcard_update">
+<div class="main-body" page-id="jobcard_update">
 <div class="content-main-wrapper">
 <!-- Content Header (Page header) -->
     <section class="content-header">
@@ -31,30 +31,30 @@ $net_price_tot = 0;
       <!-- SELECT2 EXAMPLE -->
       <div class="box box-default">  
 
-		<ul class="nav nav-tabs" id="myTab" role="tablist">
+		<ul class="nav nav-tabs" id="" role="tablist">
 		  	<li class="nav-item <?php if($activeTab == "job-card"){echo 'active';}?>">
-		    <a class="nav-link <?php if($activeTab == "job-card"){echo 'active';}?>" id="job-card-tab" data-toggle="tab" href="#job-card" role="tab" aria-controls="jobcard" aria-selected="true">
+		    <a class="nav-link jc-tabs <?php if($activeTab == "job-card"){echo 'active';}?>" id="job-card-tab-<?php echo time();?>" data-toggle="tab" href="#job-card_<?php echo time();?>" role="tab" aria-controls="jobcard" aria-selected="true">
 		    <span>Job Card</span></a>
 		  	</li>
 		  	<li class="nav-item <?php if($activeTab == "task"){echo 'active';}?>">
-		    <a class="nav-link <?php if($activeTab == "task"){echo 'active';}?>" id="task-tab" data-toggle="tab" href="#task" role="tab" aria-controls="task" aria-selected="false"><span>Jobcard Tasks</span></a>
+		    <a class="nav-link jc-tabs <?php if($activeTab == "task"){echo 'active';}?>" id="task-tab-<?php echo time();?>" data-toggle="tab" href="#task_<?php echo time();?>" role="tab" aria-controls="task" aria-selected="false"><span>Jobcard Tasks</span></a>
 		  	</li>
 		  	<li class="nav-item <?php if($activeTab == "material"){echo 'active';}?>">
-		    <a class="nav-link <?php if($activeTab == "material"){echo 'active';}?>" id="material-tab" data-toggle="tab" href="#material" role="tab" aria-controls="material" aria-selected="false"><span>Materials</span></a>
+		    <a class="nav-link jc-tabs <?php if($activeTab == "material"){echo 'active';}?>" id="material-tab-<?php echo time();?>" data-toggle="tab" href="#material_<?php echo time();?>" role="tab" aria-controls="material" aria-selected="false"><span>Materials</span></a>
 		  	</li>
 		  	<li class="nav-item <?php if($activeTab == "total"){echo 'active';}?>">
-		    <a class="nav-link <?php if($activeTab == "total"){echo 'active';}?>" id="total-tab" data-toggle="tab" href="#total" role="tab" aria-controls="total" aria-selected="false"><span>Total Charges</span></a>
+		    <a class="nav-link jc-tabs <?php if($activeTab == "total"){echo 'active';}?>" id="total-tab-<?php echo time();?>" data-toggle="tab" href="#total_<?php echo time();?>" role="tab" aria-controls="total" aria-selected="false"><span>Total Charges</span></a>
 		  	</li>
 		</ul>
-		<div class="tab-content" id="myTabContent">
-		  	<div class="tab-pane <?php if($activeTab == "job-card"){echo 'active';}?>" id="job-card" role="tabpanel" aria-labelledby="home-tab">
+		<div class="tab-content" id="">
+		  	<div class="tab-pane <?php if($activeTab == "job-card"){echo 'active';}?>" id="job-card_<?php echo time();?>" role="tabpanel" aria-labelledby="home-tab">
 			    <?= $this->render('_form', [
 			        'model' => $model,
 			        'vehicle' => $vehicle,
 			        'customer' => $customer
 			    ]) ?>
 			</div>
-		  	<div class="tab-pane <?php if($activeTab == "task"){echo 'active';}?>" id="task" role="tabpanel" aria-labelledby="task-tab">
+		  	<div class="tab-pane <?php if($activeTab == "task"){echo 'active';}?>" id="task_<?php echo time();?>" role="tabpanel" aria-labelledby="task-tab">
 		  		<div class="box-body">
         		<div class="row"> 
             	<div class="col-md-12">        			
@@ -166,7 +166,7 @@ $net_price_tot = 0;
 			    </div>
 			    </div>
 		  	</div>
-		  	<div class="tab-pane  <?php if($activeTab == "material"){echo 'active';}?>" id="material" role="tabpanel" aria-labelledby="material-tab">
+		  	<div class="tab-pane  <?php if($activeTab == "material"){echo 'active';}?>" id="material_<?php echo time();?>" role="tabpanel" aria-labelledby="material-tab">
 		  	<div class="box-body">
         		<div class="row"> 
             	<div class="col-md-12">
@@ -256,7 +256,7 @@ $net_price_tot = 0;
 			    </div>
 			    </div>
 		  	</div>
-		  	<div class="tab-pane <?php if($activeTab == "total"){echo 'active';}?>" id="total" role="tabpanel" aria-labelledby="total-tab">
+		  	<div class="tab-pane <?php if($activeTab == "total"){echo 'active';}?>" id="total_<?php echo time();?>" role="tabpanel" aria-labelledby="total-tab">
 			    <?= $this->render('_totalform', [
 			        'model' => $model			        
 			    ]) ?>

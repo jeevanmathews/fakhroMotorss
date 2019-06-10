@@ -37,8 +37,8 @@ $amount_due = $total_charge + $vat;
                 
                 <?php if($model->invoice) { ?> 
                 <tr>               
-                <td colspan="2">   
-                <span class="pull-left"><?= Html::a('View Invoice', ['jobcard/invoice', 'invoice_id' => $model->invoice->id], ['class' => 'btn btn-success', 'target' => '_blank']) ?></span>
+                <td colspan="2"> 
+                <span class="pull-left"><?= Html::button('View Invoice', ['onclick' => 'window.open("'.Yii::$app->getUrlManager()->createUrl(['jobcard/invoice', 'invoice_id' => $model->invoice->id]).'", "_blank");', 'class' => 'btn btn-success']) ?></span>
                 </td>
                 </tr>
                 <?php } ?>                

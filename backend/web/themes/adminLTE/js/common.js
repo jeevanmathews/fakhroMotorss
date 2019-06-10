@@ -65,10 +65,11 @@ function validateAttribute(modelName, fieldName, fieldValue, mid, scenario){
     $(document).on('beforeSubmit', "[class='aerp-form']", function(e){
 
         var formId = $(this).attr("id");
+        var tabId = $(this).closest(".main-body").attr("tab_id");
        
         $(this).find(':submit').attr('disabled', true);
 
-        if(($(document).find("#"+formId+" .has-error").length > 0?false:true)){
+        if(($(document).find("[tab_id='"+tabId+"']").find("#"+formId+" .has-error").length > 0?false:true)){
             //$.ajaxSetup({async: false}); 
             $.ajax({
             type: 'POST',
@@ -86,13 +87,17 @@ function validateAttribute(modelName, fieldName, fieldValue, mid, scenario){
                 }else{
                   response_head = "error";                  
                 }
-                if(response.redirect != undefined){ console.log(response.redirect )
-                  var tabId = $(this).closest(".main-body").attr("tab_id");
+                if(response.redirect != undefined){ console.log(response.redirect );                  
                   $.get( response.redirect , function( data ) {
                     $(".main-body").addClass("hide");
+                    if($('div[tab_id="'+tabId+'"]').length){
+                      for(var i=0;i<5;i++){
+                        $('div[tab_id="'+tabId+'"]').next("script").remove();
+                      }
+                    }
                     $('div[tab_id="'+tabId+'"]').remove();
                     $(".container-body").append($(data));            
-                    $(document).find("#"+$(".main-body").attr("id")).attr("tab_id", tabId);                  
+                    $(document).find(".main-body:visible").attr("tab_id", tabId);                  
                   });
                 }
                 $.toast({
@@ -110,4 +115,92 @@ function validateAttribute(modelName, fieldName, fieldValue, mid, scenario){
         return false;
     });
   //}
-  
+
+  //Jobcard Task Scripts
+      $("[name='JobcardTask[discount]']").click(function(){ 
+        var tabId = $(this).closest(".main-body").attr("tab_id");    
+        showDiscount($(this).val(), tabId);
+      });
+      function showDiscount(discval, tabId){
+        $("[tab_id='"+tabId+"']").find(".field-jobcardtask-discount").removeClass("hide");
+          if(discval == "discount_amount"){
+              $("[tab_id='"+tabId+"']").find("[name='JobcardTask[discount_amount]']").removeClass("hide");
+              $("[tab_id='"+tabId+"']").find("[name='JobcardTask[discount_percent]']").addClass("hide");
+          }else{
+              $("[tab_id='"+tabId+"']").find("[name='JobcardTask[discount_percent]']").removeClass("hide");
+              $("[tab_id='"+tabId+"']").find("[name='JobcardTask[discount_amount]']").addClass("hide");
+          }
+      }
+   
+      $(document).on('change', "#jobcardtask-task_id:visible", function(){
+
+        var tabId = $(this).closest(".main-body").attr("tab_id");
+        var sel = $(this).find("option:selected").html();
+        if($(this).find("option:selected").val() == "0"){            
+            $.ajax({
+            url: "<?php echo Yii::$app->getUrlManager()->createUrl(['tasks/create', 'jobcard_id' => $jobcardTask->jobcard_id]);?>",
+            aSync: false,
+            dataType: "html",
+            success: function(data) {        
+                $(".main-body").addClass("hide");
+                $('div[tab_id="'+tabId+'"]').remove();
+                $(".container-body").append($(data));            
+                $(document).find("#"+$(".main-body:visible").attr("id")).attr("tab_id", tabId)
+          }});
+        }
+        loadTaskData(sel, tabId);
+    });
+
+    function loadTaskData(sel, tabId){
+        if(!sel.split("-")[1]){
+            $("[tab_id='"+tabId+"']").find(".field-jobcardtask-billing_rate").addClass("hide");
+            $("[tab_id='"+tabId+"']").find(".field-jobcardtask-discount").addClass("hide");
+        } else{
+            $("[tab_id='"+tabId+"']").find(".field-jobcardtask-billing_rate").removeClass("hide");
+            if(sel.split("-")[1]) $("[tab_id='"+tabId+"']").find("#jobcardtask-billing_rate").val(sel.split(" ").reverse()[0]);
+            $("[tab_id='"+tabId+"']").find("#jobcardtask-billing_rate").attr("disabled", "disabled"); 
+            $("[tab_id='"+tabId+"']").find(".field-jobcardtask-discount").removeClass("hide"); 
+        } 
+        console.log(sel.split(" ").length)
+    }  
+
+    // Jobcard Material Scripts.
+
+    $("[name='JobcardMaterial[discount]']").click(function(){ 
+      var tabId = $(this).closest(".main-body").attr("tab_id");       
+      showMatDiscount($(this).val(), tabId);
+    });
+    function showMatDiscount(discval, tabId){
+        if(discval == "discount_amount"){
+            $("[tab_id='"+tabId+"']").find("[name='JobcardMaterial[discount_amount]']").removeClass("hide");
+            $("[tab_id='"+tabId+"']").find("[name='JobcardMaterial[discount_percent]']").addClass("hide");
+        }else{
+            $("[tab_id='"+tabId+"']").find("[name='JobcardMaterial[discount_percent]']").removeClass("hide");
+            $("[tab_id='"+tabId+"']").find("[name='JobcardMaterial[discount_amount]']").addClass("hide");
+        }
+    }
+
+    $(document).on('change', "#jobcardmaterial-material_type:visible", function(){
+        var tabId = $(this).closest(".main-body").attr("tab_id");       
+        $("[tab_id='"+tabId+"']").find("#jobcardmaterial-material_id").html($("[name='"+$(this).val()+"']").html());
+        $("[tab_id='"+tabId+"']").find("#jobcardmaterial-num_unit").val("");
+        $("[tab_id='"+tabId+"']").find("#jobcardmaterial-rate").val("");
+        $("[tab_id='"+tabId+"']").find("#jobcardmaterial-hidden-rate").val("");
+        $("[tab_id='"+tabId+"']").find("#jobcardmaterial-unit_rate").val("");
+
+    });
+    $(document).on('change', ".accessory,.spare_part:visible", function(){
+        var tabId = $(this).closest(".main-body").attr("tab_id");      
+        var sel = $(this).find("option:selected").html();        
+        $("[tab_id='"+tabId+"']").find("#jobcardmaterial-unit_rate").val(sel.split(" ").reverse()[1]);
+        $("[tab_id='"+tabId+"']").find("#jobcardmaterial-unit_rate").attr("disabled", "disabled");
+        $("[tab_id='"+tabId+"']").find("#jobcardmaterial-num_unit").val("");
+        $("[tab_id='"+tabId+"']").find("#jobcardmaterial-rate").val("");
+        $("[tab_id='"+tabId+"']").find("#jobcardmaterial-hidden-rate").val("");
+    });
+    $(document).on('keyup', "#jobcardmaterial-num_unit:visible", function(){
+        var tabId = $(this).closest(".main-body").attr("tab_id");   
+        $("[tab_id='"+tabId+"']").find("#jobcardmaterial-rate").val($("#jobcardmaterial-unit_rate").val()*$("#jobcardmaterial-num_unit").val());
+        $("[tab_id='"+tabId+"']").find("#jobcardmaterial-hidden-rate").val($("#jobcardmaterial-unit_rate").val()*$("#jobcardmaterial-num_unit").val());
+        $("[tab_id='"+tabId+"']").find("#jobcardmaterial-rate").attr("disabled", "disabled");
+    });   
