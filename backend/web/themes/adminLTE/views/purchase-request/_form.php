@@ -13,7 +13,7 @@ use backend\models\PrefixMaster;
 $vat_format=Yii::$app->common->company->vat_format;
 ?>
 <div class="purchase-request-form">
-<?php $form = AutoForm::begin(["id" => "purchse-request-".(($model->isNewRecord)?"create":"update")."-form"]); ?>
+<?php $form = AutoForm::begin(["id" => "purchse-request-".time().(($model->isNewRecord)?"create":"update")."-form"]); ?>
 <div class="box-body">
     <div class="row">
         <div class="col-md-12">

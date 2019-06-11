@@ -15,7 +15,7 @@ use backend\models\PrefixMaster;
 $vat_format=Yii::$app->common->company->vat_format;
 ?>
 <div class="purchase-invoice-form">
-<?php $form = AutoForm::begin(["id" => "purchase-invoice-".(($model->isNewRecord)?"create":"update")."-form"]); ?>
+<?php $form = AutoForm::begin(["id" => "purchase-invoice-".time().(($model->isNewRecord)?"create":"update")."-form"]); ?>
     <div class="col-md-6"> 
         <?= $form->field($model1,'grn_id', ['inputOptions' => ["class" => "select_grn form-control select2"]])->dropDownList(ArrayHelper::map(GoodsReceiptNote::find()->where(["status" => 1])->andWhere(['!=', 'process_status', 'completed'])->all(), 'id', 'grn_number'), ["prompt" => "Select GRN"]) ?>
     </div>

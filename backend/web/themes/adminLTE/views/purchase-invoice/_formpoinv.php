@@ -15,7 +15,7 @@ $vat_format=Yii::$app->common->company->vat_format;
 // var_dump($model);die;
 ?>
 <div class="purchase-invoice-form">
-<?php $form = AutoForm::begin(["id" => "purchase-invoice-".(($model->isNewRecord)?"create":"update")."-form"]); ?>
+<?php $form = AutoForm::begin(["id" => "purchase-invoice-".time().(($model->isNewRecord)?"create":"update")."-form"]); ?>
     <div class="col-md-6"> 
         <?= $form->field($model1,'po_id', ['inputOptions' => ["class" => "select_po form-control select2"]])->dropDownList(ArrayHelper::map(Purchaseorder::find()->where(["status" => 1])->andWhere(['!=', 'process_status', 'completed'])->all(), 'id', 'po_number'), ["prompt" => "Select PO"]) ?>
     </div>
