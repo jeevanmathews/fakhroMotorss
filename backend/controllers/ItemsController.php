@@ -78,14 +78,14 @@ class ItemsController extends Controller
         $model = new Items();
         $modelprice=new Itempricing();
         // var_dump();die;
-        if(Yii::$app->request->post()):
-        $model->unit_id=(int) Yii::$app->request->post()['Items']['unit_id'];
-        $model->manufacturing_date=(string) Yii::$app->request->post()['Items']['manufacturing_date'];
-        $modelprice->purchase_price=(int) Yii::$app->request->post()['Itempricing']['purchase_price'];
-        $modelprice->selling_price=(int) Yii::$app->request->post()['Itempricing']['selling_price'];
-        $model->type=Yii::$app->request->post()['Items']['type'];
+        // if(Yii::$app->request->post()):
+        // $model->unit_id=(int) Yii::$app->request->post()['Items']['unit_id'];
+        // $model->manufacturing_date=(string) Yii::$app->request->post()['Items']['manufacturing_date'];
+        // // $modelprice->purchase_price=(int) Yii::$app->request->post()['Itempricing']['purchase_price'];
+        // // $modelprice->selling_price=(int) Yii::$app->request->post()['Itempricing']['selling_price'];
+        // $model->type=Yii::$app->request->post()['Items']['type'];
         // var_dump(Yii::$app->request->post()['Items']['type']);die;
-        endif;
+        // endif;
         if ($model->load(Yii::$app->request->post()) && $model->save()) {
             // var_dump($model->type);die;
             $modelprice->item_id=$model->id;
@@ -93,19 +93,19 @@ class ItemsController extends Controller
             $modelprice->save(false);
 			if(isset(Yii::$app->request->post()['Itemfeature']))
 			{
-            $features=Yii::$app->request->post()['Itemfeature']['feature_id'];
-            $valuesid=Yii::$app->request->post()['Itemfeature']['value_id'];
-			
-            if($features){
-                // var_dump($features);die;
-                for ($i=0; $i <sizeof($features) ; $i++) { 
-                   $model1 = new Itemfeature();
-                    $model1->item_id=$model->id;
-                    $model1->feature_id=$features[$i];
-                    $model1->value_id=$valuesid[$i];
-                    $model1->save();
+                $features=Yii::$app->request->post()['Itemfeature']['feature_id'];
+                $valuesid=Yii::$app->request->post()['Itemfeature']['value_id'];
+    			
+                if($features){
+                    // var_dump($features);die;
+                    for ($i=0; $i <sizeof($features) ; $i++) { 
+                       $model1 = new Itemfeature();
+                        $model1->item_id=$model->id;
+                        $model1->feature_id=$features[$i];
+                        $model1->value_id=$valuesid[$i];
+                        $model1->save();
+                    }
                 }
-            }
 			}
             if(Yii::$app->request->post()['Items']['opening_stock']!=""){
                 $modelstocksave=new StockHistory();

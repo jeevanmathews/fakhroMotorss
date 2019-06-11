@@ -10,8 +10,8 @@ use Yii;
  * @property int $id
  * @property int $item_id
  * @property string $type
- * @property string $purchase_price
- * @property string $selling_price
+ * @property double $purchase_price
+ * @property double $selling_price
  * @property string $created_date
  * @property int $status
  */
@@ -33,9 +33,9 @@ class Itempricing extends \yii\db\ActiveRecord
         return [
             [['item_id', 'type', 'purchase_price', 'selling_price'], 'required'],
             [['item_id', 'status'], 'integer'],
+            [['purchase_price', 'selling_price'], 'number'],
             [['type'], 'string'],
             [['created_date'], 'safe'],
-            [['purchase_price', 'selling_price'], 'string', 'max' => 200],
         ];
     }
 

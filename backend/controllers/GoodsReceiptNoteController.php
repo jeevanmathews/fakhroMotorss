@@ -8,6 +8,7 @@ use backend\models\GrnItems;
 use backend\models\StockHistory;
 use backend\models\Items;
 use backend\models\StockDistribution;
+use backend\models\PurchasePrice;
 use backend\models\GoodsReceiptNoteSearch;
 use backend\models\Purchaseorder;
 use yii\web\Controller;
@@ -132,8 +133,8 @@ class GoodsReceiptNoteController extends Controller
 				$modelstockdistribution=new StockDistribution();
 				$modelstockdistribution->item_id=$result['GrnItems']['item_id'][$i];
 				$modelstockdistribution->opening_stock=$result['GrnItems']['quantity'][$i];
-				$modelstockdistribution->previous_stock=(isset($modelstock->current_stock)?$modelstock->current_stock:$result['GrnItems']['quantity'][$i]);
-				$modelstockdistribution->current_stock=$modelstockdistribution->opening_stock+$modelstockdistribution->previous_stock;
+				$modelstockdistribution->previous_stock=0;
+				$modelstockdistribution->current_stock=$result['GrnItems']['quantity'][$i];
 				$modelstockdistribution->code='stk'.$model->prefix_id.$model->grn_number;
 				$modelstockdistribution->save(false);
 				//current_stock
@@ -142,6 +143,12 @@ class GoodsReceiptNoteController extends Controller
 				// $modelitem=Items::find()->where(['id'=>$result['GrnItems']['item_id'][$i]])->one();
 				$modelitem->current_stock=$modelstocksave->current_stock;
 				$modelitem->save(false);
+
+				$modelpurchaseprice=new PurchasePrice();
+				$modelpurchaseprice->item_id=$result['GrnItems']['item_id'][$i];
+				$modelpurchaseprice->purchase_price=$result['GrnItems']['price'][$i];
+				$modelpurchaseprice->code='stk'.$model->prefix_id.$model->grn_number;
+				$modelpurchaseprice->save(false);
 			}
 			echo json_encode(["success" => true, "message" => "Goods Receipt Note has been created."]);
 			exit;
@@ -227,11 +234,17 @@ class GoodsReceiptNoteController extends Controller
 				$modelstockdistribution=new StockDistribution();
 				$modelstockdistribution->item_id=$result['GrnItems']['item_id'][$i];
 				$modelstockdistribution->opening_stock=$result['GrnItems']['quantity'][$i];
-				$modelstockdistribution->previous_stock=(isset($modelstock->current_stock)?$modelstock->current_stock:$result['GrnItems']['quantity'][$i]);
-				$modelstockdistribution->current_stock=$modelstockdistribution->opening_stock+$modelstockdistribution->previous_stock;
+				$modelstockdistribution->previous_stock=0;
+				$modelstockdistribution->current_stock=$result['GrnItems']['quantity'][$i];
 				$modelstockdistribution->code='stk'.$model1->prefix_id.$model1->grn_number;
 				$modelstockdistribution->save(false);
 
+
+				$modelpurchaseprice=new PurchasePrice();
+				$modelpurchaseprice->item_id=$result['GrnItems']['item_id'][$i];
+				$modelpurchaseprice->purchase_price=$result['GrnItems']['price'][$i];
+				$modelpurchaseprice->code='stk'.$model1->prefix_id.$model1->grn_number;
+				$modelpurchaseprice->save(false);
 			}
 			if($flag_qty==$count){
 				$model->process_status='completed';
@@ -303,6 +316,63 @@ class GoodsReceiptNoteController extends Controller
 				
 				$model1->save(false);
 				$count++;
+
+
+				// $modelstock = StockHistory::find()->where(['item_id' => $result['GrnItems']['item_id'][$i],'branch_id'=>$branch_id])->orderBy('id desc')->limit(1)->one();
+				// if(StockHistory::find()->where([['item_id' => $result['GrnItems']['item_id'][$i],'branch_id'=>$branch_id,'code'=>'stk'.$model1->prefix_id.$model1->grn_number])->exists()){
+				// 	$modelstocksave=StockHistory::find()->where([['item_id' => $result['GrnItems']['item_id'][$i],'branch_id'=>$branch_id,'code'=>'stk'.$model1->prefix_id.$model1->grn_number])->one();
+				// }
+				// else
+				// {                    
+				//   $modelstocksave=new StockHistory();
+				// } 
+
+				
+				// $modelstocksave->item_id=$result['GrnItems']['item_id'][$i];
+				// $modelstocksave->opening_stock=$result['GrnItems']['quantity'][$i];
+				// $modelstocksave->previous_stock=(isset($modelstock->current_stock)?$modelstock->current_stock:$result['GrnItems']['quantity'][$i]);
+				// $modelstocksave->current_stock=$modelstocksave->opening_stock+$modelstocksave->previous_stock;
+				// $modelstocksave->type=$modelitem->type;
+				// $modelstocksave->date=date('Y-m-d');
+				// $modelstocksave->branch_id=$branch_id;
+				// $modelstocksave->order_id=$model1->id;
+				// $modelstocksave->source_type='goods-receipt-note';
+				// $modelstocksave->code='stk'.$model1->prefix_id.$model1->grn_number;
+				// // $modelstock->quantity=$result['GrnItems']['quantity'][$i];
+				// // $model1->closing_stock=$result['GrnItems']['quantity'][$i];
+				// $modelstocksave->save(false);
+
+				// if(StockHistory::find()->where([['item_id' => $result['GrnItems']['item_id'][$i],'branch_id'=>$branch_id,'code'=>'stk'.$model1->prefix_id.$model1->grn_number])->exists()){
+				// 	$modelstocksave=StockDistribution::find()->where([['item_id' => $result['GrnItems']['item_id'][$i],'code'=>'stk'.$model1->prefix_id.$model1->grn_number])->one();
+				// }
+				// else
+				// {                    
+				//   $modelstockdistribution=new StockDistribution();
+				// } 
+				
+				// $modelstockdistribution->item_id=$result['GrnItems']['item_id'][$i];
+				// $modelstockdistribution->opening_stock=$result['GrnItems']['quantity'][$i];
+				// $modelstockdistribution->previous_stock=0;
+				// $modelstockdistribution->current_stock=$result['GrnItems']['quantity'][$i];
+				// $modelstockdistribution->code='stk'.$model1->prefix_id.$model1->grn_number;
+				// $modelstockdistribution->save(false);
+
+				// if(StockHistory::find()->where([['item_id' => $result['GrnItems']['item_id'][$i],'branch_id'=>$branch_id,'code'=>'stk'.$model1->prefix_id.$model1->grn_number])->exists()){
+				// 	$modelstocksave=PurchasePrice::find()->where([['item_id' => $result['GrnItems']['item_id'][$i],'code'=>'stk'.$model1->prefix_id.$model1->grn_number])->one();
+				// }
+				// else
+				// {                    
+				//   $modelpurchaseprice=new PurchasePrice();
+				// } 
+				
+				// $modelpurchaseprice->item_id=$result['GrnItems']['item_id'][$i];
+				// $modelpurchaseprice->purchase_price=$result['GrnItems']['price'][$i];
+				// $modelpurchaseprice->code='stk'.$model1->prefix_id.$model1->grn_number;
+				// $modelpurchaseprice->save(false);
+
+
+
+
 			}
 			if($flag_qty==$count){
 				$model->process_status='completed';

@@ -14,7 +14,7 @@ use backend\models\PrefixMaster;
 $vat_format=Yii::$app->common->company->vat_format;
 ?>
 <div class="goods-receipt-note-form">
-<?php $form = AutoForm::begin(["id" => "goods-receipt-note-".(($model->isNewRecord)?"create":"update")."-form"]); ?>
+<?php $form = AutoForm::begin(["id" => "goods-receipt-note-".time().(($model->isNewRecord)?"create":"update")."-form"]); ?>
 <div class="box-body">
   <div class="row">
    <?php if(Yii::$app->controller->action->id=='create'): ?>
@@ -30,7 +30,7 @@ $vat_format=Yii::$app->common->company->vat_format;
     <?php //endif; ?>
   </div>
 <?php endif; ?>
-<?php if(Yii::$app->controller->action->id=='update' && $model->po_id!=""): ?>
+<?php if(!$model->isNewRecord && $model->po_id!=""): ?>
  <div class="col-md-6">
   <div class="form-group field-deliveryorder-do_number required has-error">
     <div class="input-group">
@@ -74,7 +74,7 @@ $vat_format=Yii::$app->common->company->vat_format;
         <tr>
          <th>#</th>
          <th>Item</th>
-         <?php if(Yii::$app->controller->action->id=='update' && $model->po_id!=""): ?>
+         <?php if(!$model->isNewRecord && $model->po_id!=""): ?>
          <th>Ordered Quantity</th>
        <?php endif; ?>
        <th>Quantity</th>
@@ -91,7 +91,7 @@ $vat_format=Yii::$app->common->company->vat_format;
 
 
      <tbody class="item_table">
-      <?php if(Yii::$app->controller->action->id=='create'): ?>
+      <?php if($model->isNewRecord): ?>
       <tr class="item_row" rid="1">
         <td class=""><?= Html::a('<span><i class="glyphicon glyphicon-trash"></i></span>', ['#'], ['class'=>'remove_row no-display']) ?></td>
         <td><?= $form->field($model1,'item_id[]', ['inputOptions' => ["class" => "select_item_td form-control select2"]])->dropDownList(ArrayHelper::map(Items::find()->where(["status" => 1])->all(), 'id', 'item_name'), ["prompt" => "Select Items"])->label(false) ?></td>

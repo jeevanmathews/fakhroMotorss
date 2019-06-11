@@ -20,6 +20,7 @@ use Yii;
  * @property int $tax_enabled
  * @property string $vat
  * @property string $created_date
+ * @property string $type
  * @property int $unit_id
  * @property int $status
  */
@@ -40,8 +41,8 @@ class Items extends \yii\db\ActiveRecord
     {
         return [
             [['item_name','item_code','supplier_id'], 'required'],
-            [['model_id', 'variant_id', 'status','supplier_id','product_id'], 'integer'],
-            [['item_name'], 'string', 'max' => 300],
+            [['model_id', 'unit_id','variant_id', 'status','supplier_id','product_id'], 'integer'],
+            [['item_name','type'], 'string', 'max' => 300],
             [['current_stock','opening_stock'], 'number'],
             [['created_date'], 'safe'],
         ];
