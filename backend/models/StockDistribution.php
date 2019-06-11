@@ -10,6 +10,9 @@ use Yii;
  * @property int $id
  * @property int $item_id
  * @property string $code
+ * @property string $type
+ * @property int $order_id
+ * @property int $jobcard_id
  * @property double $opening_stock
  * @property double $previous_stock
  * @property double $reduced_stock
@@ -32,9 +35,9 @@ class StockDistribution extends \yii\db\ActiveRecord
     {
         return [
             [['item_id', 'opening_stock', 'previous_stock', 'current_stock'], 'required'],
-            [['item_id'], 'integer'],
+            [['item_id','order_id','jobcard_id'], 'integer'],
             [['opening_stock', 'previous_stock', 'reduced_stock', 'current_stock'], 'number'],
-            [['code'], 'string', 'max' => 100],
+            [['code','type'], 'string', 'max' => 100],
         ];
     }
 

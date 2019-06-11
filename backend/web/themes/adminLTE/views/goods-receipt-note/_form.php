@@ -246,7 +246,25 @@ $(".datepicker").datepicker({
   $('body').on('change','#goodsreceiptnote-po_id',function(){
     var po_id=$("#goodsreceiptnote-po_id").val();
     if(po_id!='' && po_id!='undefined'){
-        window.location.href='<?php echo Yii::$app->getUrlManager()->createUrl("goods-receipt-note/creategrn"). "&id="?>'+po_id;
+      //  window.location.href='<?php echo Yii::$app->getUrlManager()->createUrl("goods-receipt-note/creategrn"). "&id="?>'+po_id;
+      
+        $.ajaxSetup({async: false}); 
+          $.ajax({
+          url: '<?php echo Yii::$app->getUrlManager()->createUrl("goods-receipt-note/creategrn")?>',//"'+po_id+'
+          aSync: false,
+          data:{'id':po_id},
+          dataType: "html",
+          success: function(data) {
+            console.log(data);
+            $(".main-body").addClass("hide");
+            // $('div[tab_id="'+tabId+'"]').remove();
+            $(".container-body").append($(data));
+            // $(document).find(".main-body:visible").attr("tab_id", tabId);
+
+            // $("#"+tabId).find("span").html(page_id.replace("_","/"));
+          }});
+          $.ajaxSetup({async: true}); 
+
       }
     });
 

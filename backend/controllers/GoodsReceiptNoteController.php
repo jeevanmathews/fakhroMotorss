@@ -146,6 +146,7 @@ class GoodsReceiptNoteController extends Controller
 
 				$modelpurchaseprice=new PurchasePrice();
 				$modelpurchaseprice->item_id=$result['GrnItems']['item_id'][$i];
+				$modelpurchaseprice->type=$modelitem->type;
 				$modelpurchaseprice->purchase_price=$result['GrnItems']['price'][$i];
 				$modelpurchaseprice->code='stk'.$model->prefix_id.$model->grn_number;
 				$modelpurchaseprice->save(false);
@@ -169,6 +170,10 @@ class GoodsReceiptNoteController extends Controller
 		]);
 	}
 	public function actionCreategrn($id){
+		// var_dump($id);die;
+		if(!isset($id)){
+			$id==Yii::$app->request->post('po_id');
+		}
 		$branch_id=Yii::$app->user->identity->branch_id;
 		$modellastnumber = GoodsReceiptNote::find()->select('grn_number')->where(['branch_id'=>$branch_id])->orderBy('id desc')->limit(1)->one();
 		$model = Purchaseorder::find()->where(['id'=>$id])->one();
@@ -242,6 +247,7 @@ class GoodsReceiptNoteController extends Controller
 
 				$modelpurchaseprice=new PurchasePrice();
 				$modelpurchaseprice->item_id=$result['GrnItems']['item_id'][$i];
+				$modelpurchaseprice->type=$modelitem->type;
 				$modelpurchaseprice->purchase_price=$result['GrnItems']['price'][$i];
 				$modelpurchaseprice->code='stk'.$model1->prefix_id.$model1->grn_number;
 				$modelpurchaseprice->save(false);
