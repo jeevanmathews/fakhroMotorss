@@ -213,7 +213,23 @@ $(".datepicker").datepicker({
 $('body').on('change','#purchaseinvoice-po_id',function(){
   var po_id=$("#purchaseinvoice-po_id").val();
  if(po_id!='' && po_id!='undefined'){
-    window.location.href='<?php echo Yii::$app->getUrlManager()->createUrl("purchase-invoice/createpoinv"). "&id="?>'+po_id;
+    // window.location.href='<?php echo Yii::$app->getUrlManager()->createUrl("purchase-invoice/createpoinv"). "&id="?>'+po_id;
+    $.ajaxSetup({async: false}); 
+          $.ajax({
+          url: '<?php echo Yii::$app->getUrlManager()->createUrl("purchase-invoice/createpoinv")?>',//"'+po_id+'
+          aSync: false,
+          data:{'id':po_id},
+          dataType: "html",
+          success: function(data) {
+            console.log(data);
+            $(".main-body").addClass("hide");
+            // $('div[tab_id="'+tabId+'"]').remove();
+            $(".container-body").append($(data));
+            // $(document).find(".main-body:visible").attr("tab_id", tabId);
+
+            // $("#"+tabId).find("span").html(page_id.replace("_","/"));
+          }});
+          $.ajaxSetup({async: true}); 
   }
 });
 

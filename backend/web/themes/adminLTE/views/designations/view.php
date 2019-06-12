@@ -11,6 +11,7 @@ $this->params['breadcrumbs'][] = ['label' => 'Designations', 'url' => ['index']]
 $this->params['breadcrumbs'][] = $this->title;
 \yii\web\YiiAsset::register($this);
 ?>
+<div class="designations-view main-body" id="designations_view">
 <div class="content-main-wrapper">
     <!-- Content Header (Page header) -->
     <section class="content-header">
@@ -54,5 +55,6 @@ $this->params['breadcrumbs'][] = $this->title;
     </div>
     <!-- /.box -->
 </section>
+</div>
 </div>
 

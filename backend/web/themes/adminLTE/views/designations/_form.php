@@ -10,7 +10,7 @@ use yii\helpers\ArrayHelper;
 /* @var $form yii\widgets\ActiveForm */
 ?>
 
-<?php $form = AutoForm::begin(); ?>
+<?php $form = AutoForm::begin(["id" => "designations-".time().(($model->isNewRecord)?"create":"update")."-form"]); ?>
 <div class="box-body">
 	<div class="row">           
 		<div class="col-md-5 col-md-offset-3"> 

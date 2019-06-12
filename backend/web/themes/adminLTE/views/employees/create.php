@@ -9,6 +9,7 @@ $this->title = 'Create Staff';
 $this->params['breadcrumbs'][] = ['label' => 'Staff', 'url' => ['index']];
 $this->params['breadcrumbs'][] = $this->title;
 ?>
+<div class="employees-create main-body" id="employees_create">
 <div class="content-main-wrapper">
 <!-- Content Header (Page header) -->
     <section class="content-header">
@@ -30,3 +31,5 @@ $this->params['breadcrumbs'][] = $this->title;
     </section>
 </div>
 </div>
+</div>
+

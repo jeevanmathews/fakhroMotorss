@@ -12,7 +12,7 @@ use backend\models\Branches;
 /* @var $form yii\widgets\ActiveForm */
 ?>
 
-<?php $form = AutoForm::begin(); ?>
+<?php $form = AutoForm::begin(["id" => "employees-".time().(($model->isNewRecord)?"create":"update")."-form"]); ?>
 <div class="box-body">
     <div class="row">
         <div class="col-md-12">

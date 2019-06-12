@@ -9,6 +9,7 @@ $this->title = 'Create Designation';
 $this->params['breadcrumbs'][] = ['label' => 'Designations', 'url' => ['index']];
 $this->params['breadcrumbs'][] = $this->title;
 ?>
+<div class="designations-create main-body" id="designations_create">
 <div class="content-main-wrapper">
 <!-- Content Header (Page header) -->
     <section class="content-header">
@@ -26,4 +27,5 @@ $this->params['breadcrumbs'][] = $this->title;
 		</div>
         <!-- /.box -->
     </section>
+</div>
 </div>

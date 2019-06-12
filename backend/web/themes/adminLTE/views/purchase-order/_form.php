@@ -202,7 +202,25 @@ $(".datepicker").datepicker({
     $('body').on('change','#purchaseorder-pr_id',function(){
       var pr_id=$("#purchaseorder-pr_id").val();
       if(pr_id!='' && pr_id!='undefined'){
-        window.location.href='<?php echo Yii::$app->getUrlManager()->createUrl("purchase-order/createpo"). "&id="?>'+pr_id;
+        // window.location.href='<?php echo Yii::$app->getUrlManager()->createUrl("purchase-order/createpo"). "&id="?>'+pr_id;
+   
+        
+        $.ajaxSetup({async: false}); 
+          $.ajax({
+          url: '<?php echo Yii::$app->getUrlManager()->createUrl("purchase-order/createpo")?>',//"'+po_id+'
+          aSync: false,
+          data:{'id':pr_id},
+          dataType: "html",
+          success: function(data) {
+            console.log(data);
+            $(".main-body").addClass("hide");
+            // $('div[tab_id="'+tabId+'"]').remove();
+            $(".container-body").append($(data));
+            // $(document).find(".main-body:visible").attr("tab_id", tabId);
+
+            // $("#"+tabId).find("span").html(page_id.replace("_","/"));
+          }});
+          $.ajaxSetup({async: true}); 
     }
 });
 </script>

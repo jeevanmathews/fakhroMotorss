@@ -17,7 +17,7 @@ class PrefixMasterSearch extends PrefixMaster
     public function rules()
     {
         return [
-            [['id', 'status'], 'integer'],
+            [['id','branch_id', 'status'], 'integer'],
             [['prefix', 'process', 'description', 'created_date'], 'safe'],
         ];
     }

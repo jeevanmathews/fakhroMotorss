@@ -131,6 +131,7 @@ class GoodsReceiptNoteController extends Controller
 				$modelstocksave->save(false);
 
 				$modelstockdistribution=new StockDistribution();
+				$modelstockdistribution->stock_id=$modelstocksave->id;
 				$modelstockdistribution->item_id=$result['GrnItems']['item_id'][$i];
 				$modelstockdistribution->opening_stock=$result['GrnItems']['quantity'][$i];
 				$modelstockdistribution->previous_stock=0;
@@ -146,7 +147,8 @@ class GoodsReceiptNoteController extends Controller
 
 				$modelpurchaseprice=new PurchasePrice();
 				$modelpurchaseprice->item_id=$result['GrnItems']['item_id'][$i];
-				$modelpurchaseprice->type=$modelitem->type;
+				// $modelpurchaseprice->type=$modelitem->type;
+				$modelpurchaseprice->stock_id=$modelstocksave->id;
 				$modelpurchaseprice->purchase_price=$result['GrnItems']['price'][$i];
 				$modelpurchaseprice->code='stk'.$model->prefix_id.$model->grn_number;
 				$modelpurchaseprice->save(false);
@@ -237,6 +239,7 @@ class GoodsReceiptNoteController extends Controller
 				// $model1->closing_stock=$result['GrnItems']['quantity'][$i];
 				$modelstocksave->save(false);
 				$modelstockdistribution=new StockDistribution();
+				$modelstockdistribution->stock_id=$modelstocksave->id;
 				$modelstockdistribution->item_id=$result['GrnItems']['item_id'][$i];
 				$modelstockdistribution->opening_stock=$result['GrnItems']['quantity'][$i];
 				$modelstockdistribution->previous_stock=0;
@@ -247,7 +250,8 @@ class GoodsReceiptNoteController extends Controller
 
 				$modelpurchaseprice=new PurchasePrice();
 				$modelpurchaseprice->item_id=$result['GrnItems']['item_id'][$i];
-				$modelpurchaseprice->type=$modelitem->type;
+				// $modelpurchaseprice->type=$modelitem->type;
+				$modelpurchaseprice->stock_id=$modelstocksave->id;
 				$modelpurchaseprice->purchase_price=$result['GrnItems']['price'][$i];
 				$modelpurchaseprice->code='stk'.$model1->prefix_id.$model1->grn_number;
 				$modelpurchaseprice->save(false);

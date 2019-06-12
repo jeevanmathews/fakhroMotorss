@@ -179,122 +179,39 @@ $vat_format=Yii::$app->common->company->vat_format;
 
 </script>
 <script type="text/javascript">
-//         $( function() {
-//           $( ".datepicker" ).datepicker({
-//             defaultDate: new Date(),
-//             dateFormat: "dd/mm/yy",
-//             changeMonth: true,
-//             changeYear: true,
-//             yearRange: "1930:2030",
-//           });
-//         });
-//         $('body').on('click','.btn_add_new',function(e){
-//           e.preventDefault();
-//           var clone = $('.item_row:last').clone();
-//           console.log(clone.find(".field-Purchaseorderitems-item_id").children().children('span'));
-//           clone.find('a.no-display').removeClass('no-display');
-//           clone.find(".input-group").children('select').removeClass('select2');
-//           clone.find(".input-group").children('span').remove();
-//           clone.find("input").val('');
-//           clone.find(".input-group").children('select').select2();
-//          // clone.find(".field-Purchaseorderitems-item_id")
-//          //    .children('select')
-//          //    // call destroy to revert the changes made by Select2
-//          //    .select2("destroy")
-//          //    .end()
-//             // .append(
-//             //     // clone the row and insert it in the DOM
-//             //     $(".field-Purchaseorderitems-item_id")
-//             //     .children("select")
-//             //     .first()
-//             //     .clone()
-//         // );
-//         // clone.find('select').select2('destroy');
-//         clone.find('select').select2();
-//         $('.item_table').append(clone);
-//       });
-// $('body').on('click','.remove_row',function(e){
-//  e.preventDefault();
-//  $(this).closest('tr').remove();
-// });
-
-// $('body').on('click','.btn_select_pr',function(){
+$(".datepicker").datepicker({
+    defaultDate: new Date(),
+    dateFormat: "dd/mm/yy",
+    changeMonth: true,
+    changeYear: true,
+    setDate: new Date(),
+    yearRange: "1930:2030",
+  });
+  $(".datepicker").datepicker("setDate", new Date());
+  $(document).find('select').select2();
   $('body').on('change','#purchaseorder-pr_id',function(){
     var pr_id=$("#purchaseorder-pr_id").val();
     if(pr_id!='' && pr_id!='undefined'){
-      window.location.href='<?php echo Yii::$app->getUrlManager()->createUrl("purchase-order/createpo"). "&id="?>'+pr_id;
+      // window.location.href='<?php echo Yii::$app->getUrlManager()->createUrl("purchase-order/createpo"). "&id="?>'+pr_id;
+     $.ajaxSetup({async: false}); 
+          $.ajax({
+          url: '<?php echo Yii::$app->getUrlManager()->createUrl("purchase-order/createpo")?>',//"'+po_id+'
+          aSync: false,
+          data:{'id':pr_id},
+          dataType: "html",
+          success: function(data) {
+            console.log(data);
+            $(".main-body").addClass("hide");
+            // $('div[tab_id="'+tabId+'"]').remove();
+            $(".container-body").append($(data));
+            // $(document).find(".main-body:visible").attr("tab_id", tabId);
+
+            // $("#"+tabId).find("span").html(page_id.replace("_","/"));
+          }});
+          $.ajaxSetup({async: true}); 
+
     }
   });
 
-// $('body').on('change','.select_item_td',function(){
-//   var item_id=$(this).val();
-//   var thisrow=$(this).closest('tr');
-//   var data={'item_id':item_id}
-//   if(item_id!='' && item_id!='undefined'){
-//     $.ajax({
-//       'type':'post',
-//       'url':"<?php echo Yii::$app->getUrlManager()->createUrl(['items/itemprice']);?>",
-//       'data':data,
-//       success:function(s){
-//         console.log(s);
-//         var response = JSON.parse(s);
-//         $(thisrow).find('#purchaseorderitems-price').val(response.selling_price);
-//         $(thisrow).find('#purchaseorderitems-tax').val(response.vat);
-//         $(thisrow).find('#purchaseorderitems-unit_id').val(response.unit_id);
 
-//       }
-//     });
-//   }
-// }); 
-// // change the total with quantity and price 
-// $('body').on('change','.qty,.price,.vatamount',function(){
-//   var thisrow=$(this).closest('tr');
-//   var total=0;
-//   var qty=0;
-//   var price=0;
-//   var vat=0;
-//   var vatamount=100;
-//   if($(thisrow).find('.qty').val()!='' && $(thisrow).find('.qty').val()!='undefined'){
-//     qty=$(thisrow).find('.qty').val();
-//   }
-//   if($(thisrow).find('.price').val()!='' && $(thisrow).find('.price').val()!='undefined'){
-//     price=$(thisrow).find('.price').val();
-//   }
-//   if($(thisrow).find('.vatamount').val()!='' && $(thisrow).find('.vatamount').val()!='undefined'){
-//     vatamount=$(thisrow).find('.vatamount').val();
-//     vat=(parseFloat(qty)*parseFloat(price))*parseFloat(vatamount)/100;
-//   }
-//   total=(parseFloat(qty)*parseFloat(price))+ parseFloat(vat);
-//   $(thisrow).find('.total').val(total);
-//   $('.total').trigger('change');
-// });
-// // sum up totals to get subtotal
-// $('body').on('change','.total',function(){
-//   var subtotal=0;
-//   $('.total').each(function () {
-//     if($.isNumeric($(this).val())){
-//       subtotal+=parseFloat($(this).val());
-//     }
-//   });
-//   $('.subtotal').val(subtotal);
-//   $('.subtotal').trigger('change');
-// });
-// $('body').on('change','.subtotal',function(){
-//  var gtotal=0;
-//  var subtotal= $('.subtotal').val();
-//  var discount= $('.discount').val();
-//  if($.isNumeric(discount)){
-//   gtotal= parseFloat(subtotal)-parseFloat(discount); 
-// }else{
-//   gtotal=subtotal;
-// }
-// $('.grandtotal').val(gtotal);
-// });
-// // reduce discount from total
-// $('body').on('change','.discount',function(){
-//   var discount=$(this).val();
-//   var subtotal=$('.subtotal').val();
-//   var grandtotal=parseFloat(subtotal)-parseFloat(discount); 
-//   $('.grandtotal').val(grandtotal);
-// });
 </script>

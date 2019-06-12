@@ -31,10 +31,10 @@ class PrefixMaster extends \yii\db\ActiveRecord
     public function rules()
     {
         return [
-            [['prefix'], 'required'],
+            [['prefix','branch_id',], 'required'],
             [['process', 'description'], 'string'],
             [['created_date'], 'safe'],
-            [['status'], 'integer'],
+            [['status','branch_id'], 'integer'],
             [['prefix'], 'string', 'max' => 300],
         ];
     }
@@ -47,6 +47,7 @@ class PrefixMaster extends \yii\db\ActiveRecord
         return [
             'id' => 'ID',
             'prefix' => 'Prefix',
+            'branch_id'=>'Branch',
             'process' => 'Process',
             'description' => 'Description',
             'created_date' => 'Created Date',

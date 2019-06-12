@@ -11,7 +11,7 @@ $this->params['breadcrumbs'][] = ['label' => 'Itemgroups', 'url' => ['index']];
 $this->params['breadcrumbs'][] = $this->title;
 \yii\web\YiiAsset::register($this);
 ?>
-<div class="content-main-wrapper">
+<div class="content-main-wrapper main-body"  id="itemgroup_view">
     <!-- Content Header (Page header) -->
     <section class="content-header">
       <h1>
@@ -30,10 +30,13 @@ $this->params['breadcrumbs'][] = $this->title;
     <?= DetailView::widget([
         'model' => $model,
         'attributes' => [
-            'parent_id',
+            [
+            'label'=>'Parent',
+            'value' => $model->parent->category_name,
+            ],
             'category_name',
              [                     
-			'label' => 'Status',
+			'label' =>  'Status',
 			'format' => 'ntext',
 			'value' => ($model->status == '0'? "Disable":"Enable"),
 			],

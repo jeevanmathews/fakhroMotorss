@@ -39,7 +39,7 @@ class EmployeesController extends Controller
         $searchModel = new EmployeesSearch();
         $dataProvider = $searchModel->search(Yii::$app->request->queryParams);
 
-        return $this->render('index', [
+        return $this->renderAjax('index', [
             'searchModel' => $searchModel,
             'dataProvider' => $dataProvider,
         ]);
@@ -53,7 +53,7 @@ class EmployeesController extends Controller
      */
     public function actionView($id)
     {
-        return $this->render('view', [
+        return $this->renderAjax('view', [
             'model' => $this->findModel($id),
         ]);
     }
@@ -93,12 +93,13 @@ class EmployeesController extends Controller
             //      return $this->redirect(['view', 'id' => $model->id]);
             // }
             if ($model->load(Yii::$app->request->post()) && $model->save()) {
-                return $this->redirect(['view', 'id' => $model->id]);
+            echo json_encode(["success" => true, "message" => "Staff has been cretaed."]);
+            exit;
             }
         }
        
 
-        return $this->render('create', [
+        return $this->renderAjax('create', [
             'model' => $model,
             'model1'=>$model1,
             'type'  =>'create'
@@ -128,13 +129,14 @@ class EmployeesController extends Controller
                 $model2->role_id = $res['User']['role_id'];
                 $model2->branch_id = $res['User']['branch_id'];
                 if($model2->save(false)){
-                  return $this->redirect(['view', 'id' => $model->id]);
+                 echo json_encode(["success" => true, "message" => "Staff has been updated."]);
+                    exit;
                 }    
             }
             
         }
 
-        return $this->render('update', [
+        return $this->renderAjax('update', [
             'model' => $model,
             'model1' => $model1,
             'type'  =>'update'
@@ -159,7 +161,8 @@ class EmployeesController extends Controller
         $model = $this->findModel($id);
         $model->status = ($model->status == 0)?1:0;
         $model->save();
-        return $this->redirect(['index']);
+       echo json_encode(["success" => true, "message" => "Staff status has been changed."]);
+            exit;
     }
 
     

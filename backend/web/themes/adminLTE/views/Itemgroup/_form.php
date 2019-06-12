@@ -12,10 +12,7 @@ use backend\models\Itemgroup;
 /* @var $form yii\widgets\ActiveForm */
 ?>
 
-
-
- <?php $form = AutoForm::begin(); ?>
-
+<?php $form = AutoForm::begin(["id" => "itemgroup-".time().(($model->isNewRecord)?"create":"update")."-form"]); ?>
 <div class="box-body">
    <div class="row">
     <div class="col-md-12">               
@@ -33,7 +30,17 @@ $form->field($model, 'type')->dropDownList(
       ']);
     
      ?>
-
+<?php
+if (!$model->isNewRecord) {
+if($model->parent_id!=0)
+{	
+echo $form->field($model, 'parent_id', ['inputOptions' => ["class" => "form-control select2"]])->dropDownList(ArrayHelper::map(Itemgroup::find()->where(["status" => 1])->all(), 'id', 'category_name'), ["prompt" => "Select ParentId"]) ;
+}
+echo $form->field($model, 'category_name')->textInput(['maxlength' => true]) ;
+}
+else
+{	
+?>
 	<div id="itemlists">  
       <?=$form->field($model, 'parent_id')
            ->dropDownList(['choose_type' => 'Please choose type First' ],
@@ -42,7 +49,11 @@ $form->field($model, 'type')->dropDownList(
            );
 		   ?>
     </div>
-
+<?php
+}
+?>
+	
+ 
 	
 	<?= $form->field($model, 'status')->dropDownList([ '0' => 'Disable', '1' => 'Enable', ], ['prompt' => '','class'=>'form-control select2']) ?> 
 

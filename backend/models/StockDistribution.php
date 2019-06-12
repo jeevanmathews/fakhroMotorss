@@ -9,6 +9,7 @@ use Yii;
  *
  * @property int $id
  * @property int $item_id
+ * @property int $stock_id
  * @property string $code
  * @property string $type
  * @property int $order_id
@@ -34,8 +35,8 @@ class StockDistribution extends \yii\db\ActiveRecord
     public function rules()
     {
         return [
-            [['item_id', 'opening_stock', 'previous_stock', 'current_stock'], 'required'],
-            [['item_id','order_id','jobcard_id'], 'integer'],
+            [['stock_id','item_id', 'opening_stock', 'previous_stock', 'current_stock'], 'required'],
+            [['stock_id','item_id','order_id','jobcard_id'], 'integer'],
             [['opening_stock', 'previous_stock', 'reduced_stock', 'current_stock'], 'number'],
             [['code','type'], 'string', 'max' => 100],
         ];

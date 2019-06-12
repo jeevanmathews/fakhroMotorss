@@ -10,6 +10,7 @@ use Yii;
  * @property int $id
  * @property string $code
  * @property int $item_id
+ * @property int $stock_id
  * @property double $purchase_price
  * @property int $status
  */
@@ -29,8 +30,8 @@ class PurchasePrice extends \yii\db\ActiveRecord
     public function rules()
     {
         return [
-            [['code', 'item_id', 'purchase_price'], 'required'],
-            [['item_id', 'status'], 'integer'],
+            [['stock_id','code', 'item_id', 'purchase_price'], 'required'],
+            [['stock_id','item_id', 'status'], 'integer'],
             [['purchase_price'], 'number'],
             [['code'], 'string', 'max' => 100],
         ];

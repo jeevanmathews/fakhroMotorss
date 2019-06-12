@@ -49,7 +49,7 @@ class ItemgroupController extends Controller
      */
     public function actionView($id)
     {
-        return $this->render('view', [
+        return $this->renderAjax('view', [
             'model' => $this->findModel($id),
         ]);
     }
@@ -88,7 +88,8 @@ class ItemgroupController extends Controller
 		}
 		if($model->save())
         {
-		return $this->redirect(['view', 'id' => $model->id]);
+		echo json_encode(["success" => true, "message" => "Department has been created."]);
+
 		}
 		else
 		{
@@ -96,7 +97,7 @@ class ItemgroupController extends Controller
 		}
         }
 
-        return $this->render('create', [
+        return $this->renderAjax('create', [
             'model' => $model,
         ]);
     }
@@ -110,12 +111,42 @@ class ItemgroupController extends Controller
      */
     public function actionUpdate($id)
     {
-        $model = $this->findModel($id);
-		if ($model->load(Yii::$app->request->post()) && $model->save()) {
-            return $this->redirect(['view', 'id' => $model->id]);
+		$model = $this->findModel($id);
+		if ($model->load(Yii::$app->request->post())) {
+		$Array = Yii::$app->request->post();
+		$res   = end($Array['parent_id']);	
+		if($res=='add_new')
+		{
+			$res =0;
+		}
+        else
+		{
+		$res=end($Array['parent_id']);
+		}
+        $model->parent_id     = $res;
+		
+		if(isset($Array['default_value']))
+		{
+	     $model->category_name = $Array['default_value'];	
+
+		}
+		else
+		{
+		  $model->category_name =	$Array['category_name'];	
+			
+		}
+		if($model->save())
+        {
+		echo json_encode(["success" => true, "message" => "Itemgroup has been updated."]);
+
+		}
+		else
+		{
+		print_r($model->getErrors());
+		}
         }
 
-        return $this->render('update', [
+        return $this->renderAjax('update', [
             'model' => $model,
         ]);
     }
@@ -146,7 +177,7 @@ class ItemgroupController extends Controller
     {
         $this->findModel($id)->delete();
 
-        return $this->redirect(['index']);
+        return $this->renderAjax(['index']);
     }
 
     /**
