@@ -119,5 +119,24 @@ class Common extends Component
       }
     }
 
+    public function buildTree(array $elements, $parentId = 0, $call="") {
+      $branch = array();
+      $idtag = ($parentId == 0 && $call == 1) ? 'id="tree2"' : "";;
+      echo "<ul $idtag>";
+      foreach ($elements as $element) {       
+          if ($element['parent'] == $parentId) {
+            echo '<li><a href="#">'.$element['category_name'].'</a>';
+              $children = $this->buildTree($elements, $element['id']);
+              echo "</li>";
+              if ($children) {              
+                  $element['children'] = $children;               
+              }
+              $branch[] = $element;
+          }
+      }
+      echo "</ul>";
+      return $branch;
+    }
+
 
 }

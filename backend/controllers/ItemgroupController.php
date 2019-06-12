@@ -35,12 +35,9 @@ class ItemgroupController extends Controller
      */
     public function actionIndex()
     {
-        $searchModel = new ItemgroupSearch();
-        $dataProvider = $searchModel->search(Yii::$app->request->queryParams);
-
-        return $this->render('index', [
-            'searchModel' => $searchModel,
-            'dataProvider' => $dataProvider,
+         $itemgroup = Yii::$app->db->createCommand("select id, parent_id as parent,category_name from itemgroup")->queryAll();
+        return $this->renderAjax('index', [
+            'itemgroup' => $itemgroup,
         ]);
     }
 
