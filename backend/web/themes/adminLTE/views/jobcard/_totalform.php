@@ -22,6 +22,7 @@ $total_charge = $gross - $discount;
 
 $vat = $total_charge*Yii::$app->common->company->vat_rate/100;
 $amount_due = $total_charge + $vat;
+$cur_time = time();
 ?>
 
 <div class="content-main-wrapper">
@@ -102,7 +103,7 @@ $amount_due = $total_charge + $vat;
                 <?php } else{ ?>
                     <tr>               
                     <td colspan="2">                   
-                     <?= Html::button((($model->invoice)?'Regenerate Invoice':'Confirm Payment'), ['class' => 'btn btn-success', 'id' => 'confirm-payment']) ?>  
+                     <?= Html::button((($model->invoice)?'Regenerate Invoice':'Confirm Payment'), ['class' => 'btn btn-success', 'id' => 'confirm-payment-'.$cur_time]) ?>  
                     </td>
                     </tr>
                 <?php   } ?>
@@ -117,7 +118,7 @@ $amount_due = $total_charge + $vat;
     </section>
 </div>
 
-<div class="modal confirmpay" tabindex="-1" role="dialog"> 
+<div class="modal confirm-payment-<?php echo $cur_time;?>" tabindex="-1" role="dialog"> 
     <div class="modal-content">
     <div class="content-main-wrapper">
     <!-- Content Header (Page header) -->
@@ -140,67 +141,25 @@ $amount_due = $total_charge + $vat;
 </div>
 
 <script type="text/javascript">
-    $("#confirm-payment").click(function(){
-        $(".confirmpay").modal();
-    });
-    $('#discount_amount,#discount_percent').keyup(function(e){
 
-      if (/\D/g.test(this.value))
-      {
-        // Filter non-digits from input value.
-        this.value = this.value.replace(/\D/g, '');
-      }else{
-        var vat = "<?php echo Yii::$app->common->company->vat_rate;?>";
-        if($(this).attr("id") =="discount_percent"){
-            if(this.value >= 100)
-                $(this).val("");
-            else{
-                var total_charge = $("#gross-amount").attr("gross-amount") - (($("#gross-amount").attr("gross-amount"))*$(this).val()/100);       
-                $("#total_charge").html(total_charge);
-            }            
-        }else{ 
-            if(this.value >= parseFloat($("#gross-amount").attr("gross-amount")))
-                $(this).val("");
-            else{
-                var total_charge = $("#gross-amount").attr("gross-amount") - $(this).val();      
-                $("#total_charge").html(total_charge);
-            }
-        }
-        var vat_value =vat*total_charge/100;
-        var amount_due = total_charge + vat_value;
-        $("#vat").html(vat_value);
-        $("#amount_due").html(amount_due);
-      }
-    });
-    $("[name='ex_discount']").click(function(){        
-        showtotDiscount($(this).val());
-    });    
-    function showtotDiscount(discount){
-        if(discount == "discount_amount"){
-            $("#discount_amount").removeClass("hide");
-            $("#discount_percent").addClass("hide");
-        }else{
-            $("#discount_amount").addClass("hide");
-            $("#discount_percent").removeClass("hide");
-        }
-    }
-
-    $("#apply-disount").click(function(){
-        var discount = $("#"+$("input:radio[name=ex_discount]:checked").val()).val();
+   
+    $(document).on('click', "[id='apply-disount']:visible", function(){
+        var discount = $("[tab_id='"+tabId+"']").find("#"+$("[tab_id='"+tabId+"']").find("input:radio[name=ex_discount]:checked").val()).val();
         if(discount == ""){
-            $(".alert").removeClass("alert-success").addClass("alert-error").removeClass("hide").html("Please input a discount rate or value.");
+            $("[tab_id='"+tabId+"']").find(".alert").removeClass("alert-success").addClass("alert-error").removeClass("hide").html("Please input a discount rate or value.");
         }else{
-            $(".alert").addClass("hide");
-            if($("input:radio[name=ex_discount]:checked").val() == "discount_percent"){
+            $("[tab_id='"+tabId+"']").find(".alert").addClass("hide");
+            if($("[tab_id='"+tabId+"']").find("input:radio[name=ex_discount]:checked").val() == "discount_percent"){
             var data_obj = { jobcard_id: "<?php echo $model->id;?>", discount_percent: discount};
             }else{
                 var data_obj = { jobcard_id: "<?php echo $model->id;?>", discount_amount: discount};
             } 
             $.post('<?=Yii::$app->getUrlManager()->createUrl(['jobcard/apply-discount'])?>', data_obj)
             .done(function( data ) {          
-               $(".alert").addClass("alert-success").removeClass("alert-error").removeClass("hide").html(data);    
+               $$("[tab_id='"+tabId+"']").find(".alert").addClass("alert-success").removeClass("alert-error").removeClass("hide").html(data);    
             });   
         } 
              
     });
+    
 </script>

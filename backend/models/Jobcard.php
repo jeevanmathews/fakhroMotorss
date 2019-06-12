@@ -145,7 +145,7 @@ class Jobcard extends \yii\db\ActiveRecord
     }
 
 
-    public function updateStock(){
+    public function updateStock(){ 
         
         foreach($this->materials as $material){
             $tot_reduced = 0;
@@ -190,5 +190,57 @@ class Jobcard extends \yii\db\ActiveRecord
             }
         }
         return true;       
+    }
+
+    public function updateStockDetails(){
+        foreach($this->materials as $material){
+            $tot_reduced = 0;
+            $tot_added = 0;
+            $prev_stock = StockHistory::find()->where(["type" => $material->material_type, 'item_id' => $material->material_id, 'branch_id' => $this->branch_id])->orderBy('id desc')->limit(1)->one();
+
+            $stock = new StockHistory();
+            $stock->type = $material->material_type;
+            $stock->item_id = $material->material_id;
+            $stock->jobcard_id = $this->id;
+            $stock->branch_id = $this->branch_id; 
+            $stock->previous_stock = $prev_stock->current_stock;
+            $stock->date = date("Y-m-d");
+            if(StockHistory::find()->where(["type" => $material->material_type, "jobcard_id" => $this->id, 'item_id' => $material->material_id, 'branch_id' => $this->branch_id])->count()){
+                // Stock corrections done earlier
+                $prev_stocks = StockHistory::find()->where(["type" => $material->material_type, "jobcard_id" => $this->id, 'item_id' => $material->material_id, 'branch_id' => $this->branch_id])->all();
+                foreach($prev_stocks as $jc_stock){
+                    $tot_reduced += $jc_stock->reduced_stock;
+                    $tot_added += $jc_stock->opening_stock;
+                }
+                $tot_used = $tot_reduced - $tot_added;
+                if($material->num_unit > $tot_used){
+                    $additional_num = $material->num_unit - $tot_used;
+                    $stock->reduced_stock = $additional_num;
+                    $stock->opening_stock = 0;
+                    $stock->current_stock = ($prev_stock->current_stock - $additional_num);
+                }else{
+                    $return_stock = $tot_used - $material->num_unit;
+                    $stock->opening_stock = $return_stock;
+                    $stock->reduced_stock = 0;
+                    $stock->current_stock = ($prev_stock->current_stock + $return_stock);
+                }
+            }else{
+                $stock->opening_stock = 0;
+                $stock->reduced_stock = $material->num_unit;
+                $stock->current_stock = ($prev_stock->current_stock - $material->num_unit);
+            }
+            if($stock->opening_stock == 0 && $stock->reduced_stock == 0){
+                continue;
+            }else{            
+                if($stock->save()){
+                    //Update Stock Distribution
+                    //StockDistribution::find()->where(['item_id' => , 'current_stock'])->all()
+
+                    //Updated Stock Distribution
+                }
+            }
+        }
+        return true;  
+        
     }    
 }

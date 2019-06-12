@@ -165,8 +165,8 @@ function validateAttribute(modelName, fieldName, fieldValue, mid, scenario){
     }  
 
     // Jobcard Material Scripts.
-
-    $("[name='JobcardMaterial[discount]']").click(function(){ 
+ 
+    $(document).on('click', "[name='JobcardMaterial[discount]']:visible", function(){  
       var tabId = $(this).closest(".main-body").attr("tab_id");       
       showMatDiscount($(this).val(), tabId);
     });
@@ -199,8 +199,64 @@ function validateAttribute(modelName, fieldName, fieldValue, mid, scenario){
         $("[tab_id='"+tabId+"']").find("#jobcardmaterial-hidden-rate").val("");
     });
     $(document).on('keyup', "#jobcardmaterial-num_unit:visible", function(){
-        var tabId = $(this).closest(".main-body").attr("tab_id");   
-        $("[tab_id='"+tabId+"']").find("#jobcardmaterial-rate").val($("#jobcardmaterial-unit_rate").val()*$("#jobcardmaterial-num_unit").val());
-        $("[tab_id='"+tabId+"']").find("#jobcardmaterial-hidden-rate").val($("#jobcardmaterial-unit_rate").val()*$("#jobcardmaterial-num_unit").val());
+        var tabId = $(this).closest(".main-body").attr("tab_id");  
+        var tot = $("[tab_id='"+tabId+"']").find("#jobcardmaterial-unit_rate").val()*$("[tab_id='"+tabId+"']").find("#jobcardmaterial-num_unit").val();
+        $("[tab_id='"+tabId+"']").find("#jobcardmaterial-rate").val(tot);
+        $("[tab_id='"+tabId+"']").find("#jobcardmaterial-hidden-rate").val(tot);
         $("[tab_id='"+tabId+"']").find("#jobcardmaterial-rate").attr("disabled", "disabled");
     });   
+
+
+    // Jobcard Total form scripts
+
+    $(document).on('click', "[id*='confirm-payment']:visible", function(){     
+        $("."+$(this).attr("id")).modal().show();
+         console.log("hereeeee")
+    });
+
+   
+    $(document).on('keyup', "#discount_amount,#discount_percent:visible", function(){ 
+      var tabId = $(".main-body:visible").attr("tab_id");  
+
+      if (/\D/g.test(this.value))
+      {
+        // Filter non-digits from input value.
+        this.value = this.value.replace(/\D/g, '');
+      }else{
+        var vat = "<?php echo Yii::$app->common->company->vat_rate;?>";
+        if($(this).attr("id") =="discount_percent"){
+            if(this.value >= 100)
+                $(this).val("");
+            else{
+                var total_charge = $("[tab_id='"+tabId+"']").find("#gross-amount").attr("gross-amount") - (($("[tab_id='"+tabId+"']").find("#gross-amount").attr("gross-amount"))*$(this).val()/100);       
+                $("#total_charge").html(total_charge);
+            }            
+        }else{ 
+            if(this.value >= parseFloat($("[tab_id='"+tabId+"']").find("#gross-amount").attr("gross-amount")))
+                $(this).val("");
+            else{
+                var total_charge = $("[tab_id='"+tabId+"']").find("#gross-amount").attr("gross-amount") - $(this).val();      
+                $("[tab_id='"+tabId+"']").find("#total_charge").html(total_charge);
+            }
+        }
+        var vat_value =vat*total_charge/100;
+        var amount_due = total_charge + vat_value;
+        $("[tab_id='"+tabId+"']").find("#vat").html(vat_value);
+        $("[tab_id='"+tabId+"']").find("#amount_due").html(amount_due);
+      }
+    });
+    $("[name='ex_discount']").click(function(){      
+        var tabId = $(".main-body:visible").attr("tab_id");        
+        showtotDiscount($(this).val(), tabId);
+    });  
+
+    function showtotDiscount(discount, tabId){
+
+        if(discount == "discount_amount"){
+            $("[tab_id='"+tabId+"']").find$("#discount_amount").removeClass("hide");
+            $("[tab_id='"+tabId+"']").find("#discount_percent").addClass("hide");
+        }else{
+            $("[tab_id='"+tabId+"']").find("#discount_amount").addClass("hide");
+            $("[tab_id='"+tabId+"']").find("#discount_percent").removeClass("hide");
+        }
+    }

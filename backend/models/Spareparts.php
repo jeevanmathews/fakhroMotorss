@@ -72,4 +72,8 @@ class Spareparts extends \yii\db\ActiveRecord
     public function getNamewithPrice(){
         return $this->name." - ".Yii::$app->common->company->settings->currency->code. " " .$this->rate." /unit";
     }
+    public function getRate(){
+        $price = Itempricing::find()->where(["item_id" => $this->id, 'type' => 'spares'])->one();
+        return ($price)?$price->selling_price:0;
+    }
 }
