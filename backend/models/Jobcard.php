@@ -234,9 +234,64 @@ class Jobcard extends \yii\db\ActiveRecord
             }else{            
                 if($stock->save()){
                     //Update Stock Distribution
-                    //StockDistribution::find()->where(['item_id' => , 'current_stock'])->all()
+                    //Case 1 reduce stock         
+                    if($stock->reduced_stock != 0){
+                        $stock_tobe_reduced = $stock->reduced_stock;
+                        $stock_distributions = Yii::$app->db->createCommand("SELECT * FROM `stock_distribution` d WHERE id in( select max(id) from stock_distribution where item_id = ".$stock->item_id." and type='".$stock->type."' group by `code`) and item_id = ".$stock->item_id." and type='".$stock->type."' and current_stock != 0 order by (SELECT min(id) FROM `stock_distribution` where `type`='".$stock->type."' and `item_id` = ".$stock->item_id." and code = d.code) asc")->queryAll();
+                        foreach($stock_distributions as $stock_distribution) {
+                            if($stock_tobe_reduced > 0){
+                                $stockDistribution = new StockDistribution();
+                                $stockDistribution->item_id = $stock->item_id;
+                                $stockDistribution->type = $stock->type;            
+                                $stockDistribution->jobcard_id = $stock->jobcard_id;
+                                $stockDistribution->code = $stock_distribution['code'];
+                                $stockDistribution->opening_stock = 0;
+                                if($stock_distribution['current_stock'] >= $stock_tobe_reduced){
+                                    $stockDistribution->previous_stock = $stock_distribution['current_stock']; 
+                                    $stockDistribution->reduced_stock = $stock_tobe_reduced;
+                                    $stockDistribution->current_stock = ($stock_distribution['current_stock'] - $stock_tobe_reduced);
+                                    $stockDistribution->save();
+                                    $stock_tobe_reduced = 0;
+                                }else{
+                                   $stock_tobe_reduced = $stock_tobe_reduced - $stock_distribution['current_stock'];
+                                   $stockDistribution->previous_stock = $stock_distribution['current_stock'];
+                                   $stockDistribution->reduced_stock = $stock_distribution['current_stock'];
+                                   $stockDistribution->current_stock = 0;
+                                }
+                                $stockDistribution->save();
+                            }                            
+                        }
 
-                    //Updated Stock Distribution
+                    } else if($stock->opening_stock != 0){//Case 2 Return stock
+                        $return_distribution = $stock->opening_stock;
+                        $stock_distributions = Yii::$app->db->createCommand("SELECT * FROM `stock_distribution` WHERE `jobcard_id` = ".$stock->jobcard_id." order by id desc")->queryAll();
+                        foreach($stock_distributions as $stock_distribution){
+                            if($return_distribution > 0){
+                                $stockDistribution = new StockDistribution();
+                                $stockDistribution->item_id = $stock->item_id;
+                                $stockDistribution->type = $stock->type;            
+                                $stockDistribution->jobcard_id = $stock->jobcard_id;
+                                $stockDistribution->code = $stock_distribution['code'];
+
+                                //last stock by code and item
+                                $last_stockdistribution = StockDistribution::find()->where(['item_id' => $stock->item_id, 'stock_id' => $stock_distribution['stock_id'], 'code' => $stock_distribution['code']])->orderBy('id desc')->limit(1)->one();
+
+                                $stockDistribution->previous_stock = $last_stockdistribution->current_stock;
+                                if($stock_distribution['reduced_stock'] > $return_distribution ){
+                                    $stockDistribution->opening_stock = $return_distribution;
+                                    $stockDistribution->current_stock = $return_distribution + $last_stockdistribution->current_stock;
+                                    $return_distribution = 0;
+                                }else{
+                                    $return_distribution = $return_distribution - $stock_distribution['reduced_stock'];
+                                    $stockDistribution->opening_stock = $stock_distribution['reduced_stock'];
+                                    $stockDistribution->current_stock = $stock_distribution['reduced_stock'] + $last_stockdistribution->current_stock;
+                                }
+                                $stockDistribution->save(); 
+                            }
+
+                        }
+
+                    } 
                 }
             }
         }
