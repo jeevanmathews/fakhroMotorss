@@ -9,7 +9,7 @@ use yii\grid\GridView;
 $this->title = 'Branch Types';
 $this->params['breadcrumbs'][] = $this->title;
 ?>
-<div class="content-main-wrapper">
+<div class="content-main-wrapper main-body" id="branchtype_index">
 
     <section class="content-header">
       <h1>

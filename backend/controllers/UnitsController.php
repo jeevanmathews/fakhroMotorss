@@ -38,7 +38,7 @@ class UnitsController extends Controller
         $searchModel = new UnitsSearch();
         $dataProvider = $searchModel->search(Yii::$app->request->queryParams);
 
-        return $this->render('index', [
+        return $this->renderAjax('index', [
             'searchModel' => $searchModel,
             'dataProvider' => $dataProvider,
         ]);
@@ -52,7 +52,7 @@ class UnitsController extends Controller
      */
     public function actionView($id)
     {
-        return $this->render('view', [
+        return $this->renderAjax('view', [
             'model' => $this->findModel($id),
         ]);
     }
@@ -68,10 +68,11 @@ class UnitsController extends Controller
 
         if ($model->load(Yii::$app->request->post()) && $model->save()) {
             Yii::$app->session->setFlash('success', 'Unit of measurement has been updated succesfully!');
-            return $this->redirect(['view', 'id' => $model->id]);
+            echo json_encode(["success" => true, "message" => "Units has been created."]);
+            exit;
         }
 
-        return $this->render('create', [
+        return $this->renderAjax('create', [
             'model' => $model,
         ]);
     }
@@ -89,10 +90,11 @@ class UnitsController extends Controller
 
         if ($model->load(Yii::$app->request->post()) && $model->save()) {
             Yii::$app->session->setFlash('success', 'Unit of measurement has been updated succesfully!');
-            return $this->redirect(['view', 'id' => $model->id]);
+            echo json_encode(["success" => true, "message" => "Units has been updated."]);
+            exit;
         }
 
-        return $this->render('update', [
+        return $this->renderAjax('update', [
             'model' => $model,
         ]);
     }
@@ -108,7 +110,7 @@ class UnitsController extends Controller
     {
         $this->findModel($id)->delete();
 
-        return $this->redirect(['index']);
+        return $this->renderAjax(['index']);
     }
 
        public function actionChangeStatus($id){
@@ -116,7 +118,7 @@ class UnitsController extends Controller
         $model->status = ($model->status == 0)?1:0;
         if($model->save()){
               Yii::$app->session->setFlash('success', 'Status has been changed!');
-              return $this->redirect(['index']);
+              return $this->renderAjax(['index']);
           }
         
     }

@@ -9,7 +9,7 @@ $this->title = 'Create Jobcard Status';
 $this->params['breadcrumbs'][] = ['label' => 'Jobcard Statuses', 'url' => ['index']];
 $this->params['breadcrumbs'][] = $this->title;
 ?>
-<div class="content-main-wrapper">
+<div class="content-main-wrapper main-body" id="jobcard-status_create">
 <!-- Content Header (Page header) -->
     <section class="content-header">
       <h1>

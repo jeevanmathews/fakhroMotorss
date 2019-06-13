@@ -9,7 +9,7 @@ $this->title = 'Create Supplier';
 $this->params['breadcrumbs'][] = ['label' => 'Suppliers', 'url' => ['index']];
 $this->params['breadcrumbs'][] = $this->title;
 ?>
-<div class="content-main-wrapper">
+<div class="content-main-wrapper main-body" id="supplier_create">
 <!-- Content Header (Page header) -->
     <section class="content-header">
       <h1>

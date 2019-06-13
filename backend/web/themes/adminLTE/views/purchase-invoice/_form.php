@@ -18,7 +18,7 @@ $vat_format=Yii::$app->common->company->vat_format;
   <?php $form = AutoForm::begin(["id" => "purchase-invoice-".time().(($model->isNewRecord)?"create":"update")."-form"]); ?>
   <div class="box-body">
     <div class="row">
-     <?php if(Yii::$app->controller->action->id=='create'): ?>
+     <?php if($model->isNewRecord): ?>
      <div class="mb-20">
 
       <div class="col-md-6"> 
@@ -45,7 +45,7 @@ $vat_format=Yii::$app->common->company->vat_format;
      
     </div>
     <div class="col-md-6 "> 
-     <?php if(Yii::$app->controller->action->id=='update'):
+     <?php if(!$model->isNewRecord):
      $number=$model->inv_number;
      else :
       $number=(isset($modellastnumber->inv_number)?$modellastnumber->inv_number+1:1);
@@ -79,7 +79,7 @@ $vat_format=Yii::$app->common->company->vat_format;
 
 
 <tbody class="item_table">
-  <?php if(Yii::$app->controller->action->id=='create'): ?>
+  <?php if($model->isNewRecord): ?>
   <tr class="item_row" rid="1">
     <td class=""><?= Html::a('<span><i class="glyphicon glyphicon-trash"></i></span>', ['#'], ['class'=>'remove_row no-display']) ?></td>
     <td><?= $form->field($model1,'item_id[]', ['inputOptions' => ["class" => "select_item_td form-control select2"]])->dropDownList(ArrayHelper::map(Items::find()->where(["status" => 1])->all(), 'id', 'item_name'), ["prompt" => "Select Items"])->label(false) ?></td>

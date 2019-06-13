@@ -9,7 +9,7 @@ $this->title = 'Create Units';
 $this->params['breadcrumbs'][] = ['label' => 'Units', 'url' => ['index']];
 $this->params['breadcrumbs'][] = $this->title;
 ?>
-<div class="content-main-wrapper">
+<div class="content-main-wrapper main-body" id="units_create">
 <!-- Content Header (Page header) -->
     <section class="content-header">
       <h1>

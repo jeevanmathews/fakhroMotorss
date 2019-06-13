@@ -10,7 +10,7 @@ use yii\grid\GridView;
 $this->title = 'Service Types';
 $this->params['breadcrumbs'][] = $this->title;
 ?>
-<div class="content-main-wrapper">
+<div class="content-main-wrapper main-body" id="service-type_index">
 
     <section class="content-header">
       <h1>

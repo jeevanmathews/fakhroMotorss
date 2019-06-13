@@ -10,7 +10,7 @@ use common\components\AutoForm;
 
 <div class="service-type-form">
 
-   <?php $form = AutoForm::begin(); ?>
+<?php $form = AutoForm::begin(["id" => "service-type-".time().(($model->isNewRecord)?"create":"update")."-form"]); ?>
 	<div class="box-body">
 		<div class="row">           
 			<div class="col-md-5 col-md-offset-3"> 

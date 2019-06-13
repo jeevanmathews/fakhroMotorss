@@ -11,7 +11,7 @@ $this->params['breadcrumbs'][] = ['label' => 'Jobcard Statuses', 'url' => ['inde
 $this->params['breadcrumbs'][] = $this->title;
 \yii\web\YiiAsset::register($this);
 ?>
-<div class="content-main-wrapper">
+<div class="content-main-wrapper main-body"  id="jobcard-status_view">
     <!-- Content Header (Page header) -->
     <section class="content-header">
       <h1>

@@ -22,7 +22,8 @@ use yii\helpers\ArrayHelper;
 
 				<?= $form->field($model, 'description')->textarea(['rows' => 6]) ?>
 
-				<?= Html::textInput('actual_prefix','',['type'=>'text','class'=>'form-control actual_prefix','disabled'=>true])?>
+				<?= Html::textInput('actual_prefix','',['type'=>'hidden','class'=>'form-control actual_prefix','disabled'=>true])?>
+				<?= Html::textInput('code','',['type'=>'hidden','class'=>'form-control code','disabled'=>true])?>
 
 			</div>
 		</div>
@@ -49,6 +50,7 @@ use yii\helpers\ArrayHelper;
   			var actual_prefix = 'TA-S'+prefix+code;
   			$('.actual_prefix').val(prefix);
   			$('.actual_prefix').val(actual_prefix);
+  			$('.code').val(code);
   		});
 	</script>
 </div>

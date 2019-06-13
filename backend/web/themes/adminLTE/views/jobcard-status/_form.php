@@ -7,7 +7,7 @@ use common\components\AutoForm;
 /* @var $form yii\widgets\ActiveForm */
 ?>
 
-<?php $form = AutoForm::begin(); ?>
+<?php $form = AutoForm::begin(["id" => "jobcard-status-".time().(($model->isNewRecord)?"create":"update")."-form"]); ?>
  <div class="box-body">
     <div class="row">           
         <div class="col-md-5 col-md-offset-3"> 

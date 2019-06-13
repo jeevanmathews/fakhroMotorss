@@ -38,7 +38,7 @@ class ServiceTypeController extends Controller
         $searchModel = new ServiceTypeSearch();
         $dataProvider = $searchModel->search(Yii::$app->request->queryParams);
 
-        return $this->render('index', [
+        return $this->renderAjax('index', [
             'searchModel' => $searchModel,
             'dataProvider' => $dataProvider,
         ]);
@@ -52,7 +52,7 @@ class ServiceTypeController extends Controller
      */
     public function actionView($id)
     {
-        return $this->render('view', [
+        return $this->renderAjax('view', [
             'model' => $this->findModel($id),
         ]);
     }
@@ -67,10 +67,11 @@ class ServiceTypeController extends Controller
         $model = new ServiceType();
 
         if ($model->load(Yii::$app->request->post()) && $model->save()) {
-            return $this->redirect(['index', 'id' => $model->id]);
-        }
+            echo json_encode(["success" => true, "message" => "ServiceType has been created."]);
+            exit;       
+         }
 
-        return $this->render('create', [
+        return $this->renderAjax('create', [
             'model' => $model,
         ]);
     }
@@ -87,10 +88,11 @@ class ServiceTypeController extends Controller
         $model = $this->findModel($id);
 
         if ($model->load(Yii::$app->request->post()) && $model->save()) {
-            return $this->redirect(['index', 'id' => $model->id]);
+             echo json_encode(["success" => true, "message" => "ServiceType has been updated."]);
+            exit;
         }
 
-        return $this->render('update', [
+        return $this->renderAjax('update', [
             'model' => $model,
         ]);
     }
@@ -106,7 +108,7 @@ class ServiceTypeController extends Controller
     {
         $this->findModel($id)->delete();
 
-        return $this->redirect(['index']);
+        return $this->renderAjax(['index']);
     }
 
 	 public function actionChangeStatus($id)
@@ -114,7 +116,7 @@ class ServiceTypeController extends Controller
         $model = $this->findModel($id);
         $model->status = ($model->status == 0)?1:0;
         $model->save();
-        return $this->redirect(['index']);
+        return $this->renderAjax(['index']);
     }
     /**
      * Finds the ServiceType model based on its primary key value.

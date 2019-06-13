@@ -9,7 +9,7 @@ $this->title = 'Create Amc Type';
 $this->params['breadcrumbs'][] = ['label' => 'Amc Types', 'url' => ['index']];
 $this->params['breadcrumbs'][] = $this->title;
 ?>
-<div class="content-main-wrapper">
+<div class="content-main-wrapper main-body" id="amc-type_create">
 <!-- Content Header (Page header) -->
  <section class="content-header">
     <h1><?= Html::encode($this->title) ?></h1>

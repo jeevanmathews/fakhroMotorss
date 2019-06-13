@@ -10,7 +10,7 @@ use yii\grid\GridView;
 $this->title = 'Extended Warranty Types';
 $this->params['breadcrumbs'][] = $this->title;
 ?>
-<div class="content-main-wrapper">
+<div class="content-main-wrapper main-body" id="extended-warranty-type_index">
 
     <section class="content-header">
       <h1>

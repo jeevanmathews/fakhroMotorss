@@ -38,7 +38,7 @@ class VatdetailsController extends Controller
         $searchModel = new VatdetailsSearch();
         $dataProvider = $searchModel->search(Yii::$app->request->queryParams);
 
-        return $this->render('index', [
+        return $this->renderAjax('index', [
             'searchModel' => $searchModel,
             'dataProvider' => $dataProvider,
         ]);
@@ -52,7 +52,7 @@ class VatdetailsController extends Controller
      */
     public function actionView($id)
     {
-        return $this->render('view', [
+        return $this->renderAjax('view', [
             'model' => $this->findModel($id),
         ]);
     }
@@ -67,10 +67,12 @@ class VatdetailsController extends Controller
         $model = new Vatdetails();
 
         if ($model->load(Yii::$app->request->post()) && $model->save()) {
-            return $this->redirect(['view', 'id' => $model->id]);
+         echo json_encode(["success" => true, "message" => "Vatdetails has been created."]);
+           
+         exit;        
         }
 
-        return $this->render('create', [
+        return $this->renderAjax('create', [
             'model' => $model,
         ]);
     }
@@ -87,10 +89,12 @@ class VatdetailsController extends Controller
         $model = $this->findModel($id);
 
         if ($model->load(Yii::$app->request->post()) && $model->save()) {
-            return $this->redirect(['view', 'id' => $model->id]);
+        echo json_encode(["success" => true, "message" => "Vatdetails has been updated."]);
+           
+        exit; 
         }
 
-        return $this->render('update', [
+        return $this->renderAjax('update', [
             'model' => $model,
         ]);
     }
@@ -106,14 +110,14 @@ class VatdetailsController extends Controller
     {
         $this->findModel($id)->delete();
 
-        return $this->redirect(['index']);
+        return $this->renderAjax(['index']);
     }
 
     public function actionChangeStatus($id){
         $model = $this->findModel($id);
         $model->status = ($model->status == 0)?1:0;
         $model->save();
-        return $this->redirect(['index']);
+        return $this->renderAjax(['index']);
     }
 
     /**
@@ -132,3 +136,4 @@ class VatdetailsController extends Controller
         throw new NotFoundHttpException('The requested page does not exist.');
     }
 }
+                                                                 

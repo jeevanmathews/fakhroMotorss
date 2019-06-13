@@ -9,9 +9,9 @@ $this->title = 'Create Service Type';
 $this->params['breadcrumbs'][] = ['label' => 'Service Types', 'url' => ['index']];
 $this->params['breadcrumbs'][] = $this->title;
 ?>
-<div class="accessoriestype-create">
 
-	<div class="content-main-wrapper">
+
+<div class="content-main-wrapper main-body" id="service-type_create">
 		<!-- Content Header (Page header) -->
 		<section class="content-header">
 			<h1>
@@ -33,4 +33,4 @@ $this->params['breadcrumbs'][] = $this->title;
 			</section>
 		</div>
 
-	</div>
+	

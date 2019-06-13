@@ -15,11 +15,11 @@ use backend\models\Supplier;
 
 <div class="items-form">
 
-    <?php $form = AutoForm::begin(); ?>
+    <?php $form = AutoForm::begin(["id" => "items-".time().(($model->isNewRecord)?"create":"update")."-form"]); ?>
     <div class="box-body">
         <div class="row">           
             <div class="">
-                <?php //if($type=="create"):?>
+                <?php //if($model->isNewRecord):?>
                 <div class="col-md-12">
                     <h5 class="heading"><span>Item</span> </h5>
 					<div class="row">
@@ -105,7 +105,7 @@ use backend\models\Supplier;
                         </div>
                         <div class="col-md-6">
                              <?= $form->field($model, 'supplier_id', ['inputOptions' => ["class" => "form-control select2"]])->dropDownList(ArrayHelper::map(Supplier::find()->where(["status" => 1])->all(), 'id', 'name'), ["prompt" => "Select Supplier"]) ?>                                     
-                              <?= $form->field($model, 'manufacturing_date')->textInput(['class'=>'form-control datepicker','value'=>(($model->manufacturing_date)?date('d-m-Y',strtotime($model->manufacturing_date)):date('d-m-Y'))]) ?>
+                              
                         </div>
                     </div>
                 </div>
@@ -121,13 +121,13 @@ use backend\models\Supplier;
                 <h5 class="heading"><span>Pricing And Stock Details</span> </h5>
                 <div class="row">
                     <div class="col-md-6 "> 
-                         <?= $form->field($modelprice, 'purchase_price')->textInput(['value'=>(isset($model->pricing->purchase_price)?$model->pricing->purchase_price:0)]) ?>
+                        
                          <?= $form->field($modelprice, 'selling_price')->textInput(['value'=>(isset($model->pricing->selling_price)?$model->pricing->selling_price:0)]) ?>
                          <?= $form->field($model, 'tax_enabled')->checkbox(['class'=>'tax_enabled']); ?>
                          <span class="vat no-display"><?= $form->field($model, 'vat')->textInput(); ?></span>
                    </div>
                    <div class="col-md-6 ">
-                      <?php if($type=="create"  || ($type=="update" && $model->opening_stock==0)): ?>
+                      <?php if($model->isNewRecord  || (!$model->isNewRecord && $model->opening_stock==0)): ?>
                         <?= $form->field($model, 'opening_stock')->textInput() ?>
                       <?php endif ;?>
                             <?= $form->field($model, 'unit_id')->dropDownList(

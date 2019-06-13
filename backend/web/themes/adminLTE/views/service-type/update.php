@@ -10,6 +10,8 @@ $this->params['breadcrumbs'][] = ['label' => 'Service Types', 'url' => ['index']
 $this->params['breadcrumbs'][] = ['label' => $model->name, 'url' => ['view', 'id' => $model->id]];
 $this->params['breadcrumbs'][] = 'Update';
 ?>
+<div class="main-body" id="service-type_update">
+
 <div class="content-main-wrapper">
 <!-- Content Header (Page header) -->
     <section class="content-header">
@@ -29,4 +31,5 @@ $this->params['breadcrumbs'][] = 'Update';
 </div>
         <!-- /.box -->
     </section>
+</div>
 </div>

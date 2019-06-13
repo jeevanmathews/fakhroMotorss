@@ -11,10 +11,8 @@ $this->params['breadcrumbs'][] = ['label' => 'Service Types', 'url' => ['index']
 $this->params['breadcrumbs'][] = $this->title;
 \yii\web\YiiAsset::register($this);
 ?>
-<div class="accessoriestype-view">
 
-
-    <div class="content-main-wrapper">
+<div class="content-main-wrapper main-body"  id="service-type_view">
         <!-- Content Header (Page header) -->
         <section class="content-header">
           <h1>
@@ -59,4 +57,4 @@ $this->params['breadcrumbs'][] = $this->title;
 </div>
 </section>
 </div>
-</div>
+

@@ -10,7 +10,7 @@ use yii\grid\GridView;
 $this->title = 'VAT details';
 $this->params['breadcrumbs'][] = $this->title;
 ?>
-<div class="content-main-wrapper">
+<div class="content-main-wrapper main-body" id="vatdetails_index">
 
     <section class="content-header">
       <h1>

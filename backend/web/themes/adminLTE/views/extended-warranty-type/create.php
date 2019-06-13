@@ -9,7 +9,7 @@ $this->title = 'Create Extended Warranty Type';
 $this->params['breadcrumbs'][] = ['label' => 'Extended Warranty Types', 'url' => ['index']];
 $this->params['breadcrumbs'][] = $this->title;
 ?>
-<div class="content-main-wrapper">
+<div class="content-main-wrapper main-body" id="extended-warranty-type_create">
 <!-- Content Header (Page header) -->
     <section class="content-header">
 

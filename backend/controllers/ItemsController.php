@@ -7,6 +7,7 @@ use backend\models\Items;
 use backend\models\ItemsSearch;
 use backend\models\Itemfeature;
 use backend\models\StockHistory;
+use backend\models\StockDistribution;
 use yii\web\Controller;
 use yii\web\NotFoundHttpException;
 use yii\filters\VerbFilter;
@@ -47,7 +48,7 @@ class ItemsController extends Controller
         $searchModel = new ItemsSearch();
         $dataProvider = $searchModel->search(Yii::$app->request->queryParams);
 
-        return $this->render('index', [
+        return $this->renderAjax('index', [
             'searchModel' => $searchModel,
             'dataProvider' => $dataProvider,
         ]);
@@ -61,7 +62,7 @@ class ItemsController extends Controller
      */
     public function actionView($id)
     {
-        return $this->render('view', [
+        return $this->renderAjax('view', [
             'model' => $this->findModel($id),
         ]);
     }
@@ -87,10 +88,11 @@ class ItemsController extends Controller
         // var_dump(Yii::$app->request->post()['Items']['type']);die;
         // endif;
         if ($model->load(Yii::$app->request->post()) && $model->save()) {
-            // var_dump($model->type);die;
-            $modelprice->item_id=$model->id;
-            $modelprice->type=Yii::$app->request->post()['Items']['type'];
-            $modelprice->save(false);
+           if ($modelprice->load(Yii::$app->request->post())){
+                $modelprice->item_id=$model->id;
+                $modelprice->type=$model->type;
+                $modelprice->save(false);
+            }
 			if(isset(Yii::$app->request->post()['Itemfeature']))
 			{
                 $features=Yii::$app->request->post()['Itemfeature']['feature_id'];
@@ -99,7 +101,7 @@ class ItemsController extends Controller
                 if($features){
                     // var_dump($features);die;
                     for ($i=0; $i <sizeof($features) ; $i++) { 
-                       $model1 = new Itemfeature();
+                        $model1 = new Itemfeature();
                         $model1->item_id=$model->id;
                         $model1->feature_id=$features[$i];
                         $model1->value_id=$valuesid[$i];
@@ -107,12 +109,13 @@ class ItemsController extends Controller
                     }
                 }
 			}
-            if(Yii::$app->request->post()['Items']['opening_stock']!=""){
+            if($model->opening_stock!=""){
                 $modelstocksave=new StockHistory();
                 $modelstocksave->item_id=$model->id;
-                $modelstocksave->opening_stock=(isset(Yii::$app->request->post()['Items']['opening_stock'])?(int) Yii::$app->request->post()['Items']['opening_stock']:0);
+                $modelstocksave->code='stk'.$model->id.substr($model->item_name,0,3);
+                $modelstocksave->opening_stock=$model->opening_stock;
                 $modelstocksave->previous_stock=0;
-                $modelstocksave->current_stock=(isset(Yii::$app->request->post()['Items']['opening_stock'])?(int) Yii::$app->request->post()['Items']['opening_stock']:0);
+                $modelstocksave->current_stock=$model->opening_stock;
                 $modelstocksave->type=(string) Yii::$app->request->post()['Items']['type'];
                 $modelstocksave->date=date('Y-m-d');
                 $modelstocksave->branch_id=$branch_id;
@@ -120,12 +123,24 @@ class ItemsController extends Controller
                 $modelitem=Items::findOne($model->id);
                 $modelitem->current_stock=$modelstocksave->current_stock;
                 $modelitem->save(false);
+
+                $modelstockdistribution=new StockDistribution();
+                $modelstockdistribution->stock_id=$modelstocksave->id;
+                $modelstockdistribution->item_id=$model->id;
+                $modelstockdistribution->opening_stock=$model->opening_stock;
+                $modelstockdistribution->previous_stock=0;
+                $modelstockdistribution->current_stock=$model->opening_stock;
+                $modelstockdistribution->code='stk'.$model->id.substr($model->item_name,0,3);
+                $modelstockdistribution->save(false);
+
+
             }
-             Yii::$app->session->setFlash('success', 'Item has been added successfully.'); 
-            return $this->redirect(['view', 'id' => $model->id]);
+             // Yii::$app->session->setFlash('success', 'Item has been added successfully.'); 
+             echo json_encode(["success" => true, "message" => "Item has been created."]);
+            exit;
         }
 
-        return $this->render('create', [
+        return $this->renderAjax('create', [
             'model' => $model,
             'modelprice'=>$modelprice,
         ]);
@@ -170,12 +185,13 @@ class ItemsController extends Controller
                 }
             }
         }
-         if(Yii::$app->request->post()['Items']['opening_stock']!=""){
+          if($model->opening_stock!=""){
                 $modelstocksave=new StockHistory();
                 $modelstocksave->item_id=$model->id;
-                $modelstocksave->opening_stock=(isset(Yii::$app->request->post()['Items']['opening_stock'])?(int) Yii::$app->request->post()['Items']['opening_stock']:0);
+                $modelstocksave->code='stk'.$model->id.substr($model->item_name,0,3);
+                $modelstocksave->opening_stock=$model->opening_stock;
                 $modelstocksave->previous_stock=0;
-                $modelstocksave->current_stock=(isset(Yii::$app->request->post()['Items']['opening_stock'])?(int) Yii::$app->request->post()['Items']['opening_stock']:0);
+                $modelstocksave->current_stock=$model->opening_stock;
                 $modelstocksave->type=(string) Yii::$app->request->post()['Items']['type'];
                 $modelstocksave->date=date('Y-m-d');
                 $modelstocksave->branch_id=$branch_id;
@@ -183,9 +199,21 @@ class ItemsController extends Controller
                 $modelitem=Items::findOne($model->id);
                 $modelitem->current_stock=$modelstocksave->current_stock;
                 $modelitem->save(false);
+
+                $modelstockdistribution=new StockDistribution();
+                $modelstockdistribution->stock_id=$modelstocksave->id;
+                $modelstockdistribution->item_id=$model->id;
+                $modelstockdistribution->opening_stock=$model->opening_stock;
+                $modelstockdistribution->previous_stock=0;
+                $modelstockdistribution->current_stock=$model->opening_stock;
+                $modelstockdistribution->code='stk'.$model->id.substr($model->item_name,0,3);
+                $modelstockdistribution->save(false);
+
+
             }
            
-            return $this->redirect(['view', 'id' => $model->id]);
+           echo json_encode(["success" => true, "message" => "Item has been updated."]);
+            exit;
         }
 
         $results= Variantfeatures::find()->where(['variant_id' => (int)$model->variant_id])->joinWith(['feature'])->asArray()->all();
@@ -205,7 +233,7 @@ class ItemsController extends Controller
         }
         // $model->types=$types;
         // var_dump($model);die;
-        return $this->render('update', [
+        return $this->renderAjax('update', [
             'model' => $model,
             'types' => $types,
             'modelprice'=>$modelprice,

@@ -10,7 +10,9 @@ $this->params['breadcrumbs'][] = ['label' => 'Jobcard Statuses', 'url' => ['inde
 $this->params['breadcrumbs'][] = ['label' => $model->name, 'url' => ['view', 'id' => $model->id]];
 $this->params['breadcrumbs'][] = 'Update';
 ?>
-<div class="country-update">
+<div class="main-body" id="jobcard-status_update">
+<div class="content-main-wrapper">
+
 	<section class="content-header">
       <h1>
         <?= Html::encode($this->title) ?>        
@@ -37,5 +39,6 @@ $this->params['breadcrumbs'][] = 'Update';
 </div>
 	      <!-- /.box -->
     </section>
+</div>
 </div>
 

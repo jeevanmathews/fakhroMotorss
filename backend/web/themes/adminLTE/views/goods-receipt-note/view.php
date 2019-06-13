@@ -40,6 +40,9 @@ $this->params['breadcrumbs'][] = $this->title;
                                 ['label'=>'GRN By',
                                 'value'=>$model->user->firstname
                                 ],
+                                 ['label'=>'PO Number',
+                                'value'=>(($model->po->prefix)?$model->po->prefix->prefix.' '.$model->po->po_number:''),
+                                ],
                                  ['label'=>'GRN Number',
                                 'value'=>(($model->prefix)?$model->prefix->prefix.' '.$model->grn_number:''),
                                 ],

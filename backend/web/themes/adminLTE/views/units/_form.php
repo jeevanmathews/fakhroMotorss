@@ -10,8 +10,8 @@ use common\components\AutoForm;
 
 <div class="units-form">
 
-    <?php $form = AutoForm::begin(); ?>
-    <div class="box-body">
+    <?php $form = AutoForm::begin(["id" => "units-".time().(($model->isNewRecord)?"create":"update")."-form"]); ?>
+     <div class="box-body">
         <div class="row">           
             <div class="col-md-5 col-md-offset-3">
                 <?= $form->field($model, 'name')->textInput(['maxlength' => true]) ?>

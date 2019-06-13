@@ -9,7 +9,7 @@ $this->title = 'Create Branch Types';
 $this->params['breadcrumbs'][] = ['label' => 'Branch Types', 'url' => ['index']];
 $this->params['breadcrumbs'][] = $this->title;
 ?>
-<div class="content-main-wrapper">
+<div class="content-main-wrapper main-body" id="branchtypes_create">
 <!-- Content Header (Page header) -->
     <section class="content-header">
       <h1>

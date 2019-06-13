@@ -104,7 +104,7 @@ class Common extends Component
 
     public function getPrefix(){
      $process=Yii::$app->controller->id;
-     $company = PrefixMaster::find()->select(['id'])->where(['process'=> $process,'status'=>1])->one();
+     $company = PrefixMaster::find()->select(['id'])->where(['process'=> $process,'branch_id'=>Yii::$app->user->identity->branch_id,'status'=>1])->one();
      return $company;
     }
 

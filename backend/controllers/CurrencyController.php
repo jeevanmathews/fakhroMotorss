@@ -39,7 +39,7 @@ class CurrencyController extends Controller
             'query' => Currency::find(),
         ]);
 
-        return $this->render('index', [
+        return $this->renderAjax('index', [
             'dataProvider' => $dataProvider,
         ]);
     }
@@ -52,7 +52,7 @@ class CurrencyController extends Controller
      */
     public function actionView($id)
     {
-        return $this->render('view', [
+        return $this->renderAjax('view', [
             'model' => $this->findModel($id),
         ]);
     }
@@ -69,10 +69,11 @@ class CurrencyController extends Controller
         if ($model->load(Yii::$app->request->post())) {
             $model->symbol = utf8_encode($model->symbol);
             if($model->save())
-                return $this->redirect(['view', 'id' => $model->id]);
+            echo json_encode(["success" => true, "message" => "Currency has been created."]);
+            exit;
         }
 
-        return $this->render('create', [
+        return $this->renderAjax('create', [
             'model' => $model,
         ]);
     }
@@ -91,12 +92,13 @@ class CurrencyController extends Controller
         if ($model->load(Yii::$app->request->post())) {
             $model->symbol = utf8_encode($model->symbol);
             if($model->save())
-                return $this->redirect(['view', 'id' => $model->id]);
+            echo json_encode(["success" => true, "message" => "Currency has been updated."]);
+            exit;
         }else{
             $model->symbol = utf8_decode($model->symbol);
         }
 
-        return $this->render('update', [
+        return $this->renderAjax('update', [
             'model' => $model,
         ]);
     }
@@ -112,7 +114,7 @@ class CurrencyController extends Controller
     {
         $this->findModel($id)->delete();
 
-        return $this->redirect(['index']);
+        return $this->renderAjax(['index']);
     }
 
     /**
@@ -126,7 +128,7 @@ class CurrencyController extends Controller
         $model = $this->findModel($id);
         $model->status = ($model->status == 0)?1:0;
         $model->save();
-        return $this->redirect(['index']);
+        return $this->renderAjax(['index']);
     }
 
     /**

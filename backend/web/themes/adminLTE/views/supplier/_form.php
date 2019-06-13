@@ -7,7 +7,7 @@ use common\components\AutoForm;
 /* @var $model backend\models\Supplier */
 /* @var $form yii\widgets\ActiveForm */
 ?>
-<?php $form = AutoForm::begin(); ?>
+<?php $form = AutoForm::begin(["id" => "supplier-".time().(($model->isNewRecord)?"create":"update")."-form"]); ?>
 <div class="box-body">
     <div class="row">
     <div class="col-md-12"> 

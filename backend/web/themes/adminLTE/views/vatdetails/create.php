@@ -9,7 +9,7 @@ $this->title = 'Create VAT details';
 $this->params['breadcrumbs'][] = ['label' => 'VAT details', 'url' => ['index']];
 $this->params['breadcrumbs'][] = $this->title;
 ?>
-<div class="content-main-wrapper">
+<div class="content-main-wrapper main-body" id="vatdetails_create">
 <!-- Content Header (Page header) -->
     <section class="content-header">
       <h1>
