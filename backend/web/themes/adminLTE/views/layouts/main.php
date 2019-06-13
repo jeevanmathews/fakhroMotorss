@@ -206,7 +206,16 @@ $this->registerJs($js, \yii\web\View::POS_HEAD);
                     <ul class="dropdown-menu">  
                       <li>
                         <?= Html::a('Jobcard', ['/jobcard/index'], ['class'=>'']) ?>
-                      </li>                     
+                      </li>  
+                      <li>
+                        <?= Html::a('Jobcard Vehicle', ['/jobcard-vehicle'], ['class'=>'']) ?>
+                      </li> 
+                      <li>
+                        <?= Html::a('Make', ['/make'], ['class'=>'']) ?>
+                      </li> 
+                      <li>
+                        <?= Html::a('Model', ['/car-model'], ['class'=>'']) ?>
+                      </li>                    
                     </ul>
                   </li> 
                   <!-- <li class="dropdown">

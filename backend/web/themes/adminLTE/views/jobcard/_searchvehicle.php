@@ -39,8 +39,14 @@ $this->params['breadcrumbs'][] = $this->title;
                             'dataProvider' => $dataProvider,                            
                             'columns' => [
                                 ['class' => 'yii\grid\SerialColumn'],
-                                'reg_num',
-                                'chasis_num',
+                                'reg_num',                               
+                                 [
+                                    'attribute' => 'chasis_num',
+                              
+                                    'value' =>function ($model){
+                                        return substr($model->chasis_num, 0, 8)."...";
+                                    }
+                                ],
                                 'make',
                                 'model',
                                 'color',

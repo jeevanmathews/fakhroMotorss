@@ -3,16 +3,16 @@
 namespace backend\controllers;
 
 use Yii;
-use backend\models\JobcardVehicle;
-use backend\models\JobcardVehicleSearch;
+use backend\models\CarModel;
+use backend\models\CarModelSearch;
 use yii\web\Controller;
 use yii\web\NotFoundHttpException;
 use yii\filters\VerbFilter;
 
 /**
- * JobcardVehicleController implements the CRUD actions for JobcardVehicle model.
+ * CarModelController implements the CRUD actions for CarModel model.
  */
-class JobcardVehicleController extends Controller
+class CarModelController extends Controller
 {
     /**
      * {@inheritdoc}
@@ -30,12 +30,12 @@ class JobcardVehicleController extends Controller
     }
 
     /**
-     * Lists all JobcardVehicle models.
+     * Lists all CarModel models.
      * @return mixed
      */
     public function actionIndex()
     {
-        $searchModel = new JobcardVehicleSearch();
+        $searchModel = new CarModelSearch();
         $dataProvider = $searchModel->search(Yii::$app->request->queryParams);
 
         return $this->renderAjax('index', [
@@ -45,7 +45,7 @@ class JobcardVehicleController extends Controller
     }
 
     /**
-     * Displays a single JobcardVehicle model.
+     * Displays a single CarModel model.
      * @param integer $id
      * @return mixed
      * @throws NotFoundHttpException if the model cannot be found
@@ -58,13 +58,13 @@ class JobcardVehicleController extends Controller
     }
 
     /**
-     * Creates a new JobcardVehicle model.
+     * Creates a new CarModel model.
      * If creation is successful, the browser will be redirected to the 'view' page.
      * @return mixed
      */
     public function actionCreate()
     {
-        $model = new JobcardVehicle();
+        $model = new CarModel();
 
         if ($model->load(Yii::$app->request->post()) && $model->save()) {
             return $this->redirect(['view', 'id' => $model->id]);
@@ -76,7 +76,7 @@ class JobcardVehicleController extends Controller
     }
 
     /**
-     * Updates an existing JobcardVehicle model.
+     * Updates an existing CarModel model.
      * If update is successful, the browser will be redirected to the 'view' page.
      * @param integer $id
      * @return mixed
@@ -96,7 +96,7 @@ class JobcardVehicleController extends Controller
     }
 
     /**
-     * Deletes an existing JobcardVehicle model.
+     * Deletes an existing CarModel model.
      * If deletion is successful, the browser will be redirected to the 'index' page.
      * @param integer $id
      * @return mixed
@@ -110,15 +110,15 @@ class JobcardVehicleController extends Controller
     }
 
     /**
-     * Finds the JobcardVehicle model based on its primary key value.
+     * Finds the CarModel model based on its primary key value.
      * If the model is not found, a 404 HTTP exception will be thrown.
      * @param integer $id
-     * @return JobcardVehicle the loaded model
+     * @return CarModel the loaded model
      * @throws NotFoundHttpException if the model cannot be found
      */
     protected function findModel($id)
     {
-        if (($model = JobcardVehicle::findOne($id)) !== null) {
+        if (($model = CarModel::findOne($id)) !== null) {
             return $model;
         }
 
