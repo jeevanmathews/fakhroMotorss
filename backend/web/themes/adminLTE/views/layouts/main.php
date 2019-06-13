@@ -161,8 +161,11 @@ $this->registerJs($js, \yii\web\View::POS_HEAD);
                       <li>
                         <?= Html::a('Items', ['/items/index'], ['class'=>'']) ?>
                       </li> 
-<li>
-                        <?= Html::a('Item Groups', ['/itemgroup/index'], ['class'=>'']) ?>
+                      <li>
+                        <?= Html::a('Accessories Groups', ['/itemgroup/index'], ['class'=>'']) ?>
+                      </li>
+                      <li>
+                        <?= Html::a('Spare Groups', ['/sparegroup/index'], ['class'=>'']) ?>
                       </li>
                       <li>
                         <h4>Services</h4>
