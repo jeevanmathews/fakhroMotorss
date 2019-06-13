@@ -37,7 +37,7 @@ class Jobcard extends \yii\db\ActiveRecord
     public function rules()
     {
         return [
-            [['promised_date', 'advance_paid', 'receipt_num', 'service_manager', 'service_advisor', 'meter_reading', 'fuel_level', 'branch_id'], 'required'],
+            [['promised_date', 'service_manager', 'service_advisor', 'meter_reading', 'fuel_level', 'branch_id'], 'required'],
             [['created_date', 'updated_date'], 'safe'],
             [['advance_paid', 'labour_cost', 'material_cost', 'tax', 'total_charge', 'discount', 'gross_amount', 'amount_due'], 'number'],
             [['service_manager', 'service_advisor', 'customer_id', 'vehicle_id', 'service_type', 'next_service_type', 'tested_by', 'status'], 'integer'],
@@ -231,19 +231,21 @@ class Jobcard extends \yii\db\ActiveRecord
             }
             if($stock->opening_stock == 0 && $stock->reduced_stock == 0){
                 continue;
-            }else{            
+            }else {            
                 if($stock->save()){
                     //Update Stock Distribution
                     //Case 1 reduce stock         
                     if($stock->reduced_stock != 0){
                         $stock_tobe_reduced = $stock->reduced_stock;
                         $stock_distributions = Yii::$app->db->createCommand("SELECT * FROM `stock_distribution` d WHERE id in( select max(id) from stock_distribution where item_id = ".$stock->item_id." and type='".$stock->type."' group by `code`) and item_id = ".$stock->item_id." and type='".$stock->type."' and current_stock != 0 order by (SELECT min(id) FROM `stock_distribution` where `type`='".$stock->type."' and `item_id` = ".$stock->item_id." and code = d.code) asc")->queryAll();
+                      
                         foreach($stock_distributions as $stock_distribution) {
                             if($stock_tobe_reduced > 0){
                                 $stockDistribution = new StockDistribution();
                                 $stockDistribution->item_id = $stock->item_id;
                                 $stockDistribution->type = $stock->type;            
                                 $stockDistribution->jobcard_id = $stock->jobcard_id;
+                                $stockDistribution->stock_id = $stock_distribution['stock_id'];
                                 $stockDistribution->code = $stock_distribution['code'];
                                 $stockDistribution->opening_stock = 0;
                                 if($stock_distribution['current_stock'] >= $stock_tobe_reduced){
@@ -271,6 +273,7 @@ class Jobcard extends \yii\db\ActiveRecord
                                 $stockDistribution->item_id = $stock->item_id;
                                 $stockDistribution->type = $stock->type;            
                                 $stockDistribution->jobcard_id = $stock->jobcard_id;
+                                $stockDistribution->stock_id = $stock_distribution['stock_id'];
                                 $stockDistribution->code = $stock_distribution['code'];
 
                                 //last stock by code and item

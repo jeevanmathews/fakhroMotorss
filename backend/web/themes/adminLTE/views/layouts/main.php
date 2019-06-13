@@ -443,9 +443,6 @@ $this->registerJs($js, \yii\web\View::POS_HEAD);
         <!--Tabs -->
       </ul>
 
-      <?= Breadcrumbs::widget([
-        'links' => isset($this->params['breadcrumbs']) ? $this->params['breadcrumbs'] : [],
-        ]) ?>
         <?= Alert::widget() ?>
         <?= $content ?>
         
@@ -497,6 +494,9 @@ $this->registerJs($js, \yii\web\View::POS_HEAD);
         } else if($(this).hasClass("jc-tabs")){ //Check for other clicks
           return true;
         } else if($(this).hasClass("close-modal")){
+          return true;
+        }else if($(this).hasClass("generate-invoice")){
+          $("[class*='confirm-payment']").modal().hide();
           return true;
         }
         

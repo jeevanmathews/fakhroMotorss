@@ -98,7 +98,7 @@ class JobcardController extends Controller
               }  
             }
             if($model->save()){
-                echo json_encode(["success" => true, "message" => "Jobcard has been created"]);
+                echo json_encode(["success" => true, "message" => "Jobcard has been created", 'redirect' => Yii::$app->getUrlManager()->createUrl(['jobcard/update', 'id' => $model->id])]);
                 exit;
             }            
         }
@@ -175,7 +175,7 @@ class JobcardController extends Controller
                         $price = $jobcardTask->task->billing_rate - $jobcardTask->discount_amount;
                     }else $price = $jobcardTask->task->billing_rate;
                                         
-                    $jobcardTask->tax_enabled = $jobcardTask->task->tax_enabled;
+                    $jobcardTask->tax_enabled = ($jobcardTask->task->tax_enabled)?$jobcardTask->task->tax_enabled:'no';
                     $jobcardTask->tax_rate = $jobcardTask->task->tax_rate;  
                     $jobcardTask->tax_amount = ($jobcardTask->task->tax_rate)?($jobcardTask->task->tax_rate *$price/100):""; 
                     //Add Tax to final amount after discount
@@ -215,7 +215,7 @@ class JobcardController extends Controller
                 }else $mat_price = $jobcardMaterial->rate;
 
                 $jobcardMaterial->unit_rate = $jobcardMaterial->material->rate;
-                $jobcardMaterial->tax_enabled = $jobcardMaterial->material->tax_enabled;
+                $jobcardMaterial->tax_enabled = ($jobcardMaterial->material->tax_enabled)?$jobcardMaterial->material->tax_enabled:'no';
                 $jobcardMaterial->tax_rate = $jobcardMaterial->material->tax_rate;
                 $jobcardMaterial->tax_amount = ($jobcardMaterial->material->tax_rate)?($jobcardMaterial->material->tax_rate *$mat_price/100):"";
                 if($jobcardMaterial->rate){
@@ -224,9 +224,12 @@ class JobcardController extends Controller
                    //Add Tax to final amount after discount
                     $jobcardMaterial->rate =  ($jobcardMaterial->material->tax_enabled =="yes")?($mat_price+($mat_price*$jobcardMaterial->material->tax_rate/100)):$mat_price;             
                 }
-                $jobcardMaterial->save();                 
-                echo json_encode(["success" => true, "message" => 'Material has been '.$mat_stat.' to this Jobcard.', 'redirect' => Yii::$app->getUrlManager()->createUrl(['jobcard/update', 'id' => $model->id, 'tab' => 'material'])]);
-                exit; 
+                if($jobcardMaterial->save()){               
+                    echo json_encode(["success" => true, "message" => 'Material has been '.$mat_stat.' to this Jobcard.', 'redirect' => Yii::$app->getUrlManager()->createUrl(['jobcard/update', 'id' => $model->id, 'tab' => 'material'])]);
+                exit; } 
+            }else{ 
+                echo json_encode(["error" => true, "message" => implode(", ", $jobcardMaterial->getErrors('material_id')), 'redirect' => Yii::$app->getUrlManager()->createUrl(['jobcard/update', 'id' => $model->id, 'tab' => 'material'])]);
+                    exit;
             }   
             $activeTab = 'material';
         }        
@@ -446,7 +449,7 @@ class JobcardController extends Controller
         $invoice->jobcard_id = $jobcard->id;
         $invoice->created_date = date('Y-m-d h:i:s');      
         if($invoice->save()){
-            $jobcard->updateStock();
+            $jobcard->updateStockDetails();
             //Save Invoice Materials -same as Jobcard Materials
             foreach($jobcard->materials as $material){
                 $invoice_material = new JobcardInvoiceMaterial();
@@ -463,7 +466,7 @@ class JobcardController extends Controller
             }
             Yii::$app->session->setFlash('success', 'Invoice has been generated.');
             return $this->redirect(['invoice', 'invoice_id' => $invoice->id]);
-        }
+        }//else{echo "nops";print_r($invoice->getErrors());exit;}
     }
 
 

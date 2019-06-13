@@ -91,6 +91,8 @@ $cur_time = time();
                 <td>Amount Due: </td>
                 <td><?php echo "<b>".Yii::$app->common->company->settings->currency->code." <span id='amount_due'>".$amount_due."</span></b>";?></td>
                 </tr>
+
+                <?php if($model->labourCost || $model->materialCost) { ?>
                 <?php if(Yii::$app->common->company->vat_format == "exclusive"){ ?>
                     <tr>               
                     <td colspan="2">
@@ -106,7 +108,8 @@ $cur_time = time();
                      <?= Html::button((($model->invoice)?'Regenerate Invoice':'Confirm Payment'), ['class' => 'btn btn-success', 'id' => 'confirm-payment-'.$cur_time]) ?>  
                     </td>
                     </tr>
-                <?php   } ?>
+                <?php   } 
+                } ?>
             </table>
             <div class="alert hide" role="alert">
               
@@ -130,7 +133,7 @@ $cur_time = time();
         <div class="row">
             <div class="col-md-12"> 
             <p>
-                <?= Html::a('Generate Invoice', ['jobcard/generate-invoice', 'jobcard_id' => $model->id], ['class' => 'btn btn-success', 'target' => '_blank']) ?>
+                <?= Html::a('Generate Invoice', ['jobcard/generate-invoice', 'jobcard_id' => $model->id], ['class' => 'btn btn-success generate-invoice', 'target' => '_blank']) ?>
             </p>            
             </div>
         </div>
