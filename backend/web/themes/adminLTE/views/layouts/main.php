@@ -537,6 +537,7 @@ $this->registerJs($js, \yii\web\View::POS_HEAD);
             $(document).find(".main-body:visible").attr("tab_id", tabId);
 
             $("#"+tabId).find("span").html(page_id.replace("_","/"));
+            addMandatoryStar();
           }});
           $.ajaxSetup({async: true}); 
        
@@ -555,6 +556,11 @@ $this->registerJs($js, \yii\web\View::POS_HEAD);
           $(this).parent().toggleClass('open');
         });
       });
+      function addMandatoryStar(){
+        $("[aria-required='true']").each(function(){
+          var new_text = "* "+$(this).prev(".input-group-addon").text();$(this).prev(".input-group-addon").text(new_text);
+        });
+      }
       </script>
       
     </body>
