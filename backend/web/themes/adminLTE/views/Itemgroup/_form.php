@@ -1,5 +1,4 @@
 <?php
-
 use yii\helpers\Html;
 use yii\widgets\ActiveForm;
 use common\components\AutoForm;
@@ -11,7 +10,6 @@ use backend\models\Itemgroup;
 /* @var $model backend\models\itemgroup */
 /* @var $form yii\widgets\ActiveForm */
 ?>
-
 <?php $form = AutoForm::begin(["id" => "itemgroup-".time().(($model->isNewRecord)?"create":"update")."-form"]); ?>
 <div class="box-body">
    <div class="row">
@@ -64,7 +62,7 @@ else
 </div>
  <div class="box-footer">       
  <?= Html::submitButton('Save', ['class' => 'btn btn-success']) ?>
-    </div>
+    </di                                                                                                                                                                                                                                                             v>
 
    <?php AutoForm::end(); ?>
 

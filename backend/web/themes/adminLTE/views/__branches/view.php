@@ -5,13 +5,25 @@ use yii\widgets\DetailView;
 
 /* @var $this yii\web\View */
 /* @var $model backend\models\Branches */
-
 $this->title = $model->name;
 $this->params['breadcrumbs'][] = ['label' => 'Branches', 'url' => ['index']];
 $this->params['breadcrumbs'][] = $this->title;
 \yii\web\YiiAsset::register($this);
 ?>
-<div class="branches-view">
+<div class="content-main-wrapper main-body"  id="branches_view">
+ <section class="content-header">
+      <h1>
+        <?= Html::encode($this->title) ?>        
+      </h1>
+    </section>
+    
+    <section class="content">
+    <!-- SELECT2 EXAMPLE -->
+        <div class="box box-default">   
+
+        <div class="box-body">
+        <div class="row">
+        <div class="col-md-6">
 
     <h1><?= Html::encode($this->title) ?></h1>
 
@@ -52,4 +64,10 @@ $this->params['breadcrumbs'][] = $this->title;
         ],
     ]) ?>
 
+</div>
+
+        </div>             
+        </div>
+        </div>
+    </section>
 </div>

@@ -12,7 +12,7 @@ $this->params['breadcrumbs'][] = $this->title;
 \yii\web\YiiAsset::register($this);
 ?>
 
-<div class="content-main-wrapper">
+<div class="content-main-wrapper main-body"  id="branches_view">
     <!-- Content Header (Page header) -->
     <section class="content-header">
       <h1>
@@ -22,7 +22,7 @@ $this->params['breadcrumbs'][] = $this->title;
     
     <section class="content">
     <!-- SELECT2 EXAMPLE -->
-        <div class="box box-default">   
+     <div class="box box-default">   
 
         <div class="box-body">
         <div class="row">

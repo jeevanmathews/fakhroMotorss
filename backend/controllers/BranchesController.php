@@ -1,7 +1,5 @@
 <?php
-
 namespace backend\controllers;
-
 use Yii;
 use backend\models\Branches;
 use backend\models\BranchesSearch;
@@ -44,7 +42,7 @@ class BranchesController extends Controller
         $searchModel = new BranchesSearch();
         $dataProvider = $searchModel->search(Yii::$app->request->queryParams);
 
-        return $this->render('index', [
+        return $this->renderAjax('index', [
             'searchModel' => $searchModel,
             'dataProvider' => $dataProvider,
         ]);
@@ -62,7 +60,7 @@ class BranchesController extends Controller
         $model->branchtype_id=Branchtypes::find()->where(['in', 'id', explode(',',$model->branchtype_id)])->all();
         $model->vat_expiry = date('d-m-Y',strtotime($model->vat_expiry));
         $model->cr_expiry = date('d-m-Y',strtotime($model->cr_expiry));
-        return $this->render('view', [
+        return $this->renderAjax('view', [
             'model' => $model,
         ]);
     }
@@ -87,10 +85,13 @@ class BranchesController extends Controller
             $model->imageFile = UploadedFile::getInstance($model, 'imageFile');
 			//echo $model->imageFile;
             $model->upload();
-            return $this->redirect(['view', 'id' => $model->id]);
+            //return $this->redirect(['view', 'id' => $model->id]);
+			echo json_encode(["success" => true, "message" => "Branches has been created."]);
+			exit;
+
         }
 }
-        return $this->render('create', [
+        return $this->renderAjax('create', [
             'model' => $model,
             'countries'=>$countries,
             'company'=>$company->id,
@@ -121,11 +122,13 @@ class BranchesController extends Controller
 			$model->imageFile = UploadedFile::getInstance($model, 'imageFile');
             $model->upload();
             if ($model->load($data) && $model->save()) {
-                return $this->redirect(['view', 'id' => $model->id]);
+                //return $this->redirect(['view', 'id' => $model->id]);
+				echo json_encode(["success" => true, "message" => "Branches has been updated."]);
+exit;
             }
         }
 
-        return $this->render('update', [
+        return $this->renderAjax('update', [
             'model' => $model,
             'countries'=>$countries,
             'company'=>$company->id,
@@ -144,7 +147,7 @@ class BranchesController extends Controller
     {
         $this->findModel($id)->delete();
 
-        return $this->redirect(['index']);
+        return $this->renderAjax(['index']);
     }
 
      /**
@@ -158,7 +161,7 @@ class BranchesController extends Controller
         $model = $this->findModel($id);
         $model->status = ($model->status == 0)?1:0;
         $model->save();
-        return $this->redirect(['index']);
+        return $this->renderAjax(['index']);
     }
 
     /**

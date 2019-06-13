@@ -7,10 +7,12 @@ use yii\widgets\ActiveForm;
 /* @var $model backend\models\Branches */
 /* @var $form yii\widgets\ActiveForm */
 ?>
-
-<div class="branches-form">
-
-    <?php $form = ActiveForm::begin(); ?>
+<?php $form = AutoForm::begin(["id" => "branches-".time().(($model->isNewRecord)?"create":"update")."-form"]); ?>
+<div class="box-body">
+  <div class="row">
+    <div class="col-md-12">               
+      <div class="row">
+         <div class="col-md-6">  
 
     <?= $form->field($model, 'company_id')->textInput() ?>
 
@@ -50,10 +52,15 @@ use yii\widgets\ActiveForm;
 
     <?= $form->field($model, 'status')->textInput() ?>
 
-    <div class="form-group">
-        <?= Html::submitButton('Save', ['class' => 'btn btn-success']) ?>
+    </div>
+           </div>
+           </div>
+    </div>
+</div>
+ <div class="box-footer">       
+ <?= Html::submitButton('Save', ['class' => 'btn btn-success']) ?>
     </div>
 
-    <?php ActiveForm::end(); ?>
+   <?php AutoForm::end(); ?>
 
 </div>
