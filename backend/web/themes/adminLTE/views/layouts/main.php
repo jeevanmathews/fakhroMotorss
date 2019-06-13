@@ -558,7 +558,10 @@ $this->registerJs($js, \yii\web\View::POS_HEAD);
       });
       function addMandatoryStar(){
         $("[aria-required='true']").each(function(){
-          var new_text = "* "+$(this).prev(".input-group-addon").text();$(this).prev(".input-group-addon").text(new_text);
+          var new_text = "* "+$(this).prev(".input-group-addon").text();
+          if($(this).prev(".input-group-addon").text().indexOf("*") == -1){
+            $(this).prev(".input-group-addon").text(new_text);
+          }
         });
       }
       </script>
