@@ -23,7 +23,7 @@ $vat_format=Yii::$app->common->company->vat_format;
   <?= Html::Button('Go', ['class' => 'btn btn-success btn_select_po pull-left']) ?>
 </div> -->
 <?php AutoForm::end(); ?>
-<?php $form = AutoForm::begin(["id" => "goods-receipt-note-".time().(($model->isNewRecord)?"create":"update")."-form"]); ?>
+<?php $form = AutoForm::begin(["id" => "goods-receipt-note-".time().(($model->isNewRecord)?"creategrn":"update")."-form"]); ?>
 <div class="box-body">
   <div class="row">
    <div class="mb-20">

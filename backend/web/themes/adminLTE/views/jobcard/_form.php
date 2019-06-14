@@ -9,6 +9,9 @@ use backend\models\AmcType;
 use backend\models\JobcardStatus;
 use backend\models\Branches;
 use backend\models\ServiceType;
+use backend\models\Manufacturer;
+use backend\models\Make;
+use backend\models\CarModel;
 
 /* @var $this yii\web\View */
 /* @var $model backend\models\Jobcard */
@@ -21,9 +24,32 @@ use backend\models\ServiceType;
             <div class="col-md-12">
                 <h5 class="heading"><span>Vehicle Details</span> <span class="pull-right"> <?php echo html::button("Search Vehicle", ["class" => "btn btn-link", 'id' => 'search_vehicle'])?></span></h5>
                 <div class="col-md-6">
-                    <?= $form->field($vehicle, 'make')->textInput(['maxlength' => true]) ?>
 
-                    <?= $form->field($vehicle, 'model')->textInput(['maxlength' => true]) ?>
+                   
+                    <?php if($vehicle->make) $vehicle->manufacturer = $vehicle->make->manufacturer->id;?>
+
+        <?=$form->field($vehicle, 'manufacturer')->dropDownList(
+                ArrayHelper::map(Manufacturer::find()->all(), 'id', 'name'),
+                 ['prompt' => 'Select Type','class' => 'form-control select2 type', 
+                
+            'onchange'=>'
+                $.get( "'.Yii::$app->getUrlManager()->createUrl('car-model/makes').'&manufacturer_id="+$(this).val(), function( data ) {
+                $( "#jobcardvehicle-make_id" ).html(data);
+           });
+            ']);?>
+
+        <?=$form->field($vehicle, 'make_id')->dropDownList(
+                (($vehicle->make)?ArrayHelper::map(Make::find()->where(['manufacturer_id' => $vehicle->manufacturer])->all(), 'id', 'make'):[]),
+                 ['prompt' => 'Select Type','class' => 'form-control select2 type', 
+                
+            'onchange'=>'
+                $.get( "'.Yii::$app->getUrlManager()->createUrl('car-model/models').'&make_id="+$(this).val(), function( data ) {
+                $( "#jobcardvehicle-model_id" ).html(data);
+           });
+            ']);?>
+
+        <?= $form->field($vehicle, 'model_id')->dropDownList(($vehicle->model)?ArrayHelper::map(CarModel::find()->where(['make_id' => $vehicle->make_id])->all(), 'id', 'model'):[]) ?>
+
 
                     <?= $form->field($vehicle, 'color')->textInput(['maxlength' => true]) ?>
 

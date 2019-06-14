@@ -3,8 +3,8 @@
 namespace backend\controllers;
 
 use Yii;
-use backend\models\itemgroup;
-use backend\models\ItemgroupSearch;
+use backend\models\sparegroup;
+use backend\models\SparegroupSearch;
 use yii\web\Controller;
 use yii\web\NotFoundHttpException;
 use yii\filters\VerbFilter;
@@ -33,11 +33,12 @@ class SparegroupController extends Controller
      * Lists all itemgroup models.
      * @return mixed
      */
-    public function actionIndex()
+    public function actionIndex($type="accessories")
     {
-         $itemgroup = Yii::$app->db->createCommand("select id, parent_id as parent,category_name from itemgroup")->queryAll();
+         $sparegroup = Yii::$app->db->createCommand("select id, parent_id as parent,category_name from itemgroup where type='$type'")->queryAll();
         return $this->renderAjax('index', [
-            'itemgroup' => $itemgroup,
+            'sparegroup' => $sparegroup,
+            'type' =>$type
         ]);
     }
 
@@ -59,9 +60,9 @@ class SparegroupController extends Controller
      * If creation is successful, the browser will be redirected to the 'view' page.
      * @return mixed
      */
-    public function actionCreate()
+    public function actionCreate($type)
     {
-        $model = new itemgroup();
+        $model = new sparegroup();
 	
         if ($model->load(Yii::$app->request->post())) {
 		$Array = Yii::$app->request->post();
@@ -88,7 +89,7 @@ class SparegroupController extends Controller
 		}
 		if($model->save())
         {
-		echo json_encode(["success" => true, "message" => "Department has been created."]);
+		echo json_encode(["success" => true, "message" => "Sparegroup has been created."]);
 
 		}
 		else
@@ -99,6 +100,7 @@ class SparegroupController extends Controller
 
         return $this->renderAjax('create', [
             'model' => $model,
+            'type'=>$type
         ]);
     }
 
@@ -137,7 +139,7 @@ class SparegroupController extends Controller
 		}
 		if($model->save())
         {
-		echo json_encode(["success" => true, "message" => "Itemgroup has been updated."]);
+		echo json_encode(["success" => true, "message" => "Sparegroup has been updated."]);
 
 		}
 		else
@@ -189,7 +191,7 @@ class SparegroupController extends Controller
      */
     protected function findModel($id)
     {
-        if (($model = itemgroup::findOne($id)) !== null) {
+        if (($model = sparegroup::findOne($id)) !== null) {
             return $model;
         }
 

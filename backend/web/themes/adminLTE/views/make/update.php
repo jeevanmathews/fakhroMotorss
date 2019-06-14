@@ -6,7 +6,7 @@ use yii\widgets\Breadcrumbs;
 /* @var $this yii\web\View */
 /* @var $model backend\models\Make */
 
-$this->title = 'Update Make: ' . $model->id;
+$this->title = 'Update Make: ' . $model->make;
 $this->params['breadcrumbs'][] = ['label' => 'Makes', 'url' => ['index']];
 $this->params['breadcrumbs'][] = ['label' => $model->id, 'url' => ['view', 'id' => $model->id]];
 $this->params['breadcrumbs'][] = 'Update';

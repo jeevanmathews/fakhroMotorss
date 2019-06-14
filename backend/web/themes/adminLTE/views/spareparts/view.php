@@ -11,7 +11,7 @@ $this->params['breadcrumbs'][] = ['label' => 'Spareparts', 'url' => ['index']];
 $this->params['breadcrumbs'][] = $this->title;
 \yii\web\YiiAsset::register($this);
 ?>
-
+<div class="spareparts-view main-body" id="spareparts_view">
 <div class="content-main-wrapper">
     <!-- Content Header (Page header) -->
     <section class="content-header">
@@ -43,14 +43,17 @@ $this->params['breadcrumbs'][] = $this->title;
                         'attributes' => [
                         // 'id',
                         // 'spare_type_id',
-                        [
-                        'label'=>'Spare Type',
-                        'value'=>$model->sparetype->name,
-                        ],
+                        // [
+                        // 'label'=>'Spare Type',
+                        // 'value'=>$model->sparetype->name,
+                        // ],
                         //  [
                         // 'label'=>'Item Type',
                         // 'value'=>$model->group->name,
                         // ],
+                        ['label'=>'Item Group',
+                        'value'=>(isset($model->parent)?$model->parent->category_name:''),
+                        ],
                         'name',
                         'code',
                         'description:ntext',
@@ -76,5 +79,6 @@ $this->params['breadcrumbs'][] = $this->title;
     </div>
 </div>
 </section>
+</div>
 </div>
 </div>

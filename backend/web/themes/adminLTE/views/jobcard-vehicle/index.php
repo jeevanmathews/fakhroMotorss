@@ -32,14 +32,24 @@ $this->params['breadcrumbs'][] = $this->title;
         'dataProvider' => $dataProvider,
         'filterModel' => $searchModel,
         'columns' => [
-            ['class' => 'yii\grid\SerialColumn'],
-
-            'id',
-            'reg_num',
-            'chasis_num',
-            'make',
-            'model',
-            //'color',
+            ['class' => 'yii\grid\SerialColumn'],           
+            'reg_num', 
+            [
+                'label' => 'Manufacturer',
+                'value' =>function ($model){
+                    return utf8_decode($model->make->manufacturer->name);
+                }
+            ],         
+            'make.make',
+            'model.model',
+            'color',
+            'customer.name',
+            [
+                'attribute' => 'customer_id',
+                'value' => function($model){
+                    return $model->customer->name;
+                }
+            ],
             //'tr_number',
             //'amc_type',
             //'amc_expiry_date',

@@ -1,15 +1,19 @@
 <?php
 
 use yii\helpers\Html;
+use yii\widgets\Breadcrumbs;
 
 /* @var $this yii\web\View */
 /* @var $model backend\models\itemgroup */
 
-$this->title = 'Create Itemgroup';
-$this->params['breadcrumbs'][] = ['label' => 'Itemgroups', 'url' => ['index']];
+$this->title = "Create " . $type ;
+$this->params['breadcrumbs'][] = ['label' => $type, 'url' => ['index','type' => $type]];
 $this->params['breadcrumbs'][] = $this->title;
 ?>
 <div class="content-main-wrapper main-body" id="itemgroup_create">
+<?= Breadcrumbs::widget([
+        'links' => isset($this->params['breadcrumbs']) ? $this->params['breadcrumbs'] : [],
+        ]) ?>
 <!-- Content Header (Page header) -->
     <section class="content-header">
 
@@ -21,6 +25,7 @@ $this->params['breadcrumbs'][] = $this->title;
 	  	<div class="box box-default">
     <?= $this->render('_form', [
         'model' => $model,
+         'type'=>$type,
     ]) ?>
 
 </div>

@@ -32,10 +32,10 @@ class Accessories extends \yii\db\ActiveRecord
     public function rules()
     {
         return [
-            [['accessories_type_id', 'name', 'code', 'description','rate'], 'required'],
+            [[ 'name', 'code'], 'required'],
             [['accessories_type_id', 'status'], 'integer'],
             [['description'], 'string'],
-			[['tax_rate','rate'], 'number'],
+			[['tax_rate'], 'number'],
             [['created_date'], 'safe'],
             [['name'], 'string', 'max' => 300],
             [['code'], 'string', 'max' => 250],
@@ -65,6 +65,10 @@ class Accessories extends \yii\db\ActiveRecord
     }
     public function getGroup(){
         return $this->hasOne(Itemtype::className(), ['id' => 'item_type_id']);
+    }
+
+     public function getParent(){
+        return $this->hasOne(Itemgroup::className(), ['id' => 'itemgroup_id']);
     }
     public function getNamewithPrice(){
         return $this->name." - ".Yii::$app->common->company->settings->currency->code. " " .$this->rate." /unit";

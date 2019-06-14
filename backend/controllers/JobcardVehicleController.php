@@ -52,7 +52,7 @@ class JobcardVehicleController extends Controller
      */
     public function actionView($id)
     {
-        return $this->render('view', [
+        return $this->renderAjax('view', [
             'model' => $this->findModel($id),
         ]);
     }
@@ -67,7 +67,8 @@ class JobcardVehicleController extends Controller
         $model = new JobcardVehicle();
 
         if ($model->load(Yii::$app->request->post()) && $model->save()) {
-            return $this->redirect(['view', 'id' => $model->id]);
+            echo json_encode(["success" => true, "message" => "Vehicle has been created"]);
+            exit;
         }
 
         return $this->renderAjax('create', [
@@ -84,10 +85,11 @@ class JobcardVehicleController extends Controller
      */
     public function actionUpdate($id)
     {
-        $model = $this->findModel($id);
+        $model = $this->findModel($id); 
 
         if ($model->load(Yii::$app->request->post()) && $model->save()) {
-            return $this->redirect(['view', 'id' => $model->id]);
+            echo json_encode(["success" => true, "message" => "Vehicle has been updated"]);
+            exit;
         }
 
         return $this->renderAjax('update', [

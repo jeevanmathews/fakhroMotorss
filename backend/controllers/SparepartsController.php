@@ -38,7 +38,7 @@ class SparepartsController extends Controller
         $searchModel = new SparepartsSearch();
         $dataProvider = $searchModel->search(Yii::$app->request->queryParams);
 
-        return $this->render('index', [
+        return $this->renderAjax('index', [
             'searchModel' => $searchModel,
             'dataProvider' => $dataProvider,
         ]);
@@ -52,7 +52,7 @@ class SparepartsController extends Controller
      */
     public function actionView($id)
     {
-        return $this->render('view', [
+        return $this->renderAjax('view', [
             'model' => $this->findModel($id),
         ]);
     }
@@ -66,12 +66,14 @@ class SparepartsController extends Controller
     {
         $model = new Spareparts();
 
-        if ($model->load(Yii::$app->request->post()) && $model->save()) {
-            Yii::$app->session->setFlash('success', 'Spare Part has been created succesfully!');
-            return $this->redirect(['view', 'id' => $model->id]);
+        if ($model->load(Yii::$app->request->post())) {
+            $result=Yii::$app->request->post();
+            $model->itemgroup_id=end($result['parent_id']);
+            $model->save();
+            echo json_encode(["success" => true, "message" => "Spare Part has been created."]);
+            exit;
         }
-
-        return $this->render('create', [
+        return $this->renderAjax('create', [
             'model' => $model,
         ]);
     }
@@ -86,13 +88,21 @@ class SparepartsController extends Controller
     public function actionUpdate($id)
     {
         $model = $this->findModel($id);
-
-        if ($model->load(Yii::$app->request->post()) && $model->save()) {
-            Yii::$app->session->setFlash('success', 'Spare Part has been updated succesfully!');
-            return $this->redirect(['view', 'id' => $model->id]);
+        $itemgroup_id=$model->itemgroup_id;
+        if ($model->load(Yii::$app->request->post())) {
+            $result=Yii::$app->request->post();
+            // var_dump(array_filter($result['parent_id']));die;
+            if(!empty(array_filter($result['parent_id']))):
+                $model->itemgroup_id=end($result['parent_id']);
+            else:
+                $model->itemgroup_id=$itemgroup_id;
+            endif;
+            $model->save();
+            echo json_encode(["success" => true, "message" => "Spare Part has been created."]);
+            exit;
         }
 
-        return $this->render('update', [
+        return $this->renderAjax('update', [
             'model' => $model,
         ]);
     }
@@ -115,11 +125,17 @@ class SparepartsController extends Controller
         $model = $this->findModel($id);
         $model->status = ($model->status == 0)?1:0;
         if($model->save()){
-              Yii::$app->session->setFlash('success', 'Status has been changed!');
-              return $this->redirect(['index']);
+             echo json_encode(["success" => true, "message" => "Status has been changed."]);
+             exit;
+
           }
         
     }
+
+      public function actionLists($type="spares",$parent_id) 
+     {
+        return $this->renderPartial('_itemdropdown',compact('parent_id','type')); 
+     }
     /**
      * Finds the Spareparts model based on its primary key value.
      * If the model is not found, a 404 HTTP exception will be thrown.

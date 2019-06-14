@@ -5,12 +5,12 @@ use common\components\AutoForm;
 use yii\helpers\ArrayHelper;
 use backend\models\Itemgroup;
 
-
 /* @var $this yii\web\View */
 /* @var $model backend\models\itemgroup */
 /* @var $form yii\widgets\ActiveForm */
 ?>
 <?php $form = AutoForm::begin(["id" => "itemgroup-".time().(($model->isNewRecord)?"create":"update")."-form"]); ?>
+
 <div class="box-body">
    <div class="row">
     <div class="col-md-12">               
@@ -68,3 +68,9 @@ else
 
 </div>
 
+<script>
+var itemtype='<?php echo $type ?>';
+$("#itemgroup-type").val(itemtype).trigger('change');
+$("#itemgroup-type").val(itemtype);
+//$('#itemgroup-type').attr("disabled", true); 
+</script>

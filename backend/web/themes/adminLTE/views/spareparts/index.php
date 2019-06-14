@@ -4,7 +4,7 @@ use yii\helpers\Html;
 use yii\grid\GridView;
 use yii\helpers\ArrayHelper;
 use backend\models\Sparetypes;
-use backend\models\Itemtype;
+use backend\models\Sparegroup;
 /* @var $this yii\web\View */
 /* @var $searchModel backend\models\SparepartsSearch */
 /* @var $dataProvider yii\data\ActiveDataProvider */
@@ -12,7 +12,7 @@ use backend\models\Itemtype;
 $this->title = 'Spare Parts';
 $this->params['breadcrumbs'][] = $this->title;
 ?>
-<div class="spareparts-index">
+<div class="content-main-wrapper main-body"  id="spareparts_index">
 <div class="content-main-wrapper">
 
     <section class="content-header">
@@ -41,9 +41,9 @@ $this->params['breadcrumbs'][] = $this->title;
                         // 'id',
                     
                          [
-                        'label'=>'Spare Type',
-                        'value'=>'sparetype.name',
-                        'filter' => Html::activeDropDownList($searchModel, 'spare_type_id', ArrayHelper::map(Sparetypes::find()->all(), 'id', 'name'),['class'=>'form-control','prompt' => 'Search by Type']),
+                        'label'=>'Spare Group',
+                        'value'=>'parent.category_name',
+                        'filter' => Html::activeDropDownList($searchModel, 'itemgroup_id', ArrayHelper::map(Sparegroup::find()->where(['type'=>'spares'])->all(), 'id', 'category_name'),['class'=>'form-control','prompt' => 'Search by Type']),
                         ],
                         // [
                         // 'label'=>'Item Type',

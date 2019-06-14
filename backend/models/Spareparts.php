@@ -32,7 +32,7 @@ class Spareparts extends \yii\db\ActiveRecord
     public function rules()
     {
         return [
-            [['spare_type_id', 'name', 'code', 'description','rate'], 'required'],
+            [[ 'name', 'code'], 'required'],
             [['spare_type_id', 'status'], 'integer'],
             [['description','tax_enabled'], 'string'],
 			[['tax_rate','rate'], 'number'],
@@ -64,7 +64,9 @@ class Spareparts extends \yii\db\ActiveRecord
     public function getSparetype(){
         return $this->hasOne(Sparetypes::className(), ['id' => 'spare_type_id']);
     }
-
+    public function getParent(){
+        return $this->hasOne(Itemgroup::className(), ['id' => 'itemgroup_id']);
+    }
     public function getGroup(){
         return $this->hasOne(Itemtype::className(), ['id' => 'item_type_id']);
     }

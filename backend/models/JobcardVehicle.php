@@ -16,6 +16,7 @@ use Yii;
  */
 class JobcardVehicle extends \yii\db\ActiveRecord
 {
+    public $manufacturer;
     /**
      * {@inheritdoc}
      */
@@ -30,11 +31,11 @@ class JobcardVehicle extends \yii\db\ActiveRecord
     public function rules()
     {
         return [
-            [['reg_num', 'chasis_num', 'make', 'model', 'color'], 'required'],         
-            [['extended_warranty_type', 'amc_type', 'ew_expiry_kms'], 'integer'],  
+            [['reg_num', 'chasis_num', 'make_id', 'model_id', 'color'], 'required'],         
+            [['extended_warranty_type', 'amc_type', 'ew_expiry_kms', 'customer_id'], 'integer'],  
             [['reg_num'], 'unique'],   
             ['chasis_num', 'string', 'min' => 17],
-            [['tr_number', 'amc_expiry_date', 'ew_expiry_kms', 'ew_expiry_date', 'service_schedule', 'reg_num', 'make', 'model'], 'string', 'max' => 300],
+            [['tr_number', 'amc_expiry_date', 'ew_expiry_kms', 'ew_expiry_date', 'service_schedule', 'reg_num', 'make_id', 'model_id'], 'string', 'max' => 300],
         ];
     }
 
@@ -47,8 +48,9 @@ class JobcardVehicle extends \yii\db\ActiveRecord
             'id' => 'ID',
             'reg_num' => 'Veh.Reg.No',
             'chasis_num' => 'Chasis No',
-            'make' => 'Make',
-            'model' => 'Model',
+            'make_id' => 'Make',
+            'model_id' => 'Model',
+            'customer_id' => 'Customer'
         ];
     }
 	public function getAmcType()
@@ -60,4 +62,18 @@ class JobcardVehicle extends \yii\db\ActiveRecord
 	{
 		return $this->hasOne(ExtendedWarrantyType::className(), ['id' => 'extended_warranty_type']);
 	}
+
+    public function getMake()
+    {
+        return $this->hasOne(Make::className(), ['id' => 'make_id']);
+    }
+
+    public function getModel()
+    {
+        return $this->hasOne(CarModel::className(), ['id' => 'model_id']);
+    }
+    public function getCustomer()
+    {
+        return $this->hasOne(Customer::className(), ['id' => 'customer_id']);
+    }
 }

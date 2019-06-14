@@ -139,12 +139,12 @@ $this->registerJs($js, \yii\web\View::POS_HEAD);
                       <li>
                         <?= Html::a('Vehicle Type', ['/vehicletype/index'], ['class'=>'']) ?>
                       </li>
-                      <li>
+                      <!--<li>
                         <?= Html::a('Accessory Types', ['/accessoriestype/index'], ['class'=>'']) ?>
-                      </li>
-                      <li>
+                      </li> -->
+                      <!--<li>
                         <?= Html::a('Spare Types', ['/sparetypes/index'], ['class'=>'']) ?>
-                      </li>                       
+                      </li>-->                       
                       <li>
                         <?= Html::a('Spare Parts', ['/spareparts/index'], ['class'=>'']) ?>
                       </li> 
@@ -165,7 +165,7 @@ $this->registerJs($js, \yii\web\View::POS_HEAD);
                         <?= Html::a('Accessories Groups', ['/itemgroup/index'], ['class'=>'']) ?>
                       </li>
                       <li>
-                        <?= Html::a('Spare Groups', ['/sparegroup/index'], ['class'=>'']) ?>
+                        <?= Html::a('Spare Groups', ['/itemgroup/index','type' => 'spares'] ,['class'=>'']) ?>
                       </li>
                       <li>
                         <h4>Services</h4>

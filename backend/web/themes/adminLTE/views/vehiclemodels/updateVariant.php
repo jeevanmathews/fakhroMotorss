@@ -9,7 +9,6 @@ use backend\models\Customfeatures;
 
 /* @var $this yii\web\View */
 /* @var $model backend\models\Vehiclemodels */
-
 $this->title = 'Update Variant: ' . $model->name;
 $this->params['breadcrumbs'][] = ['label' => 'Vehicles', 'url' => ['index']];
 $this->params['breadcrumbs'][] = ['label' => $model->model->name, 'url' => ['view', 'id' => $model->model_id]];

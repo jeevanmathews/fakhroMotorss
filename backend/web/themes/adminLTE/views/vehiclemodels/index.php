@@ -13,6 +13,7 @@ use yii\helpers\ArrayHelper;
 $this->title = 'Vehicles';
 $this->params['breadcrumbs'][] = $this->title;
 ?>
+<div class="content-main-wrapper main-body"  id="vehiclemodels_index">
 <div class="content-main-wrapper">
 
     <section class="content-header">
@@ -104,4 +105,5 @@ $this->params['breadcrumbs'][] = $this->title;
         </div>
           <!-- /.box -->
     </section>
+</div>
 </div>

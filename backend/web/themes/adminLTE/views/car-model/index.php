@@ -34,9 +34,20 @@ $this->params['breadcrumbs'][] = $this->title;
         'filterModel' => $searchModel,
         'columns' => [
             ['class' => 'yii\grid\SerialColumn'],
-
-            'id',
-            'make_id',
+            'id',   
+            [
+                'attribute' => 'manufacturer',                
+                'value' =>function ($model){
+                    return ($model->make->manufacturer->name);
+                }
+            ],      
+            [
+                'attribute' => 'make_id',
+                'label' => 'Make',
+                'value' =>function ($model){
+                    return ($model->make->make);
+                }
+            ],            
             'model',
             'status',
 

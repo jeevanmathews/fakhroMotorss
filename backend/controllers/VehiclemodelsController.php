@@ -44,7 +44,7 @@ class VehiclemodelsController extends Controller
         $searchModel = new VehiclemodelsSearch();
         $dataProvider = $searchModel->search(Yii::$app->request->queryParams);
 
-        return $this->render('index', [
+        return $this->renderAjax('index', [
             'searchModel' => $searchModel,
             'dataProvider' => $dataProvider,
         ]);
@@ -58,7 +58,7 @@ class VehiclemodelsController extends Controller
      */
     public function actionView($id)
     {
-        return $this->render('view', [
+        return $this->renderAjax('view', [
             'model' => $this->findModel($id),
         ]);
     }
@@ -75,10 +75,11 @@ class VehiclemodelsController extends Controller
         $model3 = new Customfeatures();
         $manufacturer = ArrayHelper::map(Manufacturer::find()->all(), 'id', 'name');
         if ($model->load(Yii::$app->request->post()) && $model->save()) {
-            return $this->redirect(['variant', 'id' => $model->id]);
+            echo json_encode(["success" => true, "message" => "Vehicle has been created."]);
+            exit;
         }
 
-        return $this->render('create', [
+        return $this->renderAjax('create', [
             'model' => $model,
             'model2'=> $model2,
             'model3'=> $model3,                    
@@ -131,9 +132,10 @@ class VehiclemodelsController extends Controller
                 $loop++;
             }            
             $model2 = new Variants();
-            Yii::$app->session->setFlash('success', 'Variant has been added.'); 
+            echo json_encode(["success" => true, "message" => "Variant has been created."]);
+            exit;
         }              
-        return $this->render('variants', [
+        return $this->renderAjax('variants', [
             'model'         =>  $model,
             'dataProvider'  =>  $dataProvider,
             'model2'        =>  $model2,
@@ -154,10 +156,11 @@ class VehiclemodelsController extends Controller
         $types= ArrayHelper::map(Vehicletype::find()->all(), 'id', 'name');
         $manufacturer = ArrayHelper::map(Manufacturer::find()->all(), 'id', 'name');
         if ($model->load(Yii::$app->request->post()) && $model->save()) {
-            return $this->redirect(['view', 'id' => $model->id]);
+           echo json_encode(["success" => true, "message" => "Vehicle has been updated."]);
+            exit;
         }
 
-        return $this->render('update', [
+        return $this->renderAjax('update', [
             'model' => $model,
             'types'=>$types,
             'manufacturer'=>$manufacturer,
@@ -171,7 +174,7 @@ class VehiclemodelsController extends Controller
         ]);
            $dataProvider->query->andWhere(['variant_id'=>$model->id]);
            // var_dump($dataProvider->getModels());die;
-         return $this->render('features', [
+         return $this->renderAjax('features', [
             'dataProvider' => $dataProvider,
             'model'=>$model,
             'check'=>array(),
@@ -228,7 +231,7 @@ class VehiclemodelsController extends Controller
                 Yii::$app->db->createCommand("DELETE FROM `variant_features` WHERE `id` not in (".implode(",", $variantFeatures).") and variant_id = ".$model->id)->execute();
             } 
         }
-        return $this->render('updateVariant', [          
+        return $this->renderAjax('updateVariant', [          
             'model' => $model,
             'features' => $model->variantfeaturesArray(), 
             'custumFeature' => $custumFeature,
@@ -260,7 +263,8 @@ class VehiclemodelsController extends Controller
         $model = $this->findModel($id);
         $model->status = ($model->status == 0)?1:0;
         $model->save();
-        return $this->redirect(['index']);
+        echo json_encode(["success" => true, "message" => "Status has been changed."]);
+            exit;
     }
     /**
      * Deletes an existing Vehiclemodels model.
@@ -278,10 +282,11 @@ class VehiclemodelsController extends Controller
             // var_dump(Yii::$app->request->post());die;
             $model1= Customfeatures::findOne($id);
             if ($model1->load(Yii::$app->request->post()) && $model1->save()) {
-                return $this->redirect(['variantfeatures', 'id' => $model->varient[0]->model_id]);
+               echo json_encode(["success" => true, "message" => "Feature has been changed."]);
+            exit;
             }
         }
-        return $this->render('update_features', [
+        return $this->renderAjax('update_features', [
         'model' => $model,
         'features'=>$features,
         ]);
@@ -342,7 +347,7 @@ class VehiclemodelsController extends Controller
 
 
 
-         return $this->render('addfeatures', [
+         return $this->renderAjax('addfeatures', [
         'model' => $model,
         'vehicle'=>$vehicle,
         'features'=>$features,

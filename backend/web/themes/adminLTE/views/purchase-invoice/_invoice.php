@@ -101,7 +101,7 @@ use yii\widgets\DetailView;
                                         <table width="100%" cellpadding="0" cellspacing="0" style="border-collapse: collapse;">
                                             <tr>
                                                 <td width="40%" style="padding: 3px 0; font-size: 14px; font-weight: 700;">Invoice No</td>
-                                                <td width="60%" style="padding: 3px 0; font-size: 14px;">: <?=$invoice->prefix->prefix.'-'.$invoice->inv_number;?></td>
+                                                <td width="60%" style="padding: 3px 0; font-size: 14px;">: <?=$invoice->prefix->prefix.' '.$invoice->inv_number;?></td>
                                             </tr>
                                             <tr>
                                                 <td width="40%" style="padding: 3px 0; font-size: 14px; font-weight: 700;">Invoice Date</td>
@@ -111,12 +111,13 @@ use yii\widgets\DetailView;
                                                 <td width="40%" style="padding: 3px 0; font-size: 14px; font-weight: 700;">Invoice By</td>
                                                 <td width="60%" style="padding: 3px 0; font-size: 14px;">: <?php echo $invoice->user->firstname?></td>
                                             </tr>
-                                            <tr>
-                                                <td width="40%" style="padding: 3px 0; font-size: 14px; font-weight: 700;">Invoice No</td>
-                                                <td width="60%" style="padding: 3px 0; font-size: 14px;">: <?php if(isset($invoice->po)){echo $invoice->po->prefix->prefix.'-'.$invoice->po->po_number;}else if(isset($model->grn)){echo $model->grn->prefix->prefix.'-'.$model->grn->grn_number;};?>
+                                           <?php if(isset($invoice->po)) :?> <tr>
+                                                <td width="40%" style="padding: 3px 0; font-size: 14px; font-weight: 700;">PO No</td>
+                                                <td width="60%" style="padding: 3px 0; font-size: 14px;">: <?php if(isset($invoice->po)){echo $invoice->po->prefix->prefix.' '.$invoice->po->po_number;}else if(isset($model->grn)){echo $model->grn->prefix->prefix.'-'.$model->grn->grn_number;};?>
                                                  
                                                  </td>
                                             </tr>
+                                        <?php endif; ?>
                                            
                                         </table>
                                     </td>

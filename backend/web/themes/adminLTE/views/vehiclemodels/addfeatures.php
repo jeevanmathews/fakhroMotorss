@@ -13,6 +13,7 @@ $this->params['breadcrumbs'][] = ['label' => 'Vehicles', 'url' => ['index']];
 // $this->params['breadcrumbs'][] = ['label' => $model->name, 'url' => ['view', 'id' => $model->id]];
 $this->params['breadcrumbs'][] = 'Variant features';
 ?>
+<div class="vehiclemodels-addfeatures main-body" id="vehiclemodels_addfeatures">
 <div class="content-main-wrapper">
 	<!-- Content Header (Page header) -->
 	<section class="content-header">
@@ -192,3 +193,4 @@ $(document).ready(function(){
 			$(this).closest('.divfeatures').find('.value_div').removeClass('col-md-4');
 		}
 	}); -->
+</div>

@@ -10,6 +10,7 @@ use yii\grid\GridView;
 $this->title = 'Features  :'.$model->name;
 $this->params['breadcrumbs'][] = $this->title;
 ?>
+<div class="vehiclemodels-features main-body" id="vehiclemodels_features">
 <div class="content-main-wrapper">
 
     <section class="content-header">
@@ -90,4 +91,5 @@ $this->params['breadcrumbs'][] = $this->title;
         </div>
           <!-- /.box -->
     </section>
+</div>
 </div>

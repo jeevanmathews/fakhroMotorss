@@ -33,11 +33,12 @@ class ItemgroupController extends Controller
      * Lists all itemgroup models.
      * @return mixed
      */
-    public function actionIndex()
+    public function actionIndex($type="accessories")
     {
-         $itemgroup = Yii::$app->db->createCommand("select id, parent_id as parent,category_name from itemgroup")->queryAll();
+         $itemgroup = Yii::$app->db->createCommand("select id, parent_id as parent,category_name from itemgroup where type='$type'")->queryAll();
         return $this->renderAjax('index', [
             'itemgroup' => $itemgroup,
+            'type' =>$type,
         ]);
     }
 
@@ -59,7 +60,7 @@ class ItemgroupController extends Controller
      * If creation is successful, the browser will be redirected to the 'view' page.
      * @return mixed
      */
-    public function actionCreate()
+    public function actionCreate($type)
     {
         $model = new itemgroup();
 	
@@ -88,8 +89,8 @@ class ItemgroupController extends Controller
 		}
 		if($model->save())
         {
-		echo json_encode(["success" => true, "message" => "Department has been created."]);
-
+		echo json_encode(["success" => true, "message" => "Itemgroup has been created."]);
+        exit;
 		}
 		else
 		{
@@ -99,6 +100,7 @@ class ItemgroupController extends Controller
 
         return $this->renderAjax('create', [
             'model' => $model,
+            'type'=>$type,
         ]);
     }
 
@@ -109,7 +111,7 @@ class ItemgroupController extends Controller
      * @return mixed
      * @throws NotFoundHttpException if the model cannot be found
      */
-    public function actionUpdate($id)
+    public function actionUpdate($id,$type)
     {
 		$model = $this->findModel($id);
 		if ($model->load(Yii::$app->request->post())) {
@@ -138,7 +140,7 @@ class ItemgroupController extends Controller
 		if($model->save())
         {
 		echo json_encode(["success" => true, "message" => "Itemgroup has been updated."]);
-
+        exit;
 		}
 		else
 		{
@@ -146,8 +148,9 @@ class ItemgroupController extends Controller
 		}
         }
 
-        return $this->renderAjax('update', [
+        return $this->render('update', [
             'model' => $model,
+            'type' =>$type,
         ]);
     }
 	/*public function actionAccessories()

@@ -11,7 +11,7 @@ $this->params['breadcrumbs'][] = ['label' => 'Accessories', 'url' => ['index']];
 $this->params['breadcrumbs'][] = $this->title;
 \yii\web\YiiAsset::register($this);
 ?>
-
+<div class="accessories-view main-body" id="accessories_view">
 
 <div class="content-main-wrapper">
     <!-- Content Header (Page header) -->
@@ -42,11 +42,16 @@ $this->params['breadcrumbs'][] = $this->title;
                     <?= DetailView::widget([
                         'model' => $model,
                         'attributes' => [
-                        // 'id',
-                        [
-                        'label'=>'Accessory Type',
-                        'value'=>$model->accessorytype->name,
+                         [
+                        'label'=>'Accessory Group',
+                        'value'=>(isset($model->parent)?$model->parent->category_name:''),
                         ],
+
+                        // 'id',
+                        // [
+                        // 'label'=>'Accessory Type',
+                        // 'value'=>$model->accessorytype->name,
+                        // ],
                         //  [
                         // 'label'=>'Item Type',
                         // 'value'=>$model->group->name,
@@ -76,5 +81,6 @@ $this->params['breadcrumbs'][] = $this->title;
     </div>
 </div>
 </section>
+</div>
 </div>
 </div>

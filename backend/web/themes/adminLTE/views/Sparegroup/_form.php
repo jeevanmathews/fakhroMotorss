@@ -3,7 +3,8 @@ use yii\helpers\Html;
 use yii\widgets\ActiveForm;
 use common\components\AutoForm;
 use yii\helpers\ArrayHelper;
-use backend\models\Itemgroup;
+
+use backend\models\Sparegroup;
 
 
 /* @var $this yii\web\View */
@@ -18,11 +19,11 @@ use backend\models\Itemgroup;
          <div class="col-md-6">  		
 <?=
 $form->field($model, 'type')->dropDownList(
-				['accessories' => 'Accessories', 'spares' => 'Spares'],
+				['spares' => 'Spares','accessories' =>'Accessories'],
 				 ['prompt' => 'Select Type','class' => 'form-control select2 type',	
 				
 		    'onchange'=>'
-                $.get( "'.Yii::$app->getUrlManager()->createUrl('itemgroup/lists').'&parent_id=0&type="+$(this).val(), function( data ) {
+                $.get( "'.Yii::$app->getUrlManager()->createUrl('sparegroup/lists').'&parent_id=0&type="+$(this).val(), function( data ) {
 			    $( "div#itemlists" ).html(data);
            });
       ']);
@@ -62,9 +63,13 @@ else
 </div>
  <div class="box-footer">       
  <?= Html::submitButton('Save', ['class' => 'btn btn-success']) ?>
-    </di                                                                                                                                                                                                                                                             v>
+    </div>
 
    <?php AutoForm::end(); ?>
 
 </div>
-
+<script>
+var type='<?php echo $type ?>';
+$("#sparegroup-type").val(type).trigger('change');
+$("#sparegroup-type").val(type);
+</script>

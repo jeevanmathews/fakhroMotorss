@@ -67,7 +67,8 @@ class MakeController extends Controller
         $model = new Make();
 
         if ($model->load(Yii::$app->request->post()) && $model->save()) {
-            return $this->redirect(['view', 'id' => $model->id]);
+            echo json_encode(["success" => true, "message" => "Make has been created"]);
+            exit;
         }
 
         return $this->renderAjax('create', [
@@ -87,9 +88,9 @@ class MakeController extends Controller
         $model = $this->findModel($id);
 
         if ($model->load(Yii::$app->request->post()) && $model->save()) {
-            return $this->redirect(['view', 'id' => $model->id]);
+            echo json_encode(["success" => true, "message" => "Make has been updated"]);
+            exit;
         }
-
         return $this->renderAjax('update', [
             'model' => $model,
         ]);

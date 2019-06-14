@@ -38,17 +38,36 @@ $this->params['breadcrumbs'][] = $this->title;
                         <?= GridView::widget([
                             'dataProvider' => $dataProvider,                            
                             'columns' => [
-                                ['class' => 'yii\grid\SerialColumn'],
+                                //['class' => 'yii\grid\SerialColumn'],
                                 'reg_num',                               
                                  [
                                     'attribute' => 'chasis_num',
-                              
+                                    'format' => 'html',    
                                     'value' =>function ($model){
-                                        return substr($model->chasis_num, 0, 8)."...";
+                                        return substr($model->chasis_num, 0, 3)."..."."<span class='hide'>".$model->chasis_num."</span>";
                                     }
                                 ],
-                                'make',
-                                'model',
+                                [
+                                    'label' => 'Manufacturer',
+                                    'format' => 'html',
+                                    'value' =>function ($model){
+                                        return utf8_decode($model->make->manufacturer->name)."<span class='hide'>".$model->make->manufacturer_id."</span>";
+                                    }
+                                ], 
+                                [
+                                    'label' => 'Make',
+                                    'format' => 'html',
+                                    'value' =>function ($model){
+                                        return utf8_decode($model->make->make)."<span class='hide'>".$model->make_id."</span>";
+                                    }
+                                ],  
+                                [
+                                    'label' => 'Model',
+                                    'format' => 'html',
+                                    'value' =>function ($model){
+                                        return utf8_decode($model->model->model)."<span class='hide'>".$model->model_id."</span>";
+                                    }
+                                ], 
                                 'color',
                                 ['class' => 'yii\grid\ActionColumn',
                                   'template' => '{select}',
@@ -89,14 +108,23 @@ $this->params['breadcrumbs'][] = $this->title;
         $.ajaxSetup({async: true});
     }
 
-    var vehicle_ary = ['jobcardvehicle-reg_num', 'jobcardvehicle-chasis_num', 'jobcardvehicle-make', 'jobcardvehicle-model', 'jobcardvehicle-color'];
+    var vehicle_ary = ['jobcardvehicle-reg_num', 'jobcardvehicle-chasis_num', 'jobcardvehicle-manufacturer', 'jobcardvehicle-make_id', 'jobcardvehicle-model_id', 'jobcardvehicle-color'];
 
     $(document).on('click', "[class='jobc-vehicle']", function(){
         $(this).closest("tr").children().each(function(index){
-            if($.inArray(index, [0,1])){
-                $("#"+vehicle_ary[index-1]).val($(this).html());
-                console.log(vehicle_ary[index-1]);
-            }
+                if($(this).html().indexOf('<span class="hide">') != -1){
+                    var col_val = $(this).html().substring($(this).html().indexOf('<span class="hide">'), $(this).html().indexOf('</span>'));
+                    col_val = col_val.replace('<span class="hide">',"");
+                    console.log(vehicle_ary[index]);
+                    $("#"+vehicle_ary[index]).val(col_val);
+                    if(vehicle_ary[index] == "jobcardvehicle-manufacturer"){
+                        $("#"+vehicle_ary[index]).val(col_val).trigger("change");
+                    }else if(vehicle_ary[index] == "jobcardvehicle-make_id"){console.log("34"+col_val)
+                        $("#"+vehicle_ary[index]).val(col_val).trigger("change");
+                    }
+                }else{
+                    $("#"+vehicle_ary[index]).val($(this).html());
+                } 
         })
         $(".close-modal").trigger("click");
     });

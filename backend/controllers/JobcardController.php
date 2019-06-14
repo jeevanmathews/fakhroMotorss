@@ -95,6 +95,8 @@ class JobcardController extends Controller
               }else{
                 $customer->save();
                 $model->customer_id = $customer->id;
+                $vehicle->customer_id = $customer->id;
+                $vehicle->save();
               }  
             }
             if($model->save()){

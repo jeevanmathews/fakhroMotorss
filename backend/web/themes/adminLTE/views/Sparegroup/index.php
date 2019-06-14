@@ -7,7 +7,7 @@ use yii\grid\GridView;
 /* @var $searchModel backend\models\ItemgroupSearch */
 /* @var $dataProvider yii\data\ActiveDataProvider */
 
-$this->title = 'Itemgroups';
+$this->title = 'Sparegroups';
 $this->params['breadcrumbs'][] = $this->title;
 ?>
 
@@ -91,12 +91,12 @@ $this->params['breadcrumbs'][] = $this->title;
         <div class="row">
         <div class="col-md-12"> 
             <p>
-                <?= Html::a('Create Itemgroup', ['create'], ['class' => 'btn btn-success']) ?>
+                <?= Html::a('Create ', ['create', 'type' => $type], ['class' => 'btn btn-success']) ?>
             </p>
         	<div class="container" style="margin-top:30px;">
                 <div class="row">
                     <div class="col-md-12">        
-                        <?php Yii::$app->common->buildTree($itemgroup, 0, 1);?>
+                        <?php Yii::$app->common->buildTree($sparegroup, 0, 1);?>
                     </div>
             	</div>
             </div>

@@ -1,16 +1,20 @@
 <?php
 
 use yii\helpers\Html;
+use yii\widgets\Breadcrumbs;
 
 /* @var $this yii\web\View */
 /* @var $model backend\models\itemgroup */
 
-$this->title = 'Update Itemgroup: ' . $model->id;
-$this->params['breadcrumbs'][] = ['label' => 'Itemgroups', 'url' => ['index']];
-$this->params['breadcrumbs'][] = ['label' => $model->id, 'url' => ['view', 'id' => $model->id]];
-$this->params['breadcrumbs'][] = 'Update';
+$this->title = " Update" . $type ;
+$this->params['breadcrumbs'][] = ['label' => $type, 'url' => ['index','type' => $type]];
+$this->params['breadcrumbs'][] = $this->title;
+
 ?>
 <div class="main-body" id="itemgroup_update">
+<?= Breadcrumbs::widget([
+        'links' => isset($this->params['breadcrumbs']) ? $this->params['breadcrumbs'] : [],
+        ]) ?>
 <div class="content-main-wrapper">
 <!-- Content Header (Page header) -->
     <section class="content-header">
@@ -22,6 +26,7 @@ $this->params['breadcrumbs'][] = 'Update';
      <div class="box box-default">
     	<?= $this->render('_form', [
         'model' => $model,
+        'type'=>$type
     	]) ?>
 	</div>
     </section>

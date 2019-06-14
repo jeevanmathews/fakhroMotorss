@@ -14,7 +14,7 @@ use backend\models\PrefixMaster;
 
 $vat_format=Yii::$app->common->company->vat_format;
 ?>
-<?php $form = AutoForm::begin(); ?>
+<?php $form = AutoForm::begin(["id" => "purchase-return-".time().(($model->isNewRecord)?"createprtn":"update")."-form"]); ?>
     <div class="col-md-6"> 
         <?= $form->field($model1,'grn_id', ['inputOptions' => ["class" => "select_grn form-control select2"]])->dropDownList(ArrayHelper::map(GoodsReceiptNote::find()->where(["status" => 1])->andWhere(['!=', 'process_status', 'completed'])->all(), 'id', function($model) {
         return (($model->prefix)?$model->prefix->prefix.'-':'').$model['grn_number'];

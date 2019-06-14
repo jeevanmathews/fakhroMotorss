@@ -15,7 +15,7 @@ use backend\models\PrefixMaster;
 $vat_format=Yii::$app->common->company->vat_format;
 ?>
 
-<?php $form = AutoForm::begin(['id'=>'poform']); ?>
+<?php $form = AutoForm::begin(["id" => "purchase-return-".time().(($model->isNewRecord)?"create":"update")."-form"]); ?>
 <div class="box-body">
   <div class="row">
    <?php if($type=='create'): ?>

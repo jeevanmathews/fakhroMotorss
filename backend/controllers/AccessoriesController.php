@@ -65,10 +65,15 @@ class AccessoriesController extends Controller
     public function actionCreate()
     {
         $model = new Accessories();
-
-        if ($model->load(Yii::$app->request->post()) && $model->save()) {
-            Yii::$app->session->setFlash('success', 'Accessory has been created succesfully!');
-            return $this->redirect(['view', 'id' => $model->id]);
+        // if(Yii::$app->request->post()):
+        //     var_dump(Yii::$app->request->post());die;
+        // endif;
+        if ($model->load(Yii::$app->request->post())) {
+            $result=Yii::$app->request->post();
+            $model->itemgroup_id=end($result['parent_id']);
+            $model->save();
+            echo json_encode(["success" => true, "message" => "Accessory has been created."]);
+            exit;
         }
 
         return $this->renderAjax('create', [
@@ -114,11 +119,16 @@ class AccessoriesController extends Controller
         $model = $this->findModel($id);
         $model->status = ($model->status == 0)?1:0;
         if($model->save()){
-              Yii::$app->session->setFlash('success', 'Status has been changed!');
-              return $this->redirect(['index']);
+              echo json_encode(["success" => true, "message" => "Status has been changed."]);
+            exit;
           }
         
     }
+
+    public function actionLists($type="accessories",$parent_id) 
+     {
+        return $this->renderPartial('_itemdropdown',compact('parent_id','type')); 
+     }
     /**
      * Finds the Accessories model based on its primary key value.
      * If the model is not found, a 404 HTTP exception will be thrown.

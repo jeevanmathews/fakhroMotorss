@@ -9,7 +9,7 @@ $this->title = 'Create Purchase Invoice';
 $this->params['breadcrumbs'][] = ['label' => 'Purchase Orders', 'url' => ['index']];
 $this->params['breadcrumbs'][] = $this->title;
 ?>
-<div class="purchase-invoice-create main-body" id="purchase-invoice_create">
+<div class="purchase-invoice-createopinv main-body" id="purchase-invoice_createpoinv">
 		<?= Breadcrumbs::widget([
         'links' => isset($this->params['breadcrumbs']) ? $this->params['breadcrumbs'] : [],
        ]) ?>

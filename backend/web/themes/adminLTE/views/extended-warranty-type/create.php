@@ -1,7 +1,7 @@
 <?php
 
 use yii\helpers\Html;
-
+use yii\widgets\Breadcrumbs;
 /* @var $this yii\web\View */
 /* @var $model backend\models\ExtendedWarrantyType */
 
@@ -10,6 +10,9 @@ $this->params['breadcrumbs'][] = ['label' => 'Extended Warranty Types', 'url' =>
 $this->params['breadcrumbs'][] = $this->title;
 ?>
 <div class="content-main-wrapper main-body" id="extended-warranty-type_create">
+<?= Breadcrumbs::widget([
+        'links' => isset($this->params['breadcrumbs']) ? $this->params['breadcrumbs'] : [],
+        ]) ?>
 <!-- Content Header (Page header) -->
     <section class="content-header">
 

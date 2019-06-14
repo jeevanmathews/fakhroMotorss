@@ -5,6 +5,7 @@ use yii\grid\GridView;
 use yii\helpers\ArrayHelper;
 use backend\models\Accessoriestype;
 use backend\models\Itemtype;
+use backend\models\Itemgroup;
 /* @var $this yii\web\View */
 /* @var $searchModel backend\models\AccessoriesSearch */
 /* @var $dataProvider yii\data\ActiveDataProvider */
@@ -39,12 +40,16 @@ $this->params['breadcrumbs'][] = $this->title;
                             ['class' => 'yii\grid\SerialColumn'],
 
                             // 'id',
-                           
-                             [
-                            'label'=>'Accessory Type',
-                            'value'=>'accessorytype.name',
-                            'filter' => Html::activeDropDownList($searchModel, 'accessories_type_id', ArrayHelper::map(Accessoriestype::find()->all(), 'id', 'name'),['class'=>'form-control','prompt' => 'Search by Type']),
-                            ],
+                           [
+                        'label'=>'Accessory Type',
+                        'value'=>'parent.category_name',
+                        'filter' => Html::activeDropDownList($searchModel, 'itemgroup_id', ArrayHelper::map(Itemgroup::find()->where(['type'=>'spares'])->all(), 'id', 'category_name'),['class'=>'form-control','prompt' => 'Search by Type']),
+                        ],
+                            //  [
+                            // 'label'=>'Accessory Type',
+                            // 'value'=>'accessorytype.name',
+                            // 'filter' => Html::activeDropDownList($searchModel, 'accessories_type_id', ArrayHelper::map(Accessoriestype::find()->all(), 'id', 'name'),['class'=>'form-control','prompt' => 'Search by Type']),
+                            // ],
                             // [
                             // 'label'=>'Item Type',
                             // 'value'=>'group.name',

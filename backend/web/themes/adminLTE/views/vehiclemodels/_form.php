@@ -14,7 +14,7 @@ use yii\helpers\ArrayHelper;
 ?>
 
 <div class="vehiclemodels-form">
-	<?php $form = AutoForm::begin(); ?>
+	<?php $form = AutoForm::begin(["id" => "vehiclemodels-".time().(($model->isNewRecord)?"create":"update")."-form"]); ?>
 	<div class="box-body">
 		<div class="row">
 			<div class="col-md-12">   
@@ -46,7 +46,7 @@ use yii\helpers\ArrayHelper;
 
 			</div>
 			<?php AutoForm::end(); ?>
-</div>
+
 <script>
 	$('.btn_add_variant').on('click',function(){
 		var clone=$('.mainclone').clone();
@@ -87,3 +87,4 @@ use yii\helpers\ArrayHelper;
 	// 	$(this).html('Add New');
 	// });
 </script>
+</div>

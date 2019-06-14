@@ -5,7 +5,7 @@ use yii\helpers\Html;
 /* @var $this yii\web\View */
 /* @var $model backend\models\itemgroup */
 
-$this->title = 'Update Itemgroup: ' . $model->id;
+$this->title = 'Update Sparegroup: ' . $model->id;
 $this->params['breadcrumbs'][] = ['label' => 'Itemgroups', 'url' => ['index']];
 $this->params['breadcrumbs'][] = ['label' => $model->id, 'url' => ['view', 'id' => $model->id]];
 $this->params['breadcrumbs'][] = 'Update';

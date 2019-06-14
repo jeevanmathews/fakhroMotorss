@@ -14,7 +14,8 @@ use backend\models\User;
 $this->title = 'Purchase Return';
 $this->params['breadcrumbs'][] = $this->title;
 ?>
-<div class="content-main-wrapper">
+<div class="content-main-wrapper main-body"  id="purchase-return_index">
+<!-- <div class="content-main-wrapper"> -->
 
     <section class="content-header">
       <h1>

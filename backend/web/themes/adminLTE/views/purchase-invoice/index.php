@@ -118,6 +118,20 @@ $this->params['breadcrumbs'][] = $this->title;
                        },
                        ]
                        ],
+
+                       ['class' => 'yii\grid\ActionColumn',
+                       'header'=>'Invoice Print View',
+                       'template' => '{my_button}', 
+                       'buttons' => [
+                       'my_button' => function ($url, $model, $key) {
+                         if($model->process_status!="completed"):
+                           return Html::a('<span class="glyphicon glyphicon-check"></span>', Yii::$app->getUrlManager()->createUrl(['purchase-invoice/invoice', 'id' =>$model->id,]), [
+                              'title' => Yii::t('app', 'Invoice Print View'),
+                              ]);
+                         endif;
+                       },
+                       ]
+                       ],
                      ],
                      'tableOptions' => [
                      'id' => 'theDatatable',

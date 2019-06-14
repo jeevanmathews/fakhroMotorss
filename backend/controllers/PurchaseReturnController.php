@@ -44,7 +44,7 @@ class PurchaseReturnController extends Controller
         $searchModel = new PurchaseReturnSearch();
         $dataProvider = $searchModel->search(Yii::$app->request->queryParams);
 
-        return $this->render('index', [
+        return $this->renderAjax('index', [
             'searchModel' => $searchModel,
             'dataProvider' => $dataProvider,
         ]);
@@ -58,7 +58,7 @@ class PurchaseReturnController extends Controller
      */
     public function actionView($id)
     {
-        return $this->render('view', [
+        return $this->renderAjax('view', [
             'model' => $this->findModel($id),
         ]);
     }
@@ -131,7 +131,8 @@ class PurchaseReturnController extends Controller
                 $modelitem->save(false);
 
             }
-            return $this->redirect(['view', 'id' => $model->id]);
+            echo json_encode(["success" => true, "message" => "Purchase Return has been created."]);
+            exit;
 
 
         // $model = new PurchaseReturn();
@@ -141,7 +142,7 @@ class PurchaseReturnController extends Controller
         // }
     }
 
-        return $this->render('create', [
+        return $this->renderAjax('create', [
             'model' => $model,
             'type'=>'create',
             'model1' => $model1,
@@ -220,9 +221,10 @@ class PurchaseReturnController extends Controller
             $model->save(false);
             
             
-            return $this->redirect(['view', 'id' => $model1->id]);
+           echo json_encode(["success" => true, "message" => "Purchase Return has been created."]);
+            exit;
         }
-        return $this->render('createprtn', [
+        return $this->renderAjax('createprtn', [
             'modelpr' => $modelpr,
             'model'=> $model,
             'model1'=> $model1,
@@ -306,9 +308,10 @@ class PurchaseReturnController extends Controller
             $modelitem->current_stock=$modelstocksave->current_stock;
             $modelitem->save(false);
              }
-            return $this->redirect(['view', 'id' => $model1->id]);
+           echo json_encode(["success" => true, "message" => "Purchase Return has been created."]);
+            exit;
         }
-        return $this->render('createprtninv', [
+        return $this->renderAjax('createprtninv', [
             'modelpr' => $modelpr,
             'model'=> $model,
             'model1'=> $model1,
@@ -380,10 +383,11 @@ class PurchaseReturnController extends Controller
                 $model->process_status='processing';
             }
             $model->save(false);
-            return $this->redirect(['view', 'id' => $model->id]);
+            echo json_encode(["success" => true, "message" => "Purchase Return has been updated."]);
+            exit;
         }
 
-        return $this->render('update', [
+        return $this->renderAjax('update', [
             'model' => $model,
             'type'  =>'update',
         ]);
@@ -406,7 +410,7 @@ class PurchaseReturnController extends Controller
     public function actionPodetails(){
         $do_id=Yii::$app->request->post('do_id');
         $modelpr=GoodsReceiptNote::find()->where(['id'=>(int) $do_id])->one();
-         return $this->render('create', [
+         return $this->renderAjax('create', [
             'modelpr' => $modelpr,
         ]);
     }
@@ -415,7 +419,8 @@ class PurchaseReturnController extends Controller
         $model = $this->findModel($id);
         $model->status = ($model->status == 0)?1:0;
         $model->save();
-        return $this->redirect(['index']);
+        echo json_encode(["success" => true, "message" => "Status has been changed."]);
+            exit;
     }
     /**
      * Finds the PurchaseReturn model based on its primary key value.

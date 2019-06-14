@@ -17,8 +17,8 @@ class JobcardVehicleSearch extends JobcardVehicle
     public function rules()
     {
         return [
-            [['id', 'amc_type', 'extended_warranty_type', 'ew_expiry_kms'], 'integer'],
-            [['reg_num', 'chasis_num', 'make', 'model', 'color', 'tr_number', 'amc_expiry_date', 'ew_expiry_date', 'service_schedule'], 'safe'],
+            [['id', 'amc_type', 'extended_warranty_type', 'make_id', 'model_id', 'ew_expiry_kms'], 'integer'],
+            [['reg_num', 'chasis_num', 'color', 'tr_number', 'amc_expiry_date', 'ew_expiry_date', 'service_schedule'], 'safe'],
         ];
     }
 
@@ -62,12 +62,12 @@ class JobcardVehicleSearch extends JobcardVehicle
             'amc_type' => $this->amc_type,
             'extended_warranty_type' => $this->extended_warranty_type,
             'ew_expiry_kms' => $this->ew_expiry_kms,
+            'make_id' => $this->make_id,
+            'model_id' => $this->model_id
         ]);
 
         $query->andFilterWhere(['like', 'reg_num', $this->reg_num])
-            ->andFilterWhere(['like', 'chasis_num', $this->chasis_num])
-            ->andFilterWhere(['like', 'make', $this->make])
-            ->andFilterWhere(['like', 'model', $this->model])
+            ->andFilterWhere(['like', 'chasis_num', $this->chasis_num])           
             ->andFilterWhere(['like', 'color', $this->color])
             ->andFilterWhere(['like', 'tr_number', $this->tr_number])
             ->andFilterWhere(['like', 'amc_expiry_date', $this->amc_expiry_date])

@@ -26,7 +26,7 @@ use backend\models\Supplier;
 					<div class="col-md-6 "> 
 					<?=
 				     $form->field($model, 'type')->dropDownList(
-								['accessories' => 'Accessories', 'spares' => 'Spares'],
+								['accessories' => 'Accessories', 'spares' => 'Spares','vehicle'=>'Vehicle'],
 								 ['prompt' => 'Select Type','class' => 'form-control select2 type']	
 								
 						); ?>

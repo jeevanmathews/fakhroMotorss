@@ -5,6 +5,7 @@ namespace backend\controllers;
 use Yii;
 use backend\models\CarModel;
 use backend\models\CarModelSearch;
+use backend\models\Make;
 use yii\web\Controller;
 use yii\web\NotFoundHttpException;
 use yii\filters\VerbFilter;
@@ -52,7 +53,7 @@ class CarModelController extends Controller
      */
     public function actionView($id)
     {
-        return $this->render('view', [
+        return $this->renderAjax('view', [
             'model' => $this->findModel($id),
         ]);
     }
@@ -67,7 +68,8 @@ class CarModelController extends Controller
         $model = new CarModel();
 
         if ($model->load(Yii::$app->request->post()) && $model->save()) {
-            return $this->redirect(['view', 'id' => $model->id]);
+            echo json_encode(["success" => true, "message" => "Model has been created"]);
+            exit;
         }
 
         return $this->renderAjax('create', [
@@ -86,8 +88,9 @@ class CarModelController extends Controller
     {
         $model = $this->findModel($id);
 
-        if ($model->load(Yii::$app->request->post()) && $model->save()) {
-            return $this->redirect(['view', 'id' => $model->id]);
+        if ($model->load(Yii::$app->request->post()) && $model->save()) {            
+            echo json_encode(["success" => true, "message" => "Model has been updated"]);
+            exit;
         }
 
         return $this->renderAjax('update', [
@@ -107,6 +110,32 @@ class CarModelController extends Controller
         $this->findModel($id)->delete();
 
         return $this->redirect(['index']);
+    }
+
+    public function actionMakes($manufacturer_id){
+        $makes = Make::find()->where(['manufacturer_id' => $manufacturer_id])->all();
+        if($makes){
+            echo '<option value="">Select A Make</option>';
+            foreach($makes as $make){
+                echo '<option value="'.$make->id.'">'.$make->make.'</option>';
+            }
+        }else{
+            echo '<option value="">No Records Added</option>';
+        }        
+        exit;
+    }
+
+    public function actionModels($make_id){
+        $models = CarModel::find()->where(['make_id' => $make_id])->all();
+        if($models){
+            echo '<option value="">Select A Model</option>';
+            foreach($models as $model){
+                echo '<option value="'.$model->id.'">'.$model->model.'</option>';
+            }
+        }else{
+            echo '<option value="">No Records Added</option>';
+        }        
+        exit;
     }
 
     /**
