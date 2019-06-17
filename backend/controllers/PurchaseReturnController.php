@@ -13,7 +13,7 @@ use yii\web\NotFoundHttpException;
 use yii\filters\VerbFilter;
 use backend\models\StockHistory;
 use backend\models\Items;
-
+use yii\data\ActiveDataProvider;
 /**
  * PurchaseReturnController implements the CRUD actions for PurchaseReturn model.
  */
@@ -50,6 +50,30 @@ class PurchaseReturnController extends Controller
         ]);
     }
 
+
+    public function actionReturn($id){
+        $return =$this->findModel($id);
+
+        $itemsquery = PurchaseReturnItems::find();
+        // $materialquery = JobcardInvoiceMaterial::find();
+        
+        $itemsquery->andFilterWhere([
+            'prtn_id' => $return->id,
+        ]);
+        $itemsdataProvider = new ActiveDataProvider([
+            'query' => $itemsquery,
+            'sort' => false
+        ]);
+
+        // $materialquery->andFilterWhere([
+        //     'return_id' => $return->id,
+        // ]);
+        // $materialdataProvider = new ActiveDataProvider([
+        //     'query' => $materialquery,
+        //     'sort' => false
+        // ]);       
+        return $this->renderAjax('_return',compact('return','itemsdataProvider'));
+    }
     /**
      * Displays a single PurchaseReturn model.
      * @param integer $id

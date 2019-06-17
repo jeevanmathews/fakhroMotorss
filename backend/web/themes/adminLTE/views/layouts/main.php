@@ -14,8 +14,16 @@ AppAsset::register($this);
 
 $this->registerJsFile($this->theme->getUrl('js/common.js'),['position' => \yii\web\View::POS_END]);
 $jsUrl = Yii::$app->getUrlManager()->createUrl(['common/validate-entry']);
+$jc_vehicle_info_url = Yii::$app->getUrlManager()->createUrl(['jobcard/vehicle-info']);
+$jc_vehicle_search_url = Yii::$app->getUrlManager()->createUrl(['jobcard/search-vehicle']);
+$jc_customer_search_url = Yii::$app->getUrlManager()->createUrl(['jobcard/search-customer']);
+$jc_create_task_url = Yii::$app->getUrlManager()->createUrl(['tasks/create']);
 $js = <<< JS
 var jsUrl = '$jsUrl' ;
+var jc_vehicle_info_url = '$jc_vehicle_info_url';
+var jc_vehicle_search_url = '$jc_vehicle_search_url';
+var jc_customer_search_url = '$jc_customer_search_url';
+var jc_create_task_url = '$jc_create_task_url';
 JS;
 $this->registerJs($js, \yii\web\View::POS_HEAD);
 
@@ -215,7 +223,10 @@ $this->registerJs($js, \yii\web\View::POS_HEAD);
                       </li> 
                       <li>
                         <?= Html::a('Model', ['/car-model'], ['class'=>'']) ?>
-                      </li>                    
+                      </li> 
+                        <li>
+                        <?= Html::a('Customer', ['/customer/index'], ['class'=>'']) ?>
+                      </li>                   
                     </ul>
                   </li> 
                   <!-- <li class="dropdown">
@@ -506,6 +517,9 @@ $this->registerJs($js, \yii\web\View::POS_HEAD);
           return true;
         }else if($(this).hasClass("generate-invoice")){
           $("[class*='confirm-payment']").modal().hide();
+          return true;
+        }
+        else if($(this).hasClass("change_status")){ //Check for other clicks
           return true;
         }
         

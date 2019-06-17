@@ -84,7 +84,7 @@ class TasksController extends Controller
 		$min = (intval($res['minutes']));	
 		
 		$total_min = $day_in_min+$hour_in_min+$min;
-		$model->total_time = $total_min;
+		$model->total_time = $total_min; 
 			if($model->save())
             {
                 if(isset($res['jobcard_id'])){

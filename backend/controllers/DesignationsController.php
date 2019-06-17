@@ -114,9 +114,13 @@ class DesignationsController extends Controller
     public function actionChangeStatus($id){
         $model = $this->findModel($id);
         $model->status = ($model->status == 0)?1:0;
-        $model->save();
-        echo json_encode(["success" => true, "message" => "Deisgnation status has been changed."]);
-            exit;
+        // $model->save();
+        // echo json_encode(["success" => true, "message" => "Deisgnation status has been changed."]);
+        //     exit;
+        if($model->save()){
+            echo json_encode(["success" => true, "message" => "Deisgnation status has been changed", 'redirect' => Yii::$app->getUrlManager()->createUrl(['designations/index'])]);
+         exit;
+        }
     }
     
     /**

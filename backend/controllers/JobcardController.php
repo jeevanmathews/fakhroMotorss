@@ -91,15 +91,16 @@ class JobcardController extends Controller
             }   
             if($customer->load(Yii::$app->request->post())) {
                 if($jc_customer = Customer::find()->where(["email" => $customer->email])->one()){
-                  $model->customer_id = $jc_customer->id;  
-              }else{
+                  $model->customer_id = $jc_customer->id; 
+
+                }else{
                 $customer->save();
                 $model->customer_id = $customer->id;
-                $vehicle->customer_id = $customer->id;
-                $vehicle->save();
               }  
             }
             if($model->save()){
+                $model->vehicle->customer_id = $model->customer_id;                
+                $model->vehicle->save();
                 echo json_encode(["success" => true, "message" => "Jobcard has been created", 'redirect' => Yii::$app->getUrlManager()->createUrl(['jobcard/update', 'id' => $model->id])]);
                 exit;
             }            
@@ -246,7 +247,10 @@ class JobcardController extends Controller
                         }   
                     }                    
                 }
-            }            
+            } 
+            $model->vehicle->customer_id = $model->customer_id;                
+            $model->vehicle->save();  
+
             echo json_encode(["success" => true, "message" => "Jobcard has been updated"]);
             exit;
         }
@@ -508,6 +512,14 @@ class JobcardController extends Controller
             'searchModel' => $searchModel,
             'dataProvider' => $dataProvider,
         ]);
+    }
+
+    public function actionVehicleInfo($vehicle_id){
+        $vehicle = JobcardVehicle::findOne($vehicle_id);//print_r($vehicle);exit;
+        if($vehicle){
+            echo json_encode(['jobcardvehicle-reg_num' => $vehicle->reg_num, 'jobcardvehicle-chasis_num' => $vehicle->chasis_num, 'jobcardvehicle-manufacturer'  => $vehicle->make->manufacturer_id, 'jobcardvehicle-make_id' => $vehicle->make_id, 'jobcardvehicle-model_id' => $vehicle->model_id, 'jobcardvehicle-color' => $vehicle->color, 'customer-name' => ($vehicle->customer)?$vehicle->customer->name:"", 'customer-contact_number' => ($vehicle->customer)?$vehicle->customer->contact_number:""]);
+            exit;
+        }
     }
 
 

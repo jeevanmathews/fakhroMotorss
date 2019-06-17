@@ -16,13 +16,16 @@ use backend\models\CarModel;
 /* @var $this yii\web\View */
 /* @var $model backend\models\Jobcard */
 /* @var $form yii\widgets\ActiveForm */
+
+$time = time();
+
 ?>
 <?php $form = AutoForm::begin(["id" => "jobcard-".time().(($model->isNewRecord)?"create":"update")."-form"]); ?>
     <div class="box-body">
 
         <div class="row"> 
             <div class="col-md-12">
-                <h5 class="heading"><span>Vehicle Details</span> <span class="pull-right"> <?php echo html::button("Search Vehicle", ["class" => "btn btn-link", 'id' => 'search_vehicle'])?></span></h5>
+                <h5 class="heading"><span>Vehicle Details</span> <span class="pull-right"> <?php echo html::button("Search Vehicle", ["class" => "btn btn-link", 'id' => 'search_vehicle_'.$time])?></span></h5>
                 <div class="col-md-6">
 
                    
@@ -34,7 +37,7 @@ use backend\models\CarModel;
                 
             'onchange'=>'
                 $.get( "'.Yii::$app->getUrlManager()->createUrl('car-model/makes').'&manufacturer_id="+$(this).val(), function( data ) {
-                $( "#jobcardvehicle-make_id" ).html(data);
+                $(document).find(".main-body:visible").find( "#jobcardvehicle-make_id" ).html(data);
            });
             ']);?>
 
@@ -44,7 +47,7 @@ use backend\models\CarModel;
                 
             'onchange'=>'
                 $.get( "'.Yii::$app->getUrlManager()->createUrl('car-model/models').'&make_id="+$(this).val(), function( data ) {
-                $( "#jobcardvehicle-model_id" ).html(data);
+                    $(document).find(".main-body:visible").find( "#jobcardvehicle-model_id" ).html(data);
            });
             ']);?>
 
@@ -112,7 +115,7 @@ use backend\models\CarModel;
             <div class="col-md-12">
                 <h5 class="heading">
                 <span>Customer Details</span> 
-                <span class="pull-right"> <?php echo html::button("Search Customer", ["class" => "btn btn-link", 'id' => 'search_customer'])?></span></h5>
+                <span class="pull-right"> <?php echo html::button("Search Customer", ["class" => "btn btn-link", 'id' => 'search_customer_'.$time])?></span></h5>
                 <div class="col-md-6">
 
                    <?= $form->field($customer, 'name')->textInput() ?>
@@ -141,7 +144,7 @@ use backend\models\CarModel;
     </div>
 <?php AutoForm::end(); ?>
 
-<div id="search-info" class="modal">
+<div class="modal" id="search-info-<?php echo $time;?>">
  
 </div>
 
@@ -155,20 +158,5 @@ use backend\models\CarModel;
       yearRange: "1930:2030",
     });
     });
-
-    $(document).on('click', "[id='search_vehicle']", function(){ 
-        $.post('<?=Yii::$app->getUrlManager()->createUrl(['jobcard/search-vehicle'])?>')
-        .done(function( data ) {          
-                 $("#search-info").html(data);  
-                 $("#search-info").modal(); 
-        });
-    });
-    $(document).on('click', "[id='search_customer']", function(){ 
-        $.post('<?=Yii::$app->getUrlManager()->createUrl(['jobcard/search-customer'])?>')
-        .done(function( data ) {          
-                 $("#search-info").html(data);  
-                 $("#search-info").modal(); 
-        });
-    });
-</script>
+   </script>
 

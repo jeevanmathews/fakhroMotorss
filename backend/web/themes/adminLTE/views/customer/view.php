@@ -11,7 +11,7 @@ $this->params['breadcrumbs'][] = ['label' => 'Customers', 'url' => ['index']];
 $this->params['breadcrumbs'][] = $this->title;
 \yii\web\YiiAsset::register($this);
 ?>
-<div class="content-main-wrapper">
+<div class="content-main-wrapper main-body"  id="customer_view">
     <!-- Content Header (Page header) -->
     <section class="content-header">
       <h1>

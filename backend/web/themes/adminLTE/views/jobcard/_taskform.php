@@ -38,6 +38,7 @@ use backend\models\Employees;
         </div>
     <!-- /.box-body -->  
     <div class="box-footer">
+        <?= html::HiddenInput('jobcard_id', $jobcardTask->jobcard_id) ?>
         <?= Html::submitButton('Save', ['class' => 'btn btn-success']) ?>
     </div>
 <?php AutoForm::end(); ?>

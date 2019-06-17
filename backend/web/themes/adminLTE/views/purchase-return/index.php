@@ -15,7 +15,7 @@ $this->title = 'Purchase Return';
 $this->params['breadcrumbs'][] = $this->title;
 ?>
 <div class="content-main-wrapper main-body"  id="purchase-return_index">
-<!-- <div class="content-main-wrapper"> -->
+    <!-- <div class="content-main-wrapper"> -->
 
     <section class="content-header">
       <h1>
@@ -46,29 +46,29 @@ $this->params['breadcrumbs'][] = $this->title;
                         // 'value'=>'grn.grn_number'],
                         // ['label'=>'PO',
                         // 'value'=>'po.po_number'],
-                         [
+                        [
                         'attribute' => 'po_number',
                         'value' =>function ($model){
                             return (isset($model->po)?$model->po->prefix->prefix.'-'.$model->po->po_number:'(Not Set)');
                         },
-                       
+                        
                         ],
-                         [
+                        [
                         'attribute' => 'grn_number',
                         'value' =>function ($model){
                             return (isset($model->grn)?$model->grn->prefix->prefix.'-'.$model->grn->grn_number:'(Not Set)');
                         },
-                       
+                        
                         ],
                         [
                         'attribute' => 'prtn_number',
                         'value' =>function ($model){
                             return (($model->prefix)?$model->prefix->prefix.'-'.$model->prtn_number:'');
                         },
-                       
+                        
                         ],
                         'prtn_date',
-                         [
+                        [
                         'attribute' => 'prtn_created_by',
                         'label'=>'Purchase Invoice By',
                         'value'=>'user.firstname',
@@ -99,9 +99,22 @@ $this->params['breadcrumbs'][] = $this->title;
                         'template' => '{view}{changeStatus}',
                         'buttons' => [
                         'changeStatus' => function ($url, $model, $key) {
-                         $img = ($model->status == 1)?"button_cross.png":"button_tick_alt.png";
-                         $width = ($model->status == 1)?"25":"20";
-                         return Html::a(Html::img($this->theme->getUrl("images/".$img),["width" =>  $width, "title" => (($model->status == 1)?"Disable":"Enable")]), ['change-status', 'id'=>$model->id]);
+                           $img = ($model->status == 1)?"button_cross.png":"button_tick_alt.png";
+                           $width = ($model->status == 1)?"25":"20";
+                           return Html::a(Html::img($this->theme->getUrl("images/".$img),["width" =>  $width, "title" => (($model->status == 1)?"Disable":"Enable")]), ['change-status', 'id'=>$model->id]);
+                       },
+                       ]
+                       ],
+                       ['class' => 'yii\grid\ActionColumn',
+                       'header'=>'Return Print View',
+                       'template' => '{my_button}', 
+                       'buttons' => [
+                       'my_button' => function ($url, $model, $key) {
+                         if($model->process_status!="completed"):
+                             return Html::a('<span class="glyphicon glyphicon-check"></span>', Yii::$app->getUrlManager()->createUrl(['purchase-return/return', 'id' =>$model->id,]), [
+                              'title' => Yii::t('app', 'Return Print View'),
+                              ]);
+                         endif;
                      },
                      ]
                      ],

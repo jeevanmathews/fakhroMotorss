@@ -116,8 +116,8 @@ function validateAttribute(modelName, fieldName, fieldValue, mid, scenario){
     });
   //}
 
-  //Jobcard Task Scripts
-      $("[name='JobcardTask[discount]']").click(function(){ 
+  //Jobcard Task Scripts     
+      $(document).on('click', "[name='JobcardTask[discount]']:visible", function(){  console.log("df888")
         var tabId = $(this).closest(".main-body").attr("tab_id");    
         showDiscount($(this).val(), tabId);
       });
@@ -134,11 +134,11 @@ function validateAttribute(modelName, fieldName, fieldValue, mid, scenario){
    
       $(document).on('change', "#jobcardtask-task_id:visible", function(){
 
-        var tabId = $(this).closest(".main-body").attr("tab_id");
+        var tabId = $(this).closest(".main-body").attr("tab_id");        
         var sel = $(this).find("option:selected").html();
         if($(this).find("option:selected").val() == "0"){            
             $.ajax({
-            url: "<?php echo Yii::$app->getUrlManager()->createUrl(['tasks/create', 'jobcard_id' => $jobcardTask->jobcard_id]);?>",
+            url: jc_create_task_url+'&jobcard_id='+$('div[tab_id="'+tabId+'"]').find("[name='jobcard_id']").val(),
             aSync: false,
             dataType: "html",
             success: function(data) {        
@@ -260,3 +260,103 @@ function validateAttribute(modelName, fieldName, fieldValue, mid, scenario){
             $("[tab_id='"+tabId+"']").find("#discount_percent").removeClass("hide");
         }
     }
+
+//Jobcard Search vehicle scripts
+    $(document).on('keyup', "[id='advanced_search_veh']", function(){    
+        searchVehicle();
+    });
+    $(document).on('keyup', "[id='reg_num']", function(){
+        searchVehicle();
+    });
+
+    function selectVehicle(vehicle_id){       
+        $.ajaxSetup({async: false}); 
+        $.get(jc_vehicle_info_url, {vehicle_id: vehicle_id})
+        .done(function( data ) {
+            responseData = $.parseJSON(data);
+            $.each(responseData, function(key,val) {           
+                if($.inArray(key, ["jobcardvehicle-manufacturer", "jobcardvehicle-make_id"]) != -1){
+                    $(".main-body:visible").find("#"+key).val(val).trigger("change");
+                 }
+                $(".main-body:visible").closest(".main-body").find("#"+key).val(val);
+            }); 
+            $(".close-modal").trigger("click");              
+        });
+        $.ajaxSetup({async: true});
+    }
+
+    function searchVehicle(){      
+        $.ajaxSetup({async: false}); 
+        $.post(jc_vehicle_search_url, {reg_num: $("[id*='search-info']:visible").find("#reg_num").val()})
+        .done(function( data ) {
+            $("[id*='search-info']:visible .grid-view").html($(data).find(".grid-view").html());  
+        });
+        $.ajaxSetup({async: true});
+    }
+
+    $(document).on('click', "[id*='search_vehicle']", function(){ 
+        var elemId = "search-info-"+ $(this).attr("id").replace("search_vehicle_", "");
+        $.post(jc_vehicle_search_url)
+        .done(function( data ) {          
+                 $("#"+elemId).html(data);  
+                 $("#"+elemId).modal(); 
+        });
+    });
+  
+    $(document).on('click', "[id*='search_customer']", function(){ 
+        var elemId = "search-info-"+ $(this).attr("id").replace("search_customer_", "");
+        $.post(jc_customer_search_url)
+        .done(function( data ) {          
+          $("#"+elemId).html(data);  
+          $("#"+elemId).modal(); 
+        });
+    });  
+
+
+    //status change a tag click
+      $(document).on('click', ".change_status", function(e){
+        // alert();
+         if($(this).closest("div").attr("id") == "myNavbar"){
+          $(".nav-item").removeClass("active");          
+          var tabId = "tab_id_"+($(".page_tab").length+1);
+          $( '<li id="'+tabId+'" class="nav-item active"><a class="nav-link page_tab" data-toggle="tab" role="tab" aria-controls="task" aria-selected="false"><span>'+page_id.replace("_","/")+'</span></a><b class="close-tab"><i class="fa fa-times-circle" aria-hidden="true"></i></b></li>' ).appendTo( $( "#myTab" ) );
+        }
+
+        if(tabId == undefined){
+         var tabId = $(this).closest(".main-body").attr("tab_id");         
+        }
+        e.preventDefault();
+      //   $.ajaxSetup({async: false}); 
+          $.ajax({
+          url: $(this).attr("href"),
+          aSync: false,
+          dataType: "html",
+          success: function(data) {
+            //console.log(data);
+              var response = jQuery.parseJSON(data);
+                if(response.redirect != undefined){ 
+                  //console.log(response.redirect );                  
+                  $.get( response.redirect , function( data ) {
+                    $(".main-body").addClass("hide");
+                    if($('div[tab_id="'+tabId+'"]').length){
+                      for(var i=0;i<5;i++){
+                        $('div[tab_id="'+tabId+'"]').next("script").remove();
+                      }
+                    }
+                    $('div[tab_id="'+tabId+'"]').remove();
+                    $(".container-body").append($(data));            
+                    $(document).find(".main-body:visible").attr("tab_id", tabId);                  
+                  });
+                }
+            // $(".main-body").addClass("hide");
+            // $('div[tab_id="'+tabId+'"]').remove();
+            // $(".container-body").append($(data));
+            // $(document).find(".main-body:visible").attr("tab_id", tabId);
+
+            // $("#"+tabId).find("span").html(page_id.replace("_","/"));
+            addMandatoryStar();
+          }});
+      //     $.ajaxSetup({async: true}); 
+       
+      });     
+      

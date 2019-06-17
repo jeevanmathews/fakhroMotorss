@@ -10,7 +10,8 @@ use yii\grid\GridView;
 $this->title = 'Customers';
 $this->params['breadcrumbs'][] = $this->title;
 ?>
-<div class="content-main-wrapper">
+<div class="content-main-wrapper main-body" id="customer_index">
+
 
     <section class="content-header">
       <h1>

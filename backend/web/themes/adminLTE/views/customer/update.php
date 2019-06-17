@@ -1,7 +1,7 @@
 <?php
 
 use yii\helpers\Html;
-
+use yii\widgets\Breadcrumbs;
 /* @var $this yii\web\View */
 /* @var $model backend\models\customer */
 
@@ -10,8 +10,12 @@ $this->params['breadcrumbs'][] = ['label' => 'Customers', 'url' => ['index']];
 $this->params['breadcrumbs'][] = ['label' => $model->name, 'url' => ['view', 'id' => $model->id]];
 $this->params['breadcrumbs'][] = 'Update';
 ?>
-<div class="accessoriestype-create">
 
+<div class="main-body" id="customer_update">
+<?= Breadcrumbs::widget([
+        'links' => isset($this->params['breadcrumbs']) ? $this->params['breadcrumbs'] : [],
+        ]) ?>
+<div class="content-main-wrapper">
 	<div class="content-main-wrapper">
 		<!-- Content Header (Page header) -->
 		<section class="content-header">
@@ -33,4 +37,6 @@ $this->params['breadcrumbs'][] = 'Update';
 			</section>
 		</div>
 
-	</div>
+
+</div>
+</div>

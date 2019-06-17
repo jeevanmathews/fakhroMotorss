@@ -38,6 +38,22 @@ $this->params['breadcrumbs'][] = $this->title;
                 'attribute' => 'id',
                 'value' => 'id',
             ],
+
+            [
+                'label' => 'Customer',
+                'attribute' => 'id',
+                'value' => function($model){
+                    return ($model->customer)?$model->customer->name:"";
+                }
+            ],
+
+            [
+                'label' => 'Vehicle Reg. No',
+                'attribute' => 'id',
+                'value' => function($model){
+                    return $model->vehicle->reg_num;
+                }
+            ],
        
             //'created_date',
             'promised_date',

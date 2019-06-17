@@ -32,10 +32,10 @@ class JobcardVehicle extends \yii\db\ActiveRecord
     {
         return [
             [['reg_num', 'chasis_num', 'make_id', 'model_id', 'color'], 'required'],         
-            [['extended_warranty_type', 'amc_type', 'ew_expiry_kms', 'customer_id'], 'integer'],  
+            [['extended_warranty_type', 'make_id', 'model_id', 'amc_type', 'ew_expiry_kms', 'customer_id'], 'integer'],  
             [['reg_num'], 'unique'],   
             ['chasis_num', 'string', 'min' => 17],
-            [['tr_number', 'amc_expiry_date', 'ew_expiry_kms', 'ew_expiry_date', 'service_schedule', 'reg_num', 'make_id', 'model_id'], 'string', 'max' => 300],
+            [['tr_number', 'amc_expiry_date', 'ew_expiry_kms', 'ew_expiry_date', 'service_schedule', 'reg_num'], 'string', 'max' => 300],
         ];
     }
 

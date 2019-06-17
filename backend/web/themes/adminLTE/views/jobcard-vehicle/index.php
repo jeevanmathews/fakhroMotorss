@@ -42,12 +42,11 @@ $this->params['breadcrumbs'][] = $this->title;
             ],         
             'make.make',
             'model.model',
-            'color',
-            'customer.name',
+            'color',      
             [
                 'attribute' => 'customer_id',
                 'value' => function($model){
-                    return $model->customer->name;
+                    return ($model->customer)?$model->customer->name:"";
                 }
             ],
             //'tr_number',

@@ -9,9 +9,8 @@ use common\components\AutoForm;
 /* @var $form yii\widgets\ActiveForm */
 ?>
 
-<div class="customer-form">
 
- <?php $form = AutoForm::begin(); ?>
+<?php $form = AutoForm::begin(["id" => "customer-".time().(($model->isNewRecord)?"create":"update")."-form"]); ?>
   <div class="box-body">
      <div class="row">
          <div class="col-md-12">
@@ -43,4 +42,4 @@ use common\components\AutoForm;
 
      <?php AutoForm::end(); ?>
 
-</div>
+

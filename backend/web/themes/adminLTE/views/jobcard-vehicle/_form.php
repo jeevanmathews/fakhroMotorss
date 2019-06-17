@@ -30,7 +30,7 @@ use yii\helpers\ArrayHelper;
                 
             'onchange'=>'
                 $.get( "'.Yii::$app->getUrlManager()->createUrl('car-model/makes').'&manufacturer_id="+$(this).val(), function( data ) {
-                $( "#jobcardvehicle-make_id" ).html(data);
+                    $(document).find(".main-body:visible").find( "#jobcardvehicle-make_id" ).html(data);
            });
             ']);?>
 
@@ -40,7 +40,7 @@ use yii\helpers\ArrayHelper;
                 
             'onchange'=>'
                 $.get( "'.Yii::$app->getUrlManager()->createUrl('car-model/models').'&make_id="+$(this).val(), function( data ) {
-                $( "#jobcardvehicle-model_id" ).html(data);
+                $(document).find(".main-body:visible").find( "#jobcardvehicle-model_id" ).html(data);
            });
             ']);?>
 
