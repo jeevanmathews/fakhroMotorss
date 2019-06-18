@@ -3,7 +3,7 @@
 namespace backend\controllers;
 
 use Yii;
-use backend\models\Customer;
+use backend\models\customer;
 use backend\models\CustomerSearch;
 use yii\web\Controller;
 use yii\web\NotFoundHttpException;
@@ -64,7 +64,7 @@ class CustomerController extends Controller
      */
     public function actionCreate()
     {
-        $model = new Customer();
+        $model = new customer();
 
         if ($model->load(Yii::$app->request->post()) && $model->save()) {
         echo json_encode(["success" => true, "message" => "Customer has been created."]);
@@ -130,7 +130,7 @@ class CustomerController extends Controller
      */
     protected function findModel($id)
     {
-        if (($model = Customer::findOne($id)) !== null) {
+        if (($model = customer::findOne($id)) !== null) {
             return $model;
         }
 

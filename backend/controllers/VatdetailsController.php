@@ -116,10 +116,8 @@ class VatdetailsController extends Controller
     public function actionChangeStatus($id){
         $model = $this->findModel($id);
         $model->status = ($model->status == 0)?1:0;
-         if($model->save()){
-            echo json_encode(["success" => true, "message" => "Vatdetails status has been changed", 'redirect' => Yii::$app->getUrlManager()->createUrl(['vatdetails/index'])]);
-         exit;
-     }
+        $model->save();
+        return $this->renderAjax(['index']);
     }
 
     /**

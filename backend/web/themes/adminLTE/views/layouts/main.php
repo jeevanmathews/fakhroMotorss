@@ -153,13 +153,13 @@ $this->registerJs($js, \yii\web\View::POS_HEAD);
                       <!--<li>
                         <?= Html::a('Spare Types', ['/sparetypes/index'], ['class'=>'']) ?>
                       </li>-->                       
-                     <!--  <li>
+                      <li>
                         <?= Html::a('Spare Parts', ['/spareparts/index'], ['class'=>'']) ?>
                       </li> 
                       <li>
                         <?= Html::a('Accessories', ['/accessories/index'], ['class'=>'']) ?>
                       </li> 
-                       -->
+                      
                       <li>
                         <?= Html::a('Manufacturer', ['/manufacturer/index'], ['class'=>'']) ?>
                       </li>
@@ -170,10 +170,10 @@ $this->registerJs($js, \yii\web\View::POS_HEAD);
                         <?= Html::a('Items', ['/items/index'], ['class'=>'']) ?>
                       </li> 
                       <li>
-                        <?= Html::a('Accessories', ['/itemgroup/index'], ['class'=>'']) ?>
+                        <?= Html::a('Accessories Groups', ['/itemgroup/index'], ['class'=>'']) ?>
                       </li>
                       <li>
-                        <?= Html::a('Spare Parts', ['/itemgroup/index','type' => 'spares'] ,['class'=>'']) ?>
+                        <?= Html::a('Spare Groups', ['/itemgroup/index','type' => 'spares'] ,['class'=>'']) ?>
                       </li>
                       <li>
                         <h4>Services</h4>

@@ -4,7 +4,7 @@ namespace backend\models;
 
 use yii\base\Model;
 use yii\data\ActiveDataProvider;
-use backend\models\Customer;
+use backend\models\customer;
 
 /**
  * CustomerSearch represents the model behind the search form of `backend\models\customer`.
@@ -40,7 +40,7 @@ class CustomerSearch extends customer
      */
     public function search($params)
     {
-        $query = Customer::find();
+        $query = customer::find();
 
         // add conditions that should always apply here
 

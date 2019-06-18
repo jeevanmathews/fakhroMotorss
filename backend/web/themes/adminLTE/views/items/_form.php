@@ -8,7 +8,6 @@ use backend\models\Vehiclemodels;
 use backend\models\Variants;
 use backend\models\Units;
 use backend\models\Supplier;
-use backend\models\Itemgroup;
 /* @var $this yii\web\View */
 /* @var $model backend\models\Items */
 /* @var $form yii\widgets\ActiveForm */
@@ -24,46 +23,17 @@ use backend\models\Itemgroup;
                 <div class="col-md-12">
                     <h5 class="heading"><span>Item</span> </h5>
 					<div class="row">
-					<!-- <div class="col-md-6 ">  -->
-					<div class="col-md-6" id="itemlists"> 
-                    <?=
+					<div class="col-md-6 "> 
+					<?=
 				     $form->field($model, 'type')->dropDownList(
 								['accessories' => 'Accessories', 'spares' => 'Spares','vehicle'=>'Vehicle'],
-								 ['prompt' => 'Select Type','class' => 'form-control select2', 
-
-                            'onchange'=>'$(this).parent().parent().nextAll(".parent_id").remove();  
-                                if( $(this).val()== "accessories"){ 
-                                $("[name=\'category_name\']").removeClass("hide");
-                                 $.get("'.Yii::$app->getUrlManager()->createUrl('items/accessories').'&parent_id=0", function( data ) {
-                                $("[name=\'category_name\']").remove();   
-                                 $("[id=\'accessories-itemgroup_id\']").parent().remove(); 
-                              
-                                   
-                                $("div#itemlists").append(data);
-                                $("#hidden-field").css("visibility","hidden");
-                                });
-                            } else if( $(this).val()== "spares"){
-                                $.get("'.Yii::$app->getUrlManager()->createUrl('items/spares').'&parent_id=0", function( data ) {
-                                $("[name=\'category_name\']").remove();   
-                                 $("[id=\'accessories-itemgroup_id\']").parent().remove(); 
-                                 
-                                   
-                                $("div#itemlists").append(data);
-                                $("#hidden-field").css("visibility","hidden");
-                                });
-                            }
-                            ']	
+								 ['prompt' => 'Select Type','class' => 'form-control select2 type']	
 								
 						); ?>
 
 						</div>
-						<div class="type-dpdn col-md-6">
-                          <?php if(!$model->isNewRecord && $model->itemgroup_id!=''): ?>
-                            <?= $form->field($model, 'itemgroup_id')->dropDownList(
-                            $itemtypes=ArrayHelper::map(Itemgroup::find()->where(['type'=>$model->type])->all(), 'id', 'category_name'),
-                            ['class' => 'form-control select2', 'prompt'=>'Select type','disabled'=>true]);
-                        ?>
-                     <?php endif;?>   
+						<div class="type-dpdn">
+                         
                         </div>
 					</div>
 
@@ -139,10 +109,10 @@ use backend\models\Itemgroup;
                         </div>
                     </div>
                 </div>
-                <?php
-                // var_dump($model->pricing);die;
-                ?>
-                                    <!--<?= $form->field($model, 'created_date')->textInput() ?>
+<?php
+// var_dump($model->pricing);die;
+?>
+                    <!--<?= $form->field($model, 'created_date')->textInput() ?>
 
                     <?= $form->field($model, 'status')->textInput() ?>-->
                 <?php //else: ?>
@@ -153,8 +123,8 @@ use backend\models\Itemgroup;
                     <div class="col-md-6 "> 
                         
                          <?= $form->field($modelprice, 'selling_price')->textInput(['value'=>(isset($model->pricing->selling_price)?$model->pricing->selling_price:0)]) ?>
-                         <?= $form->field($model, 'tax_enabled')->checkbox(['class'=>'tax_enabled','onclick'=>"$('.vat').removeClass('no-display')",'value'=>'yes']); ?>
-                         <span class="vat <?php if($model->tax_rate!=''){ }else{echo 'no-display';}?>"><?= $form->field($model, 'tax_rate')->textInput(); ?></span>
+                         <?= $form->field($model, 'tax_enabled')->checkbox(['class'=>'tax_enabled']); ?>
+                         <span class="vat no-display"><?= $form->field($model, 'vat')->textInput(); ?></span>
                    </div>
                    <div class="col-md-6 ">
                       <?php if($model->isNewRecord  || (!$model->isNewRecord && $model->opening_stock==0)): ?>
@@ -176,6 +146,7 @@ use backend\models\Itemgroup;
     <div class="box-footer">
         <?= Html::submitButton('Save', ['class' => 'btn btn-success']) ?>
     </div>
+</div>
 
 <?php AutoForm::end(); ?>
 
@@ -290,7 +261,7 @@ $('body').on('change','.variant_id',function(){
         'url':Url,
         'data':data,
         success:function(s){
-			// console.log(s);
+			console.log(s);
             var response = JSON.parse(s);
                 //display+='<div class="row">';
                 //display+='<div class="col-md-12 "> ';
@@ -345,6 +316,4 @@ $('body').on('change','.variant_id',function(){
             $('.vat').addClass('no-display');
         }
     });
-    $(document).find('.select2').select2();
 </script>
-</div>

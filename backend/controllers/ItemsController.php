@@ -87,10 +87,7 @@ class ItemsController extends Controller
         // $model->type=Yii::$app->request->post()['Items']['type'];
         // var_dump(Yii::$app->request->post()['Items']['type']);die;
         // endif;
-        if ($model->load(Yii::$app->request->post()) ) {
-            $result=Yii::$app->request->post();
-            $model->itemgroup_id=end($result['parent_id']);
-            if($model->save()){
+        if ($model->load(Yii::$app->request->post()) && $model->save()) {
            if ($modelprice->load(Yii::$app->request->post())){
                 $modelprice->item_id=$model->id;
                 $modelprice->type=$model->type;
@@ -142,7 +139,6 @@ class ItemsController extends Controller
              echo json_encode(["success" => true, "message" => "Item has been created."]);
             exit;
         }
-    }
 
         return $this->renderAjax('create', [
             'model' => $model,
@@ -162,15 +158,15 @@ class ItemsController extends Controller
         $branch_id=Yii::$app->common->branchid->branch_id;
         $model = $this->findModel($id);
         $modelprice=Itempricing::find()->where(['item_id'=>$id])->one();
-        $itemgroup_id=$model->itemgroup_id;
-        if ($model->load(Yii::$app->request->post())) {
-            $result=Yii::$app->request->post();
-            if(isset($result['parent_id']) && !empty(array_filter($result['parent_id']))):
-                $model->itemgroup_id=end($result['parent_id']);
-            else:
-                $model->itemgroup_id=$itemgroup_id;
-            endif;
-            $model->save();
+        if(Yii::$app->request->post()):
+            // var_dump(Yii::$app->request->post());die;
+            $model->unit_id=(int) Yii::$app->request->post()['Items']['unit_id'];
+            $model->type=Yii::$app->request->post()['Items']['type'];
+            $model->manufacturing_date=(string) Yii::$app->request->post()['Items']['manufacturing_date'];
+            $modelprice->purchase_price=(int) Yii::$app->request->post()['Itempricing']['purchase_price'];
+            $modelprice->selling_price=(int) Yii::$app->request->post()['Itempricing']['selling_price'];
+        endif;
+        if ($model->load(Yii::$app->request->post()) && $model->save()) {
             $modelprice->type=Yii::$app->request->post()['Items']['type'];
             $modelprice->save(false);
             if(isset(Yii::$app->request->post()['Itemfeature']))
@@ -243,14 +239,7 @@ class ItemsController extends Controller
             'modelprice'=>$modelprice,
         ]);
     }
-    public function actionAccessories($type="accessories",$parent_id) 
-     {
-        return $this->renderPartial('_itemdropdown',compact('parent_id','type')); 
-     }
-      public function actionSpares($type="spares",$parent_id) 
-     {
-        return $this->renderPartial('_itemdropdown',compact('parent_id','type')); 
-     }
+
     /**
      * Deletes an existing Items model.
      * If deletion is successful, the browser will be redirected to the 'index' page.

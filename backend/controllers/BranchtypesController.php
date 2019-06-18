@@ -121,14 +121,9 @@ class BranchtypesController extends Controller
     public function actionChangeStatus($id){
         $model = $this->findModel($id);
         $model->status = ($model->status == 0)?1:0;
-       if($model->save()){
-            echo json_encode(["success" => true, "message" => "Branchtypes status has been changed", 'redirect' => Yii::$app->getUrlManager()->createUrl(['branchtypes/index'])]);
-         exit;
-     }
- }
-       // return $this->renderAjax(['index']);
-    
-
+        $model->save();
+        return $this->renderAjax(['index']);
+    }
 
     /**
      * Finds the Branchtypes model based on its primary key value.
