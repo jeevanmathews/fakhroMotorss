@@ -2,6 +2,7 @@
 
 use yii\helpers\Html;
 use yii\grid\GridView;
+use yii\widgets\Pjax; 
 
 /* @var $this yii\web\View */
 /* @var $searchModel backend\models\DesignationsSearch */
@@ -29,6 +30,8 @@ $this->params['breadcrumbs'][] = $this->title;
                     <p>
                         <?= Html::a('Create Designation', ['create'], ['class' => 'btn btn-success']) ?>
                     </p>
+
+                    <?php Pjax::begin(); ?>
 
                     <?= GridView::widget([
                         'dataProvider' => $dataProvider,
@@ -69,6 +72,8 @@ $this->params['breadcrumbs'][] = $this->title;
                       'class'=>'table table-striped table-bordered table-hover'
             ],
                        ]); ?>
+                       
+                       <?php Pjax::end(); ?> 
                    </div>
                </div>
            </div>
