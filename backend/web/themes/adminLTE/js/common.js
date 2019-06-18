@@ -314,17 +314,8 @@ function validateAttribute(modelName, fieldName, fieldValue, mid, scenario){
 
 
     //status change a tag click
-      $(document).on('click', ".change_status", function(e){
-        // alert();
-         if($(this).closest("div").attr("id") == "myNavbar"){
-          $(".nav-item").removeClass("active");          
-          var tabId = "tab_id_"+($(".page_tab").length+1);
-          $( '<li id="'+tabId+'" class="nav-item active"><a class="nav-link page_tab" data-toggle="tab" role="tab" aria-controls="task" aria-selected="false"><span>'+page_id.replace("_","/")+'</span></a><b class="close-tab"><i class="fa fa-times-circle" aria-hidden="true"></i></b></li>' ).appendTo( $( "#myTab" ) );
-        }
-
-        if(tabId == undefined){
-         var tabId = $(this).closest(".main-body").attr("tab_id");         
-        }
+      $(document).on('click', ".change_status", function(e){ 
+         var tabId = $(this).closest(".main-body").attr("tab_id");
         e.preventDefault();
       //   $.ajaxSetup({async: false}); 
           $.ajax({
@@ -334,6 +325,14 @@ function validateAttribute(modelName, fieldName, fieldValue, mid, scenario){
           success: function(data) {
             //console.log(data);
               var response = jQuery.parseJSON(data);
+              var response_head = "";
+              if(response.success != undefined){
+                response_head = "success";                 
+              }else if(response.error != undefined){
+                response_head = "error";
+              }else{
+                response_head = "error";                  
+              }
                 if(response.redirect != undefined){ 
                   //console.log(response.redirect );                  
                   $.get( response.redirect , function( data ) {
@@ -348,12 +347,14 @@ function validateAttribute(modelName, fieldName, fieldValue, mid, scenario){
                     $(document).find(".main-body:visible").attr("tab_id", tabId);                  
                   });
                 }
-            // $(".main-body").addClass("hide");
-            // $('div[tab_id="'+tabId+'"]').remove();
-            // $(".container-body").append($(data));
-            // $(document).find(".main-body:visible").attr("tab_id", tabId);
-
-            // $("#"+tabId).find("span").html(page_id.replace("_","/"));
+                $.toast({
+                  heading: (response_head.toUpperCase()),
+                  text: ((response.message != undefined)?response.message:"No response"),
+                  icon: response_head,
+                  loader: true,        // Change it to false to disable loader
+                  position: 'top-right',
+                  loaderBg: '#9EC600'  // To change the background
+                });
             addMandatoryStar();
           }});
       //     $.ajaxSetup({async: true}); 
