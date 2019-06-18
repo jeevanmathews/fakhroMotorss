@@ -78,7 +78,7 @@ class JobcardMaterial extends \yii\db\ActiveRecord
                     return false;
                 }
             }
-            if($stock = StockHistory::find()->where(['type' => $this->material_type, 'item_id' => $this->material_id])->orderBy('id desc')->limit(1)->one()){
+            if($stock = StockHistory::find()->where(['type' => $this->material_type, 'item_id' => $this->material_id, 'branch_id' => $this->jobcard->branch_id])->orderBy('id desc')->limit(1)->one()){
                     if($stock->current_stock < $this->num_unit){
                         $this->addError("material_id", "Material stock is less than the required entry.");
                         return false;
