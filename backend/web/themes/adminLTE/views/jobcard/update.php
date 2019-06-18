@@ -185,7 +185,7 @@ $cur_time = time();
 				        'columns' => [
 				            ['class' => 'yii\grid\SerialColumn'],
 				            'material_type',
-				            'material.name',       
+				            'material.item_name',       
 				            [
 			            	 	'attribute' => 'num_unit',
 			            	 	'value'=>function ($model, $key, $index, $widget){
