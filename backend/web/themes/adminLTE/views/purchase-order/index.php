@@ -29,7 +29,7 @@ $this->params['breadcrumbs'][] = $this->title;
                     <p>
                         <?= Html::a('Create Purchase Order', ['create'], ['class' => 'btn btn-success']) ?>
                     </p>
-                     <?php Pjax::begin(['id'=>'purchase-order'.time()]); ?>
+                     <?php Pjax::begin(['id'=>'purchase-order']); ?>
                     <?= GridView::widget([
                         'dataProvider' => $dataProvider,
                         'filterModel' => $searchModel,

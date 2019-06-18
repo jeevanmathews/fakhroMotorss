@@ -35,7 +35,7 @@ $this->params['breadcrumbs'][] = $this->title;
                     <p>
                         <?= Html::a('Create Purchase Invoice', ['create'], ['class' => 'btn btn-success']) ?>
                     </p>
-                     <?php Pjax::begin(['id'=>'purchase-invoice'.time()]); ?>
+                     <?php Pjax::begin(['id'=>'purchase-invoice']); ?>
                     <?= GridView::widget([
                         'dataProvider' => $dataProvider,
                         'filterModel' => $searchModel,
