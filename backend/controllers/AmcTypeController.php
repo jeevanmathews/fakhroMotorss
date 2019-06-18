@@ -114,8 +114,10 @@ class AmcTypeController extends Controller
 	  {
         $model = $this->findModel($id);
         $model->status = ($model->status == 0)?1:0;
-        $model->save();
-        return $this->renderAjax(['index']);
+       if($model->save()){
+            echo json_encode(["success" => true, "message" => "AmcType status has been changed", 'redirect' => Yii::$app->getUrlManager()->createUrl(['amc-type/index'])]);
+         exit;
+     }
     }
 
     /**

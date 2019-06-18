@@ -7,6 +7,8 @@ use backend\models\Supplier;
 use backend\models\Items;
 use backend\models\Units;
 use backend\models\User;
+use yii\widgets\Pjax;
+
 /* @var $this yii\web\View */
 /* @var $searchModel backend\models\PurchaseorderSearch */
 /* @var $dataProvider yii\data\ActiveDataProvider */
@@ -33,7 +35,7 @@ $this->params['breadcrumbs'][] = $this->title;
                     <p>
                         <?= Html::a('Create Purchase Invoice', ['create'], ['class' => 'btn btn-success']) ?>
                     </p>
-
+                     <?php Pjax::begin(); ?>
                     <?= GridView::widget([
                         'dataProvider' => $dataProvider,
                         'filterModel' => $searchModel,
@@ -138,6 +140,7 @@ $this->params['breadcrumbs'][] = $this->title;
                      'class'=>'table table-striped table-bordered table-hover'
                      ],
                      ]); ?>
+                     <?php Pjax::end(); ?> 
                  </div>
              </div>
          </div>

@@ -128,7 +128,8 @@ class CurrencyController extends Controller
         $model = $this->findModel($id);
         $model->status = ($model->status == 0)?1:0;
         $model->save();
-        return $this->renderAjax(['index']);
+         echo json_encode(["success" => true, "message" => "Jobcard has been created", 'redirect' => Yii::$app->getUrlManager()->createUrl(['currency/index'])]);
+                exit;
     }
 
     /**

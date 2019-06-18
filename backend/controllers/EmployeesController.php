@@ -160,9 +160,10 @@ class EmployeesController extends Controller
     public function actionChangeStatus($id){
         $model = $this->findModel($id);
         $model->status = ($model->status == 0)?1:0;
-        $model->save();
-       echo json_encode(["success" => true, "message" => "Staff status has been changed."]);
-            exit;
+          if($model->save()){
+            echo json_encode(["success" => true, "message" => "Staff status has been changed", 'redirect' => Yii::$app->getUrlManager()->createUrl(['employees/index'])]);
+         exit;
+     }
     }
 
     
