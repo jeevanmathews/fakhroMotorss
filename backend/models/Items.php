@@ -17,8 +17,9 @@ use Yii;
  * @property int $supplier_id
  * @property double $opening_stock
  * @property double $current_stock
- * @property int $tax_enabled
+ * @property string $tax_enabled
  * @property string $vat
+ * @property double $tax_rate
  * @property string $created_date
  * @property string $type 
  * @property int $itemgroup_id
@@ -44,8 +45,8 @@ class Items extends \yii\db\ActiveRecord
             [['item_name','item_code','supplier_id'], 'required'],
             [['model_id', 'unit_id','variant_id', 'status','supplier_id','itemgroup_id'], 'integer'],
             [['item_name','type'], 'string', 'max' => 300],
-            [['description'], 'string'],
-            [['current_stock','opening_stock'], 'number'],
+            [['description','tax_enabled'], 'string'],
+            [['current_stock','opening_stock','tax_rate'], 'number'],
             [['created_date'], 'safe'],
         ];
     }
