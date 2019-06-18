@@ -45,7 +45,7 @@ $this->params['breadcrumbs'][] = $this->title;
                 ],
                 ['class' => 'yii\grid\ActionColumn',
                   'template' => '{update}{view}{changeStatus}',
-                  'buttons' => [
+                'buttons' => [
                         'changeStatus' => function ($url, $model, $key) {
                            $img = ($model->status == 1)?"button_cross.png":"button_tick_alt.png";
                            $width = ($model->status == 1)?"25":"20";

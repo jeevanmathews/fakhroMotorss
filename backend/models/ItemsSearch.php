@@ -17,7 +17,7 @@ class ItemsSearch extends Items
     public function rules()
     {
         return [
-            [['model_id', 'variant_id', 'status','supplier_id','product_id'], 'integer'],
+            [['model_id', 'variant_id', 'status','supplier_id','itemgroup_id'], 'integer'],
             [['item_name','item_code'], 'string', 'max' => 300],
             [['current_stock','opening_stock'], 'number'],
             [['created_date'], 'safe'],
