@@ -120,6 +120,6 @@ class Items extends \yii\db\ActiveRecord
        return ($price)?$price->selling_price:0;
    }
    public function getNamewithPrice(){
-        return $this->name." - ".Yii::$app->common->company->settings->currency->code. " " .$this->rate." /unit";
+        return $this->item_name." - ".Yii::$app->common->company->settings->currency->code. " " .$this->rate." /unit";
    }
 }

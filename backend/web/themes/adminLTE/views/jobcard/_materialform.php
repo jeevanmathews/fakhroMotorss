@@ -4,8 +4,7 @@ use yii\helpers\Html;
 use common\components\AutoForm;
 use yii\helpers\ArrayHelper;
 use backend\models\Tasks;
-use backend\models\Accessories;
-use backend\models\Spareparts;
+use backend\models\Items;
 
 /* @var $this yii\web\View */
 /* @var $model backend\models\Jobcard */
@@ -20,11 +19,11 @@ use backend\models\Spareparts;
                 <div class="col-md-6">
                     <?= $form->field($jobcardMaterial, 'material_type', ['inputOptions' => ["class" => "form-control select2"]])->dropDownList(['accessories' => 'Accessories', 'spares' => 'Spares'], ["prompt" => "Select a Task"]) ?>
 
-                    <?= $form->field($jobcardMaterial, 'material_id', ['inputOptions' => ["class" => "form-control select2 accessory"], 'options' => ['class' => 'form-group field-jobcardmaterial-material_id accessories required']])->dropDownList(ArrayHelper::map(Accessories::find()->where(["status" => 1])->all(), 'id', 'namewithPrice'), ["prompt" => "Select an Accessory"]) ?> 
+                    <?= $form->field($jobcardMaterial, 'material_id', ['inputOptions' => ["class" => "form-control select2 accessory"], 'options' => ['class' => 'form-group field-jobcardmaterial-material_id accessories required']])->dropDownList(ArrayHelper::map(Items::find()->where(["status" => 1, "type" => "accessories"])->all(), 'id', 'namewithPrice'), ["prompt" => "Select an Accessory"]) ?> 
 
-                    <?=Html::dropDownList("spares", "", ArrayHelper::map(Spareparts::find()->where(["status" => 1])->all(), 'id', 'namewithPrice'), ["prompt" => "Select a Sparepart", 'class' => 'hide'])?>
+                    <?=Html::dropDownList("spares", "", ArrayHelper::map(Items::find()->where(["status" => 1, "type" => "spares"])->all(), 'id', 'namewithPrice'), ["prompt" => "Select a Sparepart", 'class' => 'hide'])?>
 
-                    <?=Html::dropDownList("accessories", "", ArrayHelper::map(Accessories::find()->where(["status" => 1])->all(), 'id', 'namewithPrice'), ["prompt" => "Select an Accessory", 'class' => 'hide'])?>                  
+                    <?=Html::dropDownList("accessories", "", ArrayHelper::map(Items::find()->where(["status" => 1, "type" => "accessories"])->all(), 'id', 'namewithPrice'), ["prompt" => "Select an Accessory", 'class' => 'hide'])?>                  
 
                     <?= $form->field($jobcardMaterial, 'unit_rate')->textInput(['maxlength' => true]) ?>
 
