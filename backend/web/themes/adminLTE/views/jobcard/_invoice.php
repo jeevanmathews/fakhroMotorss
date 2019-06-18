@@ -65,7 +65,7 @@ use backend\models\Branches
                                             </tr>
                                             <tr>
                                                 <td width="40%" style="padding: 3px 0; font-size: 14px; font-weight: 700;">Vehicle Make</td>
-                                                <td width="60%" style="padding: 3px 0; font-size: 14px; text-transform: uppercase;">: <?php echo $invoice->vehicle->make;?></td>
+                                                <td width="60%" style="padding: 3px 0; font-size: 14px; text-transform: uppercase;">: <?php echo $invoice->vehicle->make->make;?></td>
                                             </tr>
                                             <tr>
                                                 <td width="40%" style="padding: 3px 0; font-size: 14px; font-weight: 700;">Odometer</td>
@@ -81,10 +81,14 @@ use backend\models\Branches
                                 <tr>
                                     <td>
                                         <table width="100%" cellpadding="0" cellspacing="0" style="border-collapse: collapse;">
-                                           
+                                         
+                                            <tr>
+                                                <td width="40%" style="padding: 3px 0; font-size: 14px; font-weight: 700;">Invoice No.</td>
+                                                <td width="60%" style="padding: 3px 0; font-size: 14px;">: <?php echo $invoice->id;?></td>
+                                            </tr>
                                             <tr>
                                                 <td width="40%" style="padding: 3px 0; font-size: 14px; font-weight: 700;">Date</td>
-                                                <td width="60%" style="padding: 3px 0; font-size: 14px;">:<?php echo date("d-m-Y");?></td>
+                                                <td width="60%" style="padding: 3px 0; font-size: 14px;">: <?php echo date("d-m-Y");?></td>
                                             </tr>
                                             <tr>
                                                 <td width="40%" style="padding: 3px 0; font-size: 14px; font-weight: 700;">Repair Order No</td>
@@ -179,7 +183,7 @@ use backend\models\Branches
                         'columns' => [
                             ['class' => 'yii\grid\SerialColumn'],
                             'material_type',
-                            'material.name', 
+                            'material.item_name', 
                             'num_unit',
                             [
                                 'attribute' => 'unit_rate',
@@ -246,13 +250,13 @@ use backend\models\Branches
                             <table width="100%" cellpadding="0" cellspacing="0" style="border-collapse: collapse;">
                                 <tr>
                                     <th width="50%" style="border:1px solid #ddd; border-bottom: none;"></th>
-                                    <th width="37.5%" style="border:1px solid #ddd; border-bottom: none; padding: 5px 10px; font-size: 14px; font-weight: 700; text-transform: uppercase; text-align: left;">Total Labour</th>
-                                    <th width="12.5%" style="border:1px solid #ddd; border-bottom: none; padding: 5px 10px; font-size: 14px; font-weight: 700; text-transform: uppercase; text-align: right;"><?php echo $invoice->labour_cost;?></th>
+                                    <th width="37.5%" style="border:1px solid #ddd; border-bottom: none; padding: 5px 10px; font-size: 14px; font-weight: 700; text-transform: uppercase; text-align: left;"></th>
+                                    <th width="12.5%" style="border:1px solid #ddd; border-bottom: none; padding: 5px 10px; font-size: 14px; font-weight: 700; text-transform: uppercase; text-align: right;"></th>
                                 </tr>
                                 <tr>
                                     <th width="50%" style="border:1px solid #ddd; border-bottom: none; border-top: none;"></th>
-                                    <th width="37.5%" style="border:1px solid #ddd; border-bottom: none; border-top: none; padding: 5px 10px; font-size: 14px; font-weight: 700; text-transform: uppercase; text-align: left;">Total Materials</th>
-                                    <th width="12.5%" style="border:1px solid #ddd; border-bottom: none; border-top: none; padding: 5px 10px; font-size: 14px; font-weight: 700; text-transform: uppercase; text-align: right;"><?php echo $invoice->material_cost;?></th>
+                                    <th width="37.5%" style="border:1px solid #ddd; border-bottom: none; border-top: none; padding: 5px 10px; font-size: 14px; font-weight: 700; text-transform: uppercase; text-align: left;"></th>
+                                    <th width="12.5%" style="border:1px solid #ddd; border-bottom: none; border-top: none; padding: 5px 10px; font-size: 14px; font-weight: 700; text-transform: uppercase; text-align: right;"></th>
                                 </tr>
                                 <tr>
                                     <th width="50%" style="border:1px solid #ddd; border-bottom: none; border-top: none;"></th>

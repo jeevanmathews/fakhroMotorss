@@ -65,12 +65,12 @@ class JobcardInvoiceMaterial extends \yii\db\ActiveRecord
             'rate' => 'Rate',
         ];
     }
-
+   
     public function getMaterial(){
         if($this->material_type == "accessories"){
-            $material = Accessories::findOne($this->material_id);
+            $material = Items::find()->where(['id' => $this->material_id, 'type' => 'accessories'])->one();
         }else{
-            $material = Spareparts::findOne($this->material_id);
+            $material = Items::find()->where(['id' => $this->material_id, 'type' => 'spares'])->one();
         }
         return $material;
     } 
