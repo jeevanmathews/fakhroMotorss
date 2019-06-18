@@ -20,7 +20,8 @@ use Yii;
  * @property int $tax_enabled
  * @property string $vat
  * @property string $created_date
- * @property string $type
+ * @property string $type 
+ * @property int $itemgroup_id
  * @property int $unit_id
  * @property int $status
  */
@@ -41,8 +42,9 @@ class Items extends \yii\db\ActiveRecord
     {
         return [
             [['item_name','item_code','supplier_id'], 'required'],
-            [['model_id', 'unit_id','variant_id', 'status','supplier_id','product_id'], 'integer'],
+            [['model_id', 'unit_id','variant_id', 'status','supplier_id','itemgroup_id'], 'integer'],
             [['item_name','type'], 'string', 'max' => 300],
+            [['description'], 'string'],
             [['current_stock','opening_stock'], 'number'],
             [['created_date'], 'safe'],
         ];
@@ -74,6 +76,10 @@ class Items extends \yii\db\ActiveRecord
     public function getPricing()
     {
         return $this->hasOne(Itempricing::className('yes'), ['item_id' => 'id']);
+    }
+    public function getItemgroup()
+    {
+        return $this->hasOne(Itemgroup::className('yes'), ['id' => 'itemgroup_id']);
     }
     public function getSupplier()
     {
@@ -109,4 +115,11 @@ class Items extends \yii\db\ActiveRecord
         }
         return $final;
     }
+    public function getRate(){ 
+        $price = Itempricing::find()->where(["item_id" => $this->id, 'type' => 'accessories'])->one();
+       return ($price)?$price->selling_price:0;
+   }
+   public function getNamewithPrice(){
+        return $this->name." - ".Yii::$app->common->company->settings->currency->code. " " .$this->rate." /unit";
+   }
 }
