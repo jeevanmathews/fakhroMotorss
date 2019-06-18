@@ -117,7 +117,7 @@ class Items extends \yii\db\ActiveRecord
         return $final;
     }
     public function getRate(){ 
-        $price = Itempricing::find()->where(["item_id" => $this->id, 'type' => 'accessories'])->one();
+        $price = Itempricing::find()->where(["item_id" => $this->id, 'type' => $this->type])->one();
        return ($price)?$price->selling_price:0;
    }
    public function getNamewithPrice(){
