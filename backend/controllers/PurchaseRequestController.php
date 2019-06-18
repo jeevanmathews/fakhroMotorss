@@ -189,9 +189,10 @@ class PurchaseRequestController extends Controller
     public function actionChangeStatus($id){
         $model = $this->findModel($id);
         $model->status = ($model->status == 0)?1:0;
-        $model->save();
-        echo json_encode(["success" => true, "message" => "Purchase Requisition Status has been created."]);
-        exit;
+        if($model->save()){
+            echo json_encode(["success" => true, "message" => "Purchase Requisition Status has been changed.",'redirect'=>Yii::$app->getUrlManager()->createUrl(['purchase-request/index'])]);
+            exit;
+        }
     }
 
     /**

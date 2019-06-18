@@ -35,7 +35,7 @@ $this->params['breadcrumbs'][] = $this->title;
                     <p>
                         <?= Html::a('Create Purchase Invoice', ['create'], ['class' => 'btn btn-success']) ?>
                     </p>
-                     <?php Pjax::begin(); ?>
+                     <?php Pjax::begin(['id'=>'purchase-invoice'.time()]); ?>
                     <?= GridView::widget([
                         'dataProvider' => $dataProvider,
                         'filterModel' => $searchModel,
@@ -103,7 +103,7 @@ $this->params['breadcrumbs'][] = $this->title;
                         'changeStatus' => function ($url, $model, $key) {
                          $img = ($model->status == 1)?"button_cross.png":"button_tick_alt.png";
                          $width = ($model->status == 1)?"25":"20";
-                         return Html::a(Html::img($this->theme->getUrl("images/".$img),["width" =>  $width, "title" => (($model->status == 1)?"Disable":"Enable")]), ['change-status', 'id'=>$model->id]);
+                         return Html::a(Html::img($this->theme->getUrl("images/".$img),["width" =>  $width, "title" => (($model->status == 1)?"Disable":"Enable")]), ['change-status', 'id'=>$model->id],['class'=>'change_status']);
                      },
                      ]
                      ],

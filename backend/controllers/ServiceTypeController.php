@@ -115,10 +115,8 @@ class ServiceTypeController extends Controller
 	  {
         $model = $this->findModel($id);
         $model->status = ($model->status == 0)?1:0;
-          if($model->save()){
-            echo json_encode(["success" => true, "message" => "ServiceType status has been changed", 'redirect' => Yii::$app->getUrlManager()->createUrl(['service-type/index'])]);
-         exit;
-     }
+        $model->save();
+        return $this->renderAjax(['index']);
     }
     /**
      * Finds the ServiceType model based on its primary key value.

@@ -443,8 +443,10 @@ class PurchaseReturnController extends Controller
         $model = $this->findModel($id);
         $model->status = ($model->status == 0)?1:0;
         $model->save();
-        echo json_encode(["success" => true, "message" => "Status has been changed."]);
+        if($model->save()){
+            echo json_encode(["success" => true, "message" => "Status has been changed.",'redirect'=>Yii::$app->getUrlManager()->createUrl(['purchase-return/index'])]);
             exit;
+        }
     }
     /**
      * Finds the PurchaseReturn model based on its primary key value.
