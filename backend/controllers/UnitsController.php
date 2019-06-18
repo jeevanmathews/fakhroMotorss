@@ -117,9 +117,9 @@ class UnitsController extends Controller
         $model = $this->findModel($id);
         $model->status = ($model->status == 0)?1:0;
         if($model->save()){
-              Yii::$app->session->setFlash('success', 'Status has been changed!');
-              return $this->renderAjax(['index']);
-          }
+            echo json_encode(["success" => true, "message" => "Units status has been changed", 'redirect' => Yii::$app->getUrlManager()->createUrl(['units/index'])]);
+         exit;
+     }
         
     }
     /**
