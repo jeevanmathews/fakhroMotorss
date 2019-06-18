@@ -128,11 +128,15 @@ class SupplierController extends Controller
     public function actionChangeStatus($id){
         $model = $this->findModel($id);
         $model->status = ($model->status == 0)?1:0;
+
         if($model->save())
         {
         echo json_encode(["success" => true, "message" => "Supplier status  has been changed", 'redirect' => Yii::$app->getUrlManager()->createUrl(['supplier/index'])]);
                 exit;
             }
+
+       
+
     }
 
     /**

@@ -127,9 +127,12 @@ class CurrencyController extends Controller
     public function actionChangeStatus($id){
         $model = $this->findModel($id);
         $model->status = ($model->status == 0)?1:0;
-        $model->save();
-         echo json_encode(["success" => true, "message" => "Jobcard has been created", 'redirect' => Yii::$app->getUrlManager()->createUrl(['currency/index'])]);
-                exit;
+
+       if($model->save()){
+            echo json_encode(["success" => true, "message" => "Currency status has been changed", 'redirect' => Yii::$app->getUrlManager()->createUrl(['currency/index'])]);
+         exit;
+     }
+
     }
 
     /**
