@@ -36,12 +36,12 @@ use backend\models\Branches
                         </td>
                         <td width="25%" valign="center">
                             <!-- <img src="images/byd-logo.jpg" style="width: 150px; height: auto;" /> -->
-							<?= Html::img("../../backend/web/uploads/branches/".$invoice->jobcard->branch->logo, ["style"=>"width: 150px; height: auto;"]) ?>
+							<?= Html::img("../../backend/web/uploads/branches/".$quotation->jobcard->branch->logo, ["style"=>"width: 150px; height: auto;"]) ?>
                         </td>
                     </tr>
                     <tr>
                         <td width="25%" style="padding: 10px;"></td>
-                        <td width="50%" style="font-size: 20px; font-weight: bold; text-transform: uppercase; text-align: center; padding: 10px;"> Tax Invoice</td>
+                        <td width="50%" style="font-size: 20px; font-weight: bold; text-transform: uppercase; text-align: center; padding: 10px;"> Quotation</td>
                         <td width="25%" style="padding: 10px;"></td>
                     </tr>
                 </table>
@@ -57,19 +57,19 @@ use backend\models\Branches
                                             </tr>
                                             <tr>
                                                 <td width="40%" style="padding: 3px 0; font-size: 14px; font-weight: 700;">Customer Name</td>
-                                                <td width="60%" style="padding: 3px 0; font-size: 14px;">: <?php echo $invoice->customer->name;?></td>
+                                                <td width="60%" style="padding: 3px 0; font-size: 14px;">: <?php echo $quotation->customer->name;?></td>
                                             </tr>
                                             <tr>
                                                 <td width="40%" style="padding: 3px 0; font-size: 14px; font-weight: 700;">Reg No</td>
-                                                <td width="60%" style="padding: 3px 0; font-size: 14px;">: <?php echo $invoice->vehicle->reg_num;?></td>
+                                                <td width="60%" style="padding: 3px 0; font-size: 14px;">: <?php echo $quotation->vehicle->reg_num;?></td>
                                             </tr>
                                             <tr>
                                                 <td width="40%" style="padding: 3px 0; font-size: 14px; font-weight: 700;">Vehicle Make</td>
-                                                <td width="60%" style="padding: 3px 0; font-size: 14px; text-transform: uppercase;">: <?php echo $invoice->vehicle->make->make;?></td>
+                                                <td width="60%" style="padding: 3px 0; font-size: 14px; text-transform: uppercase;">: <?php echo $quotation->vehicle->make->make;?></td>
                                             </tr>
                                             <tr>
                                                 <td width="40%" style="padding: 3px 0; font-size: 14px; font-weight: 700;">Odometer</td>
-                                                <td width="60%" style="padding: 3px 0; font-size: 14px;">: <?php echo $invoice->meter_reading;?> Kms</td>
+                                                <td width="60%" style="padding: 3px 0; font-size: 14px;">: <?php echo $quotation->meter_reading;?> Kms</td>
                                             </tr>
                                         </table>
                                     </td>
@@ -83,8 +83,8 @@ use backend\models\Branches
                                         <table width="100%" cellpadding="0" cellspacing="0" style="border-collapse: collapse;">
                                          
                                             <tr>
-                                                <td width="40%" style="padding: 3px 0; font-size: 14px; font-weight: 700;">Invoice No.</td>
-                                                <td width="60%" style="padding: 3px 0; font-size: 14px;">: <?php echo $invoice->id;?></td>
+                                                <td width="40%" style="padding: 3px 0; font-size: 14px; font-weight: 700;">Quotation No.</td>
+                                                <td width="60%" style="padding: 3px 0; font-size: 14px;">: <?php echo $quotation->id;?></td>
                                             </tr>
                                             <tr>
                                                 <td width="40%" style="padding: 3px 0; font-size: 14px; font-weight: 700;">Date</td>
@@ -100,7 +100,7 @@ use backend\models\Branches
                                             </tr>
                                             <tr>
                                                 <td width="40%" style="padding: 3px 0; font-size: 14px; font-weight: 700;">Job Card No</td>
-                                                <td width="60%" style="padding: 3px 0; font-size: 14px;">: TA-SJCB <?php echo $invoice->jobcard_id;?></td>
+                                                <td width="60%" style="padding: 3px 0; font-size: 14px;">: TA-SJCB <?php echo $quotation->jobcard_id;?></td>
                                             </tr>
                                         </table>
                                     </td>
@@ -109,7 +109,6 @@ use backend\models\Branches
                         </td>
                     </tr>
                 </table>
-                
                 <?= GridView::widget([
                         'dataProvider' => $taskdataProvider,     
                         'tableOptions' => ['class' => 'table'],
@@ -156,7 +155,7 @@ use backend\models\Branches
                                         return (($model->tax_enabled == "yes")?$model->tax_rate:"NA");  
                                     }                                   
                                 }, 
-                                'visible' => ((Yii::$app->common->company->vat_format == "exclusive")?false:true),                            
+                                'visible' => ((Yii::$app->common->company->vat_format == "exclusive")?false:true),                           
                             ],
                             [
                                 'attribute' => 'tax_amount',
@@ -172,7 +171,7 @@ use backend\models\Branches
                                     //$widget->footer = "<b>".Yii::$app->common->company->settings->currency->code." ".$billing_rate."</b>";
                                     return ($model->billable == "yes")?(Yii::$app->common->company->settings->currency->code." ".$model->billing_rate) :"NA";
                                 },                          
-                            ],
+                            ], 
                         ],
                         //'showFooter' => true,
                     ]); ?>      
@@ -193,7 +192,7 @@ use backend\models\Branches
                                     //$widget->footer = "<b>Materials Totals</b>";
                                     return $model->unit_rate ;
                                 },  
-                            ],                       
+                            ],                             
                             [                            
                                 'attribute' => 'total',
                                 'label' => 'Price',
@@ -227,8 +226,8 @@ use backend\models\Branches
                                         return (($model->tax_enabled == "yes")?$model->tax_rate:"NA");  
                                     }
                                     
-                                },    
-                                'visible' => ((Yii::$app->common->company->vat_format == "exclusive")?false:true),                        
+                                },  
+                                'visible' => ((Yii::$app->common->company->vat_format == "exclusive")?false:true),                          
                             ],
                             [
                                 'attribute' => 'tax_amount',
@@ -264,32 +263,32 @@ use backend\models\Branches
                                 <tr>
                                     <th width="50%" style="border:1px solid #ddd; border-bottom: none; border-top: none;"></th>
                                     <th width="37.5%" style="border:1px solid #ddd; border-bottom: none; border-top: none; padding: 5px 10px; font-size: 14px; font-weight: 700; text-transform: uppercase; text-align: left;">Gross</th>
-                                    <th width="12.5%" style="border:1px solid #ddd; border-bottom: none; border-top: none; padding: 5px 10px; font-size: 14px; font-weight: 700; text-transform: uppercase; text-align: right;"><?php echo $invoice->gross_amount;?></th>
+                                    <th width="12.5%" style="border:1px solid #ddd; border-bottom: none; border-top: none; padding: 5px 10px; font-size: 14px; font-weight: 700; text-transform: uppercase; text-align: right;"><?php echo $quotation->gross_amount;?></th>
                                 </tr>
-                                <?php if(Yii::$app->common->company->vat_format == "exclusive" && $invoice->discount != 0){ ?>
+                                <?php if(Yii::$app->common->company->vat_format == "exclusive" && $quotation->discount != 0){ ?>
                                 <tr>
                                     <th width="50%" style="border:1px solid #ddd; border-bottom: none; border-top: none;"></th>
                                     <th width="37.5%" style="border:1px solid #ddd; border-bottom: none; border-top: none; padding: 5px 10px; font-size: 14px; font-weight: 700; text-transform: uppercase; text-align: left;">Discount</th>
-                                    <th width="12.5%" style="border:1px solid #ddd; border-bottom: none; border-top: none; padding: 5px 10px; font-size: 14px; font-weight: 700; text-transform: uppercase; text-align: right;"><?php echo $invoice->discount;?></th>
+                                    <th width="12.5%" style="border:1px solid #ddd; border-bottom: none; border-top: none; padding: 5px 10px; font-size: 14px; font-weight: 700; text-transform: uppercase; text-align: right;"><?php echo $quotation->discount;?></th>
                                 </tr>
                                 <?php } ?>
 
                                 <tr>
                                     <th width="50%" style="border:1px solid #ddd; border-bottom: none; border-top: none;"></th>
                                     <th width="37.5%" style="border:1px solid #ddd; border-bottom: none; border-top: none; padding: 5px 10px; font-size: 14px; font-weight: 700; text-transform: uppercase; text-align: left;">Total <?php echo (Yii::$app->common->company->vat_format == "exclusive")?"Excluding":"Including";?> VAT</th>
-                                    <th width="12.5%" style="border:1px solid #ddd; border-bottom: none; border-top: none; padding: 5px 10px; font-size: 14px; font-weight: 700; text-transform: uppercase; text-align: right;"><?php echo $invoice->total_charge;?></th>
+                                    <th width="12.5%" style="border:1px solid #ddd; border-bottom: none; border-top: none; padding: 5px 10px; font-size: 14px; font-weight: 700; text-transform: uppercase; text-align: right;"><?php echo $quotation->total_charge;?></th>
                                 </tr>
                                 <?php if(Yii::$app->common->company->vat_format == "exclusive"){ ?>
                                 <tr>
                                     <th width="50%" style="border:1px solid #ddd; border-bottom: none; border-top: none;"></th>
                                     <th width="37.5%" style="border:1px solid #ddd; border-bottom: none; border-top: none; padding: 5px 10px; font-size: 14px; font-weight: 700; text-transform: uppercase; text-align: left;">VAT <?php echo Yii::$app->common->company->vat_rate;?>%</th>
-                                    <th width="12.5%" style="border:1px solid #ddd; border-bottom: none; border-top: none; padding: 5px 10px; font-size: 14px; font-weight: 700; text-transform: uppercase; text-align: right;"><?php echo $invoice->tax;?></th>
+                                    <th width="12.5%" style="border:1px solid #ddd; border-bottom: none; border-top: none; padding: 5px 10px; font-size: 14px; font-weight: 700; text-transform: uppercase; text-align: right;"><?php echo $quotation->tax;?></th>
                                 </tr>
                                 <?php } ?>
                                 <tr>
                                     <th width="50%" style="border:1px solid #ddd; border-top: none;"></th>
                                     <th width="37.5%" style="border:1px solid #ddd; border-top: none; padding: 5px 10px; font-size: 14px; font-weight: 700; text-transform: uppercase; text-align: left;">Amount Due</th>
-                                    <th width="12.5%" style="border:1px solid #ddd; border-top: none; padding: 5px 10px; font-size: 14px; font-weight: 700; text-transform: uppercase; text-align: right;"><?php echo $invoice->amount_due;?>      
+                                    <th width="12.5%" style="border:1px solid #ddd; border-top: none; padding: 5px 10px; font-size: 14px; font-weight: 700; text-transform: uppercase; text-align: right;"><?php echo $quotation->amount_due;?>      
                                     </th>
                                 </tr>
                                 

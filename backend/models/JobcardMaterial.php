@@ -31,7 +31,7 @@ class JobcardMaterial extends \yii\db\ActiveRecord
     public function rules()
     {
         return [
-            [['material_id', 'material_type'], 'required'],
+            [['material_id','num_unit', 'material_type'], 'required'],
             [['material_id', 'num_unit', 'jobcard_id'], 'integer'],          
             [['material_type', 'discount'], 'string'],
             [['unit_rate', 'rate', 'total', 'tax_rate', 'tax_amount', 'discount_percent', 'discount_amount'], 'number'],

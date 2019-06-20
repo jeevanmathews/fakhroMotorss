@@ -62,12 +62,12 @@ $this->params['breadcrumbs'][] = $this->title;
                 'template' => '{view}{update}{changeStatus}', 
                 'header'=>'Actions',
                 'buttons' => [
-                    'changeStatus' => function ($url, $model, $key) {
-                             $img = ($model->status == 1)?"button_cross.png":"button_tick_alt.png";
-                             $width = ($model->status == 1)?"25":"20";
-                            return Html::a(Html::img($this->theme->getUrl("images/".$img),["width" =>  $width, "title" => (($model->status == 1)?"Disable":"Enable")]), ['change-status', 'id'=>$model->id]);
-                        },
-                ]
+                        'changeStatus' => function ($url, $model, $key) {
+                           $img = ($model->status == 1)?"button_cross.png":"button_tick_alt.png";
+                           $width = ($model->status == 1)?"25":"20";
+                           return Html::a(Html::img($this->theme->getUrl("images/".$img),["width" =>  $width, "title" => (($model->status == 1)?"Disable":"Enable")]), ['change-status', 'id'=>$model->id],['class'=>'change_status']);
+                       },
+                       ]
             ],
             ['class' => 'yii\grid\ActionColumn',
             'header'=>'Variants',

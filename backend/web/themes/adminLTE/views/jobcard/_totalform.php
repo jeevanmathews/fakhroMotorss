@@ -44,6 +44,13 @@ $cur_time = time();
                 </tr>
                 <?php } ?>                
 
+                 <?php if($model->quotation) { ?> 
+                <tr>               
+                <td colspan="2"> 
+                <span class="pull-left"><?= Html::button('View Quotation', ['onclick' => 'window.open("'.Yii::$app->getUrlManager()->createUrl(['jobcard/quotation', 'quotation_id' => $model->quotation->id]).'", "_blank");', 'class' => 'btn btn-success']) ?></span>
+                </td>
+                </tr>
+                <?php } ?>  
                 <tr>
                 <td>Total Labour Cost: </td>
                 <td><?php echo "<b>".Yii::$app->common->company->settings->currency->code." ".$model->labourCost."</b>";?></td>
@@ -94,18 +101,29 @@ $cur_time = time();
 
                 <?php if($model->labourCost || $model->materialCost) { ?>
                 <?php if(Yii::$app->common->company->vat_format == "exclusive"){ ?>
-                    <tr>               
-                    <td colspan="2">
+                    <tr>  
+                      <td> 
+
+                         <?= Html::a((($model->quotation)?'Regenerate Quotation':'Generate Quotation'), ['jobcard/generate-quotation', 'jobcard_id' => $model->id], ['class' => 'btn btn-success generate-quotation', 'target' => '_blank']) ?>
+                    </td>
+                     <td colspan="2">
                     <span class="pull-left">
-                     <?= Html::button((($model->invoice)?'Regenerate Invoice':'Confirm Payment'), ['class' => 'btn btn-success', 'id' => 'confirm-payment']) ?>    
-                    </span>                    
+                     <?= Html::button((($model->invoice)?'Regenerate Invoice':'Confirm Payment'), ['class' => 'btn btn-success', 'id' => 'confirm-payment-'.$cur_time]) ?>    
+                    
+                    </span>
+                    <?=Html::hiddenInput("discount_jc_id", $model->id);?>                    
                     <?= Html::submitButton('Apply Discount', ['class' => 'btn btn-success', 'id' => 'apply-disount']) ?>
                     </td>
+
                     </tr>
                 <?php } else{ ?>
-                    <tr>               
+                    <tr>  
+                     <td> 
+
+                         <?= Html::a((($model->quotation)?'Regenerate Quotation':'Generate Quotation'), ['jobcard/generate-quotation', 'jobcard_id' => $model->id], ['class' => 'btn btn-success generate-quotation', 'target' => '_blank']) ?>
+                    </td>             
                     <td colspan="2">                   
-                     <?= Html::button((($model->invoice)?'Regenerate Invoice':'Confirm Payment'), ['class' => 'btn btn-success', 'id' => 'confirm-payment-'.$cur_time]) ?>  
+                     <?= Html::button((($model->invoice)?'Regenerate Invoice':'Confirm Payment'), ['class' => 'btn btn-success', 'id' => 'confirm-payment-'.$cur_time]) ?>
                     </td>
                     </tr>
                 <?php   } 
@@ -145,24 +163,5 @@ $cur_time = time();
 
 <script type="text/javascript">
 
-   
-    $(document).on('click', "[id='apply-disount']:visible", function(){
-        var discount = $("[tab_id='"+tabId+"']").find("#"+$("[tab_id='"+tabId+"']").find("input:radio[name=ex_discount]:checked").val()).val();
-        if(discount == ""){
-            $("[tab_id='"+tabId+"']").find(".alert").removeClass("alert-success").addClass("alert-error").removeClass("hide").html("Please input a discount rate or value.");
-        }else{
-            $("[tab_id='"+tabId+"']").find(".alert").addClass("hide");
-            if($("[tab_id='"+tabId+"']").find("input:radio[name=ex_discount]:checked").val() == "discount_percent"){
-            var data_obj = { jobcard_id: "<?php echo $model->id;?>", discount_percent: discount};
-            }else{
-                var data_obj = { jobcard_id: "<?php echo $model->id;?>", discount_amount: discount};
-            } 
-            $.post('<?=Yii::$app->getUrlManager()->createUrl(['jobcard/apply-discount'])?>', data_obj)
-            .done(function( data ) {          
-               $$("[tab_id='"+tabId+"']").find(".alert").addClass("alert-success").removeClass("alert-error").removeClass("hide").html(data);    
-            });   
-        } 
-             
-    });
-    
+     
 </script>

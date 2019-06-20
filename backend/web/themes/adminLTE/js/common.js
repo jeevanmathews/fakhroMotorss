@@ -77,44 +77,53 @@ function validateAttribute(modelName, fieldName, fieldValue, mid, scenario){
             url: $("#"+formId).attr("action"),
             data: $(this).serialize() // getting filed value in serialize form
             })
-            .done(function(data){ // if getting done then call.                
-                var response = jQuery.parseJSON(data);
-                var response_head = "";
-                if(response.success != undefined){
-                  response_head = "success";                 
-                }else if(response.error != undefined){
-                  response_head = "error";
-                }else{
-                  response_head = "error";                  
-                }
-                if(response.redirect != undefined){ console.log(response.redirect );                  
-                  $.get( response.redirect , function( data ) {
-                    $(".main-body").addClass("hide");
-                    if($('div[tab_id="'+tabId+'"]').length){
-                      for(var i=0;i<5;i++){
-                        $('div[tab_id="'+tabId+'"]').next("script").remove();
-                      }
-                    }
-                    $('div[tab_id="'+tabId+'"]').remove();
-                    $(".container-body").append($(data));            
-                    $(document).find(".main-body:visible").attr("tab_id", tabId);                  
-                  });
-                }
-                $.toast({
-                  heading: (response_head.toUpperCase()),
-                  text: ((response.message != undefined)?response.message:"No response"),
-                  icon: response_head,
-                  loader: true,        // Change it to false to disable loader
-                  position: 'top-right',
-                  loaderBg: '#9EC600'  // To change the background
-                });
-                $("#"+formId).find(':submit').attr('disabled', false);               
+            .done(function(data){ // if getting done then call.
+                processResponse(data, tabId); 
+                $("#"+formId).find(':submit').attr('disabled', false); 
             });
             //$.ajaxSetup({async: true}); 
         }
         return false;
     });
   //}
+
+  function processResponse(data, tabId){
+    var response = jQuery.parseJSON(data);
+    var response_head = "";
+    if(response.success != undefined){
+      response_head = "success";                 
+    }else if(response.error != undefined){
+      response_head = "error";
+    }else{
+      response_head = "error";                  
+    }
+    if(response.redirect != undefined){               
+      redirectOnceMore(response.redirect, tabId);
+    }
+    $.toast({
+      heading: (response_head.toUpperCase()),
+      text: ((response.message != undefined)?response.message:"No response"),
+      icon: response_head,
+      loader: true,        // Change it to false to disable loader
+      position: 'top-right',
+      loaderBg: '#9EC600'  // To change the background
+    });
+    return true;    
+  }
+
+  function redirectOnceMore(redirect_url, tabId){  
+    $.get( redirect_url , function( data ) {
+      $(".main-body").addClass("hide");
+      if($('div[tab_id="'+tabId+'"]').length){
+        for(var i=0;i<5;i++){
+          $('div[tab_id="'+tabId+'"]').next("script").remove();
+        }
+      }
+      $('div[tab_id="'+tabId+'"]').remove();
+      $(".container-body").append($(data));            
+      $(document).find(".main-body:visible").attr("tab_id", tabId);                  
+    });
+  }
 
   //Jobcard Task Scripts     
       $(document).on('click', "[name='JobcardTask[discount]']:visible", function(){  console.log("df888")
@@ -245,6 +254,7 @@ function validateAttribute(modelName, fieldName, fieldValue, mid, scenario){
         $("[tab_id='"+tabId+"']").find("#amount_due").html(amount_due);
       }
     });
+
     $("[name='ex_discount']").click(function(){      
         var tabId = $(".main-body:visible").attr("tab_id");        
         showtotDiscount($(this).val(), tabId);
@@ -260,6 +270,28 @@ function validateAttribute(modelName, fieldName, fieldValue, mid, scenario){
             $("[tab_id='"+tabId+"']").find("#discount_percent").removeClass("hide");
         }
     }
+
+    $(document).on('click', "[id='apply-disount']:visible", function(){     
+        var jc_id = $(this).prev("[name='discount_jc_id']").val(); console.log(jc_id)
+        var tabId = $(".main-body:visible").attr("tab_id"); 
+        var discount = $("[tab_id='"+tabId+"']").find("#"+$("[tab_id='"+tabId+"']").find("input:radio[name=ex_discount]:checked").val()).val();
+        if(discount == ""){
+            $("[tab_id='"+tabId+"']").find(".alert").removeClass("alert-success").addClass("alert-error").removeClass("hide").html("Please input a discount rate or value.");
+        }else{
+            $("[tab_id='"+tabId+"']").find(".alert").addClass("hide");
+            if($("[tab_id='"+tabId+"']").find("input:radio[name=ex_discount]:checked").val() == "discount_percent"){
+            var data_obj = { jobcard_id: jc_id, discount_percent: discount};
+            }else{
+                var data_obj = { jobcard_id: jc_id, discount_amount: discount};
+            } 
+            $.post(jc_apply_discount_url, data_obj)
+            .done(function( data ) {
+                processResponse(data, tabId);                      
+                //$("[tab_id='"+tabId+"']").find(".alert").addClass("alert-success").removeClass("alert-error").removeClass("hide").html(data);    
+            });   
+        } 
+             
+    });
 
 //Jobcard Search vehicle scripts
     $(document).on('keyup', "[id='advanced_search_veh']", function(){    
@@ -323,39 +355,8 @@ function validateAttribute(modelName, fieldName, fieldValue, mid, scenario){
           aSync: false,
           dataType: "html",
           success: function(data) {
-            //console.log(data);
-              var response = jQuery.parseJSON(data);
-              var response_head = "";
-              if(response.success != undefined){
-                response_head = "success";                 
-              }else if(response.error != undefined){
-                response_head = "error";
-              }else{
-                response_head = "error";                  
-              }
-                if(response.redirect != undefined){ 
-                  //console.log(response.redirect );                  
-                  $.get( response.redirect , function( data ) {
-                    $(".main-body").addClass("hide");
-                    if($('div[tab_id="'+tabId+'"]').length){
-                      for(var i=0;i<5;i++){
-                        $('div[tab_id="'+tabId+'"]').next("script").remove();
-                      }
-                    }
-                    $('div[tab_id="'+tabId+'"]').remove();
-                    $(".container-body").append($(data));            
-                    $(document).find(".main-body:visible").attr("tab_id", tabId);                  
-                  });
-                }
-                $.toast({
-                  heading: (response_head.toUpperCase()),
-                  text: ((response.message != undefined)?response.message:"No response"),
-                  icon: response_head,
-                  loader: true,        // Change it to false to disable loader
-                  position: 'top-right',
-                  loaderBg: '#9EC600'  // To change the background
-                });
-            addMandatoryStar();
+             processResponse(data, tabId);
+             //addMandatoryStar();
           }});
       //     $.ajaxSetup({async: true}); 
        

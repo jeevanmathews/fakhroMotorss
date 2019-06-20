@@ -18,7 +18,7 @@ $this->params['breadcrumbs'][] = $this->title;
            Jobcard Number   
       </h1>
     </section>
-    
+
     <section class="content">
     <!-- SELECT2 EXAMPLE -->
         <div class="box box-default">   
@@ -35,15 +35,15 @@ $this->params['breadcrumbs'][] = $this->title;
                         'attributes' => [ 
 							[
                             'label'=>'Make',
-                            'value' => $model->vehicle->make,
+                            'value' => (isset($model->vehicle)?$model->vehicle->make->make:''),
                             ],
 							[
                             'label'=>'Model',
-                            'value' => $model->vehicle->model,
+                            'value' => (isset($model->vehicle)?$model->vehicle->model->model:''),
                             ],
 							[
                             'label'=>'Color',
-                            'value' => $model->vehicle->color,
+                            'value' => (isset($model->vehicle)?$model->vehicle->color:''),
                             ],
 							[
                             'label'=>'Meter Reading',
@@ -55,11 +55,11 @@ $this->params['breadcrumbs'][] = $this->title;
                             ],
 							[
                             'label'=>'Registration Number',
-                            'value' => $model->vehicle->reg_num,
+                            'value' => (isset($model->vehicle->reg_num)?$model->vehicle->reg_num:''),
                             ],
 							[
                             'label'=>'Chaisis Number',
-                            'value' => $model->vehicle->chasis_num,
+                            'value' => (isset($model->vehicle->chasis_num)?$model->vehicle->chasis_num:''),
                             ],
 							[
                             'label'=>'Amc Type',
@@ -99,23 +99,23 @@ $this->params['breadcrumbs'][] = $this->title;
                             'attributes' => [ 
                             [
                             'label'=>'Name',
-                            'value' => $model->customer->name,
+                            'value' => (isset($model->customer)?$model->customer->name:'Nil'),
                             ],
 							[
                             'label'=>'Contact Name',
-                            'value' => $model->customer->contact_name,
+                            'value' => (isset($model->customer)?$model->customer->contact_name:'Nil'),
                             ],
 							[
                             'label'=>'Contact Number',
-                            'value' => $model->customer->contact_number,
+                            'value' => (isset($model->customer)?$model->customer->contact_number:'Nil'),
                             ],
 							[
                             'label'=>'Alternate Contact Number',
-                            'value' => $model->customer->alt_phone,
+                            'value' => (isset($model->customer)?$model->customer->alt_phone:'Nil'),
                             ],
 							[
                             'label'=>'Email',
-                            'value' => $model->customer->email,
+                            'value' => (isset($model->customer)?$model->customer->email:'Nil'),
                             ],
 							[
                             'label' => 'Address',
@@ -166,15 +166,15 @@ $this->params['breadcrumbs'][] = $this->title;
                             ],
 							[
                             'label'=>'Promised Date',
-							'value' =>$model->invoice->promised_date,
+							'value' =>(isset($model->invoice->promised_date)?$model->invoice->promised_date:''),
                             ],
 							[
                             'label'=>'Advance Paid',
-							'value' =>$model->invoice->advance_paid,
+							'value' =>(isset($model->invoice->advance_paid)?$model->invoice->advance_paid:''),
                             ],
 							[
                             'label'=>'Receipt No',
-							'value' =>$model->invoice->receipt_num,
+							'value' =>(isset($model->invoice->receipt_num)?$model->invoice->receipt_num:''),
                             ],
 							[
                             'label' => 'Comment',

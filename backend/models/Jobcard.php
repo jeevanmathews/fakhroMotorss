@@ -109,6 +109,11 @@ class Jobcard extends \yii\db\ActiveRecord
         return JobcardInvoice::find()->where(['jobcard_id' => $this->id])->orderBy("id desc")->one();
     }
 
+    public function getQuotation(){
+        return JobcardQuotation::find()->where(['jobcard_id' => $this->id])->orderBy("id desc")->one();
+    }
+
+
     public function getLabourCost(){
         if(Yii::$app->common->company->vat_format == "exclusive"){
             return JobcardTask::find()->where(['jobcard_id'=> $this->id])->sum('task_rate');

@@ -10,7 +10,7 @@ $this->title = $model->name;
 $this->params['breadcrumbs'][] = $this->title;
 \yii\web\YiiAsset::register($this);
 ?>
-<div class="content-main-wrapper">
+<div class="company-view main-body" id="company_view">
     <!-- Content Header (Page header) -->
     <section class="content-header">
       <h1>

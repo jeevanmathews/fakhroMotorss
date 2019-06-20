@@ -5,10 +5,10 @@ namespace backend\models;
 use Yii;
 
 /**
- * This is the model class for table "jobcard_invoice_task".
+ * This is the model class for table "jobcard_quotation_task".
  *
  * @property int $id
- * @property int $invoice_id
+ * @property int $quotation_id
  * @property int $task_id
  * @property int $mechanic_id
  * @property string $start_date_time
@@ -25,14 +25,14 @@ use Yii;
  * @property string $note
  * @property string $status
  */
-class JobcardInvoiceTask extends \yii\db\ActiveRecord
+class JobcardQuotationTask extends \yii\db\ActiveRecord
 {
     /**
      * {@inheritdoc}
      */
     public static function tableName()
     {
-        return 'jobcard_invoice_task';
+        return 'jobcard_quotation_task';
     }
 
     /**
@@ -41,8 +41,8 @@ class JobcardInvoiceTask extends \yii\db\ActiveRecord
     public function rules()
     {
         return [
-            [['invoice_id', 'task_id'], 'required'],
-            [['invoice_id', 'task_id', 'mechanic_id'], 'integer'],
+            [['quotation_id', 'task_id'], 'required'],
+            [['quotation_id', 'task_id', 'mechanic_id'], 'integer'],
             [['total_time', 'task_rate', 'discount_percent', 'discount_amount', 'tax_rate', 'tax_amount', 'billing_rate'], 'number'],
             [['billable', 'tax_enabled', 'note', 'status'], 'string'],
             [['start_date_time', 'end_date_time'], 'string', 'max' => 200],
@@ -56,7 +56,7 @@ class JobcardInvoiceTask extends \yii\db\ActiveRecord
     {
         return [
             'id' => 'ID',
-            'invoice_id' => 'Invoice ID',
+            'quotation_id' => 'Quotation ID',
             'task_id' => 'Task ID',
             'mechanic_id' => 'Mechanic ID',
             'start_date_time' => 'Start Date Time',
@@ -74,8 +74,7 @@ class JobcardInvoiceTask extends \yii\db\ActiveRecord
             'status' => 'Status',
         ];
     }
-
-    public function getTask(){
+     public function getTask(){
         return $this->hasOne(Tasks::className(), ['id' => 'task_id']);
     }
 }

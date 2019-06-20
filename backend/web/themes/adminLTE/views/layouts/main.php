@@ -18,12 +18,14 @@ $jc_vehicle_info_url = Yii::$app->getUrlManager()->createUrl(['jobcard/vehicle-i
 $jc_vehicle_search_url = Yii::$app->getUrlManager()->createUrl(['jobcard/search-vehicle']);
 $jc_customer_search_url = Yii::$app->getUrlManager()->createUrl(['jobcard/search-customer']);
 $jc_create_task_url = Yii::$app->getUrlManager()->createUrl(['tasks/create']);
+$jc_apply_discount_url = Yii::$app->getUrlManager()->createUrl(['jobcard/apply-discount']);
 $js = <<< JS
 var jsUrl = '$jsUrl' ;
 var jc_vehicle_info_url = '$jc_vehicle_info_url';
 var jc_vehicle_search_url = '$jc_vehicle_search_url';
 var jc_customer_search_url = '$jc_customer_search_url';
 var jc_create_task_url = '$jc_create_task_url';
+var jc_apply_discount_url = '$jc_apply_discount_url';
 JS;
 $this->registerJs($js, \yii\web\View::POS_HEAD);
 
@@ -522,10 +524,20 @@ $this->registerJs($js, \yii\web\View::POS_HEAD);
         else if($(this).hasClass("change_status")){ //Check for other clicks
           return true;
         }
-        
+        else if($(this).hasClass("generate-quotation")){ //Check for other clicks
+          return true;
+        }
+        else if($(this).hasClass("nav-link")){ //Check for other clicks
+          return true;
+        }else if($(this).hasClass("navbar-brand")){       
+          $(".main-body").addClass("hide");
+          $("#site_dashboard").removeClass("hide");
+          return false;
+        }
         event.preventDefault();        
 
         //Find requested page id
+        //
         var page_id = $(this).attr("href").split("=")[1].replace("%2F","_"); 
         //Extract request action only without arguments
         if(page_id.indexOf("&") != -1){         

@@ -41,7 +41,7 @@ class CompanyController extends Controller
             'query' => Company::find(),
         ]);
 
-        return $this->render('index', [
+        return $this->renderAjax('index', [
             'dataProvider' => $dataProvider,
         ]);
     }
@@ -54,7 +54,7 @@ class CompanyController extends Controller
      */
     public function actionView($id)
     {
-        return $this->render('view', [
+        return $this->renderAjax('view', [
             'model' => $this->findModel($id),
         ]);
     }
@@ -69,10 +69,11 @@ class CompanyController extends Controller
         $model = new Company();
 
         if ($model->load(Yii::$app->request->post()) && $model->save()) {
-            return $this->redirect(['view', 'id' => $model->id]);
+        echo json_encode(["success" => true, "message" => "Company has been created."]);
+            exit;        
         }
 
-        return $this->render('create', [
+        return $this->renderAjax('create', [
             'model' => $model,
         ]);
     }
@@ -95,10 +96,11 @@ class CompanyController extends Controller
 			$model->imageFile = UploadedFile::getInstance($model, 'imageFile');
 			$model->upload();
                 $model->settings->save();
-            return $this->redirect(['view', 'id' => $model->id]);
+               echo json_encode(["success" => true, "message" => "Company has been Updated."]);
+            exit;
         }
 
-        return $this->render('update', [
+        return $this->renderAjax('update', [
             'model' => $model,
         ]);
     }

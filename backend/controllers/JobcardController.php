@@ -15,6 +15,9 @@ use backend\models\JobcardTaskLog;
 use backend\models\JobcardInvoice;
 use backend\models\JobcardInvoiceMaterial;
 use backend\models\JobcardInvoiceTask;
+use backend\models\JobcardQuotation;
+use backend\models\JobcardQuotationMaterial;
+use backend\models\JobcardQuotationTask;
 use backend\models\User;
 use yii\web\Controller;
 use yii\web\NotFoundHttpException;
@@ -187,7 +190,10 @@ class JobcardController extends Controller
                 $jobcardTask->save();
                 echo json_encode(["success" => true, "message" => 'Task has been '.$task_stat.' to this Jobcard.', 'redirect' => Yii::$app->getUrlManager()->createUrl(['jobcard/update', 'id' => $model->id, 'tab' => 'task'])]);
                 exit;                
-            }          
+            } else{ 
+                echo json_encode(["error" => true, "message" => implode(", ", $jobcardTask->getErrors('task_id')), 'redirect' => Yii::$app->getUrlManager()->createUrl(['jobcard/update', 'id' => $model->id, 'tab' => 'task'])]);
+                    exit;
+            }       
             $activeTab = 'task';
         }   
 
@@ -419,7 +425,8 @@ class JobcardController extends Controller
                 $model->tax = $vat;
                 $model->amount_due = $total_charge + $vat; 
                 $model->save();
-                echo "Discount Applied";
+                echo json_encode(["success" => true, "message" => "Discount Applied", 'redirect' => Yii::$app->getUrlManager()->createUrl(['jobcard/update', 'id' => $model->id, 'tab' => 'total'])]);
+                exit;               
             } 
         }
     }
@@ -429,7 +436,6 @@ class JobcardController extends Controller
 
         $taskquery = JobcardInvoiceTask::find();
         $materialquery = JobcardInvoiceMaterial::find();
-        
         $taskquery->andFilterWhere([
             'invoice_id' => $invoice->id,
         ]);
@@ -463,19 +469,70 @@ class JobcardController extends Controller
                 $invoice_material->invoice_id = $invoice->id;
                 $invoice_material->save();
             }
+
             //Save Invoice Tasks -same as Jobcard Tasks
             foreach($jobcard->tasks as $task){
                 $invoice_task = new JobcardInvoiceTask();
                 $invoice_task->setAttributes($task->getAttributes());
                 $invoice_task->invoice_id = $invoice->id;
-                $invoice_task->save();
+                $invoice_task->save();               
             }
             Yii::$app->session->setFlash('success', 'Invoice has been generated.');
             return $this->redirect(['invoice', 'invoice_id' => $invoice->id]);
         }//else{echo "nops";print_r($invoice->getErrors());exit;}
     }
 
+    //quotation
+    public function actionGenerateQuotation($jobcard_id){
+        $jobcard = $this->findModel($jobcard_id);
+        $quotation = new JobcardQuotation();
+        $quotation->setAttributes($jobcard->getAttributes());
+        $quotation->jobcard_id = $jobcard->id;
+        $quotation->created_date = date('Y-m-d h:i:s');     
+        // var_dump($quotation->getAttributes());die; 
+        if($quotation->save()){
+            // $jobcard->updateStockDetails();
+            //Save quotation Materials -same as Jobcard Materials
+            foreach($jobcard->materials as $material){
+                $quotation_material = new JobcardQuotationMaterial();
+                $quotation_material->setAttributes($material->getAttributes());
+                $quotation_material->quotation_id = $quotation->id;
+                $quotation_material->save();
+            }
+            //Save quotation Tasks -same as Jobcard Tasks
+            foreach($jobcard->tasks as $task){
+                $quotation_task = new JobcardQuotationTask();
+                $quotation_task->setAttributes($task->getAttributes());
+                $quotation_task->quotation_id = $quotation->id;
+                $quotation_task->save();
+            }
+            Yii::$app->session->setFlash('success', 'Quotation has been generated.');
+            return $this->redirect(['quotation', 'quotation_id' => $quotation->id]);
+        }//else{echo "nops";print_r($invoice->getErrors());exit;}
+    }
+        public function actionQuotation($quotation_id){
+        $quotation = JobcardQuotation::findOne($quotation_id);
 
+        $taskquery = JobcardQuotationTask::find();
+        $materialquery = JobcardQuotationMaterial::find();
+        
+        $taskquery->andFilterWhere([
+            'quotation_id' => $quotation->id,
+        ]);
+        $taskdataProvider = new ActiveDataProvider([
+            'query' => $taskquery,
+            'sort' => false
+        ]);
+
+        $materialquery->andFilterWhere([
+            'quotation_id' => $quotation->id,
+        ]);
+        $materialdataProvider = new ActiveDataProvider([
+            'query' => $materialquery,
+            'sort' => false
+        ]);       
+        return $this->renderAjax('_quotation',compact('quotation', 'taskdataProvider', 'materialdataProvider'));
+    }
      /**
      * Displays vehicle list.
      * @return mixed

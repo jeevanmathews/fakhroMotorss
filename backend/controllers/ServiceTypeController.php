@@ -115,8 +115,10 @@ class ServiceTypeController extends Controller
 	  {
         $model = $this->findModel($id);
         $model->status = ($model->status == 0)?1:0;
-        $model->save();
-        return $this->renderAjax(['index']);
+       if($model->save()){
+            echo json_encode(["success" => true, "message" => "Currency status has been changed", 'redirect' => Yii::$app->getUrlManager()->createUrl(['service-type/index'])]);
+         exit;
+     }
     }
     /**
      * Finds the ServiceType model based on its primary key value.

@@ -27,7 +27,11 @@ use backend\models\Items;
 
                     <?= $form->field($jobcardMaterial, 'unit_rate')->textInput(['maxlength' => true]) ?>
 
-                    <?= $form->field($jobcardMaterial, 'num_unit')->textInput(['maxlength' => true]) ?>                    
+                    <?= $form->field($jobcardMaterial, 'num_unit')->textInput(['maxlength' => true]) ?>
+
+                    <?php if((!$jobcardMaterial->isNewRecord) && (Yii::$app->common->company->vat_format == "exclusive")){
+                        $jobcardMaterial->rate = $jobcardMaterial->total;
+                    } ?>                    
 
                     <?= $form->field($jobcardMaterial, 'rate')->textInput(['maxlength' => true]) ?>
                     <?= $form->field($jobcardMaterial, 'rate')->hiddenInput(['id' => 'jobcardmaterial-hidden-rate'])->label(false);?>   
