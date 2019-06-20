@@ -570,8 +570,8 @@ $this->registerJs($js, \yii\web\View::POS_HEAD);
             $('div[tab_id="'+tabId+'"]').remove();
             $(".container-body").append($(data));
             $(document).find(".main-body:visible").attr("tab_id", tabId);
-
-            $("#"+tabId).find("span").html(page_id.replace("_","/"));
+            $("#"+tabId).find("span").html($(document).find(".main-body:visible").find(".content-header h1").html());
+            //$("#"+tabId).find("span").html(page_id.replace("_","/"));
             addMandatoryStar();
           }});
           $.ajaxSetup({async: true}); 

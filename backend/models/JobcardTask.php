@@ -35,7 +35,7 @@ class JobcardTask extends \yii\db\ActiveRecord
             [['task_id'], 'required'],  
              [['note'], 'string'],       
             [['task_id', 'mechanic_id', 'jobcard_id'], 'integer'],
-            ['task_id', 'unique'],
+            ['task_id', 'unique', 'targetAttribute' => ['task_id', 'jobcard_id']],
             [['billing_rate', 'total_time', 'tax_rate', 'tax_amount', 'discount_percent', 'discount_amount'], 'number'],
             [['start_date_time', 'end_date_time', 'billable', 'discount', 'status'], 'string', 'max' => 200],
         ];
