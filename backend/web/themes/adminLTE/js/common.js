@@ -360,5 +360,21 @@ function validateAttribute(modelName, fieldName, fieldValue, mid, scenario){
           }});
       //     $.ajaxSetup({async: true}); 
        
-      });     
-      
+      });           
+  
+// Common gridview search filter
+$(document).on('beforeFilter', '.grid-view', function(event) {
+    console.log($(".main-body:visible").find(".gridview-filter-form").attr("action"));
+    $.ajaxSetup({async: false}); 
+    $.ajax({
+          url: $(".main-body:visible").find(".gridview-filter-form").attr("action"),
+          type: 'get',       
+          data: $(".main-body:visible").find(".gridview-filter-form").serialize()+'&page_id='+$(".main-body:visible").find(".grid-view").attr("id"),
+          success: function(data) {console.log("dfd")
+            console.log($(data).find('.grid-view').html())
+             $(".main-body:visible").find(".grid-view").html($(data).find('.grid-view').html())
+          }
+        });
+    $.ajaxSetup({async: true}); 
+    return false;
+});
