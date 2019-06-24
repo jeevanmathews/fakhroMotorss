@@ -38,9 +38,14 @@ class SupplierController extends Controller
         $searchModel = new SupplierSearch();
         $dataProvider = $searchModel->search(Yii::$app->request->queryParams);
 
+        $page_id = "supplier".time();
+        if(isset(Yii::$app->request->queryParams['page_id'])){
+            $page_id = Yii::$app->request->queryParams['page_id'];
+        }
         return $this->renderAjax('index', [
             'searchModel' => $searchModel,
             'dataProvider' => $dataProvider,
+            'page_id' => $page_id
         ]);
     }
 
@@ -129,7 +134,7 @@ class SupplierController extends Controller
         $model = $this->findModel($id);
         $model->status = ($model->status == 0)?1:0;
        if($model->save(false)){
-            echo json_encode(["success" => true, "message" => "Currency status has been changed", 'redirect' => Yii::$app->getUrlManager()->createUrl(['supplier/index'])]);
+            echo json_encode(["success" => true, "message" => "Supplier status has been changed", 'redirect' => Yii::$app->getUrlManager()->createUrl(['supplier/index'])]);
          exit;
      }
     }

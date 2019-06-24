@@ -39,9 +39,14 @@ class EmployeesController extends Controller
         $searchModel = new EmployeesSearch();
         $dataProvider = $searchModel->search(Yii::$app->request->queryParams);
 
+       $page_id = "employees".time();
+        if(isset(Yii::$app->request->queryParams['page_id'])){
+            $page_id = Yii::$app->request->queryParams['page_id'];
+        }
         return $this->renderAjax('index', [
             'searchModel' => $searchModel,
             'dataProvider' => $dataProvider,
+            'page_id' => $page_id
         ]);
     }
 

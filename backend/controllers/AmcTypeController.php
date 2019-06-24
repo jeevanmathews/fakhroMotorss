@@ -38,9 +38,14 @@ class AmcTypeController extends Controller
         $searchModel = new AmcTypeSearch();
         $dataProvider = $searchModel->search(Yii::$app->request->queryParams);
 
+        $page_id = "amc-type".time();
+        if(isset(Yii::$app->request->queryParams['page_id'])){
+            $page_id = Yii::$app->request->queryParams['page_id'];
+        }
         return $this->renderAjax('index', [
             'searchModel' => $searchModel,
             'dataProvider' => $dataProvider,
+            'page_id' => $page_id
         ]);
     }
 
@@ -116,7 +121,7 @@ class AmcTypeController extends Controller
         $model->status = ($model->status == 0)?1:0;
        
         if($model->save()){
-            echo json_encode(["success" => true, "message" => "Branchtypes status has been changed", 'redirect' => Yii::$app->getUrlManager()->createUrl(['branchtypes/index'])]);
+            echo json_encode(["success" => true, "message" => "AmcType status has been changed", 'redirect' => Yii::$app->getUrlManager()->createUrl(['amc-type/index'])]);
          exit;
      }
     }

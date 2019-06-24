@@ -38,9 +38,14 @@ class VatdetailsController extends Controller
         $searchModel = new VatdetailsSearch();
         $dataProvider = $searchModel->search(Yii::$app->request->queryParams);
 
+        $page_id = "vatdetails".time();
+        if(isset(Yii::$app->request->queryParams['page_id'])){
+            $page_id = Yii::$app->request->queryParams['page_id'];
+        }
         return $this->renderAjax('index', [
             'searchModel' => $searchModel,
             'dataProvider' => $dataProvider,
+            'page_id' => $page_id
         ]);
     }
 

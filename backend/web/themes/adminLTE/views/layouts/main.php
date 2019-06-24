@@ -100,7 +100,10 @@ $this->registerJs($js, \yii\web\View::POS_HEAD);
                       </li> 
                       <li>
                         <?= Html::a('Supplier', ['/supplier/index'], ['class'=>'']) ?>
-                      </li>  
+                      </li>
+                       <li>
+                        <?= Html::a('Supplier Groups', ['/suppliergroup/index'], ['class'=>'']) ?>
+                      </li>    
                       <li>
                         <?= Html::a('Branch Types', ['/branchtypes/index'], ['class'=>'']) ?>
                       </li> 
@@ -113,9 +116,9 @@ $this->registerJs($js, \yii\web\View::POS_HEAD);
                       <li>
                         <?= Html::a('Extended Warranty Types', ['/extended-warranty-type/index'], ['class'=>'']) ?>
                       </li>
-                      <li>
+                      <!--<li>
                         <?= Html::a('Jobcard Status', ['/jobcard-status/index'], ['class'=>'']) ?>
-                      </li>
+                      </li>-->
                       <li>
                         <?= Html::a('Service Type', ['/service-type/index'], ['class'=>'']) ?>
                       </li>
@@ -509,7 +512,9 @@ $this->registerJs($js, \yii\web\View::POS_HEAD);
       $(document).on('click', "a", function(){
 
         if($(this).hasClass("page_tab")){
-          var tab_id = $(this).closest("li").attr("id"); 
+          var tab_id = $(this).closest("li").attr("id");           
+          $(".nav-item").addClass("active");  
+          $(this).closest("li").removeClass("active");
           $(".main-body").addClass("hide");
           $(document).find('div[tab_id="'+tab_id+'"]').removeClass("hide");         
           return;
@@ -546,9 +551,9 @@ $this->registerJs($js, \yii\web\View::POS_HEAD);
 
         //Generate Tab        
         if($(this).closest("div").attr("id") == "myNavbar"){
-          $(".nav-item").removeClass("active");          
+          $(".nav-item").addClass("active");          
           var tabId = "tab_id_"+($(".page_tab").length+1);
-          $( '<li id="'+tabId+'" class="nav-item active"><a class="nav-link page_tab" data-toggle="tab" role="tab" aria-controls="task" aria-selected="false"><span>'+page_id.replace("_","/")+'</span></a><b class="close-tab"><i class="fa fa-times-circle" aria-hidden="true"></i></b></li>' ).appendTo( $( "#myTab" ) );
+          $( '<li id="'+tabId+'" class="nav-item"><a class="nav-link page_tab" data-toggle="tab" role="tab" aria-controls="task" aria-selected="false"><span>'+page_id.replace("_","/")+'</span></a><b class="close-tab"><i class="fa fa-times-circle" aria-hidden="true"></i></b></li>' ).appendTo( $( "#myTab" ) );
         }
 
         if(tabId == undefined){

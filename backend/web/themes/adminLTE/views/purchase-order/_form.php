@@ -44,7 +44,7 @@ $vat_format=Yii::$app->common->company->vat_format;
         <div class="row">
 
             <div class="col-md-6"> 
-             <?= $form->field($model,'prefix_id', ['inputOptions' => ["class" => "form-control select2"]])->dropDownList(ArrayHelper::map(PrefixMaster::find()->where(["status" => 1])->all(), 'id', 'prefix'), ["prompt" => "Select Prefix",'value'=>Yii::$app->common->prefix->id]) ?>
+             <?= $form->field($model,'prefix_id', ['inputOptions' => ["class" => "form-control select2"]])->dropDownList(ArrayHelper::map(PrefixMaster::find()->where(["status" => 1])->all(), 'id', 'prefix'), ["prompt" => "Select Prefix",'value'=>(isset(Yii::$app->common->prefix->id)?Yii::$app->common->prefix->id:'')]) ?>
 
              <?= $form->field($model, 'po_expected_date')->textInput(['maxlength' => true,'class'=>'form-control datepicker']) ?>
              <?= $form->field($model, 'remarks')->textarea(['rows' => 6]) ?>

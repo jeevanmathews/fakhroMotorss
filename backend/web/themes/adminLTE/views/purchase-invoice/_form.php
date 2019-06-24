@@ -36,7 +36,7 @@ $vat_format=Yii::$app->common->company->vat_format;
   <div class="row">
 
     <div class="col-md-6 "> 
-      <?= $form->field($model,'prefix_id', ['inputOptions' => ["class" => "form-control select2"]])->dropDownList(ArrayHelper::map(PrefixMaster::find()->where(["status" => 1])->all(), 'id', 'prefix'), ["prompt" => "Select Prefix",'value'=>Yii::$app->common->prefix->id]) ?>
+      <?= $form->field($model,'prefix_id', ['inputOptions' => ["class" => "form-control select2"]])->dropDownList(ArrayHelper::map(PrefixMaster::find()->where(["status" => 1])->all(), 'id', 'prefix'), ["prompt" => "Select Prefix",'value'=>(isset(Yii::$app->common->prefix->id)?Yii::$app->common->prefix->id:'')]) ?>
        <?= $form->field($model, 'inv_date')->textInput(['maxlength' => true,'class'=>'form-control datepicker']) ?>
      
       <?= $form->field($model, 'remarks')->textarea(['rows' => 6]) ?>
@@ -172,11 +172,11 @@ $vat_format=Yii::$app->common->company->vat_format;
 </div>
 <div class="mb-5 fl-w100"><?= $form->field($model, 'discount')->textInput(['class'=>'form-control discount']) ?></div>
 <input type="hidden" id="PurchaseInvoiceItems-discount_percent" class="discount_percent" name="PurchaseInvoice[discount_percent]">
-<div class="mb-5 fl-w100">
+<div class="mb-5 fl-w100 ">
   <div class="form-group field-PurchaseInvoice-total_tax">
     <div class="input-group">
       <div class="input-group-addon">VAT %</div>
-      <?= Html::activeTextInput($model,'vat_percent',['type'=>'hidden','class'=>'vatper','value'=>(($vat_format=="exclusive")?Yii::$app->common->company->vat_rate:0)])?>
+      <?= Html::activeTextInput($model,'vat_percent',['type'=>'','class'=>'form-control vatper','value'=>(($vat_format=="exclusive")?Yii::$app->common->company->vat_rate:0)])?>
     </div>
   </div>
 </div>

@@ -62,7 +62,7 @@ class Purchaseorder extends \yii\db\ActiveRecord
             'prefix_id' => 'Prefix',
             'po_number' => 'Po Number',
             'po_date' => 'Po Date',
-            'po_expected_date' => 'Po Expected Date',
+            'po_expected_date' => 'Po Date',
             'po_created_by' => 'Po Created By',
             'subtotal' => 'Subtotal',
             'total_tax' => 'Total Tax',

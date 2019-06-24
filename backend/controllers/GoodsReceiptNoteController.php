@@ -44,10 +44,15 @@ class GoodsReceiptNoteController extends Controller
 		$searchModel = new GoodsReceiptNoteSearch();
 		$dataProvider = $searchModel->search(Yii::$app->request->queryParams);
 
-		return $this->renderAjax('index', [
-			'searchModel' => $searchModel,
-			'dataProvider' => $dataProvider,
-		]);
+		$page_id = "goods-receipt-note".time();
+        if(isset(Yii::$app->request->queryParams['page_id'])){
+            $page_id = Yii::$app->request->queryParams['page_id'];
+        }
+        return $this->renderAjax('index', [
+            'searchModel' => $searchModel,
+            'dataProvider' => $dataProvider,
+            'page_id' => $page_id
+        ]);
 	}
 
 	/**

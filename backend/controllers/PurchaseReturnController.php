@@ -44,9 +44,14 @@ class PurchaseReturnController extends Controller
         $searchModel = new PurchaseReturnSearch();
         $dataProvider = $searchModel->search(Yii::$app->request->queryParams);
 
+        $page_id = "purchase-return".time();
+        if(isset(Yii::$app->request->queryParams['page_id'])){
+            $page_id = Yii::$app->request->queryParams['page_id'];
+        }
         return $this->renderAjax('index', [
             'searchModel' => $searchModel,
             'dataProvider' => $dataProvider,
+            'page_id' => $page_id
         ]);
     }
 
