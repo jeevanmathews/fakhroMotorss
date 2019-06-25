@@ -2,6 +2,8 @@
 
 use yii\helpers\Html;
 use yii\grid\GridView;
+use backend\models\Manufacturer;
+use yii\helpers\Arrayhelper;
 //use yii\widgets\Pjax; 
 
 /* @var $this yii\web\View */
@@ -38,15 +40,32 @@ $this->params['breadcrumbs'][] = $this->title;
                     'reg_num', 
                     [
                         'label' => 'Manufacturer',
+                        'attribute' => 'manufacturer_id',
+                        'filter' => Html::activeDropDownList($searchModel, 'manufacturer_id', ArrayHelper::map(Manufacturer::find()->where(['status' => 1])->all(), 'id', 'name'),['class'=>'form-control','prompt' => 'Search by Manufacturer']),
                         'value' =>function ($model){
                             return utf8_decode($model->make->manufacturer->name);
                         }
-                    ],         
-                    'make.make',
-                    'model.model',
+                    ], 
+                    [
+                       
+                        'attribute' => 'make_id',
+                        'filter' => Html::activeTextInput($searchModel, 'make_id',['class'=>'form-control','prompt' => 'Search by Make']),
+                        'value' =>function ($model){
+                            return utf8_decode($model->make->make);
+                        }
+                    ],
+                    [
+                       
+                        'attribute' => 'model_id',
+                        'filter' => Html::activeTextInput($searchModel, 'model_id',['class'=>'form-control','prompt' => 'Search by Model']),
+                        'value' =>function ($model){
+                            return utf8_decode($model->model->model);
+                        }
+                    ],  
                     'color',      
                     [
                         'attribute' => 'customer_id',
+                        'filter' => Html::activeTextInput($searchModel, 'customer_id',['class'=>'form-control','prompt' => 'Search by Customer']),
                         'value' => function($model){
                             return ($model->customer)?$model->customer->name:"";
                         }
