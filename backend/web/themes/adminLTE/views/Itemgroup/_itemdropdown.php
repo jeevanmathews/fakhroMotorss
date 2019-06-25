@@ -31,7 +31,7 @@ Html::dropDownList('parent_id[]','',
 				['add_new' =>'Add New']+$Item ,
 				 ['prompt' => 'Select Type','class' => 'form-control select2 type',	
 				
-		    'onchange'=>'if( $(this).val()== "add_new"){ $("[name=\'category_name\']").removeClass("hide");} else{
+		    'onchange'=>'if( $(this).val()== ""){$(this).parent().parent().nextAll(".form-group").remove();}else if( $(this).val()== "add_new"){ $("[name=\'category_name\']").removeClass("hide");} else{
                 $.get( "'.Yii::$app->getUrlManager()->createUrl('itemgroup/lists').'&parent_id="+$(this).val(), function( data ) {
 			$("[name=\'category_name\']").remove();		
 			$("div#itemlists").append(data);

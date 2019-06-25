@@ -24,7 +24,8 @@ Html::dropDownList('parent_id[]','',
 	$Item ,
 	['prompt' => 'Select Type','class' => 'form-control select2 type',	
 
-	'onchange'=>'$(this).parent().parent().nextAll(".parent_id").remove(); if( $(this).val()== "add_new"){ $("[name=\'category_name\']").removeClass("hide");} else{
+	'onchange'=>'$(this).parent().parent().nextAll(".parent_id").remove(); 
+	if( $(this).val()== "add_new"){ $("[name=\'category_name\']").removeClass("hide");}else if($(this).val()== ""){} else{
 		$.get( "'.Yii::$app->getUrlManager()->createUrl('items/'.$type).'&parent_id="+$(this).val(), function( data ) {
 			$("[name=\'category_name\']").remove();	
 			$("div#itemlists").append(data);

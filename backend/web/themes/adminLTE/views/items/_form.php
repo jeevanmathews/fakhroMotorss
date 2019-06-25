@@ -51,6 +51,8 @@ use backend\models\Itemgroup;
                                 $("div#itemlists").append(data);
                                 $("#hidden-field").css("visibility","hidden");
                                 });
+                            }else{
+                                
                             }
                             ']	
 								
