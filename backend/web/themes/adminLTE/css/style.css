@@ -662,6 +662,16 @@ h2.heading {
  .nav-tabs > li.nav-item > a:focus:after {
   background: #d2d6de;
 }
+.nav-tabs > li.nav-item > a:after,
+ .nav-tabs > li.nav-item > a:hover:after, 
+ .nav-tabs > li.nav-item > a:focus:after {
+  background: #fff;
+}
+
+ .nav-tabs > li.nav-item.active:hover > a:after, 
+ .nav-tabs > li.nav-item.active:focus > a:after {
+  background: #f1f1f1;
+ }
 .mb-5{
   margin-bottom:5px;
 }
