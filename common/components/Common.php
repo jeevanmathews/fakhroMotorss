@@ -138,5 +138,18 @@ class Common extends Component
       return $branch;
     }
 
+    public function showModelErrors($model, $attributes=[]){
+      $error = [];
+      foreach ($model->getErrors() as $attribute => $errors) {
+        if($attributes){
+          if(!in_array($attribute, $attributes)){
+            continue;
+          }
+        }
+        $error[] = implode(", ", $errors);
+      }
+      return ($error)?(implode("</br>", $error)):"";
+    }
+
 
 }
