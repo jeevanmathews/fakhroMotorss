@@ -28,7 +28,7 @@ class Roles extends \yii\db\ActiveRecord
     public function rules()
     {
         return [
-            [['department_id', 'status'], 'integer'],
+            [['status'], 'integer'],
             [['name'], 'string', 'max' => 250],
         ];
     }
@@ -40,8 +40,7 @@ class Roles extends \yii\db\ActiveRecord
     {
         return [
             'id' => 'ID',
-            'name' => 'Name',
-            'department_id' => 'Department',
+            'name' => 'Name',         
             'status' => 'Status',
         ];
     }
@@ -49,8 +48,5 @@ class Roles extends \yii\db\ActiveRecord
         {
             return $this->hasOne(User::className(), ['role_id' => 'id']);
         }
-    public function getDepartments()
-        {
-            return $this->hasOne(Departments::className(), ['id' => 'department_id']);
-        }
+    
 }

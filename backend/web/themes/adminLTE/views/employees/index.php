@@ -69,13 +69,16 @@ $this->params['breadcrumbs'][] = $this->title;
                         'filter' => Html::activeDropDownList($searchModel, 'status', ["1"=>"Enable", "0" => "Disable"],['class'=>'form-control','prompt' => 'Search by Status']),
                         ],
                         ['class' => 'yii\grid\ActionColumn',
-                        'template' => '{view}{update}{changeStatus}',
+                        'template' => '{view}{update}{changeStatus}{roles}',
                         'buttons' => [
-                        'changeStatus' => function ($url, $model, $key) {
-                           $img = ($model->status == 1)?"button_cross.png":"button_tick_alt.png";
-                           $width = ($model->status == 1)?"25":"20";
-                           return Html::a(Html::img($this->theme->getUrl("images/".$img),["width" =>  $width, "title" => (($model->status == 1)?"Disable":"Enable")]), ['change-status', 'id'=>$model->id],['class'=>'change_status']);
-                       },
+                          'changeStatus' => function ($url, $model, $key) {
+                             $img = ($model->status == 1)?"button_cross.png":"button_tick_alt.png";
+                             $width = ($model->status == 1)?"25":"20";
+                             return Html::a(Html::img($this->theme->getUrl("images/".$img),["width" =>  $width, "title" => (($model->status == 1)?"Disable":"Enable")]), ['change-status', 'id'=>$model->id],['class'=>'change_status']);
+                          },
+                          'roles' => function ($url, $model, $key) {                             
+                             return Html::a('<span class="glyphicon glyphicon-user"></span>', ['roles', 'id'=>$model->id],['title'=>'Roles']);
+                          },
                        ]
                        ],
                        ],

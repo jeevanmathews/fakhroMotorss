@@ -207,7 +207,7 @@ class User extends ActiveRecord implements IdentityInterface
     }
     public function getRoles()
     {
-        return $this->hasMany(Roles::className(), ['user_id' => 'id']);
+        return $this->hasMany(UserRole::className(), ['user_id' => 'id']);
     }
     public function getBranch()
     {

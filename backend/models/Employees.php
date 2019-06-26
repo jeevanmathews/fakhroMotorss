@@ -85,4 +85,13 @@ class Employees extends \yii\db\ActiveRecord
     {
         return $this->first_name." ".$this->last_name;
     }
+
+    public function getUserRoles()
+    {
+        $roles = [];
+        foreach($this->user->roles as $role){
+            $roles[] = $role->role_id;
+        }
+        return $roles;
+    }
 }

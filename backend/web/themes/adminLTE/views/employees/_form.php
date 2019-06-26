@@ -85,7 +85,7 @@ use backend\models\Branches;
       });
     });
     $('body').on('click','.login_enabled',function(){
-        var login=$(this).val();
+        var login = $(this).val();
         if(login==1){
             $('.login_div').removeClass('no-display');     
             $('.branchselect').parent().find('.select2-container').css('width','100%');

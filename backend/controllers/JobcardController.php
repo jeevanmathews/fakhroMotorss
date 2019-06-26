@@ -280,7 +280,7 @@ class JobcardController extends Controller
     }
 
     /* Mechanic Login */
-    public function actionMytasks(){       
+    public function actionMyTasks(){   
         if(isset(Yii::$app->user->identity->employee)){
             //Change after Permission integration
             if(Yii::$app->user->identity->employee->designation_id == 4){
