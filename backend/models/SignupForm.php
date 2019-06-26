@@ -38,11 +38,11 @@ class SignupForm extends \yii\db\ActiveRecord
     public function rules()
     {
         return [
-            [['auth_key', 'password_hash', 'branch_id', 'created_at', 'updated_at', 'sername', 'email'], 'required'],
+            [['auth_key', 'password_hash', 'branch_id', 'created_at', 'updated_at', 'username', 'email'], 'required', 'on' => ['register']],          
             ['email', 'email'],
             ['username', 'unique'],            
             ['email', 'unique'],           
-            [['role_id', 'branch_id', 'status', 'created_at', 'updated_at'], 'integer'],
+            [['branch_id', 'status', 'created_at', 'updated_at'], 'integer'],
             [['password_hash', 'password_reset_token'], 'string', 'max' => 255],
              [['password','confirmPassword'], 'required', 'on' => ['register', 'changepassword']],            
             ['confirmPassword', 'compare', 'compareAttribute' => 'password', 'on' => ['register', 'changepassword']],
@@ -63,7 +63,6 @@ class SignupForm extends \yii\db\ActiveRecord
             'password_hash' => 'Password Hash',
             'password_reset_token' => 'Password Reset Token',
             'email' => 'Email',
-            'role_id' => 'Role ID',
             'branch_id' => 'Branch ID',
             'status' => 'Status',
             'created_at' => 'Created At',

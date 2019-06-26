@@ -49,7 +49,7 @@ class User extends ActiveRecord implements IdentityInterface
     {
         return [
             [['username', 'auth_key', 'password_hash', 'email', 'branch_id', 'created_at', 'updated_at'], 'required'],
-            [['role_id', 'branch_id', 'status', 'created_at', 'updated_at'], 'integer'],
+            [['branch_id', 'status', 'created_at', 'updated_at'], 'integer'],
             [['username', 'password_hash', 'password_reset_token', 'email'], 'string', 'max' => 255],
             [['auth_key'], 'string', 'max' => 32],
             [['username'], 'unique'],
@@ -70,8 +70,7 @@ class User extends ActiveRecord implements IdentityInterface
             'auth_key' => 'Auth Key',
             'password_hash' => 'Password Hash',
             'password_reset_token' => 'Password Reset Token',
-            'email' => 'Email',
-            'role_id' => 'Role',
+            'email' => 'Email',         
             'branch_id' => 'Branch',
             'status' => 'Status',
             'created_at' => 'Created At',
@@ -208,7 +207,7 @@ class User extends ActiveRecord implements IdentityInterface
     }
     public function getRoles()
     {
-        return $this->hasOne(Roles::className(), ['id' => 'role_id']);
+        return $this->hasMany(Roles::className(), ['user_id' => 'id']);
     }
     public function getBranch()
     {

@@ -8,7 +8,7 @@ use yii\data\ActiveDataProvider;
 use yii\web\Controller;
 use yii\web\NotFoundHttpException;
 use yii\filters\VerbFilter;
-
+use backend\models\Designations;
 /**
  * DepartmentsController implements the CRUD actions for Departments model.
  */
@@ -95,6 +95,19 @@ class DepartmentsController extends Controller
         return $this->renderAjax('update', [
             'model' => $model,
         ]);
+    }
+
+    public function actionDesignation($department_id){
+        $designations = Designations::find()->where(['department_id' => $department_id])->all();
+        if($designations){
+            echo '<option value="">Select A Make</option>';
+            foreach($designations as $designation){
+                echo '<option value="'.$designation->id.'">'.$designation->name.'</option>';
+            }
+        }else{
+            echo '<option value="">No Records Added</option>';
+        }        
+        exit;
     }
 
     /**

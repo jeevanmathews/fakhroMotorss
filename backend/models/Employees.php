@@ -24,6 +24,7 @@ use Yii;
  */
 class Employees extends \yii\db\ActiveRecord
 {
+    public $department;
     /**
      * {@inheritdoc}
      */
@@ -38,13 +39,15 @@ class Employees extends \yii\db\ActiveRecord
     public function rules()
     {
         return [
-            [['first_name', 'last_name', 'address', 'email', 'phone', 'date_of_joining', 'date_of_birth', 'designation_id'], 'required'],
+            [['first_name', 'last_name', 'address', 'email', 'phone', 'date_of_joining', 'date_of_birth', 'designation_id', 'branch_id'], 'required'],
             [['address'], 'string'],
+            ['email', 'email'],
+            ['email', 'unique'], 
+            ['phone', 'unique'],  
             [['date_of_joining', 'date_of_birth', 'created_date'], 'safe'],
             [['designation_id', 'login', 'user_id', 'status', 'branch_id'], 'integer'],
-            [['first_name', 'last_name'], 'string', 'max' => 250],
-            [['email'], 'string', 'max' => 300],
-            [['phone'], 'string', 'max' => 100],
+            [['first_name', 'last_name'], 'string', 'max' => 250],           
+            [['phone'], 'number'],
         ];
     }
 

@@ -72,37 +72,37 @@ class EmployeesController extends Controller
     {
         $model = new Employees();
         $model1 = new SignupForm();
-        if($res=Yii::$app->request->post()){
-            $userid=NULL;
-            $login=$res['Employees']['login'];
-            if($login==1){
-                $users = new User();
-                $users->username = $res['SignupForm']['username'];
-                $users->email = $res['Employees']['email'];
-                $users->firstname = $res['Employees']['first_name'];
-                $users->lastname = $res['Employees']['last_name'];
-                $users->role_id = $res['SignupForm']['role_id'];
-                $users->branch_id = $res['SignupForm']['branch_id'];
-                $users->setPassword($res['SignupForm']['password']);
-                $users->generateAuthKey(); 
-                if($users->save(false)){
-                    $userid=$users->id;
-                    $model->user_id=$userid;
-                    $model->branch_id = $res['SignupForm']['branch_id'];
-                }
+        if($model->load(Yii::$app->request->post())){
+            if($model->save()) {
+                if($model->login){
+                    $model1->scenario = 'register';
+                    if($model1->load(Yii::$app->request->post()) && !$model1->validate()){
+                        if($errors = Yii::$app->common->showModelErrors($model1, ['username', 'password', 'confirmPassword'])){                       
+                            echo json_encode(["error" => true, "message" =>  "Employee Created, but user cannot be created! </br>". $errors, 'redirect' => Yii::$app->getUrlManager()->createUrl(['employees/update', 'id' => $model->id])]);
+                            exit;
+                        }
+                    }
+                    $users = new User();
+                    $users->username = $model1->username;
+                    $users->email = $model->email;
+                    $users->firstname = $model->first_name;
+                    $users->lastname = $model->last_name;               
+                    $users->branch_id = $model->branch_id;
+                    $users->status = 0;
+                    $users->setPassword($model1->password);
+                    $users->generateAuthKey(); 
+                    if($users->save(false)){
+                        $model->user_id = $users->id;   
+                        $model->save();                 
+                    }
+                } 
+                echo json_encode(["success" => true, "message" => "Staff has been created.", 'redirect' => Yii::$app->getUrlManager()->createUrl(['employees/update', 'id' => $model->id])]);
+                exit;
+            } else{
+                echo json_encode(["error" => true, "message" => Yii::$app->common->showModelErrors($model)]);
+                exit;
             }
-            // if($model->load(Yii::$app->request->post())){
-            //     var_dump($model->first_name);die;
-            // }
-            // if($model->save()){
-            //      return $this->redirect(['view', 'id' => $model->id]);
-            // }
-            if ($model->load(Yii::$app->request->post()) && $model->save()) {
-            echo json_encode(["success" => true, "message" => "Staff has been cretaed."]);
-            exit;
-            }
-        }
-       
+        }      
 
         return $this->renderAjax('create', [
             'model' => $model,
@@ -125,20 +125,42 @@ class EmployeesController extends Controller
         $model1 = new SignupForm();
         if ($model->load(Yii::$app->request->post()) && $model->save()) {
             $res=Yii::$app->request->post();
-            if($model->login==1){
-                $model2 = User::find()->where(['id'=>$model->user_id])->one();
-                // var_dump($model2);die;
-                $model2->email = $res['Employees']['email'];
-                $model2->firstname = $res['Employees']['first_name'];
-                $model2->lastname = $res['Employees']['last_name'];
-                $model2->role_id = $res['User']['role_id'];
-                $model2->branch_id = $res['User']['branch_id'];
+            $model2 = User::find()->where(['id'=>$model->user_id])->one();
+            if($model->login==1){                            
+                if(!$model2) {
+                    $model1->scenario = 'register';
+                    if($model1->load(Yii::$app->request->post()) && !$model1->validate()){
+                        if($errors = Yii::$app->common->showModelErrors($model1, ['username', 'password', 'confirmPassword'])){                       
+                            echo json_encode(["error" => true, "message" =>  $errors]);
+                            exit;
+                        }
+                    }
+                    $model2 = new User();
+                    $model2->username = $res['SignupForm']['username'];
+                    $model2->setPassword($res['SignupForm']['password']);
+                    $model2->generateAuthKey(); 
+                    $model2->status = ($model->status == 0)?0:10;
+                }
+                $model2->email = $model->email;
+                $model2->firstname = $model->first_name;
+                $model2->lastname = $model->last_name;               
+                $model2->branch_id = $model->branch_id;
                 if($model2->save(false)){
-                 echo json_encode(["success" => true, "message" => "Staff has been updated."]);
+                    if(!$model->user_id){
+                        $model->user_id = $model2->id;
+                        $model->save();
+                    }
+                    echo json_encode(["success" => true, "message" => "Staff & User has been updated.", 'redirect' => Yii::$app->getUrlManager()->createUrl(['employees/update', 'id' => $model->id])]);
                     exit;
                 }    
+            }else{
+                if($model2) {
+                    $model2->status = 0;
+                    $model2->save();
+                }
             }
-            
+            echo json_encode(["success" => true, "message" => "Staff has been updated."]);
+            exit;            
         }
 
         return $this->renderAjax('update', [
@@ -166,8 +188,13 @@ class EmployeesController extends Controller
         $model = $this->findModel($id);
         $model->status = ($model->status == 0)?1:0;
           if($model->save()){
+            $user = User::findOne($model->user_id);
+            if($user){
+                $user->status = ($model->status == 0)?0:10;
+                $user->save();
+            }
             echo json_encode(["success" => true, "message" => "Staff status has been changed", 'redirect' => Yii::$app->getUrlManager()->createUrl(['employees/index'])]);
-         exit;
+            exit;
      }
     }
 
