@@ -42,9 +42,7 @@ class RolesController extends Controller
         //     'query' => Roles::find(),
         // ]);
         $dataProvider = new ActiveDataProvider([
-            'query' => Roles::find()
-                ->joinWith(['departments'])
-                // ->select(['user.*','roles.name as role']),
+            'query' => Roles::find()              
         ]);
 
         return $this->render('index', [

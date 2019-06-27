@@ -174,11 +174,23 @@ class PermissionmasterController extends Controller
     {
         return $this->render('dashboard');
     }
-     public function actionPermissions()
+     public function actionPermissions($id)
     {
-        $permittedids=array();
-        $id = (int) Yii::$app->request->get('id');
-        $permitted=RolePermission::find()->where(['role_id'=>$id])->select(['permission_id'])->all(); 
+        $permissions = PermissionMaster::find()->all();
+        $site_modules = [];
+
+        foreach($permissions as $permission){         
+            $site_modules[$permission->module][] = $permission->action."-".$permission->id;
+        }
+        $replace_display_texts = ['index' => 'Listing', 'changestatus' => 'Status Change', 'createinv' =>  'Generate Invoice via GRN', 'createpoinv' => 'Generate Invoice via PO', 'createpo' => 'Generate PO from PR', 'createprtn' => 'Generate PR via GRN', 'createprtninv' => 'Generate PR via Invoice', 'createinv' => 'Generate Invoice via Sales Order', 'createso' => 'Generate Sales Order via Quotation', ]; 
+
+        $skip_actions = ['makes', 'models', '_index', '_create', '_delete', 'lists', 'accessories', 'spares', 'variantsbymodel', 'featuresbyvariant', 'itemprice', 'import', 'podetails', 'prdetails', 'single', 'signup', 'uniqueemail'];
+        
+        $skip_modules = ['common'];   
+
+
+        $permittedids = array();   
+        $permitted = RolePermission::find()->where(['role_id'=>$id])->select(['permission_id'])->all(); 
          if($permitted){
             foreach ($permitted as $value) {
                $permittedids[]=$value['permission_id'];
@@ -209,7 +221,11 @@ class PermissionmasterController extends Controller
             'dataProvider' => $dataProvider,
             'role_id'       =>$id,
             // 'permitted'    => $permittedids,
-            'permitted'    => $datas
+            'permitted'    => $datas,
+            'site_modules' => $site_modules,
+            'replace_display_texts' => $replace_display_texts,
+            'skip_actions' => $skip_actions,
+            'skip_modules' => $skip_modules
         ]);
     }
 }

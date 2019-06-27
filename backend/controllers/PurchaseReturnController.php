@@ -160,7 +160,7 @@ class PurchaseReturnController extends Controller
                 $modelitem->save(false);
 
             }
-            echo json_encode(["success" => true, "message" => "Purchase Return has been created."]);
+            echo json_encode(["success" => true, "message" => "PurchaseReturn has been created", 'redirect' => Yii::$app->getUrlManager()->createUrl(['purchase-return/update','id' => $model->id])]);
             exit;
 
 

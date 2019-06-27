@@ -98,7 +98,7 @@ class TasksController extends Controller
                         exit;
                     }  
                 }else{
-                    echo json_encode(["success" => true, "message" => "Task has been created"]);
+                    echo json_encode(["success" => true, "message" => "Tasks has been created", 'redirect' => Yii::$app->getUrlManager()->createUrl(['tasks/update','id' => $model->id])]);
                     exit;
                 }
 				return $this->redirect(['view', 'id' => $model->id]);

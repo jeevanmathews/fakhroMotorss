@@ -72,7 +72,7 @@ class CustomerController extends Controller
         $model = new Customer();
 
         if ($model->load(Yii::$app->request->post()) && $model->save()) {
-        echo json_encode(["success" => true, "message" => "Customer has been created."]);
+        echo json_encode(["success" => true, "message" => "Customer has been created", 'redirect' => Yii::$app->getUrlManager()->createUrl(['customer/update','id' => $model->id])]);
          exit;
             
         }

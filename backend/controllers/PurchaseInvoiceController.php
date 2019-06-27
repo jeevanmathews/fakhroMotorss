@@ -143,7 +143,7 @@ class PurchaseInvoiceController extends Controller
                 
                 $model1->save(false);
             }
-             echo json_encode(["success" => true, "message" => "Invoice has been created."]);
+             echo json_encode(["success" => true, "message" => "Invoice has been created", 'redirect' => Yii::$app->getUrlManager()->createUrl(['purchase-invoice/update','id' => $model->id])]);
             exit;
 
 

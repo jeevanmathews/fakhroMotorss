@@ -72,7 +72,8 @@ class AmcTypeController extends Controller
         $model = new AmcType();
 
         if ($model->load(Yii::$app->request->post()) && $model->save()) {
-        echo json_encode(["success" => true, "message" => "AmcType has been created."]);
+        //echo json_encode(["success" => true, "message" => "AmcType has been created."]);
+        echo json_encode(["success" => true, "message" => "AmcType has been created", 'redirect' => Yii::$app->getUrlManager()->createUrl(['amc-type/update','id' => $model->id])]);
         exit;         
     }
 

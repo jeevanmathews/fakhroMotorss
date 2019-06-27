@@ -36,18 +36,15 @@ $this->params['breadcrumbs'][] = $this->title;
                         'id' => $page_id,
                         'columns' => [
                         ['class' => 'yii\grid\SerialColumn'],
-
-            // 'id',
-                        'first_name',
-                        'last_name',
-            // 'address:ntext',
+                        'fullname',                      
+                        [
+                          'attribute'=>'designation_id',
+                          'value' => function($model, $key, $index){   
+                            return ($model->designation)?$model->designation->name:"Not Set";
+                          },
+                        ],
                         'email:email',
-            //'phone',
                         'date_of_joining',
-            //'date_of_birth',
-            //'department_id',
-            //'designation_id',
-            // 'login',
                         [
                         'attribute'=>'login',
                         'header'=>'Login',
@@ -57,10 +54,6 @@ $this->params['breadcrumbs'][] = $this->title;
                               return (($model->login==1)?'Enabled':'No login');
                           },
                         ],
-            //'user_id',
-            //'created_date',
-            //'status',
-
                         [
                         'attribute' => 'status',
                         'value' =>function ($model){

@@ -72,8 +72,8 @@ class VatdetailsController extends Controller
         $model = new Vatdetails();
 
         if ($model->load(Yii::$app->request->post()) && $model->save()) {
-         echo json_encode(["success" => true, "message" => "Vatdetails has been created."]);
-           
+         //echo json_encode(["success" => true, "message" => "Vatdetails has been created."]);
+         echo json_encode(["success" => true, "message" => "Vatdetails has been created", 'redirect' => Yii::$app->getUrlManager()->createUrl(['vatdetails/update','id' => $model->id])]);  
          exit;        
         }
 

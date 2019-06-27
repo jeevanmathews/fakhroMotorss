@@ -93,7 +93,8 @@ class BranchesController extends Controller
 			//echo $model->imageFile;
             $model->upload();
             //return $this->redirect(['view', 'id' => $model->id]);
-			echo json_encode(["success" => true, "message" => "Branches has been created."]);
+			//echo json_encode(["success" => true, "message" => "Branches has been created."]);
+            echo json_encode(["success" => true, "message" => "Branches has been created", 'redirect' => Yii::$app->getUrlManager()->createUrl(['branches/update','id' => $model->id])]);
 			exit;
 
         }

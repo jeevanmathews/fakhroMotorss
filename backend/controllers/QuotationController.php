@@ -3,17 +3,17 @@
 namespace backend\controllers;
 
 use Yii;
-use backend\models\Qutation;
-use backend\models\QutationSearch;
+use backend\models\Quotation;
+use backend\models\QuotationSearch;
 use yii\web\Controller;
-use backend\models\QutationItems;
+use backend\models\QuotationItems;
 use yii\web\NotFoundHttpException;
 use yii\filters\VerbFilter;
 
 /**
- * QutationController implements the CRUD actions for Qutation model.
+ * QuotationController implements the CRUD actions for Quotation model.
  */
-class QutationController extends Controller
+class QuotationController extends Controller
 {
     /**
      * {@inheritdoc}
@@ -31,12 +31,12 @@ class QutationController extends Controller
     }
 
     /**
-     * Lists all Qutation models.
+     * Lists all Quotation models.
      * @return mixed
      */
     public function actionIndex()
     {
-        $searchModel = new QutationSearch();
+        $searchModel = new QuotationSearch();
         $dataProvider = $searchModel->search(Yii::$app->request->queryParams);
 
         return $this->render('index', [
@@ -47,7 +47,7 @@ class QutationController extends Controller
 	
 
     /**
-     * Displays a single Qutation model.
+     * Displays a single Quotation model.
      * @param integer $id
      * @return mixed
      * @throws NotFoundHttpException if the model cannot be found
@@ -60,32 +60,32 @@ class QutationController extends Controller
     }
 
     /**
-     * Creates a new Qutation model.
+     * Creates a new Quotation model.
      * If creation is successful, the browser will be redirected to the 'view' page.
      * @return mixed
      */
 	 public function actionCreate()
     {
         $userId = \Yii::$app->user->identity->id;
-        $model = new  Qutation();
-        $model1 = new  QutationItems();
+        $model = new  Quotation();
+        $model1 = new  QuotationItems();
         if(Yii::$app->request->post()):
             $result=Yii::$app->request->post();
         
             // var_dump($result);die;
         endif;
         // var_dump($result['Purchaserequest']);
-        // var_dump(sizeof($result[' Qutation']['item_id']));die;
+        // var_dump(sizeof($result[' Quotation']['item_id']));die;
         if ($model->load(Yii::$app->request->post()) && $model->save(false)) {
 
-            for($i=0;$i<sizeof($result['QutationItems']['item_id']);$i++){
-                $model1 = new  QutationItems();
-                $model1->item_id=$result['QutationItems']['item_id'][$i];
-                $model1->quantity=$result['QutationItems']['quantity'][$i];
-                $model1->price=$result['QutationItems']['price'][$i];
-                $model1->unit_id=$result['QutationItems']['unit_id'][$i];
-                $model1->tax=$result['QutationItems']['tax'][$i];
-                $model1->total=$result['QutationItems']['total'][$i];
+            for($i=0;$i<sizeof($result['QuotationItems']['item_id']);$i++){
+                $model1 = new  QuotationItems();
+                $model1->item_id=$result['QuotationItems']['item_id'][$i];
+                $model1->quantity=$result['QuotationItems']['quantity'][$i];
+                $model1->price=$result['QuotationItems']['price'][$i];
+                $model1->unit_id=$result['QuotationItems']['unit_id'][$i];
+                $model1->tax=$result['QuotationItems']['tax'][$i];
+                $model1->total=$result['QuotationItems']['total'][$i];
                 $model1->qtn_id=$model->id;
                 
                 $model1->save(false);
@@ -101,7 +101,7 @@ class QutationController extends Controller
     }
 
     /**
-     * Updates an existing Qutation model.
+     * Updates an existing Quotation model.
      * If update is successful, the browser will be redirected to the 'view' page.
      * @param integer $id
      * @return mixed
@@ -116,18 +116,18 @@ class QutationController extends Controller
         endif;
         if ($model->load(Yii::$app->request->post()) && $model->save()) {
             
-             for($i=0;$i<sizeof($result['QutationItems']['item_id']);$i++){
-                if(isset($result['QutationItems']['id'][$i])){
-                    $model1 =  QutationItems::find()->where(['id'=>$result['QutationItems']['id'][$i]])->one();
+             for($i=0;$i<sizeof($result['QuotationItems']['item_id']);$i++){
+                if(isset($result['QuotationItems']['id'][$i])){
+                    $model1 =  QuotationItems::find()->where(['id'=>$result['QuotationItems']['id'][$i]])->one();
                 }else{
-                    $model1 = new  QutationItems();
+                    $model1 = new  QuotationItems();
                 }
-                $model1->item_id=$result['QutationItems']['item_id'][$i];
-                $model1->quantity=$result['QutationItems']['quantity'][$i];
-                $model1->price=$result['QutationItems']['price'][$i];
-                $model1->unit_id=$result['QutationItems']['unit_id'][$i];
-                $model1->tax=$result['QutationItems']['tax'][$i];
-                $model1->total=$result['QutationItems']['total'][$i];
+                $model1->item_id=$result['QuotationItems']['item_id'][$i];
+                $model1->quantity=$result['QuotationItems']['quantity'][$i];
+                $model1->price=$result['QuotationItems']['price'][$i];
+                $model1->unit_id=$result['QuotationItems']['unit_id'][$i];
+                $model1->tax=$result['QuotationItems']['tax'][$i];
+                $model1->total=$result['QuotationItems']['total'][$i];
                 $model1->qtn_id=$model->id;
                 
                 $model1->save(false);
@@ -143,7 +143,7 @@ class QutationController extends Controller
 
 
     /**
-     * Deletes an existing Qutation model.
+     * Deletes an existing Quotation model.
      * If deletion is successful, the browser will be redirected to the 'index' page.
      * @param integer $id
      * @return mixed
@@ -162,15 +162,15 @@ class QutationController extends Controller
         return $this->redirect(['index']);
     }
     /**
-     * Finds the Qutation model based on its primary key value.
+     * Finds the Quotation model based on its primary key value.
      * If the model is not found, a 404 HTTP exception will be thrown.
      * @param integer $id
-     * @return Qutation the loaded model
+     * @return Quotation the loaded model
      * @throws NotFoundHttpException if the model cannot be found
      */
     protected function findModel($id)
     {
-        if (($model = Qutation::findOne($id)) !== null) {
+        if (($model = Quotation::findOne($id)) !== null) {
             return $model;
         }
 

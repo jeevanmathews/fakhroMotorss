@@ -4,12 +4,12 @@ namespace backend\models;
 
 use yii\base\Model;
 use yii\data\ActiveDataProvider;
-use backend\models\Qutation;
+use backend\models\Quotation;
 
 /**
- * QutationSearch represents the model behind the search form of `backend\models\Qutation`.
+ * QuotationSearch represents the model behind the search form of `backend\models\Quotation`.
  */
-class QutationSearch extends Qutation
+class QuotationSearch extends Quotation
 {
     /**
      * {@inheritdoc}
@@ -40,7 +40,7 @@ class QutationSearch extends Qutation
      */
     public function search($params)
     {
-        $query = Qutation::find();
+        $query = Quotation::find();
 
         // add conditions that should always apply here
 

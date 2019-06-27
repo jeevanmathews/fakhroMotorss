@@ -4,6 +4,7 @@ namespace backend\controllers;
 
 use Yii;
 use backend\models\Manufacturer;
+use backend\models\Import;
 use backend\models\ManufacturerSearch;
 use yii\web\Controller;
 use yii\web\NotFoundHttpException;
@@ -64,6 +65,22 @@ class ManufacturerController extends Controller
         ]);
     }
 
+     public function actionImport()
+    {
+        $model=new Import();
+        if ($model->load(Yii::$app->request->post())):
+            $model->importfile=UploadedFile::getInstance($model,'importfile');
+            var_dump($model->importfile);die;
+            // if($model->validate()){
+                // var_dump($model->importfile->basename);die;
+            // }
+            //['Import']['tmp_name']['importfile']);die;
+        endif;
+        return $this->renderAjax('import', [
+            'model' =>$model,
+        ]);
+    }
+
     /**
      * Creates a new Manufacturer model.
      * If creation is successful, the browser will be redirected to the 'view' page.
@@ -76,7 +93,7 @@ class ManufacturerController extends Controller
         if ($model->load(Yii::$app->request->post()) && $model->save()) {
             $model->imageFile = UploadedFile::getInstance($model, 'imageFile');
             $model->upload();
-            echo json_encode(["success" => true, "message" => "Manufacturer has been created."]);
+            echo json_encode(["success" => true, "message" => "Manufacturer has been created", 'redirect' => Yii::$app->getUrlManager()->createUrl(['manufacturer/update','id' => $model->id])]);
             exit;
         }
 

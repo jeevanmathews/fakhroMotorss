@@ -76,7 +76,8 @@ class PrefixMasterController extends Controller
         if ($model->load(Yii::$app->request->post())) {
 
             $model->save();
-            echo json_encode(["success" => true, "message" => "Prefix has been created."]);
+            //echo json_encode(["success" => true, "message" => "Prefix has been created."]);
+            echo json_encode(["success" => true, "message" => "Prefix has been created", 'redirect' => Yii::$app->getUrlManager()->createUrl(['prefix-master/update','id' => $model->id])]);
             exit;
             //return $this->redirect(['view', 'id' => $model->id]);
         }

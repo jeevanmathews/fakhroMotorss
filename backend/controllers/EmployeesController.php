@@ -232,6 +232,8 @@ class EmployeesController extends Controller
                   UserRole::find()->where(['user_id' => $model->user_id, 'role_id' => $role])->one()->delete();  
               }                
             }
+            echo json_encode(["success" => true, "message" => "Role(s) has been updated."]);
+            exit;
         }
 
         return $this->renderAjax('_roles', [

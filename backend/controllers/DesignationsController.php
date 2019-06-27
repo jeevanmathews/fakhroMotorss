@@ -72,7 +72,8 @@ class DesignationsController extends Controller
         $model = new Designations();
 
         if ($model->load(Yii::$app->request->post()) && $model->save()) {
-           echo json_encode(["success" => true, "message" => "Designation has been created."]);
+            echo json_encode(["success" => true, "message" => "Designations has been created", 'redirect' => Yii::$app->getUrlManager()->createUrl(['designations/update','id' => $model->id])]);
+           
             exit;
         }
 

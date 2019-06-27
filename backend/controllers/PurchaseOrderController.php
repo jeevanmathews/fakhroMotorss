@@ -113,8 +113,7 @@ class PurchaseOrderController extends Controller
                 
                 $model1->save(false);
             }
-            echo json_encode(["success" => true, "message" => "Purchase Order has been created."]);
-            exit;
+        echo json_encode(["success" => true, "message" => "Purchaseorder has been created", 'redirect' => Yii::$app->getUrlManager()->createUrl(['purchase-order/update','id' => $model->id])]);            exit;
 
 
         // $model = new Purchaseorder();

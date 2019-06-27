@@ -4,13 +4,21 @@ use yii\helpers\Html;
 use yii\widgets\DetailView;
 use yii\grid\GridView;
 use common\components\AutoForm;
+use yii\widgets\Breadcrumbs;
 
 /* @var $this yii\web\View */
 /* @var $dataProvider yii\data\ActiveDataProvider */
 
-$this->title = 'Employee Roles';
-$this->params['breadcrumbs'][] = $this->title;
+$this->title = 'Roles : '.$model->fullname;
+$this->params['breadcrumbs'][] = ['label' => 'Staff', 'url' => ['index']];
+$this->params['breadcrumbs'][] = ['label' => $model->fullname, 'url' => ['view', 'id' => $model->id]];
+$this->params['breadcrumbs'][] = 'Roles';
+
 ?>
+<div class="employees-roles main-body" id="employees_roles">
+<?= Breadcrumbs::widget([
+        'links' => isset($this->params['breadcrumbs']) ? $this->params['breadcrumbs'] : [],
+        ]) ?>
 <div class="content-main-wrapper main-body">
 
    <section class="content-header">
@@ -25,7 +33,7 @@ $this->params['breadcrumbs'][] = $this->title;
         <div class="box-body">
         <div class="row">
         <div class="col-md-4"> 
-            <h5 class="heading"><span>Employee Details</span> </h5>
+            <h5 class="heading"><span>Staff Details</span> </h5>
             <?= DetailView::widget([
             'model' => $model,
             'attributes' => [  
@@ -33,11 +41,11 @@ $this->params['breadcrumbs'][] = $this->title;
                 'phone',          
                 [
                 'label'=>'Department',
-                'value'=>$model->designation->department->name
+                'value'=>   ($model->designation)?$model->designation->department->name:"Not Set"
                 ],
                 [
-                'label'=>'Designation',
-                'value'=>$model->designation->name
+                'label'=>   'Designation',
+                'value'=>   ($model->designation)?$model->designation->name:"Not Set"
                 ],
                 [
                  'attribute' => 'login',
@@ -87,4 +95,5 @@ $this->params['breadcrumbs'][] = $this->title;
         </div>
           <!-- /.box -->
     </section>
+</div>
 </div>

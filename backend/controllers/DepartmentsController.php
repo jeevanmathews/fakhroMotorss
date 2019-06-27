@@ -1,5 +1,6 @@
 <?php
 
+
 namespace backend\controllers;
 
 use Yii;
@@ -20,12 +21,12 @@ class DepartmentsController extends Controller
     public function behaviors()
     {
         return [
-            'verbs' => [
-                'class' => VerbFilter::className(),
-                'actions' => [
-                    'delete' => ['POST'],
-                ],
-            ],
+        'verbs' => [
+        'class' => VerbFilter::className(),
+        'actions' => [
+        'delete' => ['POST'],
+        ],
+        ],
         ];
     }
 
@@ -37,11 +38,11 @@ class DepartmentsController extends Controller
     {
         $dataProvider = new ActiveDataProvider([
             'query' => Departments::find(),
-        ]);
+            ]);
 
         return $this->renderAjax('index', [
             'dataProvider' => $dataProvider,
-        ]);
+            ]);
     }
 
     /**
@@ -54,7 +55,7 @@ class DepartmentsController extends Controller
     {
         return $this->renderAjax('view', [
             'model' => $this->findModel($id),
-        ]);
+            ]);
     }
 
     /**
@@ -67,13 +68,14 @@ class DepartmentsController extends Controller
         $model = new Departments();
 
         if ($model->load(Yii::$app->request->post()) && $model->save()) {
-            echo json_encode(["success" => true, "message" => "Department has been created."]);
+           echo json_encode(["success" => true, "message" => "Departments has been created", 'redirect' => Yii::$app->getUrlManager()->createUrl(['departments/update','id' => $model->id])]);
             exit;
         }
+     
 
         return $this->renderAjax('create', [
             'model' => $model,
-        ]);
+            ]);
     }
 
     /**
@@ -94,7 +96,7 @@ class DepartmentsController extends Controller
 
         return $this->renderAjax('update', [
             'model' => $model,
-        ]);
+            ]);
     }
 
     public function actionDesignation($department_id){

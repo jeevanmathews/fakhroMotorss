@@ -71,7 +71,7 @@ class JobcardVehicleController extends Controller
         $model = new JobcardVehicle();
 
         if ($model->load(Yii::$app->request->post()) && $model->save()) {
-            echo json_encode(["success" => true, "message" => "Vehicle has been created"]);
+            echo json_encode(["success" => true, "message" => "Vehicle has been created", 'redirect' => Yii::$app->getUrlManager()->createUrl(['jobcard-vehicle/update','id' => $model->id])]);
             exit;
         }
 

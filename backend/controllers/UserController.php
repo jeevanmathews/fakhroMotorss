@@ -148,25 +148,7 @@ class UserController extends Controller
             'branches'=>$branches
         ]);
     }
-     public function actionRoles(){
-        $id = (int) Yii::$app->request->get('id');
-             $dataProvider = new ActiveDataProvider([
-            'query' => Roles::find()
-        ]);
-          return $this->render('roles', [
-            'dataProvider' => $dataProvider,
-            'user_id'       =>$id
-        ]);
-    }
-    public function actionSetroles(){
-            $userdata= Yii::$app->request->post();
-            $user = User::findOne($userdata['id']);
-            $user->role_id = $userdata['role_id'];
-            if ($user->save()) {
-                 return $this->redirect(['user/index']);
-            }
 
-    }
     public function actionUniqueemail(){
         $userdata= Yii::$app->request->post();
         $user = User::find()->where(['email'=>$userdata['email']])->all();

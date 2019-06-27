@@ -3,8 +3,8 @@
 namespace backend\controllers;
 
 use Yii;
-use backend\models\Qutation;
-use backend\models\QutationItems;
+use backend\models\Quotation;
+use backend\models\QuotationItems;
 use backend\models\SalesOrder;
 use backend\models\SalesOrderItems;
 use backend\models\SalesOrderSearch;
@@ -109,7 +109,7 @@ class SalesOrderController extends Controller
         ]);
     }
     public function actionCreateso($id){
-        $model = Qutation::find()->where(['id'=>$id])->one();
+        $model = Quotation::find()->where(['id'=>$id])->one();
         $model1 = new SalesOrder();
         $modelpr = new SalesOrderItems();
         if(Yii::$app->request->post()):
@@ -125,7 +125,7 @@ class SalesOrderController extends Controller
                 $model2 = new SalesOrderItems();
                 $model2->item_id=$result['SalesOrderItems']['item_id'][$i];
                 $model2->quantity=$result['SalesOrderItems']['quantity'][$i];
-                $model2->qtn_quantity=$result['QutationItems']['quantity'][$i];
+                $model2->qtn_quantity=$result['QuotationItems']['quantity'][$i];
                 $model2->price=$result['SalesOrderItems']['price'][$i];
                 $model2->unit_id=$result['SalesOrderItems']['unit_id'][$i];
                 $model2->tax=$result['SalesOrderItems']['tax'][$i];
@@ -200,7 +200,7 @@ class SalesOrderController extends Controller
 
     public function actionPrdetails(){
         $pr_id=Yii::$app->request->post('pr_id');
-        $modelpr=Qutation::find()->where(['id'=>(int) $qtn_id])->one();
+        $modelpr=Quotation::find()->where(['id'=>(int) $qtn_id])->one();
          return $this->render('create', [
             'modelpr' => $modelpr,
         ]);

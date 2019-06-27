@@ -23,7 +23,7 @@ use Yii;
  * @property double $total
  * @property int $status
  */
-class QutationItems extends \yii\db\ActiveRecord
+class QuotationItems extends \yii\db\ActiveRecord
 {
     /**
      * {@inheritdoc}
@@ -64,7 +64,7 @@ class QutationItems extends \yii\db\ActiveRecord
     }
 	public function getQutation()
 	{
-		return $this->hasOne(Qutation::className(), ['id' => 'pr_id']);
+		return $this->hasOne(Quotation::className(), ['id' => 'pr_id']);
 	}
 	public function getUnit()
     {

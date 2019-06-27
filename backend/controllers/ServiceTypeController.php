@@ -72,7 +72,8 @@ class ServiceTypeController extends Controller
         $model = new ServiceType();
 
         if ($model->load(Yii::$app->request->post()) && $model->save()) {
-            echo json_encode(["success" => true, "message" => "ServiceType has been created."]);
+            //echo json_encode(["success" => true, "message" => "ServiceType has been created."]);
+            echo json_encode(["success" => true, "message" => "ServiceType has been created", 'redirect' => Yii::$app->getUrlManager()->createUrl(['service-type/update','id' => $model->id])]);
             exit;       
          }
 

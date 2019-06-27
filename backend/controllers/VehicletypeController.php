@@ -72,7 +72,7 @@ class VehicletypeController extends Controller
         $model = new Vehicletype();
 
         if ($model->load(Yii::$app->request->post()) && $model->save()) {
-           echo json_encode(["success" => true, "message" => "Vehicle Type has been created."]);
+            echo json_encode(["success" => true, "message" => "Vehicletype has been created", 'redirect' => Yii::$app->getUrlManager()->createUrl(['vehicletype/update','id' => $model->id])]);
             exit;
         }
 

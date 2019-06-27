@@ -73,7 +73,7 @@ class CarModelController extends Controller
         $model = new CarModel();
 
         if ($model->load(Yii::$app->request->post()) && $model->save()) {
-            echo json_encode(["success" => true, "message" => "Model has been created"]);
+            echo json_encode(["success" => true, "message" => "Model has been created", 'redirect' => Yii::$app->getUrlManager()->createUrl(['car-model/update','id' => $model->id])]);
             exit;
         }
 

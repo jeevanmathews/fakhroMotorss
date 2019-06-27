@@ -3,6 +3,8 @@
 use yii\helpers\Html;
 use yii\grid\GridView;
 use yii\widgets\Pjax; 
+use yii\helpers\Arrayhelper;
+use backend\models\Departments;
 
 /* @var $this yii\web\View */
 /* @var $searchModel backend\models\DesignationsSearch */
@@ -42,13 +44,21 @@ $this->params['breadcrumbs'][] = $this->title;
 
                         // 'id',
                         'name',
-                        [
+                        /*[
                           'attribute' => 'department_id',
                           'label' => 'Deaprtment',
                           'value' =>function ($model){
                             return $model->department->name;
                             },
-                        ],
+                        ],*/
+                        [
+                        'label' => 'Department',
+                        'attribute' => 'department_id',
+                        'filter' => Html::activeDropDownList($searchModel, 'department_id', ArrayHelper::map(Departments::find()->where(['status' => 1])->all(), 'id', 'name'),['class'=>'form-control','prompt' => 'Search by Deaprtment']),
+                        'value' =>function ($model){
+                            return utf8_decode($model->department->name);
+                        }
+                    ], 
 
                         [
                         'attribute' => 'status',

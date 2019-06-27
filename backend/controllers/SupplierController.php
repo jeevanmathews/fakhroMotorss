@@ -72,7 +72,8 @@ class SupplierController extends Controller
         $model = new Supplier();
 
         if ($model->load(Yii::$app->request->post()) && $model->save()) {
-        echo json_encode(["success" => true, "message" => "Supplier has been created."]);
+        //echo json_encode(["success" => true, "message" => "Supplier has been created."]);
+            echo json_encode(["success" => true, "message" => "Supplier has been created", 'redirect' => Yii::$app->getUrlManager()->createUrl(['supplier/update','id' => $model->id])]);
         exit;        
     }
 

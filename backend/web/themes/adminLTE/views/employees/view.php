@@ -49,12 +49,12 @@ $this->params['breadcrumbs'][] = $this->title;
             'date_of_joining',
             'date_of_birth',
             [
-            'label'=>'Department',
-            'value'=>$model->designation->department->name
+            'label'=>   'Department',
+            'value'=>   ($model->designation)?$model->designation->department->name:"Not Set"
             ],
             [
-            'label'=>'Designation',
-            'value'=>$model->designation->name
+            'label'=>   'Designation',
+            'value'=>   ($model->designation)?$model->designation->name:"Not Set"
             ],
             [
              'attribute' => 'login',

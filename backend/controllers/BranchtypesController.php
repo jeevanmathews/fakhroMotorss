@@ -67,7 +67,8 @@ class BranchtypesController extends Controller
         $model = new Branchtypes();
 
         if ($model->load(Yii::$app->request->post()) && $model->save()) {
-        echo json_encode(["success" => true, "message" => "Branchtypes has been created."]);
+        //echo json_encode(["success" => true, "message" => "Branchtypes has been created."]);
+        echo json_encode(["success" => true, "message" => "Branchtypes has been created", 'redirect' => Yii::$app->getUrlManager()->createUrl(['branchtypes/update','id' => $model->id])]);
         exit;
         }
 

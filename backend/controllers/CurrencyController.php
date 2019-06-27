@@ -69,8 +69,10 @@ class CurrencyController extends Controller
         if ($model->load(Yii::$app->request->post())) {
             $model->symbol = utf8_encode($model->symbol);
             if($model->save())
-            echo json_encode(["success" => true, "message" => "Currency has been created."]);
+            //echo json_encode(["success" => true, "message" => "Currency has been created."]);
+            echo json_encode(["success" => true, "message" => "Currency has been created", 'redirect' => Yii::$app->getUrlManager()->createUrl(['currency/update','id' => $model->id])]);
             exit;
+
         }
 
         return $this->renderAjax('create', [

@@ -9,6 +9,7 @@ use backend\models\Designations;
 /**
  * DesignationsSearch represents the model behind the search form of `backend\models\Designations`.
  */
+
 class DesignationsSearch extends Designations
 {
     /**
@@ -18,7 +19,7 @@ class DesignationsSearch extends Designations
     {
         return [
             [['id', 'status'], 'integer'],
-            [['name'], 'safe'],
+            [['name','department_id'], 'safe'],
         ];
     }
 
@@ -41,6 +42,7 @@ class DesignationsSearch extends Designations
     public function search($params)
     {
         $query = Designations::find();
+        //$query->joinWith(['departments']);
 
         // add conditions that should always apply here
 
@@ -60,9 +62,10 @@ class DesignationsSearch extends Designations
         $query->andFilterWhere([
             'id' => $this->id,
             'status' => $this->status,
+            'department_id' => $this->department_id,
         ]);
 
-        $query->andFilterWhere(['like', 'name', $this->name]);
+        //$query->andFilterWhere(['like', 'name', $this->name]);
 
         return $dataProvider;
     }

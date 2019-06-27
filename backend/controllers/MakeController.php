@@ -72,7 +72,7 @@ class MakeController extends Controller
         $model = new Make();
 
         if ($model->load(Yii::$app->request->post()) && $model->save()) {
-            echo json_encode(["success" => true, "message" => "Make has been created"]);
+            echo json_encode(["success" => true, "message" => "Make has been created", 'redirect' => Yii::$app->getUrlManager()->createUrl(['make/update','id' => $model->id])]);
             exit;
         }
 

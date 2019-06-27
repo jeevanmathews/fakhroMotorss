@@ -158,7 +158,7 @@ class GoodsReceiptNoteController extends Controller
 				$modelpurchaseprice->code='stk'.$model->prefix_id.$model->grn_number;
 				$modelpurchaseprice->save(false);
 			}
-			echo json_encode(["success" => true, "message" => "Goods Receipt Note has been created."]);
+			echo json_encode(["success" => true, "message" => "GoodsReceiptNote has been created", 'redirect' => Yii::$app->getUrlManager()->createUrl(['goods-receipt-note/update','id' => $model->id])]);
 			exit;
 
 

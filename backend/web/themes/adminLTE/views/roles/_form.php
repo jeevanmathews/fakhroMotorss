@@ -14,12 +14,8 @@ use common\components\AutoForm;
     <div class="box-body">
         <div class="row">
             <div class="col-md-6"> 
-                <?= $form->field($model, 'name')->textInput(['maxlength' => true]) ?>
-                <?= $form->field($model, 'department_id')->dropDownList(
-                   $departments, 
-                   ['class' => 'form-control', 'prompt'=>'Select Department']);
-                   ?>
-                   <div class="form-group">
+                <?= $form->field($model, 'name')->textInput(['maxlength' => true]) ?>          
+                <div class="form-group">
                     <?= Html::submitButton('Save', ['class' => 'btn btn-success']) ?>
                 </div>
             </div>

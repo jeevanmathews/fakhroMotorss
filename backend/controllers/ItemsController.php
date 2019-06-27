@@ -144,7 +144,7 @@ class ItemsController extends Controller
 
             }
              // Yii::$app->session->setFlash('success', 'Item has been added successfully.'); 
-             echo json_encode(["success" => true, "message" => "Item has been created."]);
+             echo json_encode(["success" => true, "message" => "Item has been created", 'redirect' => Yii::$app->getUrlManager()->createUrl(['items/update','id' => $model->id])]);
             exit;
         }
     }
@@ -278,20 +278,7 @@ class ItemsController extends Controller
                  // ->asArray()
                  // ->all();
     }
-	public function actionTypebyspares(){
-		$model=Yii::$app->request->post('type');
-		//echo $model;die;
-        $results= Spareparts::find()->select(['id','name'])->asArray()->all();
-		//echo $results->createCommand()->getRawSql();
-        return json_encode($results); 
-	}
-	public function actionTypebyaccessory(){
-		$model=Yii::$app->request->post('type');
-		//echo $model;die;
-        $results= Accessories::find()->select(['id','name'])->asArray()->all();
-		//echo $results->createCommand()->getRawSql();
-        return json_encode($results); 
-	}
+	
     public function actionFeaturesbyvariant(){
         $variant=Yii::$app->request->post('variant_id');
         $results= Variantfeatures::find()->where(['variant_id' => (int)$variant])->joinWith(['feature'])->asArray()->all();

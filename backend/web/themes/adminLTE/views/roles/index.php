@@ -11,11 +11,11 @@ $this->params['breadcrumbs'][] = $this->title;
 ?>
 <div class="roles-index">
 
-   <section class="content-header">
+    <section class="content-header">
       <h1>
         <?= Html::encode($this->title) ?>        
       </h1>
-</section>
+    </section>
 
     <p>
         <?= Html::a('Create Roles', ['create'], ['class' => 'btn btn-success']) ?>
@@ -24,27 +24,18 @@ $this->params['breadcrumbs'][] = $this->title;
     <?= GridView::widget([
         'dataProvider' => $dataProvider,
         'columns' => [
-            ['class' => 'yii\grid\SerialColumn'],
-
-            // 'id',
-            'name',
-            ['label' =>'Department',
-            'value'     => 'departments.name',
-            ],
-            // 'status',
-
-            ['class' => 'yii\grid\ActionColumn'],
+            ['class' => 'yii\grid\SerialColumn'],     
+            'name',            
             ['class' => 'yii\grid\ActionColumn',
             'template' => '{my_button}', 
             'buttons' => [
                 'my_button' => function ($url, $model, $key) {
                    return Html::a('<span class="glyphicon glyphicon-lock"></span>', Yii::$app->getUrlManager()->createUrl(['permissionmaster/permissions', 'id' =>$model->id,]), [
                     'title' => Yii::t('app', 'Set Permission'),
-        ]);
+                    ]);
                 },
-            ]
-            ],
-     
+                ]
+            ],     
         ],
         'tableOptions' => [
         'id' => 'theDatatable',

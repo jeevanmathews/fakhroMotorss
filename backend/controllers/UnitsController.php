@@ -73,7 +73,8 @@ class UnitsController extends Controller
 
         if ($model->load(Yii::$app->request->post()) && $model->save()) {
             Yii::$app->session->setFlash('success', 'Unit of measurement has been updated succesfully!');
-            echo json_encode(["success" => true, "message" => "Units has been created."]);
+            //echo json_encode(["success" => true, "message" => "Units has been created."]);
+            echo json_encode(["success" => true, "message" => "Units has been created", 'redirect' => Yii::$app->getUrlManager()->createUrl(['units/update','id' => $model->id])]);
             exit;
         }
 

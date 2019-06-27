@@ -80,7 +80,7 @@ class VehiclemodelsController extends Controller
         $model3 = new Customfeatures();
         $manufacturer = ArrayHelper::map(Manufacturer::find()->all(), 'id', 'name');
         if ($model->load(Yii::$app->request->post()) && $model->save()) {
-            echo json_encode(["success" => true, "message" => "Vehicle has been created."]);
+            echo json_encode(["success" => true, "message" => "Vehiclemodel has been created", 'redirect' => Yii::$app->getUrlManager()->createUrl(['vehiclemodels/update','id' => $model->id])]);
             exit;
         }
 

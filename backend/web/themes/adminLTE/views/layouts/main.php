@@ -169,6 +169,9 @@ $this->registerJs($js, \yii\web\View::POS_HEAD);
                         <?= Html::a('Manufacturer', ['/manufacturer/index'], ['class'=>'']) ?>
                       </li>
                       <li>
+                        <?= Html::a('Import Manufacturer', ['/manufacturer/import'], ['class'=>'']) ?>
+                      </li>
+                      <li>
                         <?= Html::a('Vehicle', ['/vehiclemodels/index'], ['class'=>'']) ?>
                       </li> 
                       <li>

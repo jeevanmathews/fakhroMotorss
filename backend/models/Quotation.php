@@ -5,7 +5,7 @@ namespace backend\models;
 use Yii;
 
 /**
- * This is the model class for table "qutation".
+ * This is the model class for table "Quotation".
  *
  * @property int $id
  * @property string $qtn_number
@@ -23,14 +23,14 @@ use Yii;
  * @property double $grand_total
  * @property int $status
  */
-class Qutation extends \yii\db\ActiveRecord
+class Quotation extends \yii\db\ActiveRecord
 {
     /**
      * {@inheritdoc}
      */
     public static function tableName()
     {
-        return 'qutation';
+        return 'Qutation';
     }
 
     /**
@@ -68,7 +68,7 @@ public function attributeLabels()
     }
 public function getRequestitems()
     {
-        return $this->hasMany(Qutationitems::className(), ['qtn_id' => 'id']);
+        return $this->hasMany(Quotationitems::className(), ['qtn_id' => 'id']);
     }
 
     public function getUser()
