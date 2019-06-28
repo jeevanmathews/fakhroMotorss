@@ -186,20 +186,16 @@ class PermissionmasterController extends Controller
 
         $skip_actions = ['makes', 'models', '_index', '_create', '_delete', 'lists', 'accessories', 'spares', 'variantsbymodel', 'featuresbyvariant', 'itemprice', 'import', 'podetails', 'prdetails', 'single', 'signup', 'uniqueemail'];
         
-        $skip_modules = ['common'];   
+        $skip_modules = ['Common', 'Site'];   
 
 
         $permittedids = array();   
         $permitted = RolePermission::find()->where(['role_id'=>$id])->select(['permission_id'])->all(); 
-         if($permitted){
+        if($permitted){
             foreach ($permitted as $value) {
                $permittedids[]=$value['permission_id'];
             }
-         }
-
-                // echo '<pre>';var_dump($permittedids);echo '</pre>';
-         // die;
-           // echo '<pre>';var_dump($permitted);echo '</pre>';die;
+        }
         $dataProvider = new ActiveDataProvider([
             'query' => PermissionMaster::find()
             ->joinWith(['rolepermission'])
@@ -212,12 +208,10 @@ class PermissionmasterController extends Controller
             ->InnerjoinWith(['rolepermission'])
             ->select(['permissions.*'])
             ->Where(['=', 'role_permission.role_id',$id ])
-            // ->groupBy('RELATION_FIELD(Example: reviews.book_id)')
-            // ->orderBy(['cnt' => 'DESC']),
         ]);
 
 
-        return $this->render('../roles/permissions', [
+        return $this->renderAjax('../roles/permissions', [
             'dataProvider' => $dataProvider,
             'role_id'       =>$id,
             // 'permitted'    => $permittedids,

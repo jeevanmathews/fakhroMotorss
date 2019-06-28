@@ -45,7 +45,7 @@ class RolesController extends Controller
             'query' => Roles::find()              
         ]);
 
-        return $this->render('index', [
+        return $this->renderAjax('index', [
             'dataProvider' => $dataProvider,
         ]);
     }
