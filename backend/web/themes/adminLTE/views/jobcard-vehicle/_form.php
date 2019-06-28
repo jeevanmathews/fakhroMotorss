@@ -22,6 +22,13 @@ use yii\helpers\ArrayHelper;
 
         <?= $form->field($model, 'chasis_num')->textInput(['maxlength' => true]) ?>
 
+        <?= $form->field($vehicle, 'lpo_num')->textInput(['maxlength' => true]) ?>
+
+        <?= $form->field($vehicle, 'vin')->textInput(['maxlength' => true]) ?>
+
+        <?= $form->field($vehicle, 'wo_num')->textInput(['maxlength' => true]) ?>
+
+
         <?php if($model->make) $model->manufacturer = $model->make->manufacturer->id;?>
 
         <?=$form->field($model, 'manufacturer')->dropDownList(

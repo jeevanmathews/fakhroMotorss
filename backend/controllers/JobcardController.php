@@ -454,6 +454,12 @@ class JobcardController extends Controller
         return $this->renderAjax('_invoice',compact('invoice', 'taskdataProvider', 'materialdataProvider'));
     }
 
+    public function actionPrint($jobcard_id){
+
+        $jobcard = $this->findModel($jobcard_id);          
+        return $this->renderAjax('_print',compact('jobcard'));
+    }
+
     public function actionGenerateInvoice($jobcard_id){
         $jobcard = $this->findModel($jobcard_id);
         $invoice = new JobcardInvoice();
@@ -510,7 +516,8 @@ class JobcardController extends Controller
             return $this->redirect(['quotation', 'quotation_id' => $quotation->id]);
         }//else{echo "nops";print_r($invoice->getErrors());exit;}
     }
-        public function actionQuotation($quotation_id){
+
+    public function actionQuotation($quotation_id){
         $quotation = JobcardQuotation::findOne($quotation_id);
 
         $taskquery = JobcardQuotationTask::find();
@@ -574,7 +581,7 @@ class JobcardController extends Controller
     public function actionVehicleInfo($vehicle_id){
         $vehicle = JobcardVehicle::findOne($vehicle_id);//print_r($vehicle);exit;
         if($vehicle){
-            echo json_encode(['jobcardvehicle-reg_num' => $vehicle->reg_num, 'jobcardvehicle-chasis_num' => $vehicle->chasis_num, 'jobcardvehicle-manufacturer'  => $vehicle->make->manufacturer_id, 'jobcardvehicle-make_id' => $vehicle->make_id, 'jobcardvehicle-model_id' => $vehicle->model_id, 'jobcardvehicle-color' => $vehicle->color, 'customer-name' => ($vehicle->customer)?$vehicle->customer->name:"", 'customer-contact_number' => ($vehicle->customer)?$vehicle->customer->contact_number:""]);
+            echo json_encode(['jobcardvehicle-reg_num' => $vehicle->reg_num, 'jobcardvehicle-chasis_num' => $vehicle->chasis_num, 'jobcardvehicle-lpo_num' => $vehicle->lpo_num, 'jobcardvehicle-vin' => $vehicle->vin, 'jobcardvehicle-wo_num' => $vehicle->wo_num, 'jobcardvehicle-manufacturer'  => $vehicle->make->manufacturer_id, 'jobcardvehicle-make_id' => $vehicle->make_id, 'jobcardvehicle-model_id' => $vehicle->model_id, 'jobcardvehicle-color' => $vehicle->color, 'customer-name' => ($vehicle->customer)?$vehicle->customer->name:"", 'customer-contact_number' => ($vehicle->customer)?$vehicle->customer->contact_number:""]);
             exit;
         }
     }

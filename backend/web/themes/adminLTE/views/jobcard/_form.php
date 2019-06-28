@@ -64,6 +64,12 @@ $time = time();
                     <?= $form->field($vehicle, 'chasis_num')->textInput(['maxlength' => true]) ?>                                        
                 </div>
                 <div class="col-md-6">
+                    <?= $form->field($vehicle, 'lpo_num')->textInput(['maxlength' => true]) ?>
+
+                    <?= $form->field($vehicle, 'vin')->textInput(['maxlength' => true]) ?>
+
+                    <?= $form->field($vehicle, 'wo_num')->textInput(['maxlength' => true]) ?>
+
                     <?= $form->field($vehicle, 'amc_type', ['inputOptions' => ["class" => "form-control select2"]])->dropDownList(ArrayHelper::map(AmcType::find()->where(["status" => 1])->all(), 'id', 'name'), ["prompt" => "AMC Type"]) ?>
 
                     <?= $form->field($vehicle, 'amc_expiry_date')->textInput(['maxlength' => true, 'class' => "form-control datepicker"]) ?>

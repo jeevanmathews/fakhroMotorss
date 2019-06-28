@@ -35,7 +35,7 @@ class JobcardVehicle extends \yii\db\ActiveRecord
             [['extended_warranty_type', 'make_id', 'model_id', 'amc_type', 'ew_expiry_kms', 'customer_id'], 'integer'],  
             [['reg_num'], 'unique'],   
             ['chasis_num', 'string', 'min' => 17],
-            [['tr_number', 'amc_expiry_date', 'ew_expiry_kms', 'ew_expiry_date', 'service_schedule', 'reg_num'], 'string', 'max' => 300],
+            [['tr_number', 'amc_expiry_date', 'ew_expiry_kms', 'ew_expiry_date', 'service_schedule', 'reg_num', 'vin', 'lpo_num', 'wo_num'], 'string', 'max' => 200],
         ];
     }
 
@@ -50,7 +50,10 @@ class JobcardVehicle extends \yii\db\ActiveRecord
             'chasis_num' => 'Chasis No',
             'make_id' => 'Make',
             'model_id' => 'Model',
-            'customer_id' => 'Customer'
+            'customer_id' => 'Customer',
+            'vin' => 'VIN',
+            'lpo_num' => 'LPO No',
+            'wo_num' => 'W/O No'
         ];
     }
 	public function getAmcType()

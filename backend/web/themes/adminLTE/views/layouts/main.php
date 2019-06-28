@@ -136,7 +136,10 @@ $this->registerJs($js, \yii\web\View::POS_HEAD);
                       </li>
                       <li>
                         <?= Html::a('Designations', ['/designations/index'], ['class'=>'']) ?>
-                      </li>                     
+                      </li>   
+                      <li>
+                        <?= Html::a('Roles', ['/roles/index'], ['class'=>'']) ?>
+                      </li>                    
                       <li>
                         <?= Html::a('Staff', ['/employees/index'], ['class'=>'']) ?>
                       </li>
@@ -540,6 +543,8 @@ $this->registerJs($js, \yii\web\View::POS_HEAD);
         }else if($(this).hasClass("navbar-brand")){       
           $(".main-body").addClass("hide");
           $("#site_dashboard").removeClass("hide");
+          return false;
+        }else if($(this).hasClass("folder-tree")){
           return false;
         }
         event.preventDefault();        

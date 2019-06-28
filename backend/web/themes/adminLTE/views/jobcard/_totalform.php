@@ -35,15 +35,16 @@ $cur_time = time();
         <div class="col-md-6">
             <h5 class="heading">Total</h5>
             <table class="table table-striped table-bordered detail-view table-hover">
-                
-                <?php if($model->invoice) { ?> 
-                <tr>               
-                <td colspan="2"> 
+                 <tr> 
+                <?php if($model->invoice) { ?>                              
+                <td> 
                 <span class="pull-left"><?= Html::button('View Invoice', ['onclick' => 'window.open("'.Yii::$app->getUrlManager()->createUrl(['jobcard/invoice', 'invoice_id' => $model->invoice->id]).'", "_blank");', 'class' => 'btn btn-success']) ?></span>
-                </td>
+                </td>                           
+                <?php }  else echo "<td></td>";?>
+                <td> 
+                <span class="pull-left"><?= Html::button('Print Jobcard', ['onclick' => 'window.open("'.Yii::$app->getUrlManager()->createUrl(['jobcard/print', 'jobcard_id' => $model->id]).'", "_blank");', 'class' => 'btn btn-success']) ?></span>
+                </td>    
                 </tr>
-                <?php } ?>                
-
                  <?php if($model->quotation) { ?> 
                 <tr>               
                 <td colspan="2"> 

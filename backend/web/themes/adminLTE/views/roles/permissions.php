@@ -93,11 +93,12 @@
                 <div class="row">
                     <div class="col-md-12">        
                         <ul id="tree2">
-                            <li><?php echo Html::checkbox('permission_id[]');?><a href="#">Full Privilege</a>
+                            <li><?php echo Html::checkbox('permission_id[]', false, ['value' => '', 'id' => 'full-prev']);?><a class="folder-tree" href="#">Full Privilege</a>
                                 <ul> 
                                     <?php foreach ($site_modules as $module => $actions) {
-                                        if(!in_array(($module."Controller"), $skip_modules)){
-                                        echo "<li>".Html::checkbox('permission_id[]')."<a href='#'> ". str_replace("Controller", "", $module) ."</a><ul>";
+                                        $module_name = str_replace("Controller", "", $module);
+                                        if(!in_array($module_name, $skip_modules)){
+                                        echo "<li>".Html::checkbox('permission_id[]', false, ['value' => '', 'class' => 'module-prevlg'])."<a href='#' class='folder-tree'> ". $module_name ."</a><ul>";
                                         foreach($actions as $action) {
                                              $action_details = explode("-", $action);
                                              $action_name = $action_details[0];
@@ -186,8 +187,28 @@ $('#tree2').treed({openedClass:'glyphicon-folder-open', closedClass:'glyphicon-f
 
 $('#tree3').treed({openedClass:'glyphicon-chevron-right', closedClass:'glyphicon-chevron-down'});
 
-     
+$("#full-prev").click(function(){   
+    $(".tree").find("[type=checkbox]").each(function() { 
+            this.checked = true; 
+    });
+});  
+$("#full-prev").click(function(){   
+    $(".tree").find("[type=checkbox]").each(function() { 
+            this.checked = true; 
+    });
+});  
 
+$(".module-prevlg").click(function(){
+    if(this.checked){
+        $(this).find("[type=checkbox]").each(function() { 
+            this.checked = true; 
+        });
+    }else{
+        $(this).find("[type=checkbox]").each(function() { 
+            this.checked = false; 
+        });
+    }
+});
 </script>
 
     
