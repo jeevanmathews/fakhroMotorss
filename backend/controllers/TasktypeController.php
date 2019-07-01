@@ -3,16 +3,16 @@
 namespace backend\controllers;
 
 use Yii;
-use backend\models\RolePermission;
-use yii\data\ActiveDataProvider;
+use backend\models\tasktype;
+use backend\models\tasktypeSearch;
 use yii\web\Controller;
 use yii\web\NotFoundHttpException;
 use yii\filters\VerbFilter;
 
 /**
- * RolepermissionController implements the CRUD actions for RolePermission model.
+ * TasktypeController implements the CRUD actions for tasktype model.
  */
-class RolepermissionController extends Controller
+class TasktypeController extends Controller
 {
     /**
      * {@inheritdoc}
@@ -30,70 +30,53 @@ class RolepermissionController extends Controller
     }
 
     /**
-     * Lists all RolePermission models.
+     * Lists all tasktype models.
      * @return mixed
      */
     public function actionIndex()
     {
-        $dataProvider = new ActiveDataProvider([
-            'query' => RolePermission::find(),
-        ]);
+        $searchModel = new tasktypeSearch();
+        $dataProvider = $searchModel->search(Yii::$app->request->queryParams);
 
-        return $this->render('index', [
+        return $this->renderAjax('index', [
+            'searchModel' => $searchModel,
             'dataProvider' => $dataProvider,
         ]);
     }
 
     /**
-     * Displays a single RolePermission model.
+     * Displays a single tasktype model.
      * @param integer $id
      * @return mixed
      * @throws NotFoundHttpException if the model cannot be found
      */
     public function actionView($id)
     {
-        return $this->render('view', [
+        return $this->renderAjax('view', [
             'model' => $this->findModel($id),
         ]);
     }
 
     /**
-     * Creates a new RolePermission model.
+     * Creates a new tasktype model.
      * If creation is successful, the browser will be redirected to the 'view' page.
      * @return mixed
      */
     public function actionCreate()
-    {       
-        $result=array();
-        if($res=Yii::$app->request->post()){
-           
-            foreach ($res['permission_id'] as $value) {
-                if($value){
-                    if(! RolePermission::find()->where(['role_id'=>$res['role_id'],'permission_id'=>$value])->exists())
-                    {  
-                        $result[]=array($res['role_id'],$value);
-                    }
-                }
-                
-            }
+    {
+        $model = new tasktype();
 
-            
-        }   
-        $model = new RolePermission();
-
-         Yii::$app->db
-            ->createCommand()
-            ->batchInsert('role_permission', ['role_id','permission_id'],$result)
-            ->execute();
         if ($model->load(Yii::$app->request->post()) && $model->save()) {
             return $this->redirect(['view', 'id' => $model->id]);
         }
 
-        return $this->redirect(['roles/index']);
+        return $this->renderAjax('create', [
+            'model' => $model,
+        ]);
     }
 
     /**
-     * Updates an existing RolePermission model.
+     * Updates an existing tasktype model.
      * If update is successful, the browser will be redirected to the 'view' page.
      * @param integer $id
      * @return mixed
@@ -107,13 +90,13 @@ class RolepermissionController extends Controller
             return $this->redirect(['view', 'id' => $model->id]);
         }
 
-        return $this->render('update', [
+        return $this->renderrenderAjax('update', [
             'model' => $model,
         ]);
     }
 
     /**
-     * Deletes an existing RolePermission model.
+     * Deletes an existing tasktype model.
      * If deletion is successful, the browser will be redirected to the 'index' page.
      * @param integer $id
      * @return mixed
@@ -127,15 +110,15 @@ class RolepermissionController extends Controller
     }
 
     /**
-     * Finds the RolePermission model based on its primary key value.
+     * Finds the tasktype model based on its primary key value.
      * If the model is not found, a 404 HTTP exception will be thrown.
      * @param integer $id
-     * @return RolePermission the loaded model
+     * @return tasktype the loaded model
      * @throws NotFoundHttpException if the model cannot be found
      */
     protected function findModel($id)
     {
-        if (($model = RolePermission::findOne($id)) !== null) {
+        if (($model = tasktype::findOne($id)) !== null) {
             return $model;
         }
 

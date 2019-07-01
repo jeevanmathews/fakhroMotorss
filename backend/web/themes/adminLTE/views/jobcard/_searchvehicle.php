@@ -54,21 +54,20 @@ $this->params['breadcrumbs'][] = $this->title;
                                         return utf8_decode($model->make->manufacturer->name)."<span class='hide'>".$model->make->manufacturer_id."</span>";
                                     }
                                 ], 
-                                [
+                                /*[
                                     'label' => 'Make',
                                     'format' => 'html',
                                     'value' =>function ($model){
                                         return utf8_decode($model->make->make)."<span class='hide'>".$model->make_id."</span>";
                                     }
-                                ],  
+                                ], */ 
                                 [
                                     'label' => 'Model',
                                     'format' => 'html',
                                     'value' =>function ($model){
                                         return utf8_decode($model->model->model)."<span class='hide'>".$model->model_id."</span>";
                                     }
-                                ], 
-                                'color',
+                                ],
                                 ['class' => 'yii\grid\ActionColumn',
                                   'template' => '{select}',
                                   'buttons' => [

@@ -8,6 +8,7 @@ use backend\models\TasksSearch;
 use yii\web\Controller;
 use yii\web\NotFoundHttpException;
 use yii\filters\VerbFilter;
+use backend\models\TaskType;
 
 /**
  * TasksController implements the CRUD actions for Tasks model.
@@ -37,7 +38,7 @@ class TasksController extends Controller
     {
         $searchModel = new TasksSearch();
         $dataProvider = $searchModel->search(Yii::$app->request->queryParams);
-        $dataProvider->query->andWhere(['type'=>'service']);
+        // $dataProvider->query->andWhere(['type'=>'service']);
         $page_id = "tasks".time();
         if(isset(Yii::$app->request->queryParams['page_id'])){
             $page_id = Yii::$app->request->queryParams['page_id'];
@@ -81,8 +82,7 @@ class TasksController extends Controller
     public function actionCreate($jobcard_id="")
     {       
         $model = new Tasks();
-	    if ($model->load(Yii::$app->request->post())) {
-          
+	    if ($model->load(Yii::$app->request->post())) {      
 		$res = Yii::$app->request->post();
 		$day_in_min = (intval($res['days'])*1440);
 		$hour_in_min =(intval($res['hours'])*60);
@@ -197,6 +197,26 @@ class TasksController extends Controller
         $this->findModel($id)->delete();
 
         return $this->redirect(['index']);
+    }
+
+    public function actionTasksbytype($type, $vehicle_type){
+        
+        if(TaskType::findOne($type)->vehicle_type == "required")
+           $args = ['type' => $type, 'vehicle_type' => $vehicle_type]; 
+        else
+           $args = ['type' => $type];               
+        $tasks = Tasks::find()->where($args)->all();
+        if($tasks){
+            echo '<option value="">Select a Task</option>';
+           
+            foreach($tasks as $task){
+                echo '<option value="'.$task->id.'">'.$task->namewithPrice.'</option>';
+            }
+        }else{            
+            echo '<option value="">No Records Added</option>';
+             echo '<option value="0">Add New Task</option>';
+        }        
+        exit;
     }
 
     /**

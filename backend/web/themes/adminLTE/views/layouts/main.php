@@ -192,6 +192,9 @@ $this->registerJs($js, \yii\web\View::POS_HEAD);
                       <li>
                         <?= Html::a('Service Tasks', ['/tasks/index'], ['class'=>'']) ?>
                       </li>
+                        <li>
+                        <?= Html::a('Task Types', ['/tasktype/index'], ['class'=>'']) ?>
+                      </li>
 					  
                      <!--  <li>
                         <?= Html::a('Item Types', ['/itemtype/index'], ['class'=>'']) ?>

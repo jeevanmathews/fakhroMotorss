@@ -5,6 +5,7 @@ use common\components\AutoForm;
 use yii\helpers\ArrayHelper;
 use backend\models\Tasks;
 use backend\models\Employees;
+use backend\models\TaskType;
 
 /* @var $this yii\web\View */
 /* @var $model backend\models\Jobcard */
@@ -17,7 +18,18 @@ use backend\models\Employees;
             <div class="col-md-12">
                 <h5 class="heading"><span><?php echo (!$jobcardTask->isNewRecord)?"Update":"Assign New";?> Task</span> </h5>
                 <div class="col-md-6">
-                    <?= $form->field($jobcardTask, 'task_id', ['inputOptions' => ["class" => "form-control select2"]])->dropDownList(['0' => 'Add New Task']+ArrayHelper::map(Tasks::find()->where(["status" => 1])->all(), 'id', 'namewithPrice'), ["prompt" => "Select a Task"]) ?>
+
+                    <?=$form->field($jobcardTask, 'task_type')->dropDownList(
+                            ArrayHelper::map(TaskType::find()->all(), 'id', 'task_type'),
+                             ['prompt' => 'Select Task Type','class' => 'form-control select2 type', 
+                            
+                        'onchange'=>'
+                            $.get( "'.Yii::$app->getUrlManager()->createUrl(['tasks/tasksbytype', 'vehicle_type' => $vehicle_type]).'&type="+$(this).val(), function( data ) {
+                            $(document).find(".main-body:visible").find( "#jobcardtask-task_id" ).html(data);
+                       });
+                        ']);?>
+
+                    <?= $form->field($jobcardTask, 'task_id', ['inputOptions' => ["class" => "form-control select2"]])->dropDownList(['0' => 'Add New Task']+(($jobcardTask->isNewRecord)?[]:ArrayHelper::map(Tasks::find()->where(["status" => 1])->all(), 'id', 'namewithPrice')), ["prompt" => "Select a Task"]) ?>
 
                      <?= $form->field($jobcardTask, 'mechanic_id', ['inputOptions' => ["class" => "form-control select2"]])->dropDownList(ArrayHelper::map(Employees::find()->where(["status" => 1, "designation_id" => 4, "branch_id" => Yii::$app->user->identity->branch_id])->all(), 'id', 'fullname'), ["prompt" => "Assign a Mechanic"]) ?>                   
 
@@ -66,8 +78,5 @@ use backend\models\Employees;
       changeYear: true,
       yearRange: "1930:2030",
     });
-    });  
-
-    
-    
+    });
 </script>

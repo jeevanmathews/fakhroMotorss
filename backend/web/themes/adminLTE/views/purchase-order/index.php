@@ -50,12 +50,17 @@ $this->params['breadcrumbs'][] = $this->title;
                         ],
                         'po_date',
                         'po_expected_date',
-                        'process_status',
+                          [
+                          'attribute' => 'process_status',
+                          'value' =>'process_status',
+                          'filter' => Html::activeDropDownList($searchModel, 'process_status', ["pending"=>"pending", "processing" => "processing","completed" =>"completed"],['class'=>'form-control','prompt' => 'Search by Process Status']),
+                          ],
                             //'po_created_by',
                             //'subtotal',
                             //'total_tax',
                             //'grand_total',
                             //'status',
+                        
 
                         [
                         'attribute' => 'status',

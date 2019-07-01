@@ -15,7 +15,7 @@ use common\components\AutoForm;
 
 			<?= $form->field($model, 'name')->textInput(['maxlength' => true]) ?>
 
-			<?= $form->field($model, 'rate')->textInput() ?>
+			<?= $form->field($model, 'rate')->textInput(['name' => 'datetimes']) ?>
 
 		</div>
 	</div>
@@ -25,3 +25,18 @@ use common\components\AutoForm;
 	<?= Html::submitButton('Save', ['class' => 'btn btn-success']) ?>
 </div>
 <?php AutoForm::end(); ?>
+
+<script>
+		$(function() {
+		  $('input[name="datetimes"]').daterangepicker({
+		  	singleDatePicker: true,
+		  	timePicker: true,
+		    showDropdowns: true,
+		    minYear: 1901,
+		    maxYear: 2100,
+		  	locale: {
+		      format: 'YYYY/MM/DD hh:mm A'
+		    }
+		  });
+		});
+	</script>

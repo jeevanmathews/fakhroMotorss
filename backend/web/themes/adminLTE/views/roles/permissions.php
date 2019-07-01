@@ -88,34 +88,35 @@
         <div class="box box-default"> 
         <div class="box-body">
         <div class="row">
-        <div class="col-md-12">            
-            <div class="container" style="margin-top:30px;">
-                <div class="row">
-                    <div class="col-md-12">        
-                        <ul id="tree2">
-                            <li><?php echo Html::checkbox('permission_id[]', false, ['value' => '', 'id' => 'full-prev']);?><a class="folder-tree" href="#">Full Privilege</a>
-                                <ul> 
-                                    <?php foreach ($site_modules as $module => $actions) {
-                                        $module_name = str_replace("Controller", "", $module);
-                                        if(!in_array($module_name, $skip_modules)){
-                                        echo "<li>".Html::checkbox('permission_id[]', false, ['value' => '', 'class' => 'module-prevlg'])."<a href='#' class='folder-tree'> ". $module_name ."</a><ul>";
-                                        foreach($actions as $action) {
-                                             $action_details = explode("-", $action);
-                                             $action_name = $action_details[0];
-                                             if(!in_array($action_name, $skip_actions)){
-                                                $action_name = isset($replace_display_texts[$action_name])?$replace_display_texts[$action_name]:$action_name;
-                                                $permission_id = $action_details[1];
-                                                echo "<li>".Html::checkbox('permission_id[]', false, ['value' => $permission_id]). $action_name."</li>";
-                                            }
-                                        }
-                                        echo "</ul></li>";
-                                    } } ?>                                       
-                                </ul>
-                            </li>                                
-                        </ul>
-                    </div>
-                </div>
-            </div>
+        <div class="col-md-8"> 
+        <?php $form = ActiveForm::begin(['action' => ['rolepermission/create'],'options' => ['method' => 'post']]); ?>        
+        <ul id="tree2">
+            <li class="first-node"><?php echo Html::checkbox('permission_id[]', false, ['value' => '', 'id' => 'full-prev']);?><a class="folder-tree" href="#">Full Privilege</a>
+                <ul> 
+                    <?php foreach ($site_modules as $module => $actions) {
+                        $module_name = str_replace("Controller", "", $module);
+                        if(!in_array($module_name, $skip_modules)){
+                        echo "<li>".Html::checkbox('permission_id[]', false, ['value' => '', 'class' => 'module-prevlg'])."<a href='#' class='folder-tree'> ". $module_name ."</a><ul>";
+                        foreach($actions as $action) {
+                             $action_details = explode("-", $action);
+                             $action_name = $action_details[0];
+                             if(!in_array($action_name, $skip_actions)){
+                                $action_name = isset($replace_display_texts[$action_name])?$replace_display_texts[$action_name]:$action_name;
+                                $permission_id = $action_details[1];
+                                echo "<li>".Html::checkbox('permission_id[]', false, ['value' => $permission_id]). $action_name."</li>";
+                            }
+                        }
+                        echo "</ul></li>";
+                    } } ?>                                       
+                </ul>
+            </li>                                
+        </ul>
+        <?= Html::hiddenInput('role_id', $role_id)?>
+       
+        <?= Html::submitButton('Set Permission', ['class' => 'btn btn-success pull-left']) ?>
+       
+        <?php ActiveForm::end(); ?>
+                   
         </div>
         </div>
         </div>
@@ -187,28 +188,26 @@ $('#tree2').treed({openedClass:'glyphicon-folder-open', closedClass:'glyphicon-f
 
 $('#tree3').treed({openedClass:'glyphicon-chevron-right', closedClass:'glyphicon-chevron-down'});
 
-$("#full-prev").click(function(){   
+$("#full-prev").click(function(){
+    this.checked = (this.checked)?false:true;
+    var chck = (this.checked)?false:true;     
     $(".tree").find("[type=checkbox]").each(function() { 
-            this.checked = true; 
-    });
-});  
-$("#full-prev").click(function(){   
-    $(".tree").find("[type=checkbox]").each(function() { 
-            this.checked = true; 
+        this.checked = chck;
     });
 });  
 
 $(".module-prevlg").click(function(){
     if(this.checked){
-        $(this).find("[type=checkbox]").each(function() { 
+        $(this).closest("li").find("ul").find("[type=checkbox]").each(function() { 
             this.checked = true; 
         });
     }else{
-        $(this).find("[type=checkbox]").each(function() { 
+        $(this).closest("li").find("ul").find("[type=checkbox]").each(function() { 
             this.checked = false; 
         });
     }
 });
+$(".first-node").trigger("click");
 </script>
 
     

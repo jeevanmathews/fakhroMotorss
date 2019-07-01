@@ -35,10 +35,10 @@ class Tasks extends \yii\db\ActiveRecord
     {
         return [
             [['task', 'description','type'], 'required'],
-            [['description', 'type','tax_enabled'], 'string'],
-            [['status'], 'integer'],
+            [['description'], 'string'],
+            [['status', 'type', 'vehicle_type'], 'integer'],
             [['actual_rate', 'billing_rate','tax_rate'], 'number'],
-            [['created_date'], 'safe'],
+            [['created_date', 'tax_enabled'], 'safe'],
             [['task'], 'string', 'max' => 250],
           
             [['actual_rate', 'billing_rate', 'billable'], 'string', 'max' => 300],

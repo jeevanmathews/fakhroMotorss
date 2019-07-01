@@ -18,7 +18,7 @@ class PurchaserequestSearch extends Purchaserequest
     {
         return [
             [['id', 'requested_by', 'supplier_id', 'status'], 'integer'],
-            [['pr_number', 'request_date', 'expected_date'], 'safe'],
+            [['pr_number', 'request_date', 'expected_date','process_status'], 'safe'],
         ];
     }
 
@@ -62,6 +62,7 @@ class PurchaserequestSearch extends Purchaserequest
             'requested_by' => $this->requested_by,
             'supplier_id' => $this->supplier_id,
             'status' => $this->status,
+            'process_status' => $this->process_status,
         ]);
 
         $query->andFilterWhere(['like', 'pr_number', $this->pr_number])

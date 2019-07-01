@@ -25,6 +25,7 @@ class AppAsset extends AssetBundle
         'themes/adminLTE/css/pignose.calendar.css',
         'https://cdnjs.cloudflare.com/ajax/libs/jquery-modal/0.9.1/jquery.modal.min.css',
         'themes/adminLTE/css/jquery.toast.css',
+        'https://cdn.jsdelivr.net/npm/daterangepicker/daterangepicker.css',
         'themes/adminLTE/css/style.css'
         //'themes/adminLTE/plugins/datepicker/datepicker3.css',
        // 'themes/adminLTE/plugins/daterangepicker/daterangepicker.css',
@@ -48,6 +49,8 @@ class AppAsset extends AssetBundle
     'https://cdnjs.cloudflare.com/ajax/libs/jquery-modal/0.9.1/jquery.modal.min.js',
     'themes/adminLTE/js/jquery.toast.js',
     'themes/adminLTE/js/autocomplete.js',
+    'https://cdn.jsdelivr.net/momentjs/latest/moment.min.js',
+    'https://cdn.jsdelivr.net/npm/daterangepicker/daterangepicker.min.js'
     ];
     public $jsOptions = array(
     'position' => \yii\web\View::POS_HEAD

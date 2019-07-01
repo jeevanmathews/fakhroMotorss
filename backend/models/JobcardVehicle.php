@@ -31,11 +31,11 @@ class JobcardVehicle extends \yii\db\ActiveRecord
     public function rules()
     {
         return [
-            [['reg_num', 'chasis_num', 'make_id', 'model_id', 'color'], 'required'],         
+            [['reg_num', 'chasis_num', 'make_id', 'model_id', 'vehicle_type'], 'required'],         
             [['extended_warranty_type', 'make_id', 'model_id', 'amc_type', 'ew_expiry_kms', 'customer_id'], 'integer'],  
             [['reg_num'], 'unique'],   
             ['chasis_num', 'string', 'min' => 17],
-            [['tr_number', 'amc_expiry_date', 'ew_expiry_kms', 'ew_expiry_date', 'service_schedule', 'reg_num', 'vin', 'lpo_num', 'wo_num'], 'string', 'max' => 200],
+            [['tr_number', 'amc_expiry_date', 'ew_expiry_kms', 'ew_expiry_date', 'service_schedule', 'reg_num', 'vin', 'lpo_num', 'wo_num', 'color'], 'string', 'max' => 200],
         ];
     }
 
@@ -78,5 +78,9 @@ class JobcardVehicle extends \yii\db\ActiveRecord
     public function getCustomer()
     {
         return $this->hasOne(Customer::className(), ['id' => 'customer_id']);
+    }
+    public function getVehicletype()
+    {
+        return $this->hasOne(VehicleType::className(), ['id' => 'vehicle_type']);
     }
 }

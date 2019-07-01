@@ -18,7 +18,7 @@ class PurchaseorderSearch extends Purchaseorder
     {
         return [
             [['id', 'pr_id', 'po_created_by', 'status'], 'integer'],
-            [['po_number', 'po_date', 'po_expected_date', 'subtotal', 'total_tax', 'grand_total'], 'safe'],
+            [['po_number', 'po_date', 'po_expected_date', 'subtotal', 'total_tax', 'grand_total','process_status'], 'safe'],
         ];
     }
 
@@ -63,6 +63,7 @@ class PurchaseorderSearch extends Purchaseorder
             'po_date' => $this->po_date,
             'po_created_by' => $this->po_created_by,
             'status' => $this->status,
+            'process_status' => $this->process_status,
         ]);
 
         $query->andFilterWhere(['like', 'po_number', $this->po_number])

@@ -86,7 +86,7 @@ $cur_time = time();
 						     	},	
 				            ],	
 				            [					         
-					            'attribute' => 'task.total_time',
+					            'label' => 'Allowed Time',
 					            'value'=>function ($model, $key, $index, $widget){	
 						        	return Yii::$app->common->getTimedisplay($model->task->total_time*60) ;
 						     	},						    
@@ -166,7 +166,7 @@ $cur_time = time();
 				        ],
 				        'showFooter' => true,
 				    ]); ?>				
-			    	<?= $this->render('_taskform', compact('jobcardTask')) ?>
+			    	<?= $this->render('_taskform', ['jobcardTask' => $jobcardTask, 'vehicle_type' => $model->vehicle->vehicle_type]) ?>
 			    </div>
 			    </div>
 			    </div>

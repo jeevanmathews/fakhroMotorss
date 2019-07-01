@@ -4,12 +4,12 @@ namespace backend\models;
 
 use yii\base\Model;
 use yii\data\ActiveDataProvider;
-use backend\models\GoodsReceiptNote;
+use backend\models\tasktype;
 
 /**
- * GoodsReceiptNoteSearch represents the model behind the search form of `backend\models\GoodsReceiptNote`.
+ * tasktypeSearch represents the model behind the search form of `backend\models\tasktype`.
  */
-class GoodsReceiptNoteSearch extends GoodsReceiptNote
+class tasktypeSearch extends tasktype
 {
     /**
      * {@inheritdoc}
@@ -17,8 +17,8 @@ class GoodsReceiptNoteSearch extends GoodsReceiptNote
     public function rules()
     {
         return [
-            [['id', 'po_id', 'grn_created_by', 'supplier_id', 'status'], 'integer'],
-            [['grn_number', 'grn_created_date', 'grn_date', 'subtotal', 'total_tax', 'grand_total','process_status'], 'safe'],
+            [['id', 'status'], 'integer'],
+            [['task_type'], 'safe'],
         ];
     }
 
@@ -40,7 +40,7 @@ class GoodsReceiptNoteSearch extends GoodsReceiptNote
      */
     public function search($params)
     {
-        $query = GoodsReceiptNote::find();
+        $query = tasktype::find();
 
         // add conditions that should always apply here
 
@@ -59,19 +59,10 @@ class GoodsReceiptNoteSearch extends GoodsReceiptNote
         // grid filtering conditions
         $query->andFilterWhere([
             'id' => $this->id,
-            'po_id' => $this->po_id,
-            'grn_created_date' => $this->grn_created_date,
-            'grn_created_by' => $this->grn_created_by,
-            'supplier_id' => $this->supplier_id,
             'status' => $this->status,
-            'process_status' => $this->process_status,
         ]);
 
-        $query->andFilterWhere(['like', 'grn_number', $this->grn_number])
-            ->andFilterWhere(['like', 'grn_date', $this->grn_date])
-            ->andFilterWhere(['like', 'subtotal', $this->subtotal])
-            ->andFilterWhere(['like', 'total_tax', $this->total_tax])
-            ->andFilterWhere(['like', 'grand_total', $this->grand_total]);
+        $query->andFilterWhere(['like', 'task_type', $this->task_type]);
 
         return $dataProvider;
     }

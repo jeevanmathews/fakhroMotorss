@@ -3,6 +3,10 @@
 use yii\helpers\Html;
 use yii\widgets\ActiveForm;
 use common\components\AutoForm;
+use yii\helpers\ArrayHelper;
+use backend\models\TaskType;
+use backend\models\Vehicletype;
+
 /* @var $this yii\web\View */
 /* @var $model backend\models\Tasks */
 /* @var $form yii\widgets\ActiveForm */
@@ -83,9 +87,11 @@ use common\components\AutoForm;
 				   }
 				   ?>
 				</div>
-				</div>
+				</div>			
 				
-					<?= $form->field($model, 'type')->dropDownList([ 'service' => 'Service', 'sales' => 'Sales', ], ['prompt' => '']) ?>
+					<?= $form->field($model, 'type', ['inputOptions' => ["class" => "form-control select2"]])->dropDownList(ArrayHelper::map(TaskType::find()->all(), 'id', 'task_type'), ["prompt" => "Select Task Type"]) ?>
+
+					<?= $form->field($model, 'vehicle_type', ['inputOptions' => ["class" => "form-control select2"]])->dropDownList(ArrayHelper::map(Vehicletype::find()->where(['status' => 1])->all(), 'id', 'name'), ["prompt" => "Select Vehicle Type"]) ?>  
 					<?php
 					
 					if($model->billable == ' ' || $model->billable == 'no')

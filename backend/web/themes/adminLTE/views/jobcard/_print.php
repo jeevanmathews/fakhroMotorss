@@ -117,10 +117,10 @@ use backend\models\Branches
                                                 <td width="40%" valign="top" style="padding: 3px 0; font-size: 14px; font-weight: 700;">Date of Delivery</td>
                                                 <td width="60%" valign="top" style="padding: 3px 0; font-size: 14px;">: <?php echo $jobcard->promised_date;?></td>
                                             </tr>
-                                            <!--<tr>
+                                            <tr>
                                                 <td width="40%" valign="top" style="padding: 3px 0; font-size: 14px; font-weight: 700;">Delivery Time</td>
-                                                <td width="60%" valign="top" style="padding: 3px 0; font-size: 14px;">: </td>
-                                            </tr>-->
+                                                <td width="60%" valign="top" style="padding: 3px 0; font-size: 14px;">: <?php echo $jobcard->delivrey_time;?></td>
+                                            </tr>
                                         </table>
                                     </td>
                                 </tr>

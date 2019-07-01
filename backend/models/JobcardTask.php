@@ -18,6 +18,7 @@ use Yii;
 class JobcardTask extends \yii\db\ActiveRecord
 {
     public $discount;
+    public $task_type;
     /**
      * {@inheritdoc}
      */

@@ -45,15 +45,16 @@ $this->params['breadcrumbs'][] = $this->title;
                         'value' =>function ($model){
                             return utf8_decode($model->make->manufacturer->name);
                         }
-                    ], 
-                    [
+                    ],
+                    'vehicletype.name', 
+                   /* [
                        
                         'attribute' => 'make_id',
                         'filter' => Html::activeTextInput($searchModel, 'make_id',['class'=>'form-control','prompt' => 'Search by Make']),
                         'value' =>function ($model){
                             return utf8_decode($model->make->make);
                         }
-                    ],
+                    ],*/
                     [
                        
                         'attribute' => 'model_id',

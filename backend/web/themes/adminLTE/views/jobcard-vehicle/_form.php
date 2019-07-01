@@ -7,6 +7,7 @@ use backend\models\Make;
 use backend\models\Customer;
 use backend\models\CarModel;
 use yii\helpers\ArrayHelper;
+use backend\models\Vehicletype;
 
 /* @var $this yii\web\View */
 /* @var $model backend\models\JobcardVehicle */
@@ -20,13 +21,15 @@ use yii\helpers\ArrayHelper;
         <div class="col-md-6">
         <?= $form->field($model, 'reg_num')->textInput(['maxlength' => true]) ?>
 
+        <?= $form->field($model, 'vehicle_type')->dropDownList(ArrayHelper::map(Vehicletype::find()->where(['status' => 1])->all(), 'id', 'name')) ?>
+
         <?= $form->field($model, 'chasis_num')->textInput(['maxlength' => true]) ?>
 
-        <?= $form->field($vehicle, 'lpo_num')->textInput(['maxlength' => true]) ?>
+        <?= $form->field($model, 'lpo_num')->textInput(['maxlength' => true]) ?>
 
-        <?= $form->field($vehicle, 'vin')->textInput(['maxlength' => true]) ?>
+        <?= $form->field($model, 'vin')->textInput(['maxlength' => true]) ?>
 
-        <?= $form->field($vehicle, 'wo_num')->textInput(['maxlength' => true]) ?>
+        <?= $form->field($model, 'wo_num')->textInput(['maxlength' => true]) ?>
 
 
         <?php if($model->make) $model->manufacturer = $model->make->manufacturer->id;?>
@@ -36,12 +39,12 @@ use yii\helpers\ArrayHelper;
                  ['prompt' => 'Select Type','class' => 'form-control select2 type', 
                 
             'onchange'=>'
-                $.get( "'.Yii::$app->getUrlManager()->createUrl('car-model/makes').'&manufacturer_id="+$(this).val(), function( data ) {
-                    $(document).find(".main-body:visible").find( "#jobcardvehicle-make_id" ).html(data);
+                $.get( "'.Yii::$app->getUrlManager()->createUrl('car-model/models').'&make_id="+$(this).val(), function( data ) {
+                    $(document).find(".main-body:visible").find( "#jobcardvehicle-model_id" ).html(data);
            });
             ']);?>
 
-        <?=$form->field($model, 'make_id')->dropDownList(
+        <?php /*$form->field($model, 'make_id')->dropDownList(
                 (($model->make)?ArrayHelper::map(Make::find()->where(['manufacturer_id' => $model->manufacturer])->all(), 'id', 'make'):[]),
                  ['prompt' => 'Select Type','class' => 'form-control select2 type', 
                 
@@ -49,9 +52,9 @@ use yii\helpers\ArrayHelper;
                 $.get( "'.Yii::$app->getUrlManager()->createUrl('car-model/models').'&make_id="+$(this).val(), function( data ) {
                 $(document).find(".main-body:visible").find( "#jobcardvehicle-model_id" ).html(data);
            });
-            ']);?>
+            ']);*/?>
 
-        <?= $form->field($model, 'model_id')->dropDownList(($model->model)?ArrayHelper::map(CarModel::find()->where(['make_id' => $model->make_id])->all(), 'id', 'model'):[]) ?>
+        <?= $form->field($model, 'model_id')->dropDownList(($model->model)?ArrayHelper::map(CarModel::find()->where(['make_id' => $model->manufacturer])->all(), 'id', 'model'):[]) ?>
 
 
         <?= $form->field($model, 'color')->textInput(['maxlength' => true]) ?>

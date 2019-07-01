@@ -456,7 +456,12 @@ class JobcardController extends Controller
 
     public function actionPrint($jobcard_id){
 
-        $jobcard = $this->findModel($jobcard_id);          
+        $jobcard = $this->findModel($jobcard_id);
+        $date = explode(" ", $jobcard->promised_date); 
+        $delv_date = explode("/", $date[0]); 
+        $jobcard->promised_date = implode("-", array_reverse($delv_date));
+        $jobcard->delivrey_time = (isset($date[1]))?$date[1].$date[2]:"Not Set";
+
         return $this->renderAjax('_print',compact('jobcard'));
     }
 
@@ -581,7 +586,7 @@ class JobcardController extends Controller
     public function actionVehicleInfo($vehicle_id){
         $vehicle = JobcardVehicle::findOne($vehicle_id);//print_r($vehicle);exit;
         if($vehicle){
-            echo json_encode(['jobcardvehicle-reg_num' => $vehicle->reg_num, 'jobcardvehicle-chasis_num' => $vehicle->chasis_num, 'jobcardvehicle-lpo_num' => $vehicle->lpo_num, 'jobcardvehicle-vin' => $vehicle->vin, 'jobcardvehicle-wo_num' => $vehicle->wo_num, 'jobcardvehicle-manufacturer'  => $vehicle->make->manufacturer_id, 'jobcardvehicle-make_id' => $vehicle->make_id, 'jobcardvehicle-model_id' => $vehicle->model_id, 'jobcardvehicle-color' => $vehicle->color, 'customer-name' => ($vehicle->customer)?$vehicle->customer->name:"", 'customer-contact_number' => ($vehicle->customer)?$vehicle->customer->contact_number:""]);
+            echo json_encode(['jobcardvehicle-reg_num' => $vehicle->reg_num, 'jobcardvehicle-chasis_num' => $vehicle->chasis_num, 'jobcardvehicle-lpo_num' => $vehicle->lpo_num, 'jobcardvehicle-vin' => $vehicle->vin, 'jobcardvehicle-wo_num' => $vehicle->wo_num, 'jobcardvehicle-manufacturer'  => $vehicle->make->manufacturer_id, 'jobcardvehicle-make_id' => $vehicle->make_id, 'jobcardvehicle-model_id' => $vehicle->model_id, 'jobcardvehicle-color' => $vehicle->color, 'customer-name' => ($vehicle->customer)?$vehicle->customer->name:"", 'customer-contact_number' => ($vehicle->customer)?$vehicle->customer->contact_number:"", 'jobcardvehicle-vehicle_type' => $vehicle->vehicle_type]);
             exit;
         }
     }

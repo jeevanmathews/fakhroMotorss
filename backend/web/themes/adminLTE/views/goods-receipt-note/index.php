@@ -72,7 +72,11 @@ $this->params['breadcrumbs'][] = $this->title;
                             //'total_tax',
                             //'grand_total',
                             //'status',
-                            'process_status',             
+                              [
+                              'attribute' => 'process_status',
+                              'value' =>'process_status',
+                              'filter' => Html::activeDropDownList($searchModel, 'process_status', ["pending"=>"pending", "processing" => "processing","completed" =>"completed"],['class'=>'form-control','prompt' => 'Search by Process Status']),
+                              ],            
                             [
                             'attribute' => 'status',
                             'value' =>function ($model){

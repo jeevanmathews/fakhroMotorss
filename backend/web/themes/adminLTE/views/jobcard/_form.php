@@ -12,6 +12,7 @@ use backend\models\ServiceType;
 use backend\models\Manufacturer;
 use backend\models\Make;
 use backend\models\CarModel;
+use backend\models\Vehicletype;
 
 /* @var $this yii\web\View */
 /* @var $model backend\models\Jobcard */
@@ -31,28 +32,29 @@ $time = time();
                    
                     <?php if($vehicle->make) $vehicle->manufacturer = $vehicle->make->manufacturer->id;?>
 
-        <?=$form->field($vehicle, 'manufacturer')->dropDownList(
-                ArrayHelper::map(Manufacturer::find()->all(), 'id', 'name'),
-                 ['prompt' => 'Select Type','class' => 'form-control select2 type', 
-                
-            'onchange'=>'
-                $.get( "'.Yii::$app->getUrlManager()->createUrl('car-model/makes').'&manufacturer_id="+$(this).val(), function( data ) {
-                $(document).find(".main-body:visible").find( "#jobcardvehicle-make_id" ).html(data);
-           });
-            ']);?>
+                    <?=$form->field($vehicle, 'manufacturer')->dropDownList(
+                            ArrayHelper::map(Manufacturer::find()->all(), 'id', 'name'),
+                             ['prompt' => 'Select Type','class' => 'form-control select2 type', 
+                            
+                        'onchange'=>'
+                            $.get( "'.Yii::$app->getUrlManager()->createUrl('car-model/models').'&make_id="+$(this).val(), function( data ) {
+                            $(document).find(".main-body:visible").find( "#jobcardvehicle-model_id" ).html(data);
+                       });
+                        ']);?>
 
-        <?=$form->field($vehicle, 'make_id')->dropDownList(
-                (($vehicle->make)?ArrayHelper::map(Make::find()->where(['manufacturer_id' => $vehicle->manufacturer])->all(), 'id', 'make'):[]),
-                 ['prompt' => 'Select Type','class' => 'form-control select2 type', 
-                
-            'onchange'=>'
-                $.get( "'.Yii::$app->getUrlManager()->createUrl('car-model/models').'&make_id="+$(this).val(), function( data ) {
-                    $(document).find(".main-body:visible").find( "#jobcardvehicle-model_id" ).html(data);
-           });
-            ']);?>
+                    <?php /*=$form->field($vehicle, 'make_id')->dropDownList(
+                            (($vehicle->make)?ArrayHelper::map(Make::find()->where(['manufacturer_id' => $vehicle->manufacturer])->all(), 'id', 'make'):[]),
+                             ['prompt' => 'Select Type','class' => 'form-control select2 type', 
+                            
+                        'onchange'=>'
+                            $.get( "'.Yii::$app->getUrlManager()->createUrl('car-model/models').'&make_id="+$(this).val(), function( data ) {
+                                $(document).find(".main-body:visible").find( "#jobcardvehicle-model_id" ).html(data);
+                       });
+                        ']);*/?>
 
-        <?= $form->field($vehicle, 'model_id')->dropDownList(($vehicle->model)?ArrayHelper::map(CarModel::find()->where(['make_id' => $vehicle->make_id])->all(), 'id', 'model'):[]) ?>
+                    <?= $form->field($vehicle, 'model_id')->dropDownList(($vehicle->model)?ArrayHelper::map(CarModel::find()->where(['make_id' => $vehicle->manufacturer])->all(), 'id', 'model'):[]) ?>
 
+                    <?= $form->field($vehicle, 'vehicle_type')->dropDownList(ArrayHelper::map(Vehicletype::find()->where(['status' => 1])->all(), 'id', 'name')) ?>
 
                     <?= $form->field($vehicle, 'color')->textInput(['maxlength' => true]) ?>
 
@@ -61,11 +63,11 @@ $time = time();
 
                     <?= $form->field($vehicle, 'reg_num')->textInput(['maxlength' => true]) ?>
 
-                    <?= $form->field($vehicle, 'chasis_num')->textInput(['maxlength' => true]) ?>                                        
-                </div>
-                <div class="col-md-6">
-                    <?= $form->field($vehicle, 'lpo_num')->textInput(['maxlength' => true]) ?>
+                    <?= $form->field($vehicle, 'chasis_num')->textInput(['maxlength' => true]) ?>
 
+                    <?= $form->field($vehicle, 'lpo_num')->textInput(['maxlength' => true]) ?>
+                </div>
+                <div class="col-md-6"> 
                     <?= $form->field($vehicle, 'vin')->textInput(['maxlength' => true]) ?>
 
                     <?= $form->field($vehicle, 'wo_num')->textInput(['maxlength' => true]) ?>
@@ -104,8 +106,10 @@ $time = time();
                 </div>
 
                 <div class="col-md-6">
+
                     <?= $form->field($model, 'next_service_type', ['inputOptions' => ["class" => "form-control select2"]])->dropDownList(ArrayHelper::map(ServiceType::find()->where(["status" => 1])->all(), 'id', 'name'), ["prompt" => "Service Type"]) ?> 
-                    <?= $form->field($model, 'promised_date')->textInput(['maxlength' => true, 'class' => "form-control datepicker"]) ?>
+
+                    <?= $form->field($model, 'promised_date')->textInput(['maxlength' => true, 'class' => "form-control"]) ?>
 
                     <?= $form->field($model, 'advance_paid')->textInput() ?>
 
@@ -164,5 +168,17 @@ $time = time();
       yearRange: "1930:2030",
     });
     });
-   </script>
 
+    $(function() {
+      $('#jobcard-promised_date').daterangepicker({
+        singleDatePicker: true,
+        timePicker: true,
+        showDropdowns: true,
+        minYear: 1901,
+        maxYear: 2100,
+        locale: {
+          format: 'YYYY/MM/DD hh:mm A'
+        }
+      });
+    });
+</script>
