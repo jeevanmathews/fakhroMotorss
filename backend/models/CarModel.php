@@ -13,8 +13,7 @@ use Yii;
  * @property int $status
  */
 class CarModel extends \yii\db\ActiveRecord
-{
-    public $manufacturer;
+{  
     /**
      * {@inheritdoc}
      */
@@ -49,6 +48,6 @@ class CarModel extends \yii\db\ActiveRecord
     }
 
     public function getMake(){
-        return $this->hasOne(Make::className(), ['id' => 'make_id']);
+        return $this->hasOne(Manufacturer::className(), ['id' => 'make_id']);
     }
 }

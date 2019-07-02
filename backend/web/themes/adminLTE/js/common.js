@@ -344,6 +344,35 @@ function validateAttribute(modelName, fieldName, fieldValue, mid, scenario){
         });
     });  
 
+    //Jobcard search customer
+    $(document).on('keyup', "[id='advanced_search']", function(){    
+        searchCustomer();
+    });
+    $(document).on('keyup', "[id='cus_name']", function(){
+        searchCustomer();
+    });
+    function selectCustomer(cus_id){       
+        $.ajaxSetup({async: false}); 
+        $.get(jc_customer_info_url, {customer_id: cus_id})
+        .done(function( data ) {
+            responseData = $.parseJSON(data);
+            $.each(responseData, function(key,val) {
+                $(".main-body:visible").closest(".main-body").find("#"+key).val(val);
+            }); 
+            $(".close-modal").trigger("click");              
+        });
+        $.ajaxSetup({async: true});
+    }
+
+    function searchCustomer(){
+        $.ajaxSetup({async: false}); 
+        $.post(jc_customer_search_url, {cus_name: $("[id*='search-info']:visible").find("#cus_name").val()})
+        .done(function( data ) {
+            $(".grid-view").html($(data).find(".grid-view").html()); 
+            $("[id*='searchcus-info']:visible .grid-view").html($(data).find(".grid-view").html());   
+        });
+        $.ajaxSetup({async: true});
+    }
 
     //status change a tag click
       $(document).on('click', ".change_status", function(e){ 

@@ -10,6 +10,10 @@ $this->params['breadcrumbs'][] = ['label' => 'Quotations', 'url' => ['index']];
 $this->params['breadcrumbs'][] = ['label' => $model->id, 'url' => ['view', 'id' => $model->id]];
 $this->params['breadcrumbs'][] = 'Update';
 ?>
+<div class="quotation-update main-body" id="quotation_update">
+    <?= Breadcrumbs::widget([
+        'links' => isset($this->params['breadcrumbs']) ? $this->params['breadcrumbs'] : [],
+        ]) ?>
 <section class="content-header">
 	<h1>
 		<?= Html::encode($this->title) ?>        
@@ -27,3 +31,4 @@ $this->params['breadcrumbs'][] = 'Update';
 			]) ?>
 		</div>
 	</section>
+</div>

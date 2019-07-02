@@ -11,16 +11,19 @@ use Yii;
  * @property string $qtn_number
  * @property int $prefix_id
  * @property int $requested_by
+ * @property int $branch_id
  * @property int $customer_id
  * @property string $request_date
  * @property string $expected_date
  * @property double $subtotal
- * @property double $discount_type
+ * @property string $discount_type
  * @property double $discount
  * @property double $discount_percent
  * @property double $vat_percent
  * @property double $total_tax
  * @property double $grand_total
+ * @property string $process_status
+ * @property string $remarks
  * @property int $status
  */
 class Quotation extends \yii\db\ActiveRecord
@@ -39,9 +42,9 @@ class Quotation extends \yii\db\ActiveRecord
     public function rules()
     {
         return [
-            [['prefix_id','qtn_number', 'requested_by', 'customer_id', 'request_date', 'expected_date'], 'required'],//,'subtotal','total_tax','grand_total'
-            [['requested_by', 'customer_id', 'status'], 'integer'],
-            //[['request_date'], 'safe'],
+            [['prefix_id','qtn_number', 'requested_by', 'customer_id', 'request_date', 'expected_date','branch_id'], 'required'],//,'subtotal','total_tax','grand_total'
+            [['requested_by', 'customer_id', 'status','branch_id'], 'integer'],
+            [['remarks','process_status','discount_type'], 'string'],
             [['qtn_number', 'request_date', 'expected_date'], 'string', 'max' => 200],
         ];
     }

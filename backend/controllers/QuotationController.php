@@ -38,8 +38,7 @@ class QuotationController extends Controller
     {
         $searchModel = new QuotationSearch();
         $dataProvider = $searchModel->search(Yii::$app->request->queryParams);
-
-        return $this->render('index', [
+        return $this->renderAjax('index', [
             'searchModel' => $searchModel,
             'dataProvider' => $dataProvider,
         ]);
@@ -54,7 +53,7 @@ class QuotationController extends Controller
      */
     public function actionView($id)
     {
-        return $this->render('view', [
+        return $this->renderAjax('view', [
             'model' => $this->findModel($id),
         ]);
     }
@@ -66,7 +65,9 @@ class QuotationController extends Controller
      */
 	 public function actionCreate()
     {
+        $branch_id=Yii::$app->user->identity->branch_id;
         $userId = \Yii::$app->user->identity->id;
+        $modellastnumber = Quotation::find()->select('qtn_number')->where(['branch_id'=>$branch_id])->orderBy('id desc')->limit(1)->one();
         $model = new  Quotation();
         $model1 = new  QuotationItems();
         if(Yii::$app->request->post()):
@@ -84,18 +85,24 @@ class QuotationController extends Controller
                 $model1->quantity=$result['QuotationItems']['quantity'][$i];
                 $model1->price=$result['QuotationItems']['price'][$i];
                 $model1->unit_id=$result['QuotationItems']['unit_id'][$i];
-                $model1->tax=$result['QuotationItems']['tax'][$i];
+                $model1->total_price =$result['QuotationItems']['total_price'][$i];
+                $model1->dis_type =(isset($result['QuotationItems']['dis_type'])?$result['QuotationItems']['dis_type'][$i]:NULL);
+                $model1->discount_percentage=(isset($result['QuotationItems']['discount_percentage'])?$result['QuotationItems']['discount_percentage'][$i]:NULL);
+                $model1->discount_amount=(isset($result['QuotationItems']['discount_amount'])?$result['QuotationItems']['discount_amount'][$i]:NULL);
+                $model1->net_amount=(isset($result['QuotationItems']['net_amount'])?$result['QuotationItems']['net_amount'][$i]:NULL);
+                $model1->vat_rate=(isset($result['QuotationItems']['vat_rate'])?$result['QuotationItems']['vat_rate'][$i]:NULL);
+                $model1->tax=(isset($result['QuotationItems']['tax'])?$result['QuotationItems']['tax'][$i]:NULL);
                 $model1->total=$result['QuotationItems']['total'][$i];
                 $model1->qtn_id=$model->id;
                 
                 $model1->save(false);
             }
-            return $this->redirect(['view', 'id' => $model->id]);
+            echo json_encode(["success" => true, "message" => "Quotation has been created", 'redirect' => Yii::$app->getUrlManager()->createUrl(['quotation/update','id' => $model->id])]);
+            exit;
         }
 
-        return $this->render('create', [
+        return $this->renderAjax('create', [
             'model' => $model,
-            'type'  =>'create',
             'model1'=>$model1,
         ]);
     }
@@ -110,12 +117,8 @@ class QuotationController extends Controller
 	public function actionUpdate($id)
     {
         $model = $this->findModel($id);
-         if(Yii::$app->request->post()):
-            $result=Yii::$app->request->post();
-            // var_dump($result);die;
-        endif;
         if ($model->load(Yii::$app->request->post()) && $model->save()) {
-            
+             $result=Yii::$app->request->post();
              for($i=0;$i<sizeof($result['QuotationItems']['item_id']);$i++){
                 if(isset($result['QuotationItems']['id'][$i])){
                     $model1 =  QuotationItems::find()->where(['id'=>$result['QuotationItems']['id'][$i]])->one();
@@ -126,18 +129,25 @@ class QuotationController extends Controller
                 $model1->quantity=$result['QuotationItems']['quantity'][$i];
                 $model1->price=$result['QuotationItems']['price'][$i];
                 $model1->unit_id=$result['QuotationItems']['unit_id'][$i];
-                $model1->tax=$result['QuotationItems']['tax'][$i];
+                $model1->total_price =$result['QuotationItems']['total_price'][$i];
+                $model1->dis_type =(isset($result['QuotationItems']['dis_type'])?$result['QuotationItems']['dis_type'][$i]:NULL);
+                $model1->discount_percentage=(isset($result['QuotationItems']['discount_percentage'])?$result['QuotationItems']['discount_percentage'][$i]:NULL);
+                $model1->discount_amount=(isset($result['QuotationItems']['discount_amount'])?$result['QuotationItems']['discount_amount'][$i]:NULL);
+                $model1->net_amount=(isset($result['QuotationItems']['net_amount'])?$result['QuotationItems']['net_amount'][$i]:NULL);
+                $model1->vat_rate=(isset($result['QuotationItems']['vat_rate'])?$result['QuotationItems']['vat_rate'][$i]:NULL);
+                $model1->tax=(isset($result['QuotationItems']['tax'])?$result['QuotationItems']['tax'][$i]:NULL);
                 $model1->total=$result['QuotationItems']['total'][$i];
+
                 $model1->qtn_id=$model->id;
                 
                 $model1->save(false);
             }
-            return $this->redirect(['view', 'id' => $model->id]);
+             echo json_encode(["success" => true, "message" => "Quotation has been updated", 'redirect' => Yii::$app->getUrlManager()->createUrl(['quotation/update','id' => $model->id])]);
+            exit;
         }
 
-        return $this->render('update', [
+        return $this->renderAjax('update', [
             'model' => $model,
-            'type'  =>'update',
         ]);
     }
 
@@ -155,11 +165,14 @@ class QuotationController extends Controller
 
         return $this->redirect(['index']);
     }
+ 
     public function actionChangeStatus($id){
         $model = $this->findModel($id);
         $model->status = ($model->status == 0)?1:0;
-        $model->save();
-        return $this->redirect(['index']);
+        if($model->save()){
+            echo json_encode(["success" => true, "message" => "Purchase Requisition Status has been changed.",'redirect'=>Yii::$app->getUrlManager()->createUrl(['purchase-request/index'])]);
+            exit;
+        }
     }
     /**
      * Finds the Quotation model based on its primary key value.

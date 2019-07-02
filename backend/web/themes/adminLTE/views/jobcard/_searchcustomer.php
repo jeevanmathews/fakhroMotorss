@@ -39,16 +39,14 @@ $this->params['breadcrumbs'][] = $this->title;
                             'dataProvider' => $dataProvider,                            
                             'columns' => [
                                 ['class' => 'yii\grid\SerialColumn'],
-                                'name',
-                                'contact_name',
-                                'contact_number',
+                                'name', 
                                 'email',                            
                                 ['class' => 'yii\grid\ActionColumn',
                                   'template' => '{select}',
-                                  'buttons' => [
+                                  'buttons' => [                                    
                                     'select' => function ($url, $model, $key) {
-                                        return Html::button('select', ['class' => 'jobc-customer']);
-                                    },        
+                                        return Html::button('select', ['class' => 'jobc-vehicle', 'onclick' => 'selectCustomer('.$model->id.');']);
+                                    },         
                                     ]
                                 ],
                             ],
@@ -65,29 +63,3 @@ $this->params['breadcrumbs'][] = $this->title;
     </section>
 </div>
 
-<script type="text/javascript">
-    $(document).on('click', "[id='advanced_search']", function(){    
-        searchCustomer();
-    });
-    $(document).on('keyup', "[id='cus_name']", function(){  
-        searchCustomer();
-    });
-    function searchCustomer(){
-        $.ajaxSetup({async: false}); 
-        $.post('<?=Yii::$app->getUrlManager()->createUrl(['jobcard/search-customer'])?>', {cus_name: $("#cus_name").val()})
-        .done(function( data ) {
-            $(".grid-view").html($(data).find(".grid-view").html());  
-        });
-        $.ajaxSetup({async: true});
-    }
-    var cus_ary = ['customer-name', 'customer-contact_name', 'customer-contact_number', 'customer-email'];
-    $(document).on('click', "[class='jobc-customer']", function(){
-        $(this).closest("tr").children().each(function(index){
-            if($.inArray(index, [0,1])){
-                $("#"+cus_ary[index-1]).val($(this).html());
-                console.log(cus_ary[index-1]);
-            }
-        })
-        $(".close-modal").trigger("click");
-    });
-</script>

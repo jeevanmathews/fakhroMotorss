@@ -2,7 +2,8 @@
 
 use yii\helpers\Html;
 use yii\grid\GridView;
-
+use yii\helpers\Arrayhelper;
+use backend\models\Manufacturer;
 /* @var $this yii\web\View */
 /* @var $searchModel backend\models\CarModelSearch */
 /* @var $dataProvider yii\data\ActiveDataProvider */
@@ -37,25 +38,18 @@ $this->params['breadcrumbs'][] = $this->title;
             ['class' => 'yii\grid\SerialColumn'],
             'id',   
             [
-                'attribute' => 'manufacturer',                
+                'attribute' => 'manufacturer', 
+                'filter' => Html::activeDropDownList($searchModel, 'make_id', ArrayHelper::map(Manufacturer::find()->where(['status' => 1])->all(), 'id', 'name'),['class'=>'form-control','prompt' => 'Search by Manufacturer']),
                 'value' =>function ($model){
-                    return ($model->make->manufacturer->name);
+                    return ($model->make->name);
                 }
-            ],      
-            [
-                'attribute' => 'make_id',
-                'label' => 'Make',
-                'value' =>function ($model){
-                    return ($model->make->make);
-                }
-            ],            
+            ],       
             'model',
              [  'attribute' => 'status',
-            'value' =>function ($model){
-                return ($model->status == 1)?"Enabled":"Disabled";
-            },
-            'filter' => Html::activeDropDownList($searchModel, 'status', ["1"=>"Enable", "0" => "Disable"],['class'=>'form-control','prompt' => 'Search by Status']),
-
+                'value' =>function ($model){
+                    return ($model->status == 1)?"Enabled":"Disabled";
+                },
+                'filter' => Html::activeDropDownList($searchModel, 'status', ["1"=>"Enable", "0" => "Disable"],['class'=>'form-control','prompt' => 'Search by Status']),
                 ],
 
               ['class' => 'yii\grid\ActionColumn',

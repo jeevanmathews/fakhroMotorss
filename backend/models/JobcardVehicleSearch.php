@@ -42,7 +42,7 @@ class JobcardVehicleSearch extends JobcardVehicle
     public function search($params)
     {
         $query = JobcardVehicle::find();
-        $query->joinWith(['make', 'model', 'customer']);
+        $query->joinWith(['model', 'customer']);
 
         // add conditions that should always apply here
 
@@ -64,12 +64,11 @@ class JobcardVehicleSearch extends JobcardVehicle
             'amc_type' => $this->amc_type,
             'extended_warranty_type' => $this->extended_warranty_type,
             'ew_expiry_kms' => $this->ew_expiry_kms, 
-            'make.manufacturer_id' => $this->manufacturer_id,
+            'jobcard_vehicle.make_id' => $this->make_id,
         ]);
 
         $query->andFilterWhere(['like', 'reg_num', $this->reg_num])
-            ->andFilterWhere(['like', 'chasis_num', $this->chasis_num])    
-            ->andFilterWhere(['like', 'make.make', $this->make_id])    
+            ->andFilterWhere(['like', 'chasis_num', $this->chasis_num])
             ->andFilterWhere(['like', 'model.model', $this->model_id])
             ->andFilterWhere(['like', 'customer.name', $this->customer_id])        
             ->andFilterWhere(['like', 'color', $this->color])

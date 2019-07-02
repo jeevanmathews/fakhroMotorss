@@ -27,12 +27,8 @@ $time = time();
         <div class="row"> 
             <div class="col-md-12">
                 <h5 class="heading"><span>Vehicle Details</span> <span class="pull-right"> <?php echo html::button("Search Vehicle", ["class" => "btn btn-link", 'id' => 'search_vehicle_'.$time])?></span></h5>
-                <div class="col-md-6">
-
-                   
-                    <?php if($vehicle->make) $vehicle->manufacturer = $vehicle->make->manufacturer->id;?>
-
-                    <?=$form->field($vehicle, 'manufacturer')->dropDownList(
+                <div class="col-md-6"> 
+                    <?=$form->field($vehicle, 'make_id')->dropDownList(
                             ArrayHelper::map(Manufacturer::find()->all(), 'id', 'name'),
                              ['prompt' => 'Select Type','class' => 'form-control select2 type', 
                             
@@ -52,7 +48,7 @@ $time = time();
                        });
                         ']);*/?>
 
-                    <?= $form->field($vehicle, 'model_id')->dropDownList(($vehicle->model)?ArrayHelper::map(CarModel::find()->where(['make_id' => $vehicle->manufacturer])->all(), 'id', 'model'):[]) ?>
+                    <?= $form->field($vehicle, 'model_id')->dropDownList(($vehicle->model)?ArrayHelper::map(CarModel::find()->where(['make_id' => $vehicle->make_id])->all(), 'id', 'model'):[]) ?>
 
                     <?= $form->field($vehicle, 'vehicle_type')->dropDownList(ArrayHelper::map(Vehicletype::find()->where(['status' => 1])->all(), 'id', 'name')) ?>
 

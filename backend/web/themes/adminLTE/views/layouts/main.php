@@ -19,6 +19,7 @@ $jc_vehicle_search_url = Yii::$app->getUrlManager()->createUrl(['jobcard/search-
 $jc_customer_search_url = Yii::$app->getUrlManager()->createUrl(['jobcard/search-customer']);
 $jc_create_task_url = Yii::$app->getUrlManager()->createUrl(['tasks/create']);
 $jc_apply_discount_url = Yii::$app->getUrlManager()->createUrl(['jobcard/apply-discount']);
+$jc_customer_info_url = Yii::$app->getUrlManager()->createUrl(['jobcard/customer-info']);
 $js = <<< JS
 var jsUrl = '$jsUrl' ;
 var jc_vehicle_info_url = '$jc_vehicle_info_url';
@@ -26,6 +27,7 @@ var jc_vehicle_search_url = '$jc_vehicle_search_url';
 var jc_customer_search_url = '$jc_customer_search_url';
 var jc_create_task_url = '$jc_create_task_url';
 var jc_apply_discount_url = '$jc_apply_discount_url';
+var jc_customer_info_url = '$jc_customer_info_url';
 JS;
 $this->registerJs($js, \yii\web\View::POS_HEAD);
 
@@ -167,13 +169,8 @@ $this->registerJs($js, \yii\web\View::POS_HEAD);
                       <li>
                         <?= Html::a('Accessories', ['/accessories/index'], ['class'=>'']) ?>
                       </li> 
-                       -->
-                      <li>
-                        <?= Html::a('Manufacturer', ['/manufacturer/index'], ['class'=>'']) ?>
-                      </li>
-                      <li>
-                        <?= Html::a('Import Manufacturer', ['/manufacturer/import'], ['class'=>'']) ?>
-                      </li>
+                       -->                     
+                     
                       <li>
                         <?= Html::a('Vehicle', ['/vehiclemodels/index'], ['class'=>'']) ?>
                       </li> 
@@ -232,9 +229,13 @@ $this->registerJs($js, \yii\web\View::POS_HEAD);
                       <li>
                         <?= Html::a('Jobcard Vehicle', ['/jobcard-vehicle'], ['class'=>'']) ?>
                       </li> 
-                      <li>
+                      <!--<li>
                         <?= Html::a('Make', ['/make'], ['class'=>'']) ?>
-                      </li> 
+                      </li>-->
+                      <li>
+                        <?= Html::a('Manufacturer', ['/manufacturer/index'], ['class'=>'']) ?>
+                      </li>
+
                       <li>
                         <?= Html::a('Model', ['/car-model'], ['class'=>'']) ?>
                       </li> 
@@ -243,11 +244,11 @@ $this->registerJs($js, \yii\web\View::POS_HEAD);
                       </li>                   
                     </ul>
                   </li> 
-                  <!-- <li class="dropdown">
+                  <li class="dropdown">
                     <a href="#">Sales</a>
                     <ul class="dropdown-menu">  
                       <li>
-                        <?= Html::a('Quotation', ['/qutation/index'], ['class'=>'']) ?>
+                        <?= Html::a('Quotation', ['/quotation/index'], ['class'=>'']) ?>
                       </li>
                       <li>
                         <?= Html::a('Sales Order', ['/sales-order/index'], ['class'=>'']) ?>
@@ -259,7 +260,7 @@ $this->registerJs($js, \yii\web\View::POS_HEAD);
                         <?= Html::a('Sales Invoice', ['/sales-invoice/index'], ['class'=>'']) ?>
                       </li>
                     </ul>
-                  </li>  -->
+                  </li> 
                 <!--<li class="dropdown">
                   <a href="#">Stock</a>
                     <ul class="dropdown-menu">                       

@@ -14,8 +14,7 @@ use backend\models\User;
 $this->title = 'Quotations';
 $this->params['breadcrumbs'][] = $this->title;
 ?>
-<div class="content-main-wrapper">
-
+<div class="content-main-wrapper main-body"  id="quotation_index">
   <section class="content-header">
     <h1>
       <?= Html::encode($this->title) ?>        

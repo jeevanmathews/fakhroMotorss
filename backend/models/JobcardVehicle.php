@@ -68,7 +68,7 @@ class JobcardVehicle extends \yii\db\ActiveRecord
 
     public function getMake()
     {
-        return $this->hasOne(Make::className(), ['id' => 'make_id']);
+        return $this->hasOne(Manufacturer::className(), ['id' => 'make_id']);
     }
 
     public function getModel()
@@ -81,6 +81,6 @@ class JobcardVehicle extends \yii\db\ActiveRecord
     }
     public function getVehicletype()
     {
-        return $this->hasOne(VehicleType::className(), ['id' => 'vehicle_type']);
+        return $this->hasOne(Vehicletype::className(), ['id' => 'vehicle_type']);
     }
 }

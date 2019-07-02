@@ -12,6 +12,7 @@ use Yii;
  * @property string $pr_number
  * @property int $requested_by
  * @property int $supplier_id
+ * @property int $branch_id
  * @property string $request_date
  * @property string $expected_date
  * @property double $subtotal

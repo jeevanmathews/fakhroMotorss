@@ -11,6 +11,7 @@ use Yii;
  * @property int $qtn_id
  * @property int $item_id
  * @property int $quantity
+ * @property double $remaining_quantity
  * @property int $unit_id
  * @property double $price
  * @property double $total_price 
@@ -39,8 +40,8 @@ class QuotationItems extends \yii\db\ActiveRecord
     public function rules()
     {
         return [
-            [['qtn_id', 'item_id', 'quantity', 'unit_id'], 'required'],//, 'price', 'tax', 'total'
-            [['qtn_id', 'item_id', 'quantity', 'unit_id', 'status'], 'integer'],
+            [['pr_id', 'item_id', 'quantity', 'unit_id', 'price', 'total'], 'required'],
+            [['quantity','remaining_quantity','price','total_price','discount_percentage','discount_amount','net_amount','vat_rate','tax','total'], 'integer'],
             [['price', 'tax', 'total'], 'number'],
         ];
     }

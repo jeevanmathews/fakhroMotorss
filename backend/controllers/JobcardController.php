@@ -95,10 +95,9 @@ class JobcardController extends Controller
             if($customer->load(Yii::$app->request->post())) {
                 if($jc_customer = Customer::find()->where(["email" => $customer->email])->one()){
                   $model->customer_id = $jc_customer->id; 
-
                 }else{
-                $customer->save();
-                $model->customer_id = $customer->id;
+                    $customer->save();
+                    $model->customer_id = $customer->id;
               }  
             }
             if($model->save()){
@@ -586,7 +585,15 @@ class JobcardController extends Controller
     public function actionVehicleInfo($vehicle_id){
         $vehicle = JobcardVehicle::findOne($vehicle_id);//print_r($vehicle);exit;
         if($vehicle){
-            echo json_encode(['jobcardvehicle-reg_num' => $vehicle->reg_num, 'jobcardvehicle-chasis_num' => $vehicle->chasis_num, 'jobcardvehicle-lpo_num' => $vehicle->lpo_num, 'jobcardvehicle-vin' => $vehicle->vin, 'jobcardvehicle-wo_num' => $vehicle->wo_num, 'jobcardvehicle-manufacturer'  => $vehicle->make->manufacturer_id, 'jobcardvehicle-make_id' => $vehicle->make_id, 'jobcardvehicle-model_id' => $vehicle->model_id, 'jobcardvehicle-color' => $vehicle->color, 'customer-name' => ($vehicle->customer)?$vehicle->customer->name:"", 'customer-contact_number' => ($vehicle->customer)?$vehicle->customer->contact_number:"", 'jobcardvehicle-vehicle_type' => $vehicle->vehicle_type]);
+            echo json_encode(['jobcardvehicle-reg_num' => $vehicle->reg_num, 'jobcardvehicle-chasis_num' => $vehicle->chasis_num, 'jobcardvehicle-lpo_num' => $vehicle->lpo_num, 'jobcardvehicle-vin' => $vehicle->vin, 'jobcardvehicle-wo_num' => $vehicle->wo_num, 'jobcardvehicle-make_id' => $vehicle->make_id, 'jobcardvehicle-model_id' => $vehicle->model_id, 'jobcardvehicle-color' => $vehicle->color, 'customer-name' => ($vehicle->customer)?$vehicle->customer->name:"", 'customer-contact_number' => ($vehicle->customer)?$vehicle->customer->contact_number:"", 'jobcardvehicle-vehicle_type' => $vehicle->vehicle_type]);
+            exit;
+        }
+    }
+
+    public function actionCustomerInfo($customer_id){
+        $customer = Customer::findOne($customer_id);
+        if($customer){
+            echo json_encode(['customer-name' => $customer->name, 'customer-contact_name' => $customer->contact_name, 'customer-contact_number' => $customer->contact_number, 'customer-alt_phone' => $customer->alt_phone, 'customer-email' => $customer->email, 'customer-address'  => $customer->address]);
             exit;
         }
     }

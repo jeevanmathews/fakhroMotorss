@@ -13,19 +13,8 @@ use yii\helpers\ArrayHelper;
 <?php $form = AutoForm::begin(["id" => "model-".time().(($model->isNewRecord)?"create":"update")."-form"]); ?>
     <div class="box-body">
         <div class="row"> 
-            <div class="col-md-6">
-            <?php if($model->make_id) $model->manufacturer = $model->make->manufacturer->id;?>
-            <?=$form->field($model, 'manufacturer')->dropDownList(
-				ArrayHelper::map(Manufacturer::find()->all(), 'id', 'name'),
-				 ['prompt' => 'Select Type','class' => 'form-control select2 type',	
-				
-		    'onchange'=>'
-                $.get( "'.Yii::$app->getUrlManager()->createUrl('car-model/makes').'&manufacturer_id="+$(this).val(), function( data ) {
-			    $( "#carmodel-make_id" ).html(data);
-           });
-            ']);?>
-
-            <?= $form->field($model, 'make_id')->dropDownList(($model->make_id)?ArrayHelper::map(Make::find()->where(['manufacturer_id' => $model->manufacturer])->all(), 'id', 'make'):[]) ?>
+            <div class="col-md-6">           
+            <?= $form->field($model, 'make_id')->dropDownList(ArrayHelper::map(Manufacturer::find()->where(['status' => 1])->all(), 'id', 'name')) ?>
 
             <?= $form->field($model, 'model')->textInput(['maxlength' => true]) ?>
 

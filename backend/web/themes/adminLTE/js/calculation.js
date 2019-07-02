@@ -236,6 +236,29 @@ if($('.vatper').val()!='' &&  $('.vatper').val()!='undefined' && typeof $('.vatp
    $('.total_tax').val(taxtotal);
  });
 // reduce discount from total
+
+$('body').on('click','.common_discount_type',function(){
+  var type=$(this).val();
+  var grandtotal=0;
+  var taxtotal=0;
+  var discount=$('.discount').val();
+  var subtotal=$('.subtotal').val(); 
+  if(type=="percentage"){
+    var disamount=parseFloat(subtotal)*parseFloat(discount)/100;
+  }else{
+    var disamount=discount;
+  }
+  grandtotal=parseFloat(subtotal)-parseFloat(disamount);
+  if($('.vatper').val()!='' &&  $('.vatper').val()!='undefined' && typeof $('.vatper').val()!=='undefined'){
+    var vat_rate=$('.vatper').val();
+    taxtotal=((parseFloat(grandtotal)*parseFloat(vat_rate))/100).toFixed(decimalPlaces);
+    grandtotal=(parseFloat(grandtotal)+(parseFloat(grandtotal)*parseFloat(vat_rate)/100)).toFixed(decimalPlaces);
+    
+  }
+  $('.total_tax').val(taxtotal);
+  $('.grandtotal').val(grandtotal);
+});
+
 $('body').on('change','.discount',function(){
   var type=$('.common_discount_type').val();
   var grandtotal=0;

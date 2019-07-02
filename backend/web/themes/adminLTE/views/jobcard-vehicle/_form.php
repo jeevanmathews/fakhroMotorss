@@ -31,10 +31,7 @@ use backend\models\Vehicletype;
 
         <?= $form->field($model, 'wo_num')->textInput(['maxlength' => true]) ?>
 
-
-        <?php if($model->make) $model->manufacturer = $model->make->manufacturer->id;?>
-
-        <?=$form->field($model, 'manufacturer')->dropDownList(
+        <?=$form->field($model, 'make_id')->dropDownList(
                 ArrayHelper::map(Manufacturer::find()->all(), 'id', 'name'),
                  ['prompt' => 'Select Type','class' => 'form-control select2 type', 
                 
@@ -54,7 +51,7 @@ use backend\models\Vehicletype;
            });
             ']);*/?>
 
-        <?= $form->field($model, 'model_id')->dropDownList(($model->model)?ArrayHelper::map(CarModel::find()->where(['make_id' => $model->manufacturer])->all(), 'id', 'model'):[]) ?>
+        <?= $form->field($model, 'model_id')->dropDownList(($model->model)?ArrayHelper::map(CarModel::find()->where(['make_id' => $model->make_id])->all(), 'id', 'model'):[]) ?>
 
 
         <?= $form->field($model, 'color')->textInput(['maxlength' => true]) ?>

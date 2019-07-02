@@ -51,7 +51,7 @@ $this->params['breadcrumbs'][] = $this->title;
                                     'label' => 'Manufacturer',
                                     'format' => 'html',
                                     'value' =>function ($model){
-                                        return utf8_decode($model->make->manufacturer->name)."<span class='hide'>".$model->make->manufacturer_id."</span>";
+                                        return utf8_decode($model->make->name)."<span class='hide'>".$model->make->id."</span>";
                                     }
                                 ], 
                                 /*[

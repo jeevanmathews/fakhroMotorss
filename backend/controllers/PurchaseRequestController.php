@@ -77,18 +77,7 @@ class PurchaseRequestController extends Controller
         $model = new Purchaserequest();
         $model1 = new Purchaserequestitems();
 
-        // if(Yii::$app->request->post()):
-        //     $result=Yii::$app->request->post();
-        //     $model->subtotal=(double) $result['Purchaserequest']['subtotal'];
-        //     $model->discount=(double) $result['Purchaserequest']['discount'];
-        //     $model->discount_percent=(double) $result['Purchaserequest']['discount_percent'];
-        //     $model->vat_percent=(double) $result['Purchaserequest']['vat_percent'];
-        //     $model->total_tax=(double) $result['Purchaserequest']['total_tax'];
-        //     $model->grand_total=(double) $result['Purchaserequest']['grand_total'];
-        //     // var_dump($result);die;
-        // endif;
-        // var_dump($result['Purchaserequest']);
-        // var_dump(sizeof($result['Purchaserequestitems']['item_id']));die;
+
         if ($model->load(Yii::$app->request->post()) && $model->save(false)) {
             $result=Yii::$app->request->post();
             for($i=0;$i<sizeof($result['Purchaserequestitems']['item_id']);$i++){
@@ -132,20 +121,10 @@ class PurchaseRequestController extends Controller
     {
 
             $model = $this->findModel($id);
-        //  if(Yii::$app->request->post()):
-        //     $result=Yii::$app->request->post();
-        //     // var_dump($result);die;
-        //     $model->subtotal=(double) $result['Purchaserequest']['subtotal'];
-        //     $model->discount=(double) $result['Purchaserequest']['discount'];
-        //     $model->discount_percent=(double) $result['Purchaserequest']['discount_percent'];
-        //     $model->vat_percent=(double) $result['Purchaserequest']['vat_percent'];
-        //     $model->total_tax=(double) $result['Purchaserequest']['total_tax'];
-        //     $model->grand_total=(double) $result['Purchaserequest']['grand_total'];
-        // endif;
-            
+
         if ($model->load(Yii::$app->request->post()) && $model->save(false)) {
-            $result=Yii::$app->request->post();
-             for($i=0;$i<sizeof($result['Purchaserequestitems']['item_id']);$i++){
+                $result=Yii::$app->request->post();
+                for($i=0;$i<sizeof($result['Purchaserequestitems']['item_id']);$i++){
                 if(isset($result['Purchaserequestitems']['id'][$i])){
                     $model1 = Purchaserequestitems::find()->where(['id'=>$result['Purchaserequestitems']['id'][$i]])->one();
                 }else{

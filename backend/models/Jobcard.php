@@ -38,8 +38,8 @@ class Jobcard extends \yii\db\ActiveRecord
     public function rules()
     {
         return [
-            [['promised_date', 'comment', 'service_manager', 'service_advisor', 'meter_reading', 'fuel_level', 'branch_id'], 'required'],
-            [['created_date', 'updated_date'], 'safe'],
+            [['comment', 'meter_reading', 'branch_id'], 'required'],
+            [['created_date', 'updated_date', 'fuel_level'], 'safe'],
             [['advance_paid', 'labour_cost', 'material_cost', 'tax', 'total_charge', 'discount', 'gross_amount', 'amount_due'], 'number'],
             [['service_manager', 'service_advisor', 'customer_id', 'vehicle_id', 'service_type', 'next_service_type', 'tested_by', 'status'], 'integer'],
             [['promised_date', 'receipt_num'], 'string', 'max' => 300],

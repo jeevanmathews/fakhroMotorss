@@ -40,10 +40,10 @@ $this->params['breadcrumbs'][] = $this->title;
                     'reg_num', 
                     [
                         'label' => 'Manufacturer',
-                        'attribute' => 'manufacturer_id',
-                        'filter' => Html::activeDropDownList($searchModel, 'manufacturer_id', ArrayHelper::map(Manufacturer::find()->where(['status' => 1])->all(), 'id', 'name'),['class'=>'form-control','prompt' => 'Search by Manufacturer']),
+                        'attribute' => 'make_id',
+                        'filter' => Html::activeDropDownList($searchModel, 'make_id', ArrayHelper::map(Manufacturer::find()->where(['status' => 1])->all(), 'id', 'name'),['class'=>'form-control','prompt' => 'Search by Manufacturer']),
                         'value' =>function ($model){
-                            return utf8_decode($model->make->manufacturer->name);
+                            return utf8_decode($model->make->name);
                         }
                     ],
                     'vehicletype.name', 
