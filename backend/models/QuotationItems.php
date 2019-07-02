@@ -41,7 +41,7 @@ class QuotationItems extends \yii\db\ActiveRecord
     {
         return [
             [['pr_id', 'item_id', 'quantity', 'unit_id', 'price', 'total'], 'required'],
-            [['quantity','remaining_quantity','price','total_price','discount_percentage','discount_amount','net_amount','vat_rate','tax','total'], 'integer'],
+            [['quantity','remaining_quantity','price','total_price','discount_percentage','discount_amount','net_amount','vat_rate','tax','total'], 'number'],
             [['price', 'tax', 'total'], 'number'],
         ];
     }

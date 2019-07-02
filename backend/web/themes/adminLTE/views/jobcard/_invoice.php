@@ -64,8 +64,12 @@ use backend\models\Branches
                                                 <td width="60%" style="padding: 3px 0; font-size: 14px;">: <?php echo $invoice->vehicle->reg_num;?></td>
                                             </tr>
                                             <tr>
-                                                <td width="40%" style="padding: 3px 0; font-size: 14px; font-weight: 700;">Vehicle Make</td>
-                                                <td width="60%" style="padding: 3px 0; font-size: 14px; text-transform: uppercase;">: <?php echo $invoice->vehicle->make->make;?></td>
+                                                <td width="40%" style="padding: 3px 0; font-size: 14px; font-weight: 700;">Vehicle Manufacturer</td>
+                                                <td width="60%" style="padding: 3px 0; font-size: 14px; text-transform: uppercase;">: <?php echo $invoice->vehicle->make->name;?></td>
+                                            </tr>
+                                            <tr>
+                                                <td width="40%" style="padding: 3px 0; font-size: 14px; font-weight: 700;">Vehicle Model</td>
+                                                <td width="60%" style="padding: 3px 0; font-size: 14px; text-transform: uppercase;">: <?php echo $invoice->vehicle->model->model;?></td>
                                             </tr>
                                             <tr>
                                                 <td width="40%" style="padding: 3px 0; font-size: 14px; font-weight: 700;">Odometer</td>

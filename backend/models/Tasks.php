@@ -88,4 +88,9 @@ class Tasks extends \yii\db\ActiveRecord
     public function getNamewithPrice(){
         return ($this->billable == "yes")?($this->task." - ".Yii::$app->common->company->settings->currency->code. " " .$this->billing_rate):$this->task;
     }
+
+    public function gettasktype()
+    {
+        return $this->hasOne(TaskType::className(), ['id' => 'type']);
+    }
 }

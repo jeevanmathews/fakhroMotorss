@@ -18,6 +18,12 @@ use backend\models\TaskType;
             <div class="col-md-12">
                 <h5 class="heading"><span><?php echo (!$jobcardTask->isNewRecord)?"Update":"Assign New";?> Task</span> </h5>
                 <div class="col-md-6">
+                    <?php
+                        if(!$jobcardTask->isNewRecord){
+                        $args = ($jobcardTask->task->tasktype->vehicle_type == "required")?["status" => 1, 'type' => $jobcardTask->task->type, 'vehicle_type' => $jobcardTask->task->vehicle_type]:["status" => 1, 'type' => $jobcardTask->task->type];
+                        $jobcardTask->task_type = $jobcardTask->task->tasktype;
+                        }
+                    ?>   
 
                     <?=$form->field($jobcardTask, 'task_type')->dropDownList(
                             ArrayHelper::map(TaskType::find()->all(), 'id', 'task_type'),
@@ -29,7 +35,7 @@ use backend\models\TaskType;
                        });
                         ']);?>
 
-                    <?= $form->field($jobcardTask, 'task_id', ['inputOptions' => ["class" => "form-control select2"]])->dropDownList(['0' => 'Add New Task']+(($jobcardTask->isNewRecord)?[]:ArrayHelper::map(Tasks::find()->where(["status" => 1])->all(), 'id', 'namewithPrice')), ["prompt" => "Select a Task"]) ?>
+                    <?= $form->field($jobcardTask, 'task_id', ['inputOptions' => ["class" => "form-control select2"]])->dropDownList(['0' => 'Add New Task']+(($jobcardTask->isNewRecord)?[]:ArrayHelper::map(Tasks::find()->where($args)->all(), 'id', 'namewithPrice')), ["prompt" => "Select a Task"]) ?>
 
                      <?= $form->field($jobcardTask, 'mechanic_id', ['inputOptions' => ["class" => "form-control select2"]])->dropDownList(ArrayHelper::map(Employees::find()->where(["status" => 1, "designation_id" => 4, "branch_id" => Yii::$app->user->identity->branch_id])->all(), 'id', 'fullname'), ["prompt" => "Assign a Mechanic"]) ?>                   
 

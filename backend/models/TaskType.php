@@ -29,7 +29,7 @@ class TaskType extends \yii\db\ActiveRecord
         return [
             [['task_type'], 'required'],
             [['status'], 'integer'],
-            [['task_type'], 'string', 'max' => 50],
+            [['task_type', 'vehicle_type'], 'string', 'max' => 50],
         ];
     }
 

@@ -62,10 +62,14 @@ use backend\models\Branches
                                             <tr>
                                                 <td width="40%" style="padding: 3px 0; font-size: 14px; font-weight: 700;">Reg No</td>
                                                 <td width="60%" style="padding: 3px 0; font-size: 14px;">: <?php echo $quotation->vehicle->reg_num;?></td>
+                                            </tr>                                            
+                                            <tr>
+                                                <td width="40%" style="padding: 3px 0; font-size: 14px; font-weight: 700;">Vehicle Manufacturer</td>
+                                                <td width="60%" style="padding: 3px 0; font-size: 14px; text-transform: uppercase;">: <?php echo $quotation->vehicle->make->name;?></td>
                                             </tr>
                                             <tr>
-                                                <td width="40%" style="padding: 3px 0; font-size: 14px; font-weight: 700;">Vehicle Make</td>
-                                                <td width="60%" style="padding: 3px 0; font-size: 14px; text-transform: uppercase;">: <?php echo $quotation->vehicle->make->make;?></td>
+                                                <td width="40%" style="padding: 3px 0; font-size: 14px; font-weight: 700;">Vehicle Model</td>
+                                                <td width="60%" style="padding: 3px 0; font-size: 14px; text-transform: uppercase;">: <?php echo $quotation->vehicle->model->model;?></td>
                                             </tr>
                                             <tr>
                                                 <td width="40%" style="padding: 3px 0; font-size: 14px; font-weight: 700;">Odometer</td>

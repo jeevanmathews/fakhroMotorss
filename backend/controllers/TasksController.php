@@ -54,10 +54,15 @@ class TasksController extends Controller
     {
         $searchModel = new TasksSearch();
         $dataProvider = $searchModel->search(Yii::$app->request->queryParams);
+        $page_id = "tasks".time();
+        if(isset(Yii::$app->request->queryParams['page_id'])){
+            $page_id = Yii::$app->request->queryParams['page_id'];
+        }
 
-        return $this->render('index', [
+        return $this->renderAjax('index', [
             'searchModel' => $searchModel,
             'dataProvider' => $dataProvider,
+            'page_id' => $page_id
         ]);
     }
 
@@ -176,7 +181,7 @@ class TasksController extends Controller
 		{
 		 $minutes[]=$i;
 		}
-        return $this->render('update', [
+        return $this->renderAjax('update', [
             'model' => $model,
 			'day' =>$day,
 			'hour' => $hour,

@@ -44,6 +44,7 @@ class Quotation extends \yii\db\ActiveRecord
         return [
             [['prefix_id','qtn_number', 'requested_by', 'customer_id', 'request_date', 'expected_date','branch_id'], 'required'],//,'subtotal','total_tax','grand_total'
             [['requested_by', 'customer_id', 'status','branch_id'], 'integer'],
+            [['subtotal','discount','discount_percent','vat_percent','total_tax','grand_total'],'number'],
             [['remarks','process_status','discount_type'], 'string'],
             [['qtn_number', 'request_date', 'expected_date'], 'string', 'max' => 200],
         ];
@@ -60,8 +61,8 @@ public function attributeLabels()
             'requested_by' => 'Requested By',
             'prefix_id' => 'Prefix',
             'customer_id' => 'Customer',
-            'request_date' => 'Request Date',
-            'expected_date' => 'Expected Date',
+            'request_date' => 'Created Date',
+            'expected_date' => 'Date',
             'subtotal' => 'Subtotal',
             'discount' => 'Discount',
             'total_tax' => 'Total Tax',

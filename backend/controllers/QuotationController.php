@@ -68,17 +68,17 @@ class QuotationController extends Controller
         $branch_id=Yii::$app->user->identity->branch_id;
         $userId = \Yii::$app->user->identity->id;
         $modellastnumber = Quotation::find()->select('qtn_number')->where(['branch_id'=>$branch_id])->orderBy('id desc')->limit(1)->one();
+        
         $model = new  Quotation();
         $model1 = new  QuotationItems();
-        if(Yii::$app->request->post()):
-            $result=Yii::$app->request->post();
-        
-            // var_dump($result);die;
-        endif;
+        // if(Yii::$app->request->post()):
+        //     $result=Yii::$app->request->post();
+        //     // var_dump($result);die;
+        // endif;
         // var_dump($result['Purchaserequest']);
         // var_dump(sizeof($result[' Quotation']['item_id']));die;
         if ($model->load(Yii::$app->request->post()) && $model->save(false)) {
-
+             $result=Yii::$app->request->post();
             for($i=0;$i<sizeof($result['QuotationItems']['item_id']);$i++){
                 $model1 = new  QuotationItems();
                 $model1->item_id=$result['QuotationItems']['item_id'][$i];
@@ -104,6 +104,7 @@ class QuotationController extends Controller
         return $this->renderAjax('create', [
             'model' => $model,
             'model1'=>$model1,
+            'modellastnumber'=>$modellastnumber,
         ]);
     }
 
