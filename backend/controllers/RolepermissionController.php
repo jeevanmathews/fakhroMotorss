@@ -8,6 +8,7 @@ use yii\data\ActiveDataProvider;
 use yii\web\Controller;
 use yii\web\NotFoundHttpException;
 use yii\filters\VerbFilter;
+use backend\models\Roles;
 
 /**
  * RolepermissionController implements the CRUD actions for RolePermission model.
@@ -63,33 +64,35 @@ class RolepermissionController extends Controller
      * @return mixed
      */
     public function actionCreate()
-    {       
+    {   
+        
         $result=array();
         if($res=Yii::$app->request->post()){
-           
+            $role = Roles::findOne($res['role_id']);  
+            $old_permissions = $role->permissionAry; 
+            
             foreach ($res['permission_id'] as $value) {
                 if($value){
-                    if(! RolePermission::find()->where(['role_id'=>$res['role_id'],'permission_id'=>$value])->exists())
-                    {  
-                        $result[]=array($res['role_id'],$value);
-                    }
-                }
-                
+                    if(!in_array($value, $role->permissionAry))
+                        $result[] = array($res['role_id'],$value);
+                    else
+                        unset($old_permissions[array_search($value, $old_permissions)]);                     
+                }                
             }
-
-            
-        }   
-        $model = new RolePermission();
-
-         Yii::$app->db
-            ->createCommand()
-            ->batchInsert('role_permission', ['role_id','permission_id'],$result)
-            ->execute();
-        if ($model->load(Yii::$app->request->post()) && $model->save()) {
-            return $this->redirect(['view', 'id' => $model->id]);
-        }
-
-        return $this->redirect(['roles/index']);
+            if($result){
+                Yii::$app->db
+                ->createCommand()
+                ->batchInsert('role_permission', ['role_id','permission_id'],$result)
+                ->execute();
+            }
+            if($old_permissions){
+                foreach($old_permissions as $permission){
+                  RolePermission::find()->where(['role_id' => $res['role_id'], 'permission_id' => $permission])->one()->delete();  
+              }                
+            }            
+        } 
+        echo json_encode(["success" => true, "message" => "Role(s) has been updated.", 'redirect' => Yii::$app->getUrlManager()->createUrl(['permissionmaster/permissions', 'id' => $res['role_id']])]);
+            exit;        
     }
 
     /**

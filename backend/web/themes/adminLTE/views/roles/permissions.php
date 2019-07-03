@@ -2,11 +2,14 @@
 
     use yii\helpers\Html;
     use yii\grid\GridView;
-    use yii\widgets\ActiveForm;
+    use common\components\AutoForm;
+    use yii\widgets\Breadcrumbs;
+
     /* @var $this yii\web\View */
     /* @var $dataProvider yii\data\ActiveDataProvider */
 
     $this->title = 'Set Permission';
+    $this->params['breadcrumbs'][] = ['label' => 'Roles', 'url' => ['roles/index']];
     $this->params['breadcrumbs'][] = $this->title;
     ?>
     
@@ -77,7 +80,11 @@
 </style>
 
 
-<div class="content-main-wrapper itemgroup-index main-body">
+<div class="content-main-wrapper rolepermission-index main-body">
+
+    <?= Breadcrumbs::widget([
+        'links' => isset($this->params['breadcrumbs']) ? $this->params['breadcrumbs'] : [],
+        ]) ?>
 
     <section class="content-header">
       <h1><?= Html::encode($this->title) ?></h1>
@@ -89,23 +96,26 @@
         <div class="box-body">
         <div class="row">
         <div class="col-md-8"> 
-        <?php $form = ActiveForm::begin(['action' => ['rolepermission/create'],'options' => ['method' => 'post']]); ?>        
+        <?php $form = AutoForm::begin(["id" => "rolepermission-".time(), 'action' => ['rolepermission/create'],'options' => ['method' => 'post']]); ?>        
         <ul id="tree2">
             <li class="first-node"><?php echo Html::checkbox('permission_id[]', false, ['value' => '', 'id' => 'full-prev']);?><a class="folder-tree" href="#">Full Privilege</a>
                 <ul> 
                     <?php foreach ($site_modules as $module => $actions) {
                         $module_name = str_replace("Controller", "", $module);
-                        if(!in_array($module_name, $skip_modules)){
-                        echo "<li>".Html::checkbox('permission_id[]', false, ['value' => '', 'class' => 'module-prevlg'])."<a href='#' class='folder-tree'> ". $module_name ."</a><ul>";
-                        foreach($actions as $action) {
-                             $action_details = explode("-", $action);
-                             $action_name = $action_details[0];
-                             if(!in_array($action_name, $skip_actions)){
-                                $action_name = isset($replace_display_texts[$action_name])?$replace_display_texts[$action_name]:$action_name;
-                                $permission_id = $action_details[1];
-                                echo "<li>".Html::checkbox('permission_id[]', false, ['value' => $permission_id]). $action_name."</li>";
+                        if(!in_array($module_name, $skip_modules)){                            
+                            echo "<li>".Html::checkbox('permission_id[]', false, ['value' => '', 'class' => 'module-prevlg'])."<a href='#' class='folder-tree'> ". $module_name ."</a><ul>";
+                            foreach($actions as $action) {
+                                
+                                 $action_details = explode("-", $action);
+                                 $action_name = $action_details[0];
+
+                                 if(!in_array($action_name, $skip_actions)){
+                                    $action_name = isset($replace_display_texts[$action_name])?$replace_display_texts[$action_name]:$action_name;
+                                    $permission_id = $action_details[1];
+                                    $argu_ary = in_array($permission_id, $activePermissions)?['checked' => 'checked', 'value' => $permission_id]:['value' => $permission_id];
+                                    echo "<li>".Html::checkbox('permission_id[]', false, $argu_ary). $action_name."</li>";
+                                }
                             }
-                        }
                         echo "</ul></li>";
                     } } ?>                                       
                 </ul>
@@ -115,7 +125,7 @@
        
         <?= Html::submitButton('Set Permission', ['class' => 'btn btn-success pull-left']) ?>
        
-        <?php ActiveForm::end(); ?>
+        <?php AutoForm::end(); ?>
                    
         </div>
         </div>
@@ -208,89 +218,18 @@ $(".module-prevlg").click(function(){
     }
 });
 $(".first-node").trigger("click");
+
+$(".module-prevlg").each(function(){ var module_flag = false; $(this).closest("li").find("ul>li").each(function(){ module_flag = $(this).find('input[type="checkbox"]').prop("checked");  }); 
+
+    if(module_flag){
+        $(this).attr("checked",true);
+    }
+
+});
+
+if($(".module-prevlg:checked").length == $(".module-prevlg").length){
+    $("#full-prev").attr("checked",true);
+}
 </script>
 
     
-
-
-    <div class="col-md-8">
-
-        <?php $form = ActiveForm::begin(['action' => ['rolepermission/create'],'options' => ['method' => 'post']]); ?>
-       <section class="content-header">
-          <h1>
-            Set Permission        
-          </h1>
-        </section>
-        <!-- <h3>Set Permission</h3> -->
-        <?= GridView::widget([
-            'dataProvider' => $dataProvider,
-            'columns' => [
-            ['class' => 'yii\grid\SerialColumn'],                
-            'module',
-            'action',
-                // ['class' => 'yii\grid\ActionColumn'],
-
-            [
-            'class' => 'yii\grid\CheckboxColumn',
-                    // 'checkboxOptions' => function ($model) use ($permitted) {
-                        // var_dump($permitted);
-                        // return in_array($model->id,$permitted)?['checked' => true] : [];//$model->id > 0 ? ['checked' => true] : [];
-                    // },
-            'name'  =>'permission_id',
-            'header' => Html::hiddeninput('selection_all', false, [
-                'class' => 'select-on-check-all',
-                'label' => 'Check All',
-                ]),
-            
-            ],
-
-            ],
-            'tableOptions' => [
-        'id' => 'theDatatable',
-        'class'=>'table table-striped table-bordered table-hover'
-        ],
-            ]); ?>
-            <?= Html::hiddenInput('role_id', $role_id)?>
-            <div class="form-group">
-                <?= Html::submitButton('Set Permission', ['class' => 'btn btn-success']) ?>
-            </div>
-            <?php ActiveForm::end(); ?>
-        </div>
-
-        <div class="permission-master-index col-md-4">
-            <section class="content-header">
-          <h1>
-           Permitted Actions      
-          </h1>
-        </section>
-            <!-- <h3>Permitted Actions</h3> -->
-            <?= GridView::widget([
-                'dataProvider' => $permitted,
-                'columns' => [
-                ['class' => 'yii\grid\SerialColumn'],                
-                'module',
-                'action',
-                // ['class' => 'yii\grid\ActionColumn'],
-
-                // [
-                //     'class' => 'yii\grid\CheckboxColumn',
-                //     'checkboxOptions' => function ($model) use ($permitted) {
-                //         // var_dump($permitted);
-                //         // return in_array($model->id,$permitted)?['checked' => true] : [];//$model->id > 0 ? ['checked' => true] : [];
-                //     },
-                //     'name'  =>'permission_id',
-                //     'header' => Html::checkBox('selection_all', false, [
-                //         'class' => 'select-on-check-all',
-                //         'label' => 'Check All',
-                //     ]),
-                
-                // ],
-
-                ],
-'tableOptions' => [
-        'id' => 'theDatatable',
-        'class'=>'table table-striped table-bordered table-hover'
-        ],
-                ]); ?>
-
-            </div>

@@ -70,11 +70,8 @@ class RolesController extends Controller
      */
     public function actionCreate()
     {
-        $model = new Roles();
-        
+        $model = new Roles();        
         $departments = ArrayHelper::map(Departments::find()->all(), 'id', 'name');
-// return $this->render('your_view',['model'=>$model, 'items'=>$items])
-
         if ($model->load(Yii::$app->request->post()) && $model->save()) {
             return $this->redirect(['index', 'id' => $model->id]);
         }

@@ -9,6 +9,7 @@ use yii\data\ActiveDataProvider;
 use yii\web\Controller;
 use yii\web\NotFoundHttpException;
 use yii\filters\VerbFilter;
+use backend\models\Roles;
 
 /**
  * PermissionmasterController implements the CRUD actions for PermissionMaster model.
@@ -170,12 +171,13 @@ class PermissionmasterController extends Controller
 
         throw new NotFoundHttpException('The requested page does not exist.');
     }
-     public function actionDashboard()
+    public function actionDashboard()
     {
         return $this->render('dashboard');
     }
-     public function actionPermissions($id)
+    public function actionPermissions($id)
     {
+        $role = Roles::findOne($id);  
         $permissions = PermissionMaster::find()->all();
         $site_modules = [];
 
@@ -186,40 +188,15 @@ class PermissionmasterController extends Controller
 
         $skip_actions = ['makes', 'models', '_index', '_create', '_delete', 'lists', 'accessories', 'spares', 'variantsbymodel', 'featuresbyvariant', 'itemprice', 'import', 'podetails', 'prdetails', 'single', 'signup', 'uniqueemail'];
         
-        $skip_modules = ['Common', 'Site'];   
+        $skip_modules = ['Common', 'Site']; 
 
-
-        $permittedids = array();   
-        $permitted = RolePermission::find()->where(['role_id'=>$id])->select(['permission_id'])->all(); 
-        if($permitted){
-            foreach ($permitted as $value) {
-               $permittedids[]=$value['permission_id'];
-            }
-        }
-        $dataProvider = new ActiveDataProvider([
-            'query' => PermissionMaster::find()
-            ->joinWith(['rolepermission'])
-            ->select(['permissions.*'])
-            ->where(['not in', 'permissions.id', $permittedids]),
-        ]);
-
-         $datas = new ActiveDataProvider([
-            'query' => PermissionMaster::find()
-            ->InnerjoinWith(['rolepermission'])
-            ->select(['permissions.*'])
-            ->Where(['=', 'role_permission.role_id',$id ])
-        ]);
-
-
-        return $this->renderAjax('../roles/permissions', [
-            'dataProvider' => $dataProvider,
-            'role_id'       =>$id,
-            // 'permitted'    => $permittedids,
-            'permitted'    => $datas,
+        return $this->renderAjax('../roles/permissions', [           
+            'role_id'       =>$id,          
             'site_modules' => $site_modules,
             'replace_display_texts' => $replace_display_texts,
             'skip_actions' => $skip_actions,
-            'skip_modules' => $skip_modules
+            'skip_modules' => $skip_modules,
+            'activePermissions' => $role->permissionAry
         ]);
     }
 }
