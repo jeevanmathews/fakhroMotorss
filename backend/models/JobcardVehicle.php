@@ -31,7 +31,7 @@ class JobcardVehicle extends \yii\db\ActiveRecord
     public function rules()
     {
         return [
-            [['reg_num', 'chasis_num', 'make_id', 'model_id', 'vehicle_type'], 'required'],         
+            [['reg_num', 'make_id', 'model_id', 'vehicle_type'], 'required'],         
             [['extended_warranty_type', 'make_id', 'model_id', 'amc_type', 'ew_expiry_kms', 'customer_id'], 'integer'],  
             [['reg_num'], 'unique'],   
             ['chasis_num', 'string', 'min' => 17],

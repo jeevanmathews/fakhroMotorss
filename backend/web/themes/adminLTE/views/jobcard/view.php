@@ -35,7 +35,7 @@ $this->params['breadcrumbs'][] = $this->title;
                         'attributes' => [ 
 							[
                             'label'=>'Make',
-                            'value' => (isset($model->vehicle)?$model->vehicle->make->make:''),
+                            'value' => (isset($model->vehicle)?$model->vehicle->make->name:''),
                             ],
 							[
                             'label'=>'Model',
