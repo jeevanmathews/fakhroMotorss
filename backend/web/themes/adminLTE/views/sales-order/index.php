@@ -10,6 +10,7 @@ use yii\grid\GridView;
 $this->title = 'Sales Orders';
 $this->params['breadcrumbs'][] = $this->title;
 ?>
+<div class="sales-order-index main-body" id="sales-order_index">
 <div class="content-main-wrapper">
 
     <section class="content-header">
@@ -85,4 +86,5 @@ $this->params['breadcrumbs'][] = $this->title;
      </div>
      <!-- /.box -->
  </section>
+</div>
 </div>

@@ -2,6 +2,7 @@
 
 use yii\helpers\Html;
 use yii\widgets\DetailView;
+use yii\widgets\Breadcrumbs;
 
 /* @var $this yii\web\View */
 /* @var $model backend\models\Tasks */
@@ -11,7 +12,11 @@ $this->params['breadcrumbs'][] = ['label' => 'Service Tasks', 'url' => ['index']
 $this->params['breadcrumbs'][] = $this->title;
 \yii\web\YiiAsset::register($this);
 ?>
+<div class="tasks-view main-body" id="tasks_view">
 <div class="content-main-wrapper">
+<?= Breadcrumbs::widget([
+        'links' => isset($this->params['breadcrumbs']) ? $this->params['breadcrumbs'] : [],
+        ]) ?>
     <!-- Content Header (Page header) -->
     <section class="content-header">
       <h1>

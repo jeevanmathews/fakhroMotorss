@@ -167,7 +167,7 @@ $vat_format=Yii::$app->common->company->vat_format;
             </div>
             </div>
             <div class="mb-5 fl-w100"><?= $form->field($model, 'discount')->textInput(['class'=>'form-control discount']) ?></div>
-            <input type="hidden" id="QuotationItems-discount_percent" class="discount_percent" name="Quotation[discount_percent][]">
+            <input type="hidden" id="QuotationItems-discount_percent" class="discount_percent" name="Quotation[discount_percent]">
             <div class="mb-5 fl-w100">
             <div class="form-group field-Quotation-total_tax">
             <div class="input-group">

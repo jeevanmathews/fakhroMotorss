@@ -2,7 +2,7 @@
 
 use yii\helpers\Html;
 use yii\widgets\DetailView;
-
+use yii\widgets\Breadcrumbs;
 /* @var $this yii\web\View */
 /* @var $model backend\models\Vatdetails */
 
@@ -11,7 +11,9 @@ $this->params['breadcrumbs'][] = ['label' => 'Vatdetails', 'url' => ['index']];
 $this->params['breadcrumbs'][] = $this->title;
 \yii\web\YiiAsset::register($this);
 ?>
-<div class="content-main-wrapper main-body"  id="vatdetails_view">
+<div class="content-main-wrapper main-body"  id="vatdetails_view"><?= Breadcrumbs::widget([
+        'links' => isset($this->params['breadcrumbs']) ? $this->params['breadcrumbs'] : [],
+        ]) ?>
     <!-- Content Header (Page header) -->
     <section class="content-header">
       <h1>
