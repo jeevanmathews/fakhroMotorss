@@ -1,10 +1,10 @@
 <?php
 
+
 namespace backend\controllers;
 
 use Yii;
 use backend\models\Departments;
-use backend\models\departmentsSearch;
 use yii\data\ActiveDataProvider;
 use yii\web\Controller;
 use yii\web\NotFoundHttpException;
@@ -34,7 +34,7 @@ class DepartmentsController extends Controller
      * Lists all Departments models.
      * @return mixed
      */
-   /* public function actionIndex()
+    public function actionIndex()
     {
         $dataProvider = new ActiveDataProvider([
             'query' => Departments::find(),
@@ -43,21 +43,6 @@ class DepartmentsController extends Controller
         return $this->renderAjax('index', [
             'dataProvider' => $dataProvider,
             ]);
-    }*/
-    public function actionIndex()
-    {
-        $searchModel = new departmentsSearch();
-        $dataProvider = $searchModel->search(Yii::$app->request->queryParams);
-
-        $page_id = "departments".time();
-        if(isset(Yii::$app->request->queryParams['page_id'])){
-            $page_id = Yii::$app->request->queryParams['page_id'];
-        }
-        return $this->renderAjax('index', [
-            'searchModel' => $searchModel,
-            'dataProvider' => $dataProvider,
-            'page_id' => $page_id
-        ]);
     }
 
     /**

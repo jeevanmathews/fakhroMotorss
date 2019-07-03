@@ -7,24 +7,21 @@ use Yii;
 /**
  * This is the model class for table "sales_order".
  *
- * @property int $id 
+ * @property int $id
  * @property int $qtn_id
- * @property string $prefix_id
- * @property string $branch_id
+ * @property int $prefix_id
  * @property string $so_number
  * @property string $so_date
  * @property string $so_expected_date
  * @property int $so_created_by
  * @property int $customer_id
- * @property double $subtotal
- * @property string $discount_type
+ * @property string $subtotal
+ * @property double $discount_type
  * @property double $discount
  * @property double $discount_percent
  * @property double $vat_percent
- * @property double $total_tax
- * @property double $grand_total
- * @property string $process_status
- * @property string $remarks
+ * @property string $total_tax
+ * @property string $grand_total
  * @property int $status
  */
 class SalesOrder extends \yii\db\ActiveRecord
@@ -43,12 +40,11 @@ class SalesOrder extends \yii\db\ActiveRecord
 	public function rules()
     {
         return [
-            [['branch_id','prefix_id','so_number', 'so_expected_date', 'so_created_by'], 'required'],//, 'subtotal', 'total_tax', 'grand_total'
-            [['qtn_id', 'so_created_by', 'status','branch_id'], 'integer'],
-            [['subtotal','discount','discount_percent','vat_percent','total_tax','grand_total'],'number'],
+            [[ 'prefix_id','so_number', 'so_expected_date', 'so_created_by'], 'required'],//, 'subtotal', 'total_tax', 'grand_total'
+            [['qtn_id', 'so_created_by', 'status'], 'integer'],
             [['so_date'], 'safe'],
             [['so_number'], 'string', 'max' => 200],
-            [['so_expected_date'], 'string', 'max' => 300],
+            [['so_expected_date', 'subtotal', 'total_tax', 'grand_total'], 'string', 'max' => 300],
         ];
     }
     /**
@@ -77,7 +73,7 @@ class SalesOrder extends \yii\db\ActiveRecord
     }
       public function getQtn()
     {
-        return $this->hasOne(Quotation::className(), ['id' => 'qtn_id']);
+        return $this->hasOne(Qutation::className(), ['id' => 'qtn_id']);
     }
 
     public function getUser()

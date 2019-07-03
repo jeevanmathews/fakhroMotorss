@@ -41,7 +41,7 @@ class SalesOrderController extends Controller
         $searchModel = new SalesOrderSearch();
         $dataProvider = $searchModel->search(Yii::$app->request->queryParams);
 
-        return $this->renderAjax('index', [
+        return $this->render('index', [
             'searchModel' => $searchModel,
             'dataProvider' => $dataProvider,
         ]);
@@ -55,7 +55,7 @@ class SalesOrderController extends Controller
      */
     public function actionView($id)
     {
-        return $this->renderAjax('view', [
+        return $this->render('view', [
             'model' => $this->findModel($id),
         ]);
     }
@@ -68,17 +68,18 @@ class SalesOrderController extends Controller
 	public function actionCreate()
     {
         $userId = \Yii::$app->user->identity->id;
-        $branch_id=Yii::$app->user->identity->branch_id;
-        $modellastnumber = Quotation::find()->select('qtn_number')->where(['branch_id'=>$branch_id])->orderBy('id desc')->limit(1)->one();
         $model = new SalesOrder();
         $model1 = new SalesOrderItems();
         if(Yii::$app->request->post()):
-           
+            $result=Yii::$app->request->post();
+            $model->customer_id=(int) $result['SalesOrder']['customer_id'];
+            // var_dump($result['SalesOrder']['supplier_id']);die;
             // var_dump($result);die;
         endif;
-
+        // var_dump($result['Purchaserequest']);
+        // var_dump(sizeof($result['Purchaserequestitems']['item_id']));die;
         if ($model->load(Yii::$app->request->post()) && $model->save(false)) {
-             $result=Yii::$app->request->post();
+
             for($i=0;$i<sizeof($result['SalesOrderItems']['item_id']);$i++){
                 $model1 = new SalesOrderItems();
                 $model1->item_id=$result['SalesOrderItems']['item_id'][$i];
@@ -91,8 +92,7 @@ class SalesOrderController extends Controller
                 
                 $model1->save(false);
             }
-            echo json_encode(["success" => true, "message" => "Sales Order has been created", 'redirect' => Yii::$app->getUrlManager()->createUrl(['sales-order/update','id' => $model->id])]);
-            exit;
+            return $this->redirect(['view', 'id' => $model->id]);
 
 
         // $model = new SalesOrder();
@@ -102,26 +102,25 @@ class SalesOrderController extends Controller
         // }
     }
 
-        return $this->renderAjax('create', [
+        return $this->render('create', [
             'model' => $model,
+            'type'=>'create',
             'model1' => $model1,
-            'modellastnumber'=>$modellastnumber,
         ]);
     }
     public function actionCreateso($id){
         $model = Quotation::find()->where(['id'=>$id])->one();
         $model1 = new SalesOrder();
         $modelpr = new SalesOrderItems();
-         $branch_id=Yii::$app->user->identity->branch_id;
-        $modellastnumber = Quotation::find()->select('qtn_number')->where(['branch_id'=>$branch_id])->orderBy('id desc')->limit(1)->one();
-        
         if(Yii::$app->request->post()):
-            
+            $result=Yii::$app->request->post();
+            $model1->customer_id=(int) $result['SalesOrder']['customer_id'];
+            $model1->so_created_by=(int) $result['SalesOrder']['so_created_by'];
+            $model1->qtn_id=(int) $result['SalesOrder']['qtn_id'];
             // var_dump($result);die;
         endif;
     
          if ($model1->load(Yii::$app->request->post()) && $model1->save(false)) {
-            $result=Yii::$app->request->post();
             for($i=0;$i<sizeof($result['SalesOrderItems']['item_id']);$i++){
                 $model2 = new SalesOrderItems();
                 $model2->item_id=$result['SalesOrderItems']['item_id'][$i];
@@ -135,14 +134,13 @@ class SalesOrderController extends Controller
                 
                 $model2->save(false);
             }
-           echo json_encode(["success" => true, "message" => "Sales Order has been updated", 'redirect' => Yii::$app->getUrlManager()->createUrl(['sales-order/update','id' => $model1->id])]);  
-                  exit;
+            return $this->redirect(['view', 'id' => $model->id]);
         }
-        return $this->renderAjax('createso', [
+        return $this->render('createso', [
             'modelpr' => $modelpr,
             'model'=> $model,
             'model1'=> $model1,
-            'modellastnumber'=>$modellastnumber,
+            'type' => 'update',
         ]);
     }
     /**
@@ -180,7 +178,7 @@ class SalesOrderController extends Controller
             return $this->redirect(['view', 'id' => $model->id]);
         }
 
-        return $this->renderAjax('update', [
+        return $this->render('update', [
             'model' => $model,
             'type'  =>'update',
         ]);
@@ -200,14 +198,19 @@ class SalesOrderController extends Controller
         return $this->redirect(['index']);
     }
 
+    public function actionPrdetails(){
+        $pr_id=Yii::$app->request->post('pr_id');
+        $modelpr=Quotation::find()->where(['id'=>(int) $qtn_id])->one();
+         return $this->render('create', [
+            'modelpr' => $modelpr,
+        ]);
+    }
 
-     public function actionChangeStatus($id){
+    public function actionChangeStatus($id){
         $model = $this->findModel($id);
         $model->status = ($model->status == 0)?1:0;
-        if($model->save(false)){
-            echo json_encode(["success" => true, "message" => "Status has been changed.",'redirect'=>Yii::$app->getUrlManager()->createUrl(['sales-order/index'])]);
-            exit;
-        }
+        $model->save();
+        return $this->redirect(['index']);
     }
 
     /**

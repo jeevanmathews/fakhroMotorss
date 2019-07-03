@@ -77,7 +77,19 @@ class PurchaseOrderController extends Controller
         $userId = \Yii::$app->user->identity->id;
         $model = new Purchaseorder();
         $model1 = new Purchaseorderitems();
-       
+        // if(Yii::$app->request->post()):
+        //     $result=Yii::$app->request->post();
+        //     $model->supplier_id=(int) $result['Purchaseorder']['supplier_id'];
+        //     $model->subtotal=(double) $result['Purchaseorder']['subtotal'];
+        //     $model->discount=(double) $result['Purchaseorder']['discount'];
+        //     $model->discount_percent=(double) $result['Purchaseorder']['discount_percent'];
+        //     $model->vat_percent=(double) $result['Purchaseorder']['vat_percent'];
+        //     $model->total_tax=(double) $result['Purchaseorder']['total_tax'];
+        //     $model->grand_total=(double) $result['Purchaseorder']['grand_total'];
+        //     // var_dump($result);die;
+        // endif;
+        // var_dump($result['Purchaserequest']);
+        // var_dump(sizeof($result['Purchaserequestitems']['item_id']));die;
         if ($model->load(Yii::$app->request->post()) && $model->save(false)) {
             $result=Yii::$app->request->post();
             for($i=0;$i<sizeof($result['Purchaseorderitems']['item_id']);$i++){
@@ -101,8 +113,7 @@ class PurchaseOrderController extends Controller
                 
                 $model1->save(false);
             }
-                 echo json_encode(["success" => true, "message" => "Purchaseorder has been created", 'redirect' => Yii::$app->getUrlManager()->createUrl(['purchase-order/update','id' => $model->id])]);  
-                  exit;
+        echo json_encode(["success" => true, "message" => "Purchaseorder has been created", 'redirect' => Yii::$app->getUrlManager()->createUrl(['purchase-order/update','id' => $model->id])]);            exit;
 
 
         // $model = new Purchaseorder();
@@ -252,6 +263,14 @@ class PurchaseOrderController extends Controller
         $this->findModel($id)->delete();
 
         return $this->redirect(['index']);
+    }
+
+    public function actionPrdetails(){
+        $pr_id=Yii::$app->request->post('pr_id');
+        $modelpr=Purchaserequest::find()->where(['id'=>(int) $pr_id])->one();
+         return $this->renderAjax('create', [
+            'modelpr' => $modelpr,
+        ]);
     }
 
     public function actionChangeStatus($id){

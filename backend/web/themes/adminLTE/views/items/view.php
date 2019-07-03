@@ -4,7 +4,6 @@ use yii\helpers\Html;
 use yii\widgets\DetailView;
 use yii\helpers\ArrayHelper;
 use backend\models\Customfeatures;
-use yii\widgets\Breadcrumbs;
 /* @var $this yii\web\View */
 /* @var $model backend\models\Items */
 
@@ -15,9 +14,6 @@ $this->params['breadcrumbs'][] = $this->title;
 ?>
 <div class="items-view main-body" id="items_view">
     <div class="content-main-wrapper">
-    <?= Breadcrumbs::widget([
-        'links' => isset($this->params['breadcrumbs']) ? $this->params['breadcrumbs'] : [],
-        ]) ?>
         <!-- Content Header (Page header) -->
         <section class="content-header">
           <h1>
@@ -52,9 +48,9 @@ $this->params['breadcrumbs'][] = $this->title;
                         ['label'=>'Supplier',
                         'value' =>$model->supplier->name
                         ],
-                        // ['label'=>'Purchase Price',
-                        // 'value' =>$model->pricing->purchase_price
-                        // ],
+                        ['label'=>'Purchase Price',
+                        'value' =>$model->pricing->purchase_price
+                        ],
                         ['label'=>'Selling Price',
                         'value' =>$model->pricing->selling_price
                         ],

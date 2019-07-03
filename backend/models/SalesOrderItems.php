@@ -13,7 +13,6 @@ use Yii;
  * @property int $qtn_quantity
  * @property int $quantity
  * @property int $unit_id
- * @property int $remaining_quantity
  * @property double $price
  * @property double $total_price 
  * @property string $dis_type 
@@ -25,7 +24,6 @@ use Yii;
  * @property double $total
  * @property int $status
  */
-
 class SalesOrderItems extends \yii\db\ActiveRecord
 {
     /**

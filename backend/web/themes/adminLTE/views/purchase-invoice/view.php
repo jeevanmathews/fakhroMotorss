@@ -2,7 +2,7 @@
 
 use yii\helpers\Html;
 use yii\widgets\DetailView;
-use yii\widgets\Breadcrumbs;
+
 /* @var $this yii\web\View */
 /* @var $model backend\models\Purchaseorder */
 
@@ -13,9 +13,6 @@ $this->params['breadcrumbs'][] = $this->title;
 ?>
 <div class="purchase-invoice-view main-body" id="purchase-invoice_view">
 <div class="content-main-wrapper">
-<?= Breadcrumbs::widget([
-        'links' => isset($this->params['breadcrumbs']) ? $this->params['breadcrumbs'] : [],
-        ]) ?>
     <!-- Content Header (Page header) -->
     <section class="content-header">
       <h1>

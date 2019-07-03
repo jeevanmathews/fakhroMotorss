@@ -9,7 +9,6 @@ use Yii;
  *
  * @property int $id 
  * @property string $prefix_id
- * @property string $branch_id
  * @property string $po_number
  * @property string $po_date
  * @property string $po_expected_date
@@ -48,7 +47,7 @@ class Purchaseorder extends \yii\db\ActiveRecord
             [['remarks'], 'string'],
             [['subtotal','discount','discount_percent','vat_percent','total_tax','grand_total'], 'number'],
             [['po_number'], 'string', 'max' => 200],
-            [['po_expected_date'], 'string', 'max' => 300],
+            [['po_expected_date', 'subtotal', 'total_tax', 'grand_total'], 'string', 'max' => 300],
         ];
     }
 
