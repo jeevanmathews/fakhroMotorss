@@ -87,8 +87,20 @@ $time = time();
         <div class="row"> 
             <div class="col-md-12">
                  <h5 class="heading"><span>Jobcard Details</span> </h5>
-                <div class="col-md-6">  
-                    <?= $form->field($model, 'branch_id', ['inputOptions' => ["class" => "form-control select2"]])->dropDownList(ArrayHelper::map(Branches::find()->where(["status" => 1])->all(), 'id', 'name'), ["prompt" => "Select Branch"]) ?>
+                <div class="col-md-6">
+                    <?=$form->field($model, 'branch_id')->dropDownList(
+                            ArrayHelper::map(Branches::find()->where(["status" => 1])->all(), 'id', 'name'),
+                             ['prompt' => 'Select Branch','class' => 'form-control select2 type', 
+                            
+                        'onchange'=>'
+                            $.get( "'.Yii::$app->getUrlManager()->createUrl('jobcard/branchusers').'&branch_id="+$(this).val(), function( data ) {
+                                responseusers = $.parseJSON(data);
+                            $(document).find(".main-body:visible").find( "#jobcard-service_advisor" ).html(responseusers.service_advisors);
+                            $(document).find(".main-body:visible").find("#jobcard-service_manager" ).html(responseusers.service_managers);
+                            $(document).find(".main-body:visible").find("#jobcard-tested_by" ).html(responseusers.testers);
+                       });
+                        ']);?>
+
 
                     <?= $form->field($model, 'service_advisor', ['inputOptions' => ["class" => "form-control select2"]])->dropDownList(ArrayHelper::map(Employees::find()->where(["status" => 1, "designation_id" => 2, "branch_id" => Yii::$app->user->identity->branch_id])->all(), 'id', 'fullname'), ["prompt" => "Service Advisor"]) ?>
 
@@ -155,6 +167,8 @@ $time = time();
 </div>
 
 <script type="text/javascript">
+
+
     $( function() {
     $( ".datepicker" ).datepicker({
       defaultDate: new Date(),

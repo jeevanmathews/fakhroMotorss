@@ -19,10 +19,12 @@ use backend\models\JobcardQuotation;
 use backend\models\JobcardQuotationMaterial;
 use backend\models\JobcardQuotationTask;
 use backend\models\User;
+use backend\models\Employees;
 use yii\web\Controller;
 use yii\web\NotFoundHttpException;
 use yii\filters\VerbFilter;
 use yii\data\ActiveDataProvider;
+use yii\data\ArrayDataProvider;
 
 /**
  * JobcardController implements the CRUD actions for Jobcard model.
@@ -544,6 +546,40 @@ class JobcardController extends Controller
         ]);       
         return $this->renderAjax('_quotation',compact('quotation', 'taskdataProvider', 'materialdataProvider'));
     }
+
+    public function actionTempQuotation($jobcard_id){
+        $jobcard = $this->findModel($jobcard_id);
+        $data = [
+                ['id' => 1, 'task' => 'sdd', 'task_rate' => '45'],
+                ['id' => 2, 'task' => 'sdd', 'task_rate' => '45'],
+                ];
+
+        $taskdataProvider = new ArrayDataProvider([
+            'allModels' => $data,
+            'pagination' => [
+                'pageSize' => 10,
+            ],
+            'sort' => [
+                'attributes' => ['id', 'task', 'task_rate'],
+            ],
+        ]);
+        $material_data = [
+                ['id' => 1, 'material_type' => 'sdd', 'num_unit' => '45', 'unit_rate' => 4,'material_name' => 'sdd', 'total' => '45'],
+                ['id' => 2, 'material_type' => 'sdd', 'num_unit' => '45', 'unit_rate' => 3, 'material_name' => 'sdd', 'total' => '45'],
+                ];
+
+        $materialdataProvider = new ArrayDataProvider([
+            'allModels' => $material_data,
+            'pagination' => [
+                'pageSize' => 10,
+            ],
+            'sort' => [
+                'attributes' => ['id', 'material_type', 'material_name', 'num_unit', 'unit_rate', 'total'],
+            ],
+        ]);
+
+        return $this->renderAjax('_temp_quotation',compact('jobcard', 'taskdataProvider', 'materialdataProvider'));
+    }
      /**
      * Displays vehicle list.
      * @return mixed
@@ -596,6 +632,38 @@ class JobcardController extends Controller
             echo json_encode(['customer-name' => $customer->name, 'customer-contact_name' => $customer->contact_name, 'customer-contact_number' => $customer->contact_number, 'customer-alt_phone' => $customer->alt_phone, 'customer-email' => $customer->email, 'customer-address'  => $customer->address]);
             exit;
         }
+    }
+
+    public function actionBranchusers($branch_id){
+        $service_advisor_data = ""; 
+        $service_manager_data = "";
+        $tester_data = "";   
+
+        $service_advisors = Employees::find()->where(["status" => 1, "designation_id" => 2, "branch_id" => $branch_id])->all();
+        if($service_advisors){
+            $service_advisor_data .= '<option value="">Service Advisor</option>';
+            foreach($service_advisors as $service_advisor){
+                $service_advisor_data .=  '<option value="'.$service_advisor->id.'">'.$service_advisor->fullname.'</option>';
+            }
+        }
+
+        $service_managers = Employees::find()->where(["status" => 1, "designation_id" => 1, "branch_id" => $branch_id])->all();
+        if($service_managers){
+            $service_manager_data .= '<option value="">Service Manager</option>';
+            foreach($service_managers as $service_manager){
+                $service_manager_data .=  '<option value="'.$service_manager->id.'">'.$service_manager->fullname.'</option>';
+            }
+        }
+
+        $testers = Employees::find()->where(["status" => 1, "designation_id" => 3, "branch_id" => $branch_id])->all();
+        if($testers){
+            $tester_data .= '<option value="">Vehicle Tested By</option>';
+            foreach($testers as $tester){
+                $tester_data .=  '<option value="'.$tester->id.'">'.$tester->fullname.'</option>';
+            }
+        }
+
+        echo json_encode(["service_advisors" => $service_advisor_data, "service_managers" => $service_manager_data, "testers" => $tester_data]);exit;
     }
 
 
