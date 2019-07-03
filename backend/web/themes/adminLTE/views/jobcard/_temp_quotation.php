@@ -106,19 +106,20 @@ use backend\models\Branches
 <script type="text/javascript">
 $(document).ready(function(){
     $('[data-toggle="tooltip"]').tooltip();
-    var actions = $("table td:last-child").html();
+    var actions = $("table#task-table td:last-child").html();
     // Append table with add row form on add new button click
     $(".add-new").click(function(){
         $(this).attr("disabled", "disabled");
-        var index = $("table tbody tr:last-child").index();
+        var tableId = $(this).attr("table-id");
+        var index = $("table#"+tableId+" tbody tr:last-child").index();
         var row = '<tr>' +
             '<td><input type="text" class="form-control" name="name" id="name"></td>' +
             '<td><input type="text" class="form-control" name="department" id="department"></td>' +
             '<td><input type="text" class="form-control" name="phone" id="phone"></td>' +
             '<td>' + actions + '</td>' +
         '</tr>';
-        $("table").append(row);     
-        $("table tbody tr").eq(index + 1).find(".add, .edit").toggle();
+        $("table#"+tableId+"").append(row);     
+        $("table#"+tableId+" tbody tr").eq(index + 1).find(".add, .edit").toggle();
         $('[data-toggle="tooltip"]').tooltip();
     });
     // Add row on add button click
@@ -144,7 +145,7 @@ $(document).ready(function(){
     });
     // Edit row on edit button click
     $(document).on("click", ".edit", function(){        
-        $(this).parents("tr").find("td:not(:last-child)").each(function(){
+        $(this).closest("tr").find("td:not(:last-child)").each(function(){
             $(this).html('<input type="text" class="form-control" value="' + $(this).text() + '">');
         });     
         $(this).parents("tr").find(".add, .edit").toggle();
@@ -152,7 +153,7 @@ $(document).ready(function(){
     });
     // Delete row on delete button click
     $(document).on("click", ".delete", function(){
-        $(this).parents("tr").remove();
+        $(this).closest("tr").remove();
         $(".add-new").removeAttr("disabled");
     });
 });
@@ -252,48 +253,70 @@ $(document).ready(function(){
                         </td>
                     </tr>
                 </table>
-            <table class="table table-bordered">
+ 
+           
+                <div class="row">                  
+                    <div class="col-sm-12">
+                        <button table-id="task-table" type="button" class="btn btn-info add-new pull-right"><i class="fa fa-plus"></i> Add New</button>
+                    </div>
+                </div>
+            
+
+                <table id="task-table" class="table table-bordered">
                 <thead>
                     <tr>
-                        <th>Name</th>
-                        <th>Department</th>
-                        <th>Phone</th>
+                        <th>Task</th>
+                        <th>Task Rate</th>                      
                         <th>Actions</th>
                     </tr>
                 </thead>
                 <tbody>
                     <tr>
-                        <td>John Doe</td>
-                        <td>Administration</td>
-                        <td>(171) 555-2222</td>
+                        <td>Task Name</td>
+                        <td>100</td>                     
                         <td>
                             <a class="add" title="Add" data-toggle="tooltip"><i class="material-icons">&#xE03B;</i></a>
                             <a class="edit" title="Edit" data-toggle="tooltip"><i class="material-icons">&#xE254;</i></a>
                             <a class="delete" title="Delete" data-toggle="tooltip"><i class="material-icons">&#xE872;</i></a>
                         </td>
-                    </tr>
-                    <tr>
-                        <td>Peter Parker</td>
-                        <td>Customer Service</td>
-                        <td>(313) 555-5735</td>
-                        <td>
-                            <a class="add" title="Add" data-toggle="tooltip"><i class="material-icons">&#xE03B;</i></a>
-                            <a class="edit" title="Edit" data-toggle="tooltip"><i class="material-icons">&#xE254;</i></a>
-                            <a class="delete" title="Delete" data-toggle="tooltip"><i class="material-icons">&#xE872;</i></a>
-                        </td>
-                    </tr>
-                    <tr>
-                        <td>Fran Wilson</td>
-                        <td>Human Resources</td>
-                        <td>(503) 555-9931</td>
-                        <td>
-                            <a class="add" title="Add" data-toggle="tooltip"><i class="material-icons">&#xE03B;</i></a>
-                            <a class="edit" title="Edit" data-toggle="tooltip"><i class="material-icons">&#xE254;</i></a>
-                            <a class="delete" title="Delete" data-toggle="tooltip"><i class="material-icons">&#xE872;</i></a>
-                        </td>
-                    </tr>      
+                    </tr>                         
                 </tbody>
             </table>
+
+            <div class="row">                  
+                    <div class="col-sm-12">
+                        <button table-id="material-table" type="button" class="btn btn-info add-new pull-right"><i class="fa fa-plus"></i> Add New</button>
+                    </div>
+                </div>
+            
+
+                <table id="material-table" class="table table-bordered">
+                <thead>
+                    <tr>
+                        <th>Material Type</th>
+                        <th>Material Name</th>
+                        <th>Unit Rate</th>
+                        <th>No.Unit</th>
+                        <th>Total</th>
+                        <th>Actions</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td>Spare</td>
+                        <td>Rear Mirror</td>
+                        <td>100</td>
+                        <td>5</td>
+                        <td>500</td>
+                        <td>
+                            <a class="add" title="Add" data-toggle="tooltip"><i class="material-icons">&#xE03B;</i></a>
+                            <a class="edit" title="Edit" data-toggle="tooltip"><i class="material-icons">&#xE254;</i></a>
+                            <a class="delete" title="Delete" data-toggle="tooltip"><i class="material-icons">&#xE872;</i></a>
+                        </td>
+                    </tr>                          
+                </tbody>
+            </table>
+
     <table width="100%" cellpadding="0" cellspacing="0" style="border-collapse: collapse;">
                     <tr>
                         <td width="100%">
