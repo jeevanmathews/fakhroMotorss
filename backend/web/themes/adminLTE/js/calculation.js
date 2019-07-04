@@ -50,7 +50,7 @@ $('body').on('change','.select_item_td',function(){
             'url':url,//"<?php echo Yii::$app->getUrlManager()->createUrl(['items/itemprice']);?>",
             'data':data,
             success:function(s){
-              console.log(s);
+              //console.log(s);
               var response = JSON.parse(s);
               $(thisrow).find('.price').val(response.selling_price);
               $(thisrow).find('.vatrate').val(response.vat);
