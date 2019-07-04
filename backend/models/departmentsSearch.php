@@ -4,12 +4,12 @@ namespace backend\models;
 
 use yii\base\Model;
 use yii\data\ActiveDataProvider;
-use backend\models\departments;
+use backend\models\Departments;
 
 /**
  * departmentsSearch represents the model behind the search form of `backend\models\departments`.
  */
-class departmentsSearch extends departments
+class DepartmentsSearch extends Departments
 {
     /**
      * {@inheritdoc}
