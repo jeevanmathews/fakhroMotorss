@@ -34,14 +34,19 @@ $vat_format=Yii::$app->common->company->vat_format;
               </div>
             </div>
           
-            <?= $form->field($model1,'prefix_id', ['inputOptions' => ["class" => "form-control select2"]])->dropDownList(ArrayHelper::map(PrefixMaster::find()->where(["status" => 1])->all(), 'id', 'prefix'), ["prompt" => "Select Prefix"]) ?>
+            <?= $form->field($model1,'prefix_id', ['inputOptions' => ["class" => "form-control select2"]])->dropDownList(ArrayHelper::map(PrefixMaster::find()->where(["status" => 1])->all(), 'id', 'prefix'), ["prompt" => "Select Prefix",'value'=>(isset(Yii::$app->common->prefix)?Yii::$app->common->prefix->id:'')]) ?>
             <?= $form->field($model1, 'customer_id', ['inputOptions' => ["class" => "form-control select2"]])->dropDownList(ArrayHelper::map(Customer::find()->where(["status" => 1])->all(), 'id', 'name'), ["prompt" => "Select Customer"]) ?>                
             <?= $form->field($model1, 'so_created_by')->hiddenInput(['value' => \Yii::$app->user->identity->id])->label(false) ?>
            <?= $form->field($model, 'branch_id')->hiddenInput(['value' => Yii::$app->user->identity->branch_id])->label(false) ?>
           </div>
           <div class="col-md-6"> 
+            <?php if(!$model->isNewRecord):
+            $number=$model->so_number;
+          else :
+            $number=(isset($modellastnumber->so_number)?$modellastnumber->so_number+1:1);
+          endif;?> 
             <?= $form->field($model1, 'so_expected_date')->textInput(['maxlength' => true, 'class' => "form-control datepicker"]) ?>
-            <?= $form->field($model1, 'so_number')->textInput(['maxlength' => true]) ?>
+            <?= $form->field($model1, 'so_number')->textInput(['maxlength' => true,'value'=>$number]) ?>
 
           </div>
           <div class="col-md-12">
@@ -169,7 +174,10 @@ $vat_format=Yii::$app->common->company->vat_format;
         <div class="form-group field-SalesOrder-total_tax">
           <div class="input-group">
             <div class="input-group-addon">VAT %</div>
-            <input type="text" id="vatper" class="form-control vatper" name="SalesOrder[vat_percent]" value="<?=Yii::$app->common->company->vat_rate?>">
+            <!-- <input type="text" id="vatper" class="form-control vatper" name="SalesOrder[vat_percent]" value="<?=Yii::$app->common->company->vat_rate?>"> -->
+            <?= Html::activeTextInput($model,'vat_percent',['type'=>'hidden','class'=>'vatper','value'=>(($vat_format=="exclusive")?Yii::$app->common->company->vat_rate:0)])?>
+        <?= Html::textInput('vatt', (($vat_format=="exclusive")?Yii::$app->common->company->vat_rate:0), ['class' => 'form-control','disabled'=>'true']) ?>
+    
           </div>
         </div>
       </div>
@@ -191,6 +199,7 @@ $vat_format=Yii::$app->common->company->vat_format;
 </div>
 
 <script type="text/javascript">
+addMandatoryStar();
 $(".datepicker").datepicker({
     defaultDate: new Date(),
     dateFormat: "dd/mm/yy",

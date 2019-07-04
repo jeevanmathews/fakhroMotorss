@@ -31,14 +31,24 @@ $vat_format=Yii::$app->common->company->vat_format;
     <div class="row">
 
       <div class="col-md-6"> 
-        <?= $form->field($model,'prefix_id', ['inputOptions' => ["class" => "form-control select2"]])->dropDownList(ArrayHelper::map(PrefixMaster::find()->where(["status" => 1])->all(), 'id', 'prefix'), ["prompt" => "Select Prefix"]) ?>
+         <?php if(!$model->isNewRecord):
+            $prefix=(isset(Yii::$app->common->prefix)?Yii::$app->common->prefix->id:'');
+          else :
+            $prefix=$model->prefix_id;
+          endif;?> 
+        <?= $form->field($model,'prefix_id', ['inputOptions' => ["class" => "form-control select2"]])->dropDownList(ArrayHelper::map(PrefixMaster::find()->where(["status" => 1])->all(), 'id', 'prefix'), ["prompt" => "Select Prefix",'value'=>$prefix]) ?>
 
         <?= $form->field($model, 'customer_id', ['inputOptions' => ["class" => "form-control select2"]])->dropDownList(ArrayHelper::map(Customer::find()->where(["status" => 1])->all(), 'id', 'name'), ["prompt" => "Select Customer"]) ?>  
         <?= $form->field($model, 'so_created_by')->hiddenInput(['value' => \Yii::$app->user->identity->id])->label(false) ?>
          <?= $form->field($model, 'branch_id')->hiddenInput(['value' => Yii::$app->user->identity->branch_id])->label(false) ?>
       </div>
-      <div class="col-md-6"> 
-       <?= $form->field($model, 'so_number')->textInput(['maxlength' => true]) ?>
+      <div class="col-md-6">
+       <?php if(!$model->isNewRecord):
+            $number=$model->so_number;
+          else :
+            $number=(isset($modellastnumber->so_number)?$modellastnumber->so_number+1:1);
+          endif;?> 
+       <?= $form->field($model, 'so_number')->textInput(['maxlength' => true,'value'=>$number]) ?>
        <?= $form->field($model, 'so_expected_date')->textInput(['maxlength' => true,'class'=>'form-control datepicker']) ?>
 
      </div>
@@ -146,7 +156,7 @@ $vat_format=Yii::$app->common->company->vat_format;
 
 
  <div class="w50 pull-right">
-  <div class="mb-5 fl-w100"><?= $form->field($model, 'subtotal')->hiddenInput(['class'=>'form-control subtotal'])->label(false) ?></div>
+  <div class="mb-5 fl-w100"><?= $form->field($model, 'subtotal')->textInput(['class'=>'form-control subtotal']);//->label(false) ?></div>
   <?php if($vat_format=="exclusive") :?>
   <div class="input-group mb-5"><div class="input-group-addon">Discount Type</div>
   <div id="" role="radiogroup" aria-invalid="true">
@@ -165,7 +175,10 @@ $vat_format=Yii::$app->common->company->vat_format;
   <div class="form-group field-SalesOrder-total_tax">
     <div class="input-group">
       <div class="input-group-addon">VAT %</div>
-      <input type="text" id="vatper" class="form-control vatper" name="SalesOrder[vat_percent]" value="<?=Yii::$app->common->company->vat_rate?>">
+      <!-- <input type="text" id="vatper" class="form-control vatper" name="SalesOrder[vat_percent]" value="<?=Yii::$app->common->company->vat_rate?>"> -->
+    <?= Html::activeTextInput($model,'vat_percent',['type'=>'hidden','class'=>'vatper','value'=>(($vat_format=="exclusive")?Yii::$app->common->company->vat_rate:0)])?>
+    <?= Html::textInput('vatt', (($vat_format=="exclusive")?Yii::$app->common->company->vat_rate:0), ['class' => 'form-control','disabled'=>'true']) ?>
+    
     </div>
   </div>
 </div>

@@ -217,12 +217,18 @@ class PurchaseOrderController extends Controller
                 }
                 $model1->price=$result['Purchaseorderitems']['price'][$i];
                 $model1->unit_id=$result['Purchaseorderitems']['unit_id'][$i];
-                $model1->tax=$result['Purchaseorderitems']['tax'][$i];
+                $model1->total_price =$result['Purchaseorderitems']['total_price'][$i];
+                $model1->dis_type =(isset($result['Purchaseorderitems']['dis_type'])?$result['Purchaseorderitems']['dis_type'][$i]:NULL);
+                $model1->discount_percentage=(isset($result['Purchaseorderitems']['discount_percentage'])?$result['Purchaseorderitems']['discount_percentage'][$i]:NULL);
+                $model1->discount_amount=(isset($result['Purchaseorderitems']['discount_amount'])?$result['Purchaseorderitems']['discount_amount'][$i]:NULL);
+                $model1->net_amount=(isset($result['Purchaseorderitems']['net_amount'])?$result['Purchaseorderitems']['net_amount'][$i]:NULL);
+                $model1->vat_rate=(isset($result['Purchaseorderitems']['vat_rate'])?$result['Purchaseorderitems']['vat_rate'][$i]:NULL);
+                $model1->tax=(isset($result['Purchaseorderitems']['tax'])?$result['Purchaseorderitems']['tax'][$i]:NULL);
                 $model1->total=$result['Purchaseorderitems']['total'][$i];
                 $model1->po_id=$model->id;
-                
                 $model1->save(false);
                 $count++;
+
             }
             if($flag_qty==$count){
                 $model->process_status='completed';

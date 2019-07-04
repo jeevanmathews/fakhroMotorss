@@ -52,7 +52,7 @@ $('body').on('change','.select_item_td',function(){
             success:function(s){
               //console.log(s);
               var response = JSON.parse(s);
-              $(thisrow).find('.price').val(response.selling_price);
+              $(thisrow).find('.price').val((response.selling_price).toFixed(decimalPlaces));
               $(thisrow).find('.vatrate').val(response.vat);
                 // var thisrow=$(this).closest('tr');
                 var net_amount=0;

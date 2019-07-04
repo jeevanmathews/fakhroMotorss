@@ -9,8 +9,8 @@ use Yii;
  *
  * @property int $id 
  * @property int $qtn_id
- * @property string $prefix_id
- * @property string $branch_id
+ * @property int $prefix_id
+ * @property int $branch_id
  * @property string $so_number
  * @property string $so_date
  * @property string $so_expected_date
@@ -43,7 +43,7 @@ class SalesOrder extends \yii\db\ActiveRecord
 	public function rules()
     {
         return [
-            [['branch_id','prefix_id','so_number', 'so_expected_date', 'so_created_by'], 'required'],//, 'subtotal', 'total_tax', 'grand_total'
+            [['branch_id','prefix_id','so_number', 'so_expected_date', 'so_created_by','customer_id','grand_total'], 'required'],//, 'subtotal', 'total_tax', 'grand_total'
             [['qtn_id', 'so_created_by', 'status','branch_id'], 'integer'],
             [['subtotal','discount','discount_percent','vat_percent','total_tax','grand_total'],'number'],
             [['so_date'], 'safe'],

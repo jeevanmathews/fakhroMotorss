@@ -198,6 +198,7 @@ $vat_format=Yii::$app->common->company->vat_format;
 
 </script>
 <script type="text/javascript">
+addMandatoryStar();
 $(".datepicker").datepicker({
     defaultDate: new Date(),
     dateFormat: "dd/mm/yy",
