@@ -48,11 +48,11 @@ $vat_format=Yii::$app->common->company->vat_format;
                 <div class="col-md-6"> 
                     <?= $form->field($model1, 'inv_date')->textInput(['maxlength' => true, 'class' => "form-control datepicker"]) ?>
                      <?php if(Yii::$app->controller->action->id=='update'):
-      $number=$model->inv_number;
-      else :
-        $number=(isset($modellastnumber->inv_number)?$modellastnumber->inv_number+1:1);
-      endif;?>
-      <?= $form->field($model, 'inv_number')->textInput(['maxlength' => true,'value'=>$number]) ?>
+                  $number=$model->inv_number;
+                  else :
+                    $number=(isset($modellastnumber->inv_number)?$modellastnumber->inv_number+1:1);
+                  endif;?>
+                  <?= $form->field($model, 'inv_number')->textInput(['maxlength' => true,'value'=>$number]) ?>
                     
                 </div>
                   <div class="col-md-12">

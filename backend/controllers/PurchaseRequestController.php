@@ -146,7 +146,7 @@ class PurchaseRequestController extends Controller
                 
                 $model1->save(false);
             }
-                echo json_encode(["success" => true, "message" => "Purchase Requisition has been updated.", 'redirect' => Yii::$app->getUrlManager()->createUrl(['purchase-request/update','id' => $model->id]]);
+                echo json_encode(["success" => true, "message" => "Purchase Requisition has been updated.", 'redirect' => Yii::$app->getUrlManager()->createUrl(['purchase-request/update','id' => $model->id])]);
                 exit;
         }
 

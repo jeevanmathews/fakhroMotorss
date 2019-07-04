@@ -241,13 +241,17 @@ $('body').on('click','.common_discount_type',function(){
   var type=$(this).val();
   var grandtotal=0;
   var taxtotal=0;
+  var disamount=0;
   var discount=$('.discount').val();
   var subtotal=$('.subtotal').val(); 
-  if(type=="percentage"){
-    var disamount=parseFloat(subtotal)*parseFloat(discount)/100;
-  }else{
-    var disamount=discount;
-  }
+    // console.log(type,discount,subtotal);
+    if(discount!=""){
+      if(type=="percentage"){
+        disamount=parseFloat(subtotal)*parseFloat(discount)/100;
+      }else{
+        disamount=discount;
+      }
+    }
   grandtotal=parseFloat(subtotal)-parseFloat(disamount);
   if($('.vatper').val()!='' &&  $('.vatper').val()!='undefined' && typeof $('.vatper').val()!=='undefined'){
     var vat_rate=$('.vatper').val();
@@ -255,20 +259,25 @@ $('body').on('click','.common_discount_type',function(){
     grandtotal=(parseFloat(grandtotal)+(parseFloat(grandtotal)*parseFloat(vat_rate)/100)).toFixed(decimalPlaces);
     
   }
+  // console.log(taxtotal,grandtotal,vat_rate);
   $('.total_tax').val(taxtotal);
   $('.grandtotal').val(grandtotal);
 });
 
 $('body').on('change','.discount',function(){
-  var type=$('.common_discount_type').val();
+  var type=$('.common_discount_type:checked').val();
   var grandtotal=0;
   var taxtotal=0;
   var discount=$(this).val();
   var subtotal=$('.subtotal').val(); 
-  if(type=="percentage"){
-    var disamount=parseFloat(subtotal)*parseFloat(discount)/100;
+  if(discount!="" && $.isNumeric(discount)){
+    if(type=="percentage"){
+      var disamount=parseFloat(subtotal)*parseFloat(discount)/100;
+    }else{
+      var disamount=discount;
+    }
   }else{
-    var disamount=discount;
+    var disamount=0;
   }
   grandtotal=parseFloat(subtotal)-parseFloat(disamount);
   if($('.vatper').val()!='' &&  $('.vatper').val()!='undefined' && typeof $('.vatper').val()!=='undefined'){
@@ -279,6 +288,7 @@ $('body').on('change','.discount',function(){
   }
   $('.total_tax').val(taxtotal);
   $('.grandtotal').val(grandtotal);
+
 });
 
   if($('.remaining_qty').val()==$('.qty').val() ){
@@ -299,11 +309,13 @@ $(document).on('change','.supplier_id',function(){
       success:function(s){
        var res='';
        var response = JSON.parse(s);
-
-       res+='<div class="form-group field-items-description">';
-       res+='<textarea id="supplier_address" class="form-control" disabled name="" rows="6" placeholder="Description">'+response.address+'</textarea>';
-       res+='</div>';  
-       $('.append_here').html(res);             
+       // console.log(response.address);
+       if(response.address!=null){
+        res+='<div class="form-group field-items-description">';
+        res+='<textarea id="supplier_address" class="form-control" disabled name="" rows="6" placeholder="Description">'+response.address+'</textarea>';
+        res+='</div>';  
+        $('.append_here').html(res);  
+       }           
      }
    });
   }

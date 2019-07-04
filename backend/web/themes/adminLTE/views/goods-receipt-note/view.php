@@ -2,7 +2,7 @@
 
 use yii\helpers\Html;
 use yii\widgets\DetailView;
-
+use yii\widgets\Breadcrumbs;
 /* @var $this yii\web\View */
 /* @var $model backend\models\Purchaseorder */
 
@@ -13,6 +13,9 @@ $this->params['breadcrumbs'][] = $this->title;
 ?>
 <div class="goods-receipt-note-view main-body" id="goods-receipt-note_view">
 <div class="content-main-wrapper">
+<?= Breadcrumbs::widget([
+        'links' => isset($this->params['breadcrumbs']) ? $this->params['breadcrumbs'] : [],
+        ]) ?>
     <!-- Content Header (Page header) -->
     <section class="content-header">
       <h1>
@@ -41,10 +44,10 @@ $this->params['breadcrumbs'][] = $this->title;
                                 'value'=>$model->user->firstname
                                 ],
                                  ['label'=>'PO Number',
-                                'value'=>(($model->po->prefix)?$model->po->prefix->prefix.' '.$model->po->po_number:''),
+                                'value'=>(isset($model->po->prefix)?$model->po->prefix->prefix.' '.$model->po->po_number:''),
                                 ],
                                  ['label'=>'GRN Number',
-                                'value'=>(($model->prefix)?$model->prefix->prefix.' '.$model->grn_number:''),
+                                'value'=>(isset($model->prefix)?$model->prefix->prefix.' '.$model->grn_number:''),
                                 ],
                                 ['label'=>'Supplier',
                                 'value'=>$model->supplier->name
