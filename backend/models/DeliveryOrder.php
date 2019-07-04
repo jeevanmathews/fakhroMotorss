@@ -7,21 +7,24 @@ use Yii;
 /**
  * This is the model class for table "delivery_order".
  *
- * @property int $id
- * @property int $so_id 
+ * @property int $id 
+ * @property int $so_id
  * @property int $prefix_id
- * @property string $do_number
- * @property string $do_created_date
- * @property string $do_date
- * @property int $do_created_by
+ * @property int $branch_id
+ * @property string $so_number
+ * @property string $so_date
+ * @property string $so_expected_date
+ * @property int $so_created_by
  * @property int $customer_id
- * @property string $subtotal
- * @* @property double $discount_type
+ * @property double $subtotal
+ * @property string $discount_type
  * @property double $discount
  * @property double $discount_percent
  * @property double $vat_percent
- * @property string $total_tax
- * @property string $grand_total
+ * @property double $total_tax
+ * @property double $grand_total
+ * @property string $process_status
+ * @property string $remarks
  * @property int $status
  */
 class DeliveryOrder extends \yii\db\ActiveRecord
@@ -40,11 +43,12 @@ class DeliveryOrder extends \yii\db\ActiveRecord
     public function rules()
     {
         return [
-            [['prefix_id','so_id', 'do_created_by', 'customer_id', 'status'], 'integer'],
-            [['do_number', 'do_date', 'do_created_by', 'customer_id', 'subtotal', 'total_tax', 'grand_total'], 'required'],
-            [['do_created_date'], 'safe'],
-            [['do_number'], 'string', 'max' => 200],
-            [['do_date', 'subtotal', 'total_tax', 'grand_total'], 'string', 'max' => 300],
+          [['branch_id','prefix_id','so_number', 'so_expected_date', 'so_created_by','customer_id','grand_total'], 'required'],//, 'subtotal', 'total_tax', 'grand_total'
+            [['qtn_id', 'so_created_by', 'status','branch_id'], 'integer'],
+            [['subtotal','discount','discount_percent','vat_percent','total_tax','grand_total'],'number'],
+            [['so_date'], 'safe'],
+            [['so_number'], 'string', 'max' => 200],
+            [['so_expected_date'], 'string', 'max' => 300],
         ];
     }
 

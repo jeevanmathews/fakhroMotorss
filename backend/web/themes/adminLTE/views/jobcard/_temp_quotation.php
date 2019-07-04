@@ -112,12 +112,22 @@ $(document).ready(function(){
         $(this).attr("disabled", "disabled");
         var tableId = $(this).attr("table-id");
         var index = $("table#"+tableId+" tbody tr:last-child").index();
+        if(tableId == "task-table"){
         var row = '<tr>' +
             '<td><input type="text" class="form-control" name="name" id="name"></td>' +
-            '<td><input type="text" class="form-control" name="department" id="department"></td>' +
-            '<td><input type="text" class="form-control" name="phone" id="phone"></td>' +
+            '<td class="task_rate"><input type="text" class="form-control"></td>' +           
             '<td>' + actions + '</td>' +
         '</tr>';
+        }else if(tableId == "material-table"){
+            var row = '<tr>' +
+            '<td><input type="text" class="form-control" name="material_type"></td>' +
+            '<td><input type="text" class="form-control" name="material_name"></td>' +
+            '<td class="no_unit"><input type="text" class="form-control"></td>' +
+            '<td class="unit_rate"><input type="text" class="form-control"></td>' +
+            '<td class="price"><input type="text" class="form-control"></td>' +
+            '<td>' + actions + '</td>' +
+            '</tr>';
+        }
         $("table#"+tableId+"").append(row);     
         $("table#"+tableId+" tbody tr").eq(index + 1).find(".add, .edit").toggle();
         $('[data-toggle="tooltip"]').tooltip();
@@ -125,7 +135,7 @@ $(document).ready(function(){
     // Add row on add button click
     $(document).on("click", ".add", function(){
         var empty = false;
-        var input = $(this).parents("tr").find('input[type="text"]');
+        var input = $(this).closest("tr").find('input[type="text"]');
         input.each(function(){
             if(!$(this).val()){
                 $(this).addClass("error");
@@ -134,13 +144,14 @@ $(document).ready(function(){
                 $(this).removeClass("error");
             }
         });
-        $(this).parents("tr").find(".error").first().focus();
+        $(this).closest("tr").find(".error").first().focus();
         if(!empty){
             input.each(function(){
                 $(this).parent("td").html($(this).val());
             });         
-            $(this).parents("tr").find(".add, .edit").toggle();
+            $(this).closest("tr").find(".add, .edit").toggle();
             $(".add-new").removeAttr("disabled");
+            updateTotals();
         }       
     });
     // Edit row on edit button click
@@ -148,20 +159,55 @@ $(document).ready(function(){
         $(this).closest("tr").find("td:not(:last-child)").each(function(){
             $(this).html('<input type="text" class="form-control" value="' + $(this).text() + '">');
         });     
-        $(this).parents("tr").find(".add, .edit").toggle();
+        $(this).closest("tr").find(".add, .edit").toggle();
         $(".add-new").attr("disabled", "disabled");
     });
     // Delete row on delete button click
     $(document).on("click", ".delete", function(){
         $(this).closest("tr").remove();
         $(".add-new").removeAttr("disabled");
+        updateTotals();
     });
 });
+
+function updateTotals(){
+    var gross = 0;
+    $(".task_rate").each(function(){
+       gross = gross+parseFloat($(this).text());
+    });
+    $(".price").each(function(){
+       gross = gross+parseFloat($(this).text());
+    });
+    $(".gross").html(gross);
+    var vat = gross*parseFloat($("#vat").html())/100;
+    $("#vat_amount").html(vat);
+    $("#amount_due").html(gross + vat);
+}
+$(document).on('keyup', ".unit_rate", function(){
+    $(this).closest("tr").find(".price").text(parseFloat($(this).closest("tr").find("td.no_unit>input").val()) * parseFloat($(this).find("input").val()));
+});
+function printQuotation(){  
+    var $content = $("html");
+    $content.find("#task-table th:last-child, #task-table td:last-child, #material-table th:last-child, #material-table td:last-child").addClass("hide");
+    $content.find("#print").addClass("hide");
+    $content.find(".add-btn").addClass("hide"); 
+    var printWindow = window.open('', '', 'height=400,width=800');
+    printWindow.document.write('<html><head><title>DIV Contents</title>');
+    printWindow.document.write('</head><body >');
+    printWindow.document.write($content.html());
+    printWindow.document.write('</body></html>');
+    printWindow.document.close();
+    printWindow.print(); 
+    $content.find("#task-table th:last-child, #task-table td:last-child, #material-table th:last-child, #material-table td:last-child").removeClass("hide");
+    $content.find("#print").removeClass("hide");
+    $content.find(".add-btn").removeClass("hide");        
+}
+
 </script>
 </head>
 <body style="margin: 0; padding: 0;" class="invoice-wrapper">
-    
-    <table width="800" cellpadding="0" cellspacing="0" style=";margin:0 auto; font-family: 'Roboto Condensed', sans-serif;; border-collapse: collapse;">
+    <button id="print" onclick="printQuotation();">Print</button>
+    <table width="800" cellpadding="0" cellspacing="0" style=";margin:0 auto; font-family: 'Roboto Condensed', sans-serif; border-collapse: collapse;">
         <tr>
             <td>
                 <table width="100%" cellpadding="0" cellspacing="0" style="border-collapse: collapse;">
@@ -255,7 +301,7 @@ $(document).ready(function(){
                 </table>
  
            
-                <div class="row">                  
+                <div class="row add-btn">                  
                     <div class="col-sm-12">
                         <button table-id="task-table" type="button" class="btn btn-info add-new pull-right"><i class="fa fa-plus"></i> Add New</button>
                     </div>
@@ -273,7 +319,7 @@ $(document).ready(function(){
                 <tbody>
                     <tr>
                         <td>Task Name</td>
-                        <td>100</td>                     
+                        <td class="task_rate">100</td>                     
                         <td>
                             <a class="add" title="Add" data-toggle="tooltip"><i class="material-icons">&#xE03B;</i></a>
                             <a class="edit" title="Edit" data-toggle="tooltip"><i class="material-icons">&#xE254;</i></a>
@@ -283,7 +329,7 @@ $(document).ready(function(){
                 </tbody>
             </table>
 
-            <div class="row">                  
+            <div class="row add-btn">                  
                     <div class="col-sm-12">
                         <button table-id="material-table" type="button" class="btn btn-info add-new pull-right"><i class="fa fa-plus"></i> Add New</button>
                     </div>
@@ -294,10 +340,10 @@ $(document).ready(function(){
                 <thead>
                     <tr>
                         <th>Material Type</th>
-                        <th>Material Name</th>
+                        <th>Material Name</th>                        
+                        <th>Num.Unit</th>
                         <th>Unit Rate</th>
-                        <th>No.Unit</th>
-                        <th>Total</th>
+                        <th>Price</th>
                         <th>Actions</th>
                     </tr>
                 </thead>
@@ -305,9 +351,9 @@ $(document).ready(function(){
                     <tr>
                         <td>Spare</td>
                         <td>Rear Mirror</td>
-                        <td>100</td>
-                        <td>5</td>
-                        <td>500</td>
+                        <td class="no_unit">100</td>
+                        <td class="unit_rate">5</td>
+                        <td class="price">500</td>
                         <td>
                             <a class="add" title="Add" data-toggle="tooltip"><i class="material-icons">&#xE03B;</i></a>
                             <a class="edit" title="Edit" data-toggle="tooltip"><i class="material-icons">&#xE254;</i></a>
@@ -334,25 +380,25 @@ $(document).ready(function(){
                                 <tr>
                                     <th width="50%" style="border:1px solid #ddd; border-bottom: none; border-top: none;"></th>
                                     <th width="37.5%" style="border:1px solid #ddd; border-bottom: none; border-top: none; padding: 5px 10px; font-size: 14px; font-weight: 700; text-transform: uppercase; text-align: left;">Gross</th>
-                                    <th width="12.5%" style="border:1px solid #ddd; border-bottom: none; border-top: none; padding: 5px 10px; font-size: 14px; font-weight: 700; text-transform: uppercase; text-align: right;">00</th>
+                                    <th width="12.5%" style="border:1px solid #ddd; border-bottom: none; border-top: none; padding: 5px 10px; font-size: 14px; font-weight: 700; text-transform: uppercase; text-align: right;" class="gross">00</th>
                                 </tr>
                                 
                                 <tr>
                                     <th width="50%" style="border:1px solid #ddd; border-bottom: none; border-top: none;"></th>
                                     <th width="37.5%" style="border:1px solid #ddd; border-bottom: none; border-top: none; padding: 5px 10px; font-size: 14px; font-weight: 700; text-transform: uppercase; text-align: left;">Total <?php echo (Yii::$app->common->company->vat_format == "exclusive")?"Excluding":"Including";?> VAT</th>
-                                    <th width="12.5%" style="border:1px solid #ddd; border-bottom: none; border-top: none; padding: 5px 10px; font-size: 14px; font-weight: 700; text-transform: uppercase; text-align: right;">55</th>
+                                    <th width="12.5%" style="border:1px solid #ddd; border-bottom: none; border-top: none; padding: 5px 10px; font-size: 14px; font-weight: 700; text-transform: uppercase; text-align: right;" class="gross">55</th>
                                 </tr>
                                 <?php if(Yii::$app->common->company->vat_format == "exclusive"){ ?>
                                 <tr>
                                     <th width="50%" style="border:1px solid #ddd; border-bottom: none; border-top: none;"></th>
-                                    <th width="37.5%" style="border:1px solid #ddd; border-bottom: none; border-top: none; padding: 5px 10px; font-size: 14px; font-weight: 700; text-transform: uppercase; text-align: left;">VAT <?php echo Yii::$app->common->company->vat_rate;?>%</th>
-                                    <th width="12.5%" style="border:1px solid #ddd; border-bottom: none; border-top: none; padding: 5px 10px; font-size: 14px; font-weight: 700; text-transform: uppercase; text-align: right;">66</th>
+                                    <th width="37.5%" style="border:1px solid #ddd; border-bottom: none; border-top: none; padding: 5px 10px; font-size: 14px; font-weight: 700; text-transform: uppercase; text-align: left;">VAT <div id="vat"><?php echo Yii::$app->common->company->vat_rate;?></div>%</th>
+                                    <th width="12.5%" style="border:1px solid #ddd; border-bottom: none; border-top: none; padding: 5px 10px; font-size: 14px; font-weight: 700; text-transform: uppercase; text-align: right;" id="vat_amount">66</th>
                                 </tr>
                                 <?php } ?>
                                 <tr>
                                     <th width="50%" style="border:1px solid #ddd; border-top: none;"></th>
                                     <th width="37.5%" style="border:1px solid #ddd; border-top: none; padding: 5px 10px; font-size: 14px; font-weight: 700; text-transform: uppercase; text-align: left;">Amount Due</th>
-                                    <th width="12.5%" style="border:1px solid #ddd; border-top: none; padding: 5px 10px; font-size: 14px; font-weight: 700; text-transform: uppercase; text-align: right;">676     
+                                    <th width="12.5%" style="border:1px solid #ddd; border-top: none; padding: 5px 10px; font-size: 14px; font-weight: 700; text-transform: uppercase; text-align: right;" id="amount_due">676     
                                     </th>
                                 </tr>
                                 

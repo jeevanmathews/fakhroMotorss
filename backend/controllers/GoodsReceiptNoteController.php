@@ -80,21 +80,7 @@ class GoodsReceiptNoteController extends Controller
 		$userId = \Yii::$app->user->identity->id;
 		$model = new GoodsReceiptNote();
 		$model1 = new GrnItems();
-		// $modelitem = new Items();
-		
-		// if(Yii::$app->request->post()):
-		//     $result=Yii::$app->request->post();
-		//     $model->supplier_id=(int) $result['GoodsReceiptNote']['supplier_id'];
-		//     $model->subtotal=(double) $result['GoodsReceiptNote']['subtotal'];
-		//     $model->discount=(double) $result['GoodsReceiptNote']['discount'];
-		//     $model->discount_percent=(double) $result['GoodsReceiptNote']['discount_percent'];
-		//     $model->vat_percent=(double) $result['GoodsReceiptNote']['vat_percent'];
-		//     $model->total_tax=(double) $result['GoodsReceiptNote']['total_tax'];
-		//     $model->grand_total=(double) $result['GoodsReceiptNote']['grand_total'];
-		//     // var_dump($result);die;
-		// endif;
-		// var_dump($result['Purchaseorder']);
-		// var_dump(sizeof($result['Purchaserequestitems']['item_id']));die;
+	
 		if ($model->load(Yii::$app->request->post()) && $model->save(false)) {
 			$result=Yii::$app->request->post();
 			for($i=0;$i<sizeof($result['GrnItems']['item_id']);$i++){
@@ -186,20 +172,7 @@ class GoodsReceiptNoteController extends Controller
 		$model = Purchaseorder::find()->where(['id'=>$id])->one();
 		$model1 = new GoodsReceiptNote();
 		$modelpr = new GrnItems();
-		// if(Yii::$app->request->post()):
-		//     $result=Yii::$app->request->post();
-		//     $model1->supplier_id=(int) $result['GoodsReceiptNote']['supplier_id'];
-		//     $model1->grn_created_by=(int) $result['GoodsReceiptNote']['grn_created_by'];
-		//     $model1->po_id=(int) $result['GoodsReceiptNote']['po_id'];
-		//     $model1->subtotal=(double) $result['GoodsReceiptNote']['subtotal'];
-		//     $model1->discount=(double) $result['GoodsReceiptNote']['discount'];
-		//     $model1->discount_percent=(double) $result['GoodsReceiptNote']['discount_percent'];
-		//     $model1->vat_percent=(double) $result['GoodsReceiptNote']['vat_percent'];
-		//     $model1->total_tax=(double) $result['GoodsReceiptNote']['total_tax'];
-		//     $model1->grand_total=(double) $result['GoodsReceiptNote']['grand_total'];
-		//     // var_dump($result);die;
-		// endif;
-		
+
 		 if ($model1->load(Yii::$app->request->post()) && $model1->save(false)) {
 			$result=Yii::$app->request->post();
 			$flag_qty=0;

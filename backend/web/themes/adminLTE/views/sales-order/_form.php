@@ -40,6 +40,7 @@ $vat_format=Yii::$app->common->company->vat_format;
         <?= $form->field($model,'prefix_id', ['inputOptions' => ["class" => "form-control select2"]])->dropDownList(ArrayHelper::map(PrefixMaster::find()->where(["status" => 1])->all(), 'id', 'prefix'), ["prompt" => "Select Prefix",'value'=>$prefix]) ?>
 
         <?= $form->field($model, 'customer_id', ['inputOptions' => ["class" => "form-control select2"]])->dropDownList(ArrayHelper::map(Customer::find()->where(["status" => 1])->all(), 'id', 'name'), ["prompt" => "Select Customer"]) ?>  
+         <?= $form->field($model, 'remarks')->textarea(['rows' => 6]) ?>
         <?= $form->field($model, 'so_created_by')->hiddenInput(['value' => \Yii::$app->user->identity->id])->label(false) ?>
          <?= $form->field($model, 'branch_id')->hiddenInput(['value' => Yii::$app->user->identity->branch_id])->label(false) ?>
       </div>
@@ -104,7 +105,7 @@ $vat_format=Yii::$app->common->company->vat_format;
           </td>
           <td><?= $form->field($model1, 'net_amount[]')->textInput(['class'=>'form-control net_amount'])->label(false) ?></td>
           <td>
-           <input type="hidden" id="SalesOrderItems-tax" class="tax" name="SalesOrderItems[tax][]">
+          
            <?= $form->field($model1, 'vat_rate[]')->textInput(['class'=>'form-control vatrate'])->label(false) ?></td>
            <?php endif;?>
            <td><?= $form->field($model1, 'total[]')->textInput(['class'=>'form-control total'])->label(false) ?></td>
@@ -146,7 +147,7 @@ $vat_format=Yii::$app->common->company->vat_format;
           </td>
           <td><?= $form->field($req, 'net_amount[]')->textInput(['value'=>$req->net_amount,'class'=>'form-control net_amount'])->label(false) ?></td>
           <td>
-           <input type="hidden" id="SalesOrderItems-tax" value="<?=$req->tax?>" class="tax" name="SalesOrderItems[tax][]">
+          
            <?= $form->field($req, 'vat_rate[]')->textInput(['value'=>$req->vat_rate,'class'=>'form-control vatrate'])->label(false) ?></td>
          <?php endif;?>
          <td><?= $form->field($req, 'total[]')->textInput(['value'=>$req->total,'class'=>'form-control total'])->label(false) ?></td>

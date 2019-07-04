@@ -165,7 +165,8 @@ class SalesOrderController extends Controller
             // var_dump($result);die;
         endif;
         if ($model->load(Yii::$app->request->post()) && $model->save()) {
-            
+            $flag_qty=0;
+             $count=0;
              for($i=0;$i<sizeof($result['SalesOrderItems']['item_id']);$i++){
                 if(isset($result['SalesOrderItems']['id'][$i])){
                     $model1 = SalesOrderItems::find()->where(['id'=>$result['SalesOrderItems']['id'][$i]])->one();
@@ -176,9 +177,9 @@ class SalesOrderController extends Controller
                 
                 $model1->item_id=$result['SalesOrderItems']['item_id'][$i];
                 $model1->quantity=$result['SalesOrderItems']['quantity'][$i];
-                if($model->pr_id){
-                    $model1->pr_quantity=(int) $result['SalesOrderItems']['pr_quantity'][$i];
-                    $model1->remaining_quantity=$model1->pr_quantity-$model1->quantity;
+                if($model->qtn_id){
+                    $model1->qtn_quantity=(int) $result['SalesOrderItems']['qtn_quantity'][$i];
+                    $model1->remaining_quantity=$model1->qtn_quantity-$model1->quantity;
                     if($model1->remaining_quantity==0){
                         $flag_qty++;
                     }

@@ -13,6 +13,7 @@ use Yii;
  * @property int $so_quantity
  * @property int $quantity
  * @property int $unit_id
+ * @property int $remaining_quantity
  * @property double $price
  * @property double $total_price 
  * @property string $dis_type 
@@ -40,8 +41,8 @@ class DeliveryOrderItems extends \yii\db\ActiveRecord
     public function rules()
     {
         return [
-            [['do_id', 'item_id', 'quantity', 'unit_id', 'price', 'tax', 'total'], 'required'],
-            [['do_id', 'item_id', 'so_quantity', 'quantity', 'unit_id', 'status'], 'integer'],
+            [['so_id', 'item_id', 'quantity', 'unit_id'], 'required'],//, 'price', 'tax', 'total'
+            [['so_id', 'item_id', 'qtn_quantity', 'quantity', 'unit_id', 'status'], 'integer'],
             [['price', 'tax', 'total'], 'number'],
         ];
     }

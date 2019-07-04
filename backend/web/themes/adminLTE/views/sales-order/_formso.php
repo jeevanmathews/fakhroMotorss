@@ -37,17 +37,17 @@ $vat_format=Yii::$app->common->company->vat_format;
             <?= $form->field($model1,'prefix_id', ['inputOptions' => ["class" => "form-control select2"]])->dropDownList(ArrayHelper::map(PrefixMaster::find()->where(["status" => 1])->all(), 'id', 'prefix'), ["prompt" => "Select Prefix",'value'=>(isset(Yii::$app->common->prefix)?Yii::$app->common->prefix->id:'')]) ?>
             <?= $form->field($model1, 'customer_id', ['inputOptions' => ["class" => "form-control select2"]])->dropDownList(ArrayHelper::map(Customer::find()->where(["status" => 1])->all(), 'id', 'name'), ["prompt" => "Select Customer"]) ?>                
             <?= $form->field($model1, 'so_created_by')->hiddenInput(['value' => \Yii::$app->user->identity->id])->label(false) ?>
-           <?= $form->field($model, 'branch_id')->hiddenInput(['value' => Yii::$app->user->identity->branch_id])->label(false) ?>
+           <?= $form->field($model1, 'branch_id')->hiddenInput(['value' => Yii::$app->user->identity->branch_id])->label(false) ?>
           </div>
           <div class="col-md-6"> 
             <?php if(!$model->isNewRecord):
-            $number=$model->so_number;
+            $number=$model1->so_number;
           else :
             $number=(isset($modellastnumber->so_number)?$modellastnumber->so_number+1:1);
           endif;?> 
             <?= $form->field($model1, 'so_expected_date')->textInput(['maxlength' => true, 'class' => "form-control datepicker"]) ?>
             <?= $form->field($model1, 'so_number')->textInput(['maxlength' => true,'value'=>$number]) ?>
-
+             <?= $form->field($model1, 'remarks')->textarea(['rows' => 6]) ?>
           </div>
           <div class="col-md-12">
            <h5 class="heading"><span>Items</span> </h5>

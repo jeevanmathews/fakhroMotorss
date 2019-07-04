@@ -1,12 +1,9 @@
 <?php
-
 use yii\helpers\Html;
 use yii\widgets\DetailView;
 use yii\widgets\Breadcrumbs;
 /* @var $this yii\web\View */
 /* @var $model backend\models\JobcardVehicle */
-
-
 $this->title = $model->id;
 $this->params['breadcrumbs'][] = ['label' => 'Jobcard Vehicles', 'url' => ['index']];
 $this->params['breadcrumbs'][] = $this->title;
