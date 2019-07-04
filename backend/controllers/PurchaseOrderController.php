@@ -125,20 +125,7 @@ class PurchaseOrderController extends Controller
         $model = Purchaserequest::find()->where(['id'=>$id])->one();
         $model1 = new Purchaseorder();
         $modelpr = new Purchaseorderitems();
-        // if(Yii::$app->request->post()):
-        //     $result=Yii::$app->request->post();
-        //     $model1->supplier_id=(int) $result['Purchaseorder']['supplier_id'];
-        //     $model1->po_created_by=(int) $result['Purchaseorder']['po_created_by'];
-        //     $model1->pr_id=(int) $result['Purchaseorder']['pr_id'];
-        //     $model1->subtotal=(double) $result['Purchaseorder']['subtotal'];
-        //     $model1->discount=(double) $result['Purchaseorder']['discount'];
-        //     $model1->discount_percent=(double) $result['Purchaseorder']['discount_percent'];
-        //     $model1->vat_percent=(double) $result['Purchaseorder']['vat_percent'];
-        //     $model1->total_tax=(double) $result['Purchaseorder']['total_tax'];
-        //     $model1->grand_total=(double) $result['Purchaseorder']['grand_total'];
-        //     // var_dump($result);die;
-        // endif;
-    
+     
          if ($model1->load(Yii::$app->request->post()) && $model1->save(false)) {
             $result=Yii::$app->request->post();
             $flag_qty=0;

@@ -31,11 +31,12 @@ $vat_format=Yii::$app->common->company->vat_format;
     <div class="row">
 
       <div class="col-md-6"> 
-         <?php if(!$model->isNewRecord):
+         <?php if($model->isNewRecord):
             $prefix=(isset(Yii::$app->common->prefix)?Yii::$app->common->prefix->id:'');
           else :
             $prefix=$model->prefix_id;
-          endif;?> 
+          endif;
+          ?> 
         <?= $form->field($model,'prefix_id', ['inputOptions' => ["class" => "form-control select2"]])->dropDownList(ArrayHelper::map(PrefixMaster::find()->where(["status" => 1])->all(), 'id', 'prefix'), ["prompt" => "Select Prefix",'value'=>$prefix]) ?>
 
         <?= $form->field($model, 'customer_id', ['inputOptions' => ["class" => "form-control select2"]])->dropDownList(ArrayHelper::map(Customer::find()->where(["status" => 1])->all(), 'id', 'name'), ["prompt" => "Select Customer"]) ?>  
@@ -60,8 +61,11 @@ $vat_format=Yii::$app->common->company->vat_format;
          <tr>
           <th>#</th>
           <th>Item</th>
+          
+           <?php if($model->qtn_id){ ?>
+          <th>Qtn Quantity</th>
+          <?php } ?>
           <th>Quantity</th>
-          <!-- <th>Quantity</th> -->
           <th>Unit</th>
           <th>Price</th>
           <?php if($vat_format=="inclusive") :?>
@@ -114,7 +118,11 @@ $vat_format=Yii::$app->common->company->vat_format;
           <?= $form->field($req, 'id[]')->hiddenInput(['value'=>$req->id])->label(false) ?>
           <td><?= Html::a('<span><i class="glyphicon glyphicon-trash"></i></span>', ['#'], ['class'=>'remove_row no-display']) ?></td>
           <td><?= $form->field($req,'item_id[]', ['inputOptions' => ["class" => "select_item_id form-control select2"]])->dropDownList(ArrayHelper::map(Items::find()->where(["status" => 1])->all(), 'id', 'item_name'), ['options' => [$req->item_id => ['Selected'=>'selected']]],  ["prompt" => "Select Items"])->label(false) ?></td>
+          <?php if($model->qtn_id){ ?>
+          <td><?= $form->field($req, 'qtn_quantity[]')->textInput(['value'=>(($req->remaining_quantity!=0)?$req->remaining_quantity:$req->quantity),'class'=>'form-control remaining_qty'])->label(false) ?></td>
+          <?php } ?>
           <td><?= $form->field($req, 'quantity[]')->textInput(['value'=>$req->quantity,'class'=>'form-control qty'])->label(false) ?></td>
+           
           <td><?= $form->field($req,'unit_id[]', ['inputOptions' => ["class" => "form-control select2"]])->dropDownList(ArrayHelper::map(Units::find()->where(["status" => 1])->all(), 'id', 'name'), ['options' => [$req->unit_id => ['Selected'=>'selected']]], ["prompt" => "Select unit"])->label(false) ?>
             <!-- <input type="hidden" id="salesorderitems-price" class="form-control price" value="<?=$req->price?>" name="SalesOrderItems[price][]"> -->
             <!-- <input type="hidden" id="salesorderitems-tax" class="form-control vatamount" value="<?=$req->tax?>" name="SalesOrderItems[tax][]"> -->

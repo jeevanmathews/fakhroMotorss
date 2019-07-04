@@ -19,7 +19,13 @@ $vat_format=Yii::$app->common->company->vat_format;
         <div class="col-md-12">
             <div class="row">
                 <div class="col-md-6">  
-                    <?= $form->field($model,'prefix_id', ['inputOptions' => ["class" => "form-control select2"]])->dropDownList(ArrayHelper::map(PrefixMaster::find()->where(["status" => 1])->all(), 'id', 'prefix'), ["prompt" => "Select Prefix",'value'=>Yii::$app->common->prefix->id]) ?>
+                     <?php if($model->isNewRecord):
+                        $prefix=(isset(Yii::$app->common->prefix)?Yii::$app->common->prefix->id:'');
+                        else :
+                          $prefix=$model->prefix_id;
+                        endif;
+                        ?>
+                    <?= $form->field($model,'prefix_id', ['inputOptions' => ["class" => "form-control select2"]])->dropDownList(ArrayHelper::map(PrefixMaster::find()->where(["status" => 1])->all(), 'id', 'prefix'), ["prompt" => "Select Prefix",'value'=>$prefix]) ?>
                     
                     <?= $form->field($model, 'expected_date')->textInput(['maxlength' => true, 'class' => "form-control datepicker"]) ?>
 
