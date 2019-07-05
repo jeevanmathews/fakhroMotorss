@@ -10,18 +10,21 @@ use Yii;
  * @property int $id
  * @property int $do_id 
  * @property int $prefix_id
+ * @property int $branch_id
  * @property string $inv_number
  * @property string $inv_created_date
  * @property string $inv_date
  * @property int $inv_created_by
  * @property int $customer_id
  * @property double $subtotal
- * @property double $discount_type
+ * @property string $discount_type
  * @property double $discount
  * @property double $discount_percent
  * @property double $vat_percent
  * @property double $total_tax
  * @property double $grand_total
+ * @property string $process_status
+ * @property string $remarks
  * @property int $status
  */
 class SalesInvoice extends \yii\db\ActiveRecord
@@ -40,12 +43,14 @@ class SalesInvoice extends \yii\db\ActiveRecord
     public function rules()
     {
         return [
-            [['prefix_id','do_id', 'inv_created_by', 'customer_id', 'status'], 'integer'],
-            [['inv_number', 'inv_date', 'inv_created_by', 'customer_id'], 'required'],
+            [['do_id', 'prefix_id', 'inv_created_by', 'customer_id','branch_id', 'status'], 'integer'],
+            [['prefix_id', 'inv_number', 'inv_date', 'inv_created_by', 'customer_id'], 'required'],
             [['inv_created_date'], 'safe'],
-            [['subtotal', 'discount', 'total_tax', 'grand_total'], 'number'],
+            [['remarks','process_status','discount_type'], 'string'],
+            [['subtotal','discount','discount_percent','vat_percent','total_tax','grand_total'], 'number'],
             [['inv_number'], 'string', 'max' => 200],
             [['inv_date'], 'string', 'max' => 300],
+           
         ];
     }
 

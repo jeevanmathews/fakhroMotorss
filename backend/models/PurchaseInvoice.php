@@ -11,6 +11,7 @@ use Yii;
  * @property int $grn_id 
  * @property int $po_id
  * @property int $prefix_id
+ * @property int $branch_id
  * @property string $inv_number
  * @property string $inv_created_date
  * @property string $inv_date
@@ -46,7 +47,7 @@ class PurchaseInvoice extends \yii\db\ActiveRecord
             [['grn_id', 'prefix_id', 'inv_created_by', 'supplier_id','branch_id', 'status'], 'integer'],
             [['prefix_id', 'inv_number', 'inv_date', 'inv_created_by', 'supplier_id'], 'required'],
             [['inv_created_date'], 'safe'],
-            [['remarks'], 'string'],
+          [['remarks','process_status','discount_type'], 'string'],
             [['subtotal','discount','discount_percent','vat_percent','total_tax','grand_total'], 'number'],
             [['inv_number'], 'string', 'max' => 200],
             [['inv_date'], 'string', 'max' => 300],

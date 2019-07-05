@@ -46,9 +46,10 @@ class PurchaseReturn extends \yii\db\ActiveRecord
             [['prefix_id', 'prtn_number', 'prtn_date', 'prtn_created_by', 'supplier_id'], 'required'],
             [['prtn_created_date'], 'safe'],
             [['subtotal', 'discount', 'discount_percent', 'vat_percent', 'total_tax', 'grand_total'], 'number'],
-            [['discount_type', 'process_status'], 'string'],
+            [['remarks','process_status','discount_type'], 'string'],
             [['prtn_number'], 'string', 'max' => 200],
             [['prtn_date'], 'string', 'max' => 300],
+            
         ];
     }
 

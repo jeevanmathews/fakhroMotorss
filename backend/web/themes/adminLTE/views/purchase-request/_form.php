@@ -13,7 +13,7 @@ use backend\models\PrefixMaster;
 $vat_format=Yii::$app->common->company->vat_format;
 ?>
 <div class="purchase-request-form">
-<?php $form = AutoForm::begin(["id" => "purchse-request-".time().(($model->isNewRecord)?"create":"update")."-form"]); ?>
+<?php $form = AutoForm::begin(["id" => "purchase-request-".time().(($model->isNewRecord)?"create":"update")."-form"]); ?>
 <div class="box-body">
     <div class="row">
         <div class="col-md-12">
@@ -146,7 +146,7 @@ $vat_format=Yii::$app->common->company->vat_format;
                     </div>
                 </div>
                 <div class="mb-5 fl-w100"><?= $form->field($model, 'discount')->hiddenInput(['class'=>'form-control discount'])->label(false) ?></div>
-                <input type="hidden" id="Purchaserequestitems-discount_percent" class="discount_percent" name="Purchaserequest[discount_percent][]">
+                <?= Html::activeTextInput($model,'discount_percent',['type'=>'hidden','class'=>'discount_percent form-control'])?>
                 <div class="mb-5 fl-w100">
                     <div class="form-group field-Purchaserequest-vat_percent">
                         <div class="input-group">

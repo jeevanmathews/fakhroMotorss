@@ -59,7 +59,7 @@ $vat_format=Yii::$app->common->company->vat_format;
              <?= $form->field($model, 'branch_id')->hiddenInput(['value' => Yii::$app->user->identity->branch_id])->label(false) ?>
          </div>
          <div class="col-md-6"> 
-           <?php if(Yii::$app->controller->action->id=='update'):
+           <?php if(!$model->isNewRecord):
            $number=$model->po_number;
            else :
             $number=(isset($modellastnumber->po_number)?$modellastnumber->po_number+1:1);
@@ -88,14 +88,13 @@ $vat_format=Yii::$app->common->company->vat_format;
                <th>Quantity</th>
                <th>Unit</th>
                <th>Rate</th>
-               <th>Total</th> 
-            <!--    
-               <?php //if($vat_format=="inclusive") :?>
+               <?php if($vat_format=="inclusive") :?>
                <th>Discount</th>
                <th>Net</th>
                <th>VAT</th>
-               <?php //endif;?>
-              -->
+               <?php endif;?>
+                <th>Total</th> 
+             
            </tr>
        </thead>
        <tbody class="item_table">
@@ -105,17 +104,31 @@ $vat_format=Yii::$app->common->company->vat_format;
             <td><?= $form->field($model1,'item_id[]', ['inputOptions' => ["class" => "select_item_td form-control select2"]])->dropDownList(ArrayHelper::map(Items::find()->where(["status" => 1])->all(), 'id', 'item_name'), ["prompt" => "Select Items"])->label(false) ?></td>
             <td><?= $form->field($model1, 'quantity[]')->textInput(['class'=>'form-control qty'])->label(false) ?></td>
             <td><?= $form->field($model1,'unit_id[]', ['inputOptions' => ["class" => "form-control select2"]])->dropDownList(ArrayHelper::map(Units::find()->where(["status" => 1])->all(), 'id', 'name'), ["prompt" => "Select unit"])->label(false) ?>
-               
-                <?php if($vat_format=="inclusive") :?>
-                <?= Html::activeTextInput($model1,'vat_rate[]',['type'=>'hidden','class'=>'vatrate'])?>
-                <?= Html::activeTextInput($model1,'tax[]',['type'=>'hidden','class'=>'tax'])?>
-            <?php endif;?>
-          
+                        
            <?= Html::activeTextInput($model1,'total_price[]',['type'=>'hidden','class'=>'total_price form-control'])?>
 
+          </td> 
+               <?php if($vat_format=="inclusive") :?>
+                <td>
+                  <div id="" role="radiogroup" aria-invalid="true">
+                    <label>
+                      <input type="radio" <?php if($model1->dis_type=="discount_type"){echo 'checked="checked"';}?> class="discount_type" value="percentage" name="Purchaseorderitems[dis_type][]"> Rate (%) 
+                    </label>
+                    <label>
+                      <input type="radio" <?php if($model1->dis_type=="discount_type"){echo 'checked="checked"';}?> class="discount_type"  value="amount" name="Purchaseorderitems[dis_type][]"> Amount
+                    </label>
+                  </div>
+                  <?= $form->field($model1, 'discount_percentage[]')->textInput(['class'=>'form-control discount_percentage'])->label(false) ?>
+                  <?= Html::activeTextInput($model1,'discount_amount[]',['type'=>'hidden','class'=>'discount_amount form-control form-control'])?>
+                </td>
+                <td><?= $form->field($model1, 'net_amount[]')->textInput(['class'=>'form-control net_amount'])->label(false) ?></td>
+                <td>
+                <?= Html::activeTextInput($model1,'tax[]',['type'=>'hidden','class'=>'tax form-control form-control'])?>
+                 <?= $form->field($model1, 'vat_rate[]')->textInput(['class'=>'form-control vatrate'])->label(false) ?></td>
+               <?php endif;?>
 
 
-        </td>
+        
         <td> <?= Html::activeTextInput($model1,'price[]',['type'=>'text','class'=>'price form-control'])?></td>
         <td>  <?= Html::activeTextInput($model1,'total[]',['type'=>'text','class'=>'total form-control'])?> </td>
     </tr>
@@ -132,14 +145,28 @@ $vat_format=Yii::$app->common->company->vat_format;
         <?php } ?>
         <td><?= $form->field($req, 'quantity[]')->textInput(['value'=>$req->quantity,'class'=>'form-control qty'])->label(false) ?></td>
         <td><?= $form->field($req,'unit_id[]', ['inputOptions' => ["class" => "form-control select2"]])->dropDownList(ArrayHelper::map(Units::find()->where(["status" => 1])->all(), 'id', 'name'), ['options' => [$req->unit_id => ['Selected'=>'selected']]], ["prompt" => "Select unit"])->label(false) ?>
-            
-            <?php if($vat_format=="inclusive") :?>
-            <?= Html::activeTextInput($req,'vat_rate[]',['type'=>'hidden','class'=>'vatrate','value'=>$req->vat_rate])?>
-            <?= Html::activeTextInput($req,'tax[]',['type'=>'hidden','class'=>'tax','value'=>$req->tax])?>
-        <?php endif;?>
+             <?= Html::activeTextInput($req,'total_price[]',['type'=>'hidden','class'=>'total_price form-control form-control','value'=>$req->total_price])?>
+        </td>
+      <?php if($vat_format=="inclusive") :?>
+          <td>
+            <div id="" role="radiogroup" aria-invalid="true">
+              <label>
+                <input type="radio" <?php if($req->dis_type=="discount_type"){echo 'checked="checked"';}?> class="discount_type" value="percentage" name="Purchaseorderitems[dis_type][]"> Rate (%) 
+              </label>
+              <label>
+                <input type="radio" <?php if($req->dis_type=="discount_type"){echo 'checked="checked"';}?> class="discount_type"  value="amount" name="Purchaseorderitems[dis_type][]"> Amount
+              </label>
+            </div>
+            <?= $form->field($req, 'discount_percentage[]')->textInput(['value'=>$req->discount_percentage,'class'=>'form-control discount_percentage'])->label(false) ?>
+            <?= Html::activeTextInput($req,'discount_amount[]',['type'=>'hidden','class'=>'discount_amount form-control form-control','value'=>$req->discount_amount])?>
+          </td>
+          <td><?= $form->field($req, 'net_amount[]')->textInput(['value'=>$req->net_amount,'class'=>'form-control net_amount'])->label(false) ?></td>
+          <td>
+           <?= Html::activeTextInput($req,'tax[]',['type'=>'hidden','class'=>'tax form-control form-control','value'=>$req->tax])?>
+           <?= $form->field($req, 'vat_rate[]')->textInput(['value'=>$req->vat_rate,'class'=>'form-control vatrate'])->label(false) ?></td>
+         <?php endif;?>
         
-        <?= Html::activeTextInput($req,'total_price[]',['type'=>'hidden','class'=>'total_price form-control form-control','value'=>$req->total_price])?>
-    </td>
+       
     <td><?= Html::activeTextInput($req,'price[]',['type'=>'text','class'=>'price form-control form-control','value'=>$req->price])?></td>
     <td><?= Html::activeTextInput($req,'total[]',['type'=>'text','class'=>'total form-control','value'=>$req->total])?></td>
 </tr>
@@ -170,7 +197,7 @@ $vat_format=Yii::$app->common->company->vat_format;
         </div>
     </div>
     <div class="mb-5 fl-w100"><?= $form->field($model, 'discount')->textInput(['class'=>'form-control discount']);//->label(false) ?></div>
-    <input type="hidden" id="Purchaseorderitems-discount_percent" class="discount_percent" name="Purchaseorder[discount_percent][]">
+  <?= Html::activeTextInput($model,'discount_percent',['type'=>'hidden','class'=>'discount_percent form-control'])?>
     <div class="mb-5 fl-w100">
         <div class="form-group field-Purchaseorder-vat_percent">
             <div class="input-group">

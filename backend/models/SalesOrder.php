@@ -49,6 +49,7 @@ class SalesOrder extends \yii\db\ActiveRecord
             [['so_date'], 'safe'],
             [['so_number'], 'string', 'max' => 200],
             [['so_expected_date'], 'string', 'max' => 300],
+             [['remarks','process_status','discount_type'], 'string'],
         ];
     }
     /**
