@@ -45,7 +45,7 @@ class Purchaseorder extends \yii\db\ActiveRecord
             [['prefix_id', 'po_number', 'po_expected_date', 'po_created_by'], 'required'],//, 'subtotal', 'total_tax', 'grand_total'
             [['pr_id', 'po_created_by', 'status','branch_id'], 'integer'],
             [['po_date'], 'safe'],
-            [['remarks'], 'string'],
+            [['remarks','process_status','discount_type'], 'string'],
             [['subtotal','discount','discount_percent','vat_percent','total_tax','grand_total'], 'number'],
             [['po_number'], 'string', 'max' => 200],
             [['po_expected_date'], 'string', 'max' => 300],

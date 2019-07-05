@@ -104,24 +104,7 @@ class PurchaseInvoiceController extends Controller
         
         $model = new PurchaseInvoice();
         $model1 = new PurchaseInvoiceItems();
-        // if(Yii::$app->request->post()):
-        //     $result=Yii::$app->request->post();
-        //     $model->supplier_id=(int) $result['PurchaseInvoice']['supplier_id'];
-        //     if(isset($result['PurchaseInvoice']['discount_type']) && $result['PurchaseInvoice']['discount_type']=="percentage" && $result['PurchaseInvoice']['discount']!=""){
-        //        $model->discount_percent= $result['PurchaseInvoice']['discount'];
-        //        $model->discount=0;
-        //     }
-        //     if(isset($result['PurchaseInvoice']['discount_type'])){
-        //         $model->discount_type= $result['PurchaseInvoice']['discount_type'];
-        //     }
-        //     if(isset($result['PurchaseInvoice']['vat_percent'])){
-        //          $model->vat_percent=$result['PurchaseInvoice']['vat_percent'];
-        //     }
-        //     // var_dump($result['PurchaseInvoice']['supplier_id']);die;
-        //     // var_dump($model->discount_type);die;
-        // endif;
-        // var_dump($result['GoodsReceiptNote']);
-        // var_dump(sizeof($result['Purchaserequestitems']['item_id']));die;
+  
         if ($model->load(Yii::$app->request->post()) && $model->save(false)) {
             $result=Yii::$app->request->post();
             for($i=0;$i<sizeof($result['PurchaseInvoiceItems']['item_id']);$i++){
@@ -168,22 +151,7 @@ class PurchaseInvoiceController extends Controller
         $model = GoodsReceiptNote::find()->where(['id'=>$id])->one();
         $model1 = new PurchaseInvoice();
         $modelpr = new PurchaseInvoiceItems();
-        // if(Yii::$app->request->post()):
-        //     $result=Yii::$app->request->post();
-        //     $model1->supplier_id=(int) $result['PurchaseInvoice']['supplier_id'];
-        //     $model1->inv_created_by=(int) $result['PurchaseInvoice']['inv_created_by'];
-        //     $model1->grn_id=(int) $result['PurchaseInvoice']['grn_id'];
-        //     if(isset($result['PurchaseInvoice']['discount_type']) && $result['PurchaseInvoice']['discount_type']=="percentage" && $result['PurchaseInvoice']['discount']!=""){
-        //        $model1->discount_percent= $result['PurchaseInvoice']['discount'];
-        //        $model1->discount=0;
-        //     }
-        //     if(isset($result['PurchaseInvoice']['discount_type'])){
-        //         $model1->discount_type= $result['PurchaseInvoice']['discount_type'];
-        //     }
-        //     if(isset($result['PurchaseInvoice']['vat_percent'])){
-        //          $model1->vat_percent=$result['PurchaseInvoice']['vat_percent'];
-        //     }
-        // endif;
+    
          if ($model1->load(Yii::$app->request->post()) && $model1->save(false)) {
             $result=Yii::$app->request->post();
             $flag_qty=0;
@@ -237,24 +205,7 @@ class PurchaseInvoiceController extends Controller
         $model = Purchaseorder::find()->where(['id'=>$id])->one();
         $model1 = new PurchaseInvoice();
         $modelpr = new PurchaseInvoiceItems();
-        // if(Yii::$app->request->post()):
-        //     $result=Yii::$app->request->post();
-        //     $model1->supplier_id=(int) $result['PurchaseInvoice']['supplier_id'];
-        //     $model1->inv_created_by=(int) $result['PurchaseInvoice']['inv_created_by'];
-        //     $model1->po_id=(int) $result['PurchaseInvoice']['po_id'];
-        //     if(isset($result['PurchaseInvoice']['discount_type']) && $result['PurchaseInvoice']['discount_type']=="percentage" && $result['PurchaseInvoice']['discount']!=""){
-        //        $model1->discount_percent= $result['PurchaseInvoice']['discount'];
-        //        $model1->discount=0;
-        //     }
-        //     if(isset($result['PurchaseInvoice']['discount_type'])){
-        //         $model1->discount_type= $result['PurchaseInvoice']['discount_type'];
-        //     }
-        //     if(isset($result['PurchaseInvoice']['vat_percent'])){
-        //          $model1->vat_percent=$result['PurchaseInvoice']['vat_percent'];
-        //     }
-        //     // var_dump($result);die;
-        // endif;
-    
+       
          if ($model1->load(Yii::$app->request->post()) && $model1->save(false)) {
              $result=Yii::$app->request->post();
              $flag_qty=0;
@@ -392,13 +343,6 @@ class PurchaseInvoiceController extends Controller
         return $this->redirect(['index']);
     }
 
-    public function actionPodetails(){
-        $do_id=Yii::$app->request->post('do_id');
-        $modelpr=GoodsReceiptNote::find()->where(['id'=>(int) $do_id])->one();
-         return $this->renderAjax('create', [
-            'modelpr' => $modelpr,
-        ]);
-    }
 
     public function actionChangeStatus($id){
         $model = $this->findModel($id);

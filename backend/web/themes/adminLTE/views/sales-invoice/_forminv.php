@@ -14,17 +14,18 @@ use backend\models\PrefixMaster;
 
 $vat_format=Yii::$app->common->company->vat_format;
 ?>
-<?php $form = AutoForm::begin(); ?>
+<div class="sales-invoice-form">
+<?php $form = AutoForm::begin(["id" => "sales-invoice-".time().(($model->isNewRecord)?"createinv":"update")."-form"]); ?>
     <div class="col-md-6"> 
         <?= $form->field($model1,'do_id', ['inputOptions' => ["class" => "select_do form-control select2"]])->dropDownList(ArrayHelper::map(DeliveryOrder::find()->where(["status" => 1])->all(), 'id', 'do_number'), ["prompt" => "Select DO"]) ?>
     </div>
     
-    <div class="col-md-6 "> 
+  <!--   <div class="col-md-6 "> 
         <?= Html::Button('Go', ['class' => 'btn btn-success btn_select_do pull-left']) ?>
-    </div>
+    </div> 
 <?php AutoForm::end(); ?>
-<?php $form = AutoForm::begin(); ?>
-<div class="box-body">
+<?php $form = AutoForm::begin(["id" => "sales-invoice-".time().(($model->isNewRecord)?"createinv":"update")."-form"]); ?>
+--><div class="box-body">
     <div class="row">
          <div class="mb-20">
 
@@ -38,13 +39,26 @@ $vat_format=Yii::$app->common->company->vat_format;
                         <input type="text" id="" class="form-control" name="" disabled value="<?= $model->prefix->prefix.'-'.$model->do_number?>">
                       </div>
                     </div>
-                      <?= $form->field($model1,'prefix_id', ['inputOptions' => ["class" => "form-control select2"]])->dropDownList(ArrayHelper::map(PrefixMaster::find()->where(["status" => 1])->all(), 'id', 'prefix'), ["prompt" => "Select Prefix"]) ?>
+                     <?php if($model->isNewRecord):
+                        $prefix=(isset(Yii::$app->common->prefix)?Yii::$app->common->prefix->id:'');
+                        else :
+                          $prefix=$model1->prefix_id;
+                        endif;
+                        ?>
+                      <?= $form->field($model1,'prefix_id', ['inputOptions' => ["class" => "form-control select2"]])->dropDownList(ArrayHelper::map(PrefixMaster::find()->where(["status" => 1])->all(), 'id', 'prefix'), ["prompt" => "Select Prefix",'value'=>$prefix]) ?>
                    <?= $form->field($model1, 'customer_id', ['inputOptions' => ["class" => "form-control select2"]])->dropDownList(ArrayHelper::map(Customer::find()->where(["status" => 1])->all(), 'id', 'name'), ["prompt" => "Select Customer"]) ?>                                     
                     <?= $form->field($model1, 'inv_created_by')->hiddenInput(['value' => \Yii::$app->user->identity->id])->label(false) ?>
+                     <?= $form->field($model1, 'remarks')->textarea(['rows' => 6]) ?>
+                      <?= $form->field($model1, 'branch_id')->hiddenInput(['value' => Yii::$app->user->identity->branch_id])->label(false) ?>
                 </div>
                 <div class="col-md-6"> 
+                      <?php if(!$model1->isNewRecord):
+                           $number=$model1->po_number;
+                           else :
+                            $number=(isset($modellastnumber->po_number)?$modellastnumber->po_number+1:1);
+                           endif;?>
                     <?= $form->field($model1, 'inv_date')->textInput(['maxlength' => true, 'class' => "form-control datepicker"]) ?>
-                         <?= $form->field($model1, 'inv_number')->textInput(['maxlength' => true]) ?>
+                     <?= $form->field($model1, 'inv_number')->textInput(['maxlength' => true,'value'=>$number]) ?>
                     
                 </div>
                   <div class="col-md-12">
@@ -59,18 +73,18 @@ $vat_format=Yii::$app->common->company->vat_format;
                                 <th>Quantity</th>
                                 <th>Unit</th>
                                 <th>Price</th>
-                                   <?php //if($vat_format=="inclusive") :?>
+                                   <?php if($vat_format=="inclusive") :?>
                                 <th>Discount</th>
                                 <th>Net</th>
                                 <th>VAT</th>
-                                <?php //endif;?>
+                                <?php endif;?>
                                 <th>Total</th>
                             </tr>
                         </thead>
 
 
                         <tbody class="item_table">
-                            <?php if($type=='create'): ?>
+                            <?php if($model->isNewRecord): ?>
                             <tr class="item_row" rid="1">
                                 <td class=""><?= Html::a('<span><i class="glyphicon glyphicon-trash"></i></span>', ['#'], ['class'=>'remove_row no-display']) ?></td>
                                 <td><?= $form->field($modelpr,'item_id[]', ['inputOptions' => ["class" => "select_item_td form-control select2"]])->dropDownList(ArrayHelper::map(Items::find()->where(["status" => 1])->all(), 'id', 'item_name'), ["prompt" => "Select Items"])->label(false) ?></td>
@@ -78,9 +92,9 @@ $vat_format=Yii::$app->common->company->vat_format;
                                 <td><?= $form->field($modelpr, 'quantity[]')->textInput(['class'=>'form-control qty'])->label(false) ?></td>
                                 <td><?= $form->field($modelpr,'unit_id[]', ['inputOptions' => ["class" => "form-control select2"]])->dropDownList(ArrayHelper::map(Units::find()->where(["status" => 1])->all(), 'id', 'name'), ["prompt" => "Select unit"])->label(false) ?></td>
                                 <td><?= $form->field($modelpr, 'price[]')->textInput(['class'=>'form-control price'])->label(false) ?>
-                                    <input type="" class="total_price" name="SalesInvoiceItems[total_price][]">
+                                    <?= Html::activeTextInput($model1,'total_price[]',['type'=>'hidden','class'=>'total_price form-control'])?>
                                 </td>
-                               <?php //if($vat_format=="inclusive") :?>
+                               <?php if($vat_format=="inclusive") :?>
                                 <td>
                                 <div id="" role="radiogroup" aria-invalid="true">
                                     <label>
@@ -91,13 +105,13 @@ $vat_format=Yii::$app->common->company->vat_format;
                                    </label>
                                 </div>
                                 <?= $form->field($modelpr, 'discount_percentage[]')->textInput(['class'=>'form-control discount_percentage'])->label(false) ?>
-                                  <input type="hidden" id="salesinvoiceitems-discount_amount" class="discount_amount" name="SalesInvoiceItems[discount_amount][]">
+                                  <?= Html::activeTextInput($model1,'discount_amount[]',['type'=>'hidden','class'=>'discount_amount form-control form-control'])?>
                                 </td>
                                 <td><?= $form->field($modelpr, 'net_amount[]')->textInput(['class'=>'form-control net_amount'])->label(false) ?></td>
                                 <td>
-                                       <input type="hidden" id="salesinvoiceitems-tax" class="tax" name="SalesInvoiceItems[tax][]">
+                                      <?= Html::activeTextInput($model1,'tax[]',['type'=>'hidden','class'=>'tax form-control form-control'])?>
                                     <?= $form->field($modelpr, 'vat_rate[]')->textInput(['class'=>'form-control vatrate'])->label(false) ?></td>
-                                  <?php //endif;?>
+                                  <?php endif;?>
 
                                <td><?= $form->field($modelpr, 'total[]')->textInput(['class'=>'form-control total'])->label(false) ?></td>
                                 
@@ -117,9 +131,9 @@ $vat_format=Yii::$app->common->company->vat_format;
                                 <td><?= $form->field($modelpr,'unit_id[]', ['inputOptions' => ["class" => "form-control select2"]])->dropDownList(ArrayHelper::map(Units::find()->where(["status" => 1])->all(), 'id', 'name'), ['options' => [$req->unit_id => ['Selected'=>'selected']]],['value'=>$req->unit_id], ["prompt" => "Select unit"])->label(false) ?></td>
                                 
                                 <td><?= $form->field($modelpr, 'price[]')->textInput(['value'=>$req->price,'class'=>'form-control price'])->label(false) ?>
-                                    <input type="" class="total_price" value="<?=$req->total_price?>" name="SalesInvoiceItems[total_price][]">
+                                     <?= Html::activeTextInput($modelpr,'total_price[]',['type'=>'hidden','class'=>'total_price form-control form-control','value'=>$req->total_price])?>
                                 </td>
-                               <?php //if($vat_format=="inclusive") :?>
+                               <?php if($vat_format=="inclusive") :?>
                                 <td>
                                 <div id="" role="radiogroup" aria-invalid="true">
                                     <label>
@@ -130,13 +144,13 @@ $vat_format=Yii::$app->common->company->vat_format;
                                    </label>
                                 </div>
                                 <?= $form->field($modelpr, 'discount_percentage[]')->textInput(['value'=>$req->discount_percentage,'class'=>'form-control discount_percentage'])->label(false) ?>
-                                  <input type="hidden" id="salesinvoiceitems-discount_amount" value="<?=$req->discount_amount?>" class="discount_amount" name="SalesInvoiceItems[discount_amount][]">
+                                 <?= Html::activeTextInput($modelpr,'discount_amount[]',['type'=>'hidden','class'=>'discount_amount form-control form-control','value'=>$req->discount_amount])?>
                                 </td>
                                 <td><?= $form->field($modelpr, 'net_amount[]')->textInput(['value'=>$req->net_amount,'class'=>'form-control net_amount'])->label(false) ?></td>
                                 <td>
-                                       <input type="hidden" id="salesinvoiceitems-tax" value="<?=$req->tax?>" class="tax" name="SalesInvoiceItems[tax][]">
+                                     <?= Html::activeTextInput($modelpr,'tax[]',['type'=>'hidden','class'=>'tax form-control form-control','value'=>$req->tax])?>
                                     <?= $form->field($modelpr, 'vat_rate[]')->textInput(['value'=>$req->vat_rate,'class'=>'form-control vatrate'])->label(false) ?></td>
-                                  <?php //endif;?>
+                                  <?php endif;?>
                                 <td><?= $form->field($modelpr, 'total[]')->textInput(['value'=>$req->total,'class'=>'form-control total'])->label(false) ?></td>
                                 
                                </tr>
@@ -153,7 +167,7 @@ $vat_format=Yii::$app->common->company->vat_format;
                 
                 <div class="w50 pull-right">
                     <div class="mb-5 fl-w100"><?= $form->field($model1, 'subtotal')->textInput(['value'=>$model->subtotal,'class'=>'form-control subtotal']) ?></div>
-                   <?php //if($vat_format=="inclusive") :?>
+                   <?php if($vat_format=="exclusive") :?>
                      <div class="input-group mb-5"><div class="input-group-addon">Discount Type</div>
                         <div id="" role="radiogroup" aria-invalid="true">
 
@@ -166,27 +180,24 @@ $vat_format=Yii::$app->common->company->vat_format;
                         </div>
                     </div>
                     <div class="mb-5 fl-w100"><?= $form->field($model1, 'discount')->textInput(['class'=>'form-control discount']) ?></div>
-                    <input type="hidden" id="salesinvoiceitems-discount_percent" class="discount_percent" name="SalesInvoice[discount_percent][]">
+                  <?= Html::activeTextInput($model1,'discount_percent',['type'=>'hidden','class'=>'discount_percent form-control'])?>
                     <div class="mb-5 fl-w100">
                         <div class="form-group field-salesinvoice-total_tax">
                         <div class="input-group">
                             <div class="input-group-addon">VAT %</div>
-                            <input type="text" id="vatper" class="form-control vatper" name="SalesInvoice[vat_percent]" value="<?=Yii::$app->common->company->vat_rate?>">
+                           <?= Html::activeTextInput($model1,'vat_percent',['type'=>'hidden','class'=>'vatper form-control','value'=>(($vat_format=="exclusive")?Yii::$app->common->company->vat_rate:0)])?>
+                            <?= Html::textInput('vatt', (($vat_format=="exclusive")?Yii::$app->common->company->vat_rate:0), ['class' => 'form-control','disabled'=>'true']) ?>
+            
                         </div>
                         </div>
                     </div>
                     <div class="mb-5 fl-w100"><?= $form->field($model1, 'total_tax')->textInput(['class'=>'form-control total_tax']) ?></div>
-                     <?php //endif;?>
+                     <?php endif;?>
                     <div class="mb-5 fl-w100"><?= $form->field($model1, 'grand_total')->textInput(['value'=>$model->grand_total,'class'=>'form-control grandtotal ']) //['readonly'=>true]?></div>
                 </div>
                 <input type="hidden" id="hiddenurl_itemprice" class="form-control hiddenurl_itemprice" name="" value="<?php echo Yii::$app->getUrlManager()->createUrl(['items/itemprice']);?>">
                 <input type="hidden" id="hiddenurl_create" class="form-control hiddenurl_create" name="" value="<?php echo Yii::$app->getUrlManager()->createUrl("sales-invoice/createinv"). "&id="?>">
-                   <!--  <div class="col-md-2"><input type="text"></div>
-                    <div class="col-md-2"><input type="text"></div>
-                    <div class="col-md-2"><input type="text"></div>
-                    <div class="col-md-2"><input type="text"></div>
-                    <div class="col-md-2"><input type="text"></div>
-                    <div class="col-md-2"><input type="text"></div> -->
+
                     <?= Html::Button('<span class="glyphicon glyphicon-plus"></span> Add Items', ['class' => 'btn btn-success btn_add_new pull-left','title'=>'Add Items']) ?>
                 </div>
             </div>
@@ -198,124 +209,36 @@ $vat_format=Yii::$app->common->company->vat_format;
     </div>
     <?php AutoForm::end(); ?>
 </div>
-
-
-</script>
 <script type="text/javascript">
-// $( function() {
-//     $( ".datepicker" ).datepicker({
-//       defaultDate: new Date(),
-//       dateFormat: "dd/mm/yy",
-//       changeMonth: true,
-//       changeYear: true,
-//       yearRange: "1930:2030",
-//   });
-// });
-// $('body').on('click','.btn_add_new',function(e){
-//     e.preventDefault();
-//     var clone = $('.item_row:last').clone();
-//     console.log(clone.find(".field-purchaserequestitems-item_id").children().children('span'));
-//     clone.find('a.no-display').removeClass('no-display');
-//     clone.find(".input-group").children('select').removeClass('select2');
-//     clone.find(".input-group").children('span').remove();
-//     clone.find("input").val('');
-//     clone.find(".input-group").children('select').select2();
-//          // clone.find(".field-purchaserequestitems-item_id")
-//          //    .children('select')
-//          //    // call destroy to revert the changes made by Select2
-//          //    .select2("destroy")
-//          //    .end()
-//             // .append(
-//             //     // clone the row and insert it in the DOM
-//             //     $(".field-purchaserequestitems-item_id")
-//             //     .children("select")
-//             //     .first()
-//             //     .clone()
-//         // );
-//         // clone.find('select').select2('destroy');
-//         clone.find('select').select2();
-//         $('.item_table').append(clone);
-//     });
-// $('body').on('click','.remove_row',function(e){
-//    e.preventDefault();
-//    $(this).closest('tr').remove();
-// });
-$('body').on('click','.btn_select_do',function(){
-  var do_id=$("#salesinvoice-do_id").val();
-  if(do_id!='' && do_id!='undefined'){
-    window.location.href='<?php echo Yii::$app->getUrlManager()->createUrl("sales-invoice/createinv"). "&id="?>'+do_id;
-  }
-});
 
-// $('body').on('change','.select_item_td',function(){
-//     var item_id=$(this).val();
-//     var thisrow=$(this).closest('tr');
-//     var data={'item_id':item_id}
-//     if(item_id!='' && item_id!='undefined'){
-//         $.ajax({
-//             'type':'post',
-//             'url':"<?php echo Yii::$app->getUrlManager()->createUrl(['items/itemprice']);?>",
-//             'data':data,
-//             success:function(s){
-//               console.log(s);
-//                 var response = JSON.parse(s);
-//                 $(thisrow).find('#deliveryorderitems-price').val(response.selling_price);
-//                 $(thisrow).find('#deliveryorderitems-tax').val(response.vat);
-//                 $(thisrow).find('#deliveryorderitems-unit_id').val(response.unit_id);
-                
-//             }
-//         });
-//     }
-// }); 
-// // change the total with quantity and price 
-// $('body').on('change','.qty,.price,.vatamount',function(){
-//     var thisrow=$(this).closest('tr');
-//     var total=0;
-//     var qty=0;
-//     var price=0;
-//     var vat=0;
-//     var vatamount=100;
-//     if($(thisrow).find('.qty').val()!='' && $(thisrow).find('.qty').val()!='undefined'){
-//         qty=$(thisrow).find('.qty').val();
-//     }
-//      if($(thisrow).find('.price').val()!='' && $(thisrow).find('.price').val()!='undefined'){
-//         price=$(thisrow).find('.price').val();
-//     }
-//     if($(thisrow).find('.vatamount').val()!='' && $(thisrow).find('.vatamount').val()!='undefined'){
-//         vatamount=$(thisrow).find('.vatamount').val();
-//         vat=(parseFloat(qty)*parseFloat(price))*parseFloat(vatamount)/100;
-//     }
-//     total=(parseFloat(qty)*parseFloat(price))+ parseFloat(vat);
-//     $(thisrow).find('.total').val(total);
-//     $('.total').trigger('change');
-// });
-// // sum up totals to get subtotal
-// $('body').on('change','.total',function(){
-//     var subtotal=0;
-//        $('.total').each(function () {
-//           if($.isNumeric($(this).val())){
-//             subtotal+=parseFloat($(this).val());
-//           }
-//        });
-//    $('.subtotal').val(subtotal);
-//    $('.subtotal').trigger('change');
-// });
-// $('body').on('change','.subtotal',function(){
-//     var gtotal=0;
-//    var subtotal= $('.subtotal').val();
-//    var discount= $('.discount').val();
-//    if($.isNumeric(discount)){
-//         gtotal= parseFloat(subtotal)-parseFloat(discount); 
-//    }else{
-//         gtotal=subtotal;
-//    }
-//     $('.grandtotal').val(gtotal);
-// });
-// // reduce discount from total
-// $('body').on('change','.discount',function(){
-//     var discount=$(this).val();
-//     var subtotal=$('.subtotal').val();
-//     var grandtotal=parseFloat(subtotal)-parseFloat(discount); 
-//     $('.grandtotal').val(grandtotal);
-// });
+addMandatoryStar();
+$(".datepicker").datepicker({
+    defaultDate: new Date(),
+    dateFormat: "dd/mm/yy",
+    changeMonth: true,
+    changeYear: true,
+    setDate: new Date(),
+    yearRange: "1930:2030",
+  });
+  $(".datepicker").datepicker("setDate", new Date());
+  $(document).find('select').select2();
+  
+    $('body').on('change','.select_do',function(){
+      var pr_id=$(this).val();
+      if(pr_id!='' && pr_id!='undefined'){
+        
+        $.ajaxSetup({async: false}); 
+          $.ajax({
+          url: '<?php echo Yii::$app->getUrlManager()->createUrl("sales-invoice/createinv")?>',//"'+po_id+'
+          aSync: false,
+          data:{'id':pr_id},
+          dataType: "html",
+          success: function(data) {
+            $(".main-body").addClass("hide");
+            $(".container-body").append($(data));
+          }});
+          $.ajaxSetup({async: true}); 
+    }
+});
 </script>
+</div>

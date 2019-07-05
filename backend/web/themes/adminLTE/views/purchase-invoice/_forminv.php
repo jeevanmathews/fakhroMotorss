@@ -15,7 +15,7 @@ use backend\models\PrefixMaster;
 $vat_format=Yii::$app->common->company->vat_format;
 ?>
 <div class="purchase-invoice-form">
-<?php $form = AutoForm::begin(["id" => "purchase-invoice-".time().(($model->isNewRecord)?"createinv":"update")."-form"]); ?>
+<?php $form = AutoForm::begin(); ?>
     <div class="col-md-6"> 
         <?= $form->field($model1,'grn_id', ['inputOptions' => ["class" => "select_grn form-control select2"]])->dropDownList(ArrayHelper::map(GoodsReceiptNote::find()->where(["status" => 1])->andWhere(['!=', 'process_status', 'completed'])->all(), 'id', 'grn_number'), ["prompt" => "Select GRN"]) ?>
     </div>
@@ -24,7 +24,7 @@ $vat_format=Yii::$app->common->company->vat_format;
         <?= Html::Button('Go', ['class' => 'btn btn-success btn_select_grn pull-left']) ?>
     </div> -->
 <?php AutoForm::end(); ?>
-<?php $form = AutoForm::begin(); ?>
+<?php $form = AutoForm::begin(["id" => "purchase-invoice-".time().(($model->isNewRecord)?"createinv":"update")."-form"]); ?>
 <div class="box-body">
     <div class="row">
          <div class="mb-20">
@@ -49,11 +49,11 @@ $vat_format=Yii::$app->common->company->vat_format;
                 <div class="col-md-6 "> 
                     <?= $form->field($model1, 'inv_date')->textInput(['maxlength' => true, 'class' => "form-control datepicker"]) ?>
                      <?php if(Yii::$app->controller->action->id=='update'):
-                      $number=$model->inv_number;
+                      $number=$model1->inv_number;
                       else :
                         $number=(isset($modellastnumber->inv_number)?$modellastnumber->inv_number+1:1);
                       endif;?>
-                      <?= $form->field($model, 'inv_number')->textInput(['maxlength' => true,'value'=>$number]) ?>
+                      <?= $form->field($model1, 'inv_number')->textInput(['maxlength' => true,'value'=>$number]) ?>
                    <span class="append_here"></span> 
                 </div>
                   <div class="col-md-12">
@@ -86,8 +86,8 @@ $vat_format=Yii::$app->common->company->vat_format;
                                 <td><?= $form->field($modelpr, 'quantity[]')->textInput()->label(false) ?></td>
                                 <td><?= $form->field($modelpr, 'quantity[]')->textInput(['class'=>'qty form-control'])->label(false) ?></td>
                                 <td><?= $form->field($modelpr,'unit_id[]', ['inputOptions' => ["class" => "form-control select2"]])->dropDownList(ArrayHelper::map(Units::find()->where(["status" => 1])->all(), 'id', 'name'), ["prompt" => "Select unit"])->label(false) ?></td>
-                                <td><?= $form->field($model1, 'price[]')->textInput(['class'=>'form-control price'])->label(false) ?>
-                                    <input type="hidden" class="total_price" name="PurchaseInvoiceItems[total_price][]">
+                                <td><?= $form->field($modelpr, 'price[]')->textInput(['class'=>'form-control price'])->label(false) ?>
+                                    <?= Html::activeTextInput($modelpr,'total_price[]',['type'=>'hidden','class'=>'total_price'])?>
                                 </td>
                                <?php if($vat_format=="inclusive") :?>
                                 <td>
@@ -99,15 +99,15 @@ $vat_format=Yii::$app->common->company->vat_format;
                                     <input type="radio" class="discount_type"  value="amount" name="PurchaseInvoiceItems[dis_type][]"> Amount
                                    </label>
                                 </div>
-                                <?= $form->field($model1, 'discount_percentage[]')->textInput(['class'=>'form-control discount_percentage'])->label(false) ?>
-                                  <input type="hidden" id="PurchaseInvoiceItems-discount_amount" class="discount_amount" name="PurchaseInvoiceItems[discount_amount][]">
+                                <?= $form->field($modelpr, 'discount_percentage[]')->textInput(['class'=>'form-control discount_percentage'])->label(false) ?>
+                                   <?= Html::activeTextInput($modelpr,'discount_amount[]',['type'=>'hidden','class'=>'discount_amount form-control form-control'])?>
                                 </td>
-                                <td><?= $form->field($model1, 'net_amount[]')->textInput(['class'=>'form-control net_amount'])->label(false) ?></td>
+                                <td><?= $form->field($modelpr, 'net_amount[]')->textInput(['class'=>'form-control net_amount'])->label(false) ?></td>
                                 <td>
-                                       <input type="hidden" id="PurchaseInvoiceItems-tax" class="tax" name="PurchaseInvoiceItems[tax][]">
-                                    <?= $form->field($model1, 'vat_rate[]')->textInput(['class'=>'form-control vatrate'])->label(false) ?></td>
+                                     <?= Html::activeTextInput($modelpr,'tax[]',['type'=>'hidden','class'=>'tax form-control form-control'])?>
+                                    <?= $form->field($modelpr, 'vat_rate[]')->textInput(['class'=>'form-control vatrate'])->label(false) ?></td>
                                   <?php endif;?>
-                                <td><?= $form->field($model1, 'total[]')->textInput(['class'=>'form-control total'])->label(false) ?></td>
+                                <td><?= $form->field($modelpr, 'total[]')->textInput(['class'=>'form-control total'])->label(false) ?></td>
                              
                                </tr>
                             <?php else :
@@ -124,7 +124,7 @@ $vat_format=Yii::$app->common->company->vat_format;
                                  <td><?= $form->field($modelpr, 'quantity[]')->textInput(['class'=>'qty form-control'])->label(false) ?></td>
                                 <td><?= $form->field($modelpr,'unit_id[]', ['inputOptions' => ["class" => "form-control select2"]])->dropDownList(ArrayHelper::map(Units::find()->where(["status" => 1])->all(), 'id', 'name'), ['options' => [$req->unit_id => ['Selected'=>'selected']]],['value'=>$req->unit_id], ["prompt" => "Select unit"])->label(false) ?></td>
                                 <td><?= $form->field($modelpr, 'price[]')->textInput(['value'=>$req->price,'class'=>'form-control price'])->label(false) ?>
-                                    <input type="hidden" class="total_price" value="<?=$req->total_price?>" name="PurchaseInvoiceItems[total_price][]">
+                                   <?= Html::activeTextInput($modelpr,'total_price[]',['type'=>'hidden','class'=>'total_price','value'=>$req->total_price])?>
                                 </td>
                                <?php if($vat_format=="inclusive") :?>
                                 <td>
@@ -137,12 +137,12 @@ $vat_format=Yii::$app->common->company->vat_format;
                                    </label>
                                 </div>
                                 <?= $form->field($modelpr, 'discount_percentage[]')->textInput(['value'=>$req->discount_percentage,'class'=>'form-control discount_percentage'])->label(false) ?>
-                                  <input type="hidden" id="PurchaseInvoiceItems-discount_amount" value="<?=$req->discount_amount?>" class="discount_amount" name="PurchaseInvoiceItems[discount_amount]">
+                                 <?= Html::activeTextInput($modelpr,'discount_amount[]',['type'=>'hidden','class'=>'discount_amount form-control form-control','value'=>$req->discount_amount])?>
                                 </td>
-                                <td><?= $form->field($req, 'net_amount[]')->textInput(['value'=>$req->net_amount,'class'=>'form-control net_amount'])->label(false) ?></td>
+                                <td><?= $form->field($modelpr, 'net_amount[]')->textInput(['value'=>$req->net_amount,'class'=>'form-control net_amount'])->label(false) ?></td>
                                 <td>
-                                       <input type="hidden" id="PurchaseInvoiceItems-tax" value="<?=$req->tax?>" class="tax" name="PurchaseInvoiceItems[tax][]">
-                                    <?= $form->field($req, 'vat_rate[]')->textInput(['value'=>$req->vat_rate,'class'=>'form-control vatrate'])->label(false) ?></td>
+                                     <?= Html::activeTextInput($modelpr,'tax[]',['type'=>'hidden','class'=>'tax form-control form-control','value'=>$req->tax])?>
+                                    <?= $form->field($modelpr, 'vat_rate[]')->textInput(['value'=>$req->vat_rate,'class'=>'form-control vatrate'])->label(false) ?></td>
                                   <?php endif;?>
                                <td><?= $form->field($modelpr, 'total[]')->textInput(['value'=>$req->total,'class'=>'form-control total'])->label(false) ?></td>    
         
@@ -173,12 +173,12 @@ $vat_format=Yii::$app->common->company->vat_format;
                         </div>
                     </div>
                     <div class="mb-5 fl-w100"><?= $form->field($model1, 'discount')->textInput(['class'=>'form-control discount']) ?></div>
-                    <input type="hidden" id="PurchaseInvoiceItems-discount_percent" class="discount_percent" name="PurchaseInvoice[discount_percent][]">
+                   <?= Html::activeTextInput($model1,'discount_percent',['type'=>'hidden','class'=>'discount_percent form-control'])?>
                     <div class="mb-5 fl-w100">
                         <div class="form-group field-PurchaseInvoice-total_tax">
                         <div class="input-group">
                             <div class="input-group-addon">VAT %</div>
-                            <?= Html::activeTextInput($model,'vat_percent',['type'=>'hidden','class'=>'vatper','value'=>(($vat_format=="exclusive")?Yii::$app->common->company->vat_rate:0)])?>
+                            <?= Html::activeTextInput($model,'vat_percent',['type'=>'','class'=>'vatper','value'=>(($vat_format=="exclusive")?Yii::$app->common->company->vat_rate:0)])?>
                         </div>
                         </div>
                     </div>

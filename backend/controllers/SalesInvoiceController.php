@@ -39,13 +39,39 @@ class SalesInvoiceController extends Controller
     {
         $searchModel = new SalesInvoiceSearch();
         $dataProvider = $searchModel->search(Yii::$app->request->queryParams);
-
-        return $this->render('index', [
+         $page_id = "purchase-invoice".time();
+        if(isset(Yii::$app->request->queryParams['page_id'])){
+            $page_id = Yii::$app->request->queryParams['page_id'];
+        }
+        return $this->renderAjax('index', [
             'searchModel' => $searchModel,
             'dataProvider' => $dataProvider,
+            'page_id'=>$page_id
         ]);
     }
+     public function actionInvoice($id){
+        $invoice =$this->findModel($id);
 
+        $itemsquery = SalesInvoiceItems::find();
+        // $materialquery = JobcardInvoiceMaterial::find();
+        
+        $itemsquery->andFilterWhere([
+            'inv_id' => $invoice->id,
+        ]);
+        $itemsdataProvider = new ActiveDataProvider([
+            'query' => $itemsquery,
+            'sort' => false
+        ]);
+
+        // $materialquery->andFilterWhere([
+        //     'invoice_id' => $invoice->id,
+        // ]);
+        // $materialdataProvider = new ActiveDataProvider([
+        //     'query' => $materialquery,
+        //     'sort' => false
+        // ]);       
+        return $this->renderAjax('_invoice',compact('invoice','itemsdataProvider'));
+    }
     /**
      * Displays a single SalesInvoice model.
      * @param integer $id
@@ -54,7 +80,7 @@ class SalesInvoiceController extends Controller
      */
     public function actionView($id)
     {
-        return $this->render('view', [
+        return $this->renderAjax('view', [
             'model' => $this->findModel($id),
         ]);
     }
@@ -67,79 +93,92 @@ class SalesInvoiceController extends Controller
     public function actionCreate()
     {
         $userId = \Yii::$app->user->identity->id;
+        $branch_id=Yii::$app->user->identity->branch_id;
+        $modellastnumber = SalesInvoice::find()->select('inv_number')->where(['branch_id'=>$branch_id])->orderBy('id desc')->limit(1)->one();
         $model = new SalesInvoice();
         $model1 = new SalesInvoiceItems();
-        if(Yii::$app->request->post()):
-            $result=Yii::$app->request->post();
-            $model->supplier_id=(int) $result['SalesInvoice']['supplier_id'];
-            // var_dump($result['SalesInvoice']['customer_id']);die;
-            // var_dump($result);die;
-        endif;
-        // var_dump($result['DeliveryOrder']);
-        // var_dump(sizeof($result['Purchaserequestitems']['item_id']));die;
         if ($model->load(Yii::$app->request->post()) && $model->save(false)) {
-
+            $result=Yii::$app->request->post();
             for($i=0;$i<sizeof($result['SalesInvoiceItems']['item_id']);$i++){
                 $model1 = new SalesInvoiceItems();
                 $model1->item_id=$result['SalesInvoiceItems']['item_id'][$i];
                 $model1->quantity=$result['SalesInvoiceItems']['quantity'][$i];
                 $model1->price=$result['SalesInvoiceItems']['price'][$i];
                 $model1->unit_id=$result['SalesInvoiceItems']['unit_id'][$i];
-                $model1->tax=$result['SalesInvoiceItems']['tax'][$i];
+                $model1->total_price =$result['SalesInvoiceItems']['total_price'][$i];
+                $model1->dis_type =(isset($result['SalesInvoiceItems']['dis_type'])?$result['SalesInvoiceItems']['dis_type'][$i]:NULL);
+                $model1->discount_percentage=(isset($result['SalesInvoiceItems']['discount_percentage'])?$result['SalesInvoiceItems']['discount_percentage'][$i]:NULL);
+                $model1->discount_amount=(isset($result['SalesInvoiceItems']['discount_amount'])?$result['SalesInvoiceItems']['discount_amount'][$i]:NULL);
+                $model1->net_amount=(isset($result['SalesInvoiceItems']['net_amount'])?$result['SalesInvoiceItems']['net_amount'][$i]:NULL);
+                $model1->vat_rate=(isset($result['SalesInvoiceItems']['vat_rate'])?$result['SalesInvoiceItems']['vat_rate'][$i]:NULL);
+                $model1->tax=(isset($result['SalesInvoiceItems']['tax'])?$result['SalesInvoiceItems']['tax'][$i]:NULL);
                 $model1->total=$result['SalesInvoiceItems']['total'][$i];
+
                 $model1->inv_id=$model->id;
+
+
                 
                 $model1->save(false);
             }
-            return $this->redirect(['view', 'id' => $model->id]);
-
-
-        // $model = new SalesInvoice();
-        // $model1 = new SalesInvoiceItems();
-        // if ($model->load(Yii::$app->request->post()) && $model->save()) {
-        //     return $this->redirect(['view', 'id' => $model->id]);
-        // }
+            echo json_encode(["success" => true, "message" => "Invoice has been created", 'redirect' => Yii::$app->getUrlManager()->createUrl(['sales-invoice/update','id' => $model->id])]);
+            exit;
     }
 
-        return $this->render('create', [
+        return $this->renderAjax('create', [
             'model' => $model,
-            'type'=>'create',
             'model1' => $model1,
+            'modellastnumber'=>$modellastnumber
         ]);
     }
     public function actionCreateinv($id){
         $model = DeliveryOrder::find()->where(['id'=>$id])->one();
+        $branch_id=Yii::$app->user->identity->branch_id;
+        $modellastnumber = SalesInvoice::find()->select('inv_number')->where(['branch_id'=>$branch_id])->orderBy('id desc')->limit(1)->one();
         $model1 = new SalesInvoice();
         $modelpr = new SalesInvoiceItems();
-        if(Yii::$app->request->post()):
-            $result=Yii::$app->request->post();
-            $model1->supplier_id=(int) $result['SalesInvoice']['supplier_id'];
-            $model1->inv_created_by=(int) $result['SalesInvoice']['do_created_by'];
-            $model1->grn_id=(int) $result['SalesInvoice']['grn_id'];
-            // var_dump($result);die;
-        endif;
-    
          if ($model1->load(Yii::$app->request->post()) && $model1->save(false)) {
+            $flag_qty=0;
+            $count=0;
+            $result=Yii::$app->request->post();
             for($i=0;$i<sizeof($result['SalesInvoiceItems']['item_id']);$i++){
-                $model2 = new SalesInvoiceItems();
-                $model2->item_id=$result['SalesInvoiceItems']['item_id'][$i];
-                $model2->quantity=$result['SalesInvoiceItems']['quantity'][$i];
-                $model2->do_quantity=$result['DeliveryOrderItems']['quantity'][$i];
-                $model2->price=$result['SalesInvoiceItems']['price'][$i];
-                $model2->unit_id=$result['SalesInvoiceItems']['unit_id'][$i];
-                $model2->tax=$result['SalesInvoiceItems']['tax'][$i];
-                $model2->total=$result['SalesInvoiceItems']['total'][$i];
-                $model2->inv_id=$model1->id;
+                $model1 = new SalesInvoiceItems();
+              
+                $model1->item_id=$result['SalesInvoiceItems']['item_id'][$i];
+                $model1->quantity=$result['SalesInvoiceItems']['quantity'][$i];
+                $model1->do_quantity=(isset($result['SalesInvoiceItems']['do_quantity'])?(int) $result['SalesInvoiceItems']['do_quantity'][$i]:NULL);
+                $model1->remaining_quantity=$model1->do_quantity-$model1->quantity;
+                if($model1->remaining_quantity==0){
+                    $flag_qty++;
+                }
+                $model1->price=$result['SalesInvoiceItems']['price'][$i];
+                $model1->unit_id=$result['SalesInvoiceItems']['unit_id'][$i];
+                $model1->total_price =$result['SalesInvoiceItems']['total_price'][$i];
+                $model1->dis_type =(isset($result['SalesInvoiceItems']['dis_type'])?$result['SalesInvoiceItems']['dis_type'][$i]:NULL);
+                $model1->discount_percentage=(isset($result['SalesInvoiceItems']['discount_percentage'])?$result['SalesInvoiceItems']['discount_percentage'][$i]:NULL);
+                $model1->discount_amount=(isset($result['SalesInvoiceItems']['discount_amount'])?$result['SalesInvoiceItems']['discount_amount'][$i]:NULL);
+                $model1->net_amount=(isset($result['SalesInvoiceItems']['net_amount'])?$result['SalesInvoiceItems']['net_amount'][$i]:NULL);
+                $model1->vat_rate=(isset($result['SalesInvoiceItems']['vat_rate'])?$result['SalesInvoiceItems']['vat_rate'][$i]:NULL);
+                $model1->tax=(isset($result['SalesInvoiceItems']['tax'])?$result['SalesInvoiceItems']['tax'][$i]:NULL);
+                $model1->total=$result['SalesInvoiceItems']['total'][$i];
+                $model1->inv_id=$model1->id;
                 
-                $model2->save(false);
+                $model1->save(false);
+                $count++;
             }
-            return $this->redirect(['view', 'id' => $model->id]);
+            if($flag_qty==$count){
+                $model->process_status='completed';
+            }else{
+                $model->process_status='processing';
+            }
+            $model->save(false);
+            echo json_encode(["success" => true, "message" => "Invoice has been created", 'redirect' => Yii::$app->getUrlManager()->createUrl(['sales-invoice/update','id' => $model->id])]);
+            exit;
         }
-        return $this->render('createinv', [
+        return $this->renderAjax('createinv', [
             'modelpr' => $modelpr,
             'model'=> $model,
             'model1'=> $model1,
-            'type' => 'update',
+            'modellastnumber'=>$modellastnumber
         ]);
     }
     /**
@@ -152,12 +191,10 @@ class SalesInvoiceController extends Controller
     public function actionUpdate($id)
     {
         $model = $this->findModel($id);
-         if(Yii::$app->request->post()):
-            $result=Yii::$app->request->post();
-            // var_dump($result);die;
-        endif;
         if ($model->load(Yii::$app->request->post()) && $model->save()) {
-            
+            $result=Yii::$app->request->post();
+            $flag_qty=0;
+            $count=0;
              for($i=0;$i<sizeof($result['SalesInvoiceItems']['item_id']);$i++){
                 if(isset($result['SalesInvoiceItems']['id'][$i])){
                     $model1 = SalesInvoiceItems::find()->where(['id'=>$result['SalesInvoiceItems']['id'][$i]])->one();
@@ -166,20 +203,43 @@ class SalesInvoiceController extends Controller
                 }
                 $model1->item_id=$result['SalesInvoiceItems']['item_id'][$i];
                 $model1->quantity=$result['SalesInvoiceItems']['quantity'][$i];
+                $model1->do_quantity=(isset($result['SalesInvoiceItems']['do_quantity'])?$result['SalesInvoiceItems']['do_quantity'][$i]:NULL);
+                 if($model->grn_id){
+                    // $model1->do_quantity=(int) $result['GrnItems']['do_quantity'][$i];
+                    $model1->remaining_quantity=$model1->do_quantity-$model1->quantity;
+                    if($model1->remaining_quantity==0){
+                        $flag_qty++;
+                    }
+                }
+
                 $model1->price=$result['SalesInvoiceItems']['price'][$i];
                 $model1->unit_id=$result['SalesInvoiceItems']['unit_id'][$i];
-                $model1->tax=$result['SalesInvoiceItems']['tax'][$i];
+                $model1->total_price =$result['SalesInvoiceItems']['total_price'][$i];
+                $model1->dis_type =(isset($result['SalesInvoiceItems']['dis_type'])?$result['SalesInvoiceItems']['dis_type'][$i]:NULL);
+                $model1->discount_percentage=(isset($result['SalesInvoiceItems']['discount_percentage'])?$result['SalesInvoiceItems']['discount_percentage'][$i]:NULL);
+                $model1->discount_amount=(isset($result['SalesInvoiceItems']['discount_amount'])?$result['SalesInvoiceItems']['discount_amount'][$i]:NULL);
+                $model1->net_amount=(isset($result['SalesInvoiceItems']['net_amount'])?$result['SalesInvoiceItems']['net_amount'][$i]:NULL);
+                $model1->vat_rate=(isset($result['SalesInvoiceItems']['vat_rate'])?$result['SalesInvoiceItems']['vat_rate'][$i]:NULL);
+                $model1->tax=(isset($result['SalesInvoiceItems']['tax'])?$result['SalesInvoiceItems']['tax'][$i]:NULL);
                 $model1->total=$result['SalesInvoiceItems']['total'][$i];
+
                 $model1->inv_id=$model->id;
                 
                 $model1->save(false);
+             $count++;
             }
-            return $this->redirect(['view', 'id' => $model->id]);
+            if($flag_qty==$count){
+                $model->process_status='completed';
+            }else{
+                $model->process_status='processing';
+            }
+            $model->save(false);
+            echo json_encode(["success" => true, "message" => "Invoice has been updated."]);
+            exit;
         }
 
-        return $this->render('update', [
+        return $this->renderAjax('update', [
             'model' => $model,
-            'type'  =>'update',
         ]);
     }
 
@@ -197,19 +257,13 @@ class SalesInvoiceController extends Controller
         return $this->redirect(['index']);
     }
 
-    public function actionPodetails(){
-        $do_id=Yii::$app->request->post('do_id');
-        $modelpr=DeliveryOrder::find()->where(['id'=>(int) $do_id])->one();
-         return $this->render('create', [
-            'modelpr' => $modelpr,
-        ]);
-    }
-
     public function actionChangeStatus($id){
         $model = $this->findModel($id);
         $model->status = ($model->status == 0)?1:0;
-        $model->save();
-        return $this->redirect(['index']);
+       if($model->save()){
+            echo json_encode(["success" => true, "message" => "Status has been changed.",'redirect'=>Yii::$app->getUrlManager()->createUrl(['sales-invoice/index'])]);
+            exit;
+        }    
     }
     /**
      * Finds the SalesInvoice model based on its primary key value.

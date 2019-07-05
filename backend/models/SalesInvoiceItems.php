@@ -12,8 +12,9 @@ use Yii;
  * @property int $item_id
  * @property int $do_quantity
  * @property int $quantity
+ * @property double $remaining_quantity
  * @property int $unit_id
- * @property double $price 
+ * @property double $price
  * @property double $total_price 
  * @property string $dis_type 
  * @property float $discount_percentage
@@ -41,7 +42,7 @@ class SalesInvoiceItems extends \yii\db\ActiveRecord
     {
         return [
             [['inv_id', 'item_id', 'quantity', 'unit_id'], 'required'],
-            [['discount_percentage','discount_amount','net_amount','inv_id', 'item_id', 'do_quantity', 'quantity', 'unit_id', 'status'], 'integer'],
+            [['inv_id', 'item_id', 'do_quantity', 'quantity', 'unit_id','remaining_quantity', 'status'], 'number'],
             [['price', 'tax', 'total'], 'number'],
         ];
     }

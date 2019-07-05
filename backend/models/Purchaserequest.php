@@ -45,7 +45,7 @@ class Purchaserequest extends \yii\db\ActiveRecord
             [['prefix_id','pr_number', 'requested_by', 'supplier_id', 'request_date', 'expected_date'], 'required'],//,'subtotal','total_tax','grand_total'
             [['requested_by', 'supplier_id', 'status','branch_id'], 'integer'],//'subtotal','discount','discount_percent','vat_percent','total_tax','grand_total',
             [['subtotal','discount','discount_percent','vat_percent','total_tax','grand_total'], 'number'],
-            [['remarks'], 'string'],
+            [['remarks','process_status','discount_type'], 'string'],
             [['pr_number', 'request_date', 'expected_date'], 'string', 'max' => 200],
         ];
     }
