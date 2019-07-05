@@ -20,6 +20,7 @@ $jc_customer_search_url = Yii::$app->getUrlManager()->createUrl(['jobcard/search
 $jc_create_task_url = Yii::$app->getUrlManager()->createUrl(['tasks/create']);
 $jc_apply_discount_url = Yii::$app->getUrlManager()->createUrl(['jobcard/apply-discount']);
 $jc_customer_info_url = Yii::$app->getUrlManager()->createUrl(['jobcard/customer-info']);
+$jc_item_search_url = Yii::$app->getUrlManager()->createUrl(['jobcard/search-item']);
 $js = <<< JS
 var jsUrl = '$jsUrl' ;
 var jc_vehicle_info_url = '$jc_vehicle_info_url';
@@ -28,6 +29,7 @@ var jc_customer_search_url = '$jc_customer_search_url';
 var jc_create_task_url = '$jc_create_task_url';
 var jc_apply_discount_url = '$jc_apply_discount_url';
 var jc_customer_info_url = '$jc_customer_info_url';
+var jc_item_search_url = '$jc_item_search_url';
 JS;
 $this->registerJs($js, \yii\web\View::POS_HEAD);
 

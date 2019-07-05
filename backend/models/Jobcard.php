@@ -24,6 +24,7 @@ use yii\behaviors\TimestampBehavior;
 class Jobcard extends \yii\db\ActiveRecord
 {    
     public $delivrey_time;
+    public $material;
     /**
      * {@inheritdoc}
      */

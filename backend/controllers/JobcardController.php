@@ -21,6 +21,7 @@ use backend\models\JobcardQuotationTask;
 use backend\models\User;
 use backend\models\Employees;
 use backend\models\TempQuotation;
+use backend\models\ItemsSearch;
 use yii\web\Controller;
 use yii\web\NotFoundHttpException;
 use yii\filters\VerbFilter;
@@ -588,6 +589,25 @@ class JobcardController extends Controller
         }
         $dataProvider = $searchModel->search(Yii::$app->request->queryParams);
         return $this->renderAjax('_searchvehicle', [
+            'searchModel' => $searchModel,
+            'dataProvider' => $dataProvider,
+        ]);
+    }
+
+    /**
+     * Displays item list.
+     * @return mixed
+     * @throws NotFoundHttpException if the model cannot be found
+     */
+    public function actionSearchItem()
+    {
+        $post = Yii::$app->request->post();       
+        $searchModel = new ItemsSearch();  
+        if(isset($post['item_name'])){
+            $searchModel->item_name = $post['item_name'];
+        }
+        $dataProvider = $searchModel->search(Yii::$app->request->queryParams);
+        return $this->renderAjax('_searchitem', [
             'searchModel' => $searchModel,
             'dataProvider' => $dataProvider,
         ]);

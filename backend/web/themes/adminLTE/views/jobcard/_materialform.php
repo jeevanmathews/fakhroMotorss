@@ -18,8 +18,11 @@ use backend\models\Items;
                 <h5 class="heading"><span><?php echo (!$jobcardMaterial->isNewRecord)?"Update":"Add New";?> Material</span> </h5>
                 <div class="col-md-6">
                     <?= $form->field($jobcardMaterial, 'material_type', ['inputOptions' => ["class" => "form-control select2"]])->dropDownList(['accessories' => 'Accessories', 'spares' => 'Spares'], ["prompt" => "Select a Task"]) ?>
+                   
+                    <?= $form->field($jobcardMaterial, 'material')->textInput() ?> 
+                    <?= $form->field($jobcardMaterial, 'material_id')->hiddenInput()->label(false) ?> 
 
-                    <?= $form->field($jobcardMaterial, 'material_id', ['inputOptions' => ["class" => "form-control select2 accessory"], 'options' => ['class' => 'form-group field-jobcardmaterial-material_id accessories required']])->dropDownList(ArrayHelper::map(Items::find()->where(["status" => 1, "type" => "accessories"])->all(), 'id', 'namewithPrice'), ["prompt" => "Select an Accessory"]) ?> 
+                   <span class="pull-right"> <?php echo html::button("Search Material", ["class" => "btn btn-link", 'id' => 'search_item_'.time()])?></span>
 
                     <?=Html::dropDownList("spares", "", ArrayHelper::map(Items::find()->where(["status" => 1, "type" => "spares"])->all(), 'id', 'namewithPrice'), ["prompt" => "Select a Sparepart", 'class' => 'hide'])?>
 

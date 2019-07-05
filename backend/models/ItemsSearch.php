@@ -61,14 +61,14 @@ class ItemsSearch extends Items
         // grid filtering conditions
         $query->andFilterWhere([
             'id' => $this->id,
-            'model_id' => $this->model_id,
-            'item_name' => $this->item_name,
+            'model_id' => $this->model_id,        
             'item_code' => $this->item_code,
             'variant_id' => $this->variant_id,
             'opening_stock' => $this->opening_stock,
             'created_date' => $this->created_date,
             'status' => $this->status,
         ]);
+        $query->andFilterWhere(['like', 'item_name', $this->item_name]);
 
         return $dataProvider;
     }

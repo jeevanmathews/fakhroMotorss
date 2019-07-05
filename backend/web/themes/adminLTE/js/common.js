@@ -344,12 +344,27 @@ function validateAttribute(modelName, fieldName, fieldValue, mid, scenario){
         });
     });  
 
+    $(document).on('click', "[id*='search_item_']", function(){ 
+        var elemId = "search-info-"+ $(this).attr("id").replace("search_item_", "");
+        $.post(jc_item_search_url)
+        .done(function( data ) {          
+                 $("#"+elemId).html(data);  
+                 $("#"+elemId).modal(); 
+        });
+    });
+
     //Jobcard search customer
     $(document).on('keyup', "[id='advanced_search']", function(){    
         searchCustomer();
     });
     $(document).on('keyup', "[id='cus_name']", function(){
         searchCustomer();
+    });
+    $(document).on('keyup', "[id='item_name']", function(){
+        searchItem();
+    });
+    $(document).on('keyup', "[id='advanced_search_item']", function(){    
+        searchItem();
     });
     function selectCustomer(cus_id){       
         $.ajaxSetup({async: false}); 
@@ -364,12 +379,28 @@ function validateAttribute(modelName, fieldName, fieldValue, mid, scenario){
         $.ajaxSetup({async: true});
     }
 
+    function selectItem(item_name, item_id){        
+      $(".main-body:visible").find("#jobcardmaterial-material").val(item_name);
+      $(".main-body:visible").find("#jobcardmaterial-material_id").val(item_id);
+      $(".close-modal").trigger("click");            
+    }
+
     function searchCustomer(){
         $.ajaxSetup({async: false}); 
         $.post(jc_customer_search_url, {cus_name: $("[id*='search-info']:visible").find("#cus_name").val()})
         .done(function( data ) {
             $(".grid-view").html($(data).find(".grid-view").html()); 
             $("[id*='searchcus-info']:visible .grid-view").html($(data).find(".grid-view").html());   
+        });
+        $.ajaxSetup({async: true});
+    }
+
+    function searchItem(){
+        $.ajaxSetup({async: false}); 
+        $.post(jc_item_search_url, {item_name: $("[id*='search-info']:visible").find("#item_name").val()})
+        .done(function( data ) {
+            $(".grid-view").html($(data).find(".grid-view").html()); 
+            $("[id*='search-info']:visible .grid-view").html($(data).find(".grid-view").html());   
         });
         $.ajaxSetup({async: true});
     }
