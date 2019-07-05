@@ -53,9 +53,9 @@ $vat_format=Yii::$app->common->company->vat_format;
                 </div>
                 <div class="col-md-6"> 
                       <?php if(!$model1->isNewRecord):
-                           $number=$model1->po_number;
+                           $number=$model1->inv_number;
                            else :
-                            $number=(isset($modellastnumber->po_number)?$modellastnumber->po_number+1:1);
+                            $number=(isset($modellastnumber->inv_number)?$modellastnumber->inv_number+1:1);
                            endif;?>
                     <?= $form->field($model1, 'inv_date')->textInput(['maxlength' => true, 'class' => "form-control datepicker"]) ?>
                      <?= $form->field($model1, 'inv_number')->textInput(['maxlength' => true,'value'=>$number]) ?>
