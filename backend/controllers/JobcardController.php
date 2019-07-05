@@ -20,6 +20,7 @@ use backend\models\JobcardQuotationMaterial;
 use backend\models\JobcardQuotationTask;
 use backend\models\User;
 use backend\models\Employees;
+use backend\models\TempQuotation;
 use yii\web\Controller;
 use yii\web\NotFoundHttpException;
 use yii\filters\VerbFilter;
@@ -548,37 +549,30 @@ class JobcardController extends Controller
     }
 
     public function actionTempQuotation($jobcard_id){
-        $jobcard = $this->findModel($jobcard_id);
-        $data = [
-                ['id' => 1, 'task' => 'sdd', 'task_rate' => '45'],
-                ['id' => 2, 'task' => 'sdd', 'task_rate' => '45'],
-                ];
 
-        $taskdataProvider = new ArrayDataProvider([
-            'allModels' => $data,
-            'pagination' => [
-                'pageSize' => 10,
-            ],
-            'sort' => [
-                'attributes' => ['id', 'task', 'task_rate'],
-            ],
-        ]);
-        $material_data = [
-                ['id' => 1, 'material_type' => 'sdd', 'num_unit' => '45', 'unit_rate' => 4,'material_name' => 'sdd', 'total' => '45'],
-                ['id' => 2, 'material_type' => 'sdd', 'num_unit' => '45', 'unit_rate' => 3, 'material_name' => 'sdd', 'total' => '45'],
-                ];
+        $jobcard = $this->findModel($jobcard_id); 
+        $quotation = TempQuotation::find()->where(['jobcard_id' => $jobcard_id])->one();
+        if(Yii::$app->request->post()){
+            $post = Yii::$app->request->post();
+            if($quotation) $tempQuotation = $quotation;
+            else $tempQuotation = new TempQuotation();
+            $tempQuotation->jobcard_id = $jobcard_id;
+            $tempQuotation->task = $post['tasks'];
+            $tempQuotation->material = $post['materials'];
+            $tempQuotation->date = date("Y-m-d h:i:s");
+            $tempQuotation->created_by = Yii::$app->user->id;
+            $tempQuotation->save();
+        }       
+        
+        $tasks = json_decode($quotation->task);
+        $materials = json_decode($quotation->material);
+        return $this->renderAjax('_temp_quotation',compact('jobcard', 'tasks', 'materials'));
+    }
 
-        $materialdataProvider = new ArrayDataProvider([
-            'allModels' => $material_data,
-            'pagination' => [
-                'pageSize' => 10,
-            ],
-            'sort' => [
-                'attributes' => ['id', 'material_type', 'material_name', 'num_unit', 'unit_rate', 'total'],
-            ],
-        ]);
+    public function actionTest(){
 
-        return $this->renderAjax('_temp_quotation',compact('jobcard', 'taskdataProvider', 'materialdataProvider'));
+        
+
     }
      /**
      * Displays vehicle list.

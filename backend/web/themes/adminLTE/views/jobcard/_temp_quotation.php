@@ -114,14 +114,14 @@ $(document).ready(function(){
         var index = $("table#"+tableId+" tbody tr:last-child").index();
         if(tableId == "task-table"){
         var row = '<tr>' +
-            '<td><input type="text" class="form-control" name="name" id="name"></td>' +
+            '<td class="task_name"><input type="text" class="form-control" name="name" id="name"></td>' +
             '<td class="task_rate"><input type="text" class="form-control"></td>' +           
             '<td>' + actions + '</td>' +
         '</tr>';
         }else if(tableId == "material-table"){
             var row = '<tr>' +
-            '<td><input type="text" class="form-control" name="material_type"></td>' +
-            '<td><input type="text" class="form-control" name="material_name"></td>' +
+            '<td class="material_type"><input type="text" class="form-control" name="material_type"></td>' +
+            '<td class="material_name"><input type="text" class="form-control" name="material_name"></td>' +
             '<td class="no_unit"><input type="text" class="form-control"></td>' +
             '<td class="unit_rate"><input type="text" class="form-control"></td>' +
             '<td class="price"><input type="text" class="form-control"></td>' +
@@ -168,6 +168,7 @@ $(document).ready(function(){
         $(".add-new").removeAttr("disabled");
         updateTotals();
     });
+    updateTotals();
 });
 
 function updateTotals(){
@@ -191,6 +192,7 @@ function printQuotation(){
     $content.find("#task-table th:last-child, #task-table td:last-child, #material-table th:last-child, #material-table td:last-child").addClass("hide");
     $content.find("#print").addClass("hide");
     $content.find(".add-btn").addClass("hide"); 
+    $content.find("#saveqtn").addClass("hide"); 
     var printWindow = window.open('', '', 'height=400,width=800');
     printWindow.document.write('<html><head><title>DIV Contents</title>');
     printWindow.document.write('</head><body >');
@@ -200,13 +202,39 @@ function printQuotation(){
     printWindow.print(); 
     $content.find("#task-table th:last-child, #task-table td:last-child, #material-table th:last-child, #material-table td:last-child").removeClass("hide");
     $content.find("#print").removeClass("hide");
-    $content.find(".add-btn").removeClass("hide");        
+    $content.find(".add-btn").removeClass("hide"); 
+    $content.find("#saveqtn").removeClass("hide"); 
 }
-
+function saveQuotation(){
+    tasks = []; 
+    materials = [];
+    $("#task-table tr:gt(0)").each(function(){  
+        var task = {}; 
+        task.name = $(this).find("td.task_name").text();
+        task.rate = $(this).find("td.task_rate").text(); 
+        tasks.push(task);
+    });
+    $("#material-table tr:gt(0)").each(function(){  
+        var material = {}; 
+        material.name = $(this).find("td.material_name").text();
+        material.type = $(this).find("td.material_type").text(); 
+        material.no_unit = $(this).find("td.no_unit").text();
+        material.unit_rate = $(this).find("td.unit_rate").text();
+        material.price = $(this).find("td.price").text();
+        materials.push(material);
+    });
+    $.ajaxSetup({async: false}); 
+    $.post("<?php echo Yii::$app->getUrlManager()->createUrl(['jobcard/temp-quotation']+['jobcard_id' => $jobcard->id])?>", {_csrf_backend: '<?php echo  \yii::$app->request->csrfToken;?>' ,tasks: JSON.stringify(tasks), materials: JSON.stringify(materials)})
+    .done(function( data ) {
+        alert('Quotation saved!');            
+    });
+    $.ajaxSetup({async: true});
+}
 </script>
 </head>
 <body style="margin: 0; padding: 0;" class="invoice-wrapper">
     <button id="print" onclick="printQuotation();">Print</button>
+    <button id="saveqtn" onclick="saveQuotation();">Save</button>
     <table width="800" cellpadding="0" cellspacing="0" style=";margin:0 auto; font-family: 'Roboto Condensed', sans-serif; border-collapse: collapse;">
         <tr>
             <td>
@@ -317,15 +345,31 @@ function printQuotation(){
                     </tr>
                 </thead>
                 <tbody>
+                    <?php if($tasks) { foreach ($tasks as $task) {
+                        if($task) {?>
+                        <tr>
+                        <?php 
+                        echo '<td class="task_name">'.$task->name.'</td>';
+                        echo '<td class="task_rate">'.$task->rate.'</td>';
+                        ?>
+                        <td>
+                            <a class="add" title="Add" data-toggle="tooltip"><i class="material-icons">&#xE03B;</i></a>
+                            <a class="edit" title="Edit" data-toggle="tooltip"><i class="material-icons">&#xE254;</i></a>
+                            <a class="delete" title="Delete" data-toggle="tooltip"><i class="material-icons">&#xE872;</i></a>
+                        </td>
+                        </tr>     
+                    <?php } } } else { ?>
+
                     <tr>
-                        <td>Task Name</td>
+                        <td class="task_name">Task Name</td>
                         <td class="task_rate">100</td>                     
                         <td>
                             <a class="add" title="Add" data-toggle="tooltip"><i class="material-icons">&#xE03B;</i></a>
                             <a class="edit" title="Edit" data-toggle="tooltip"><i class="material-icons">&#xE254;</i></a>
                             <a class="delete" title="Delete" data-toggle="tooltip"><i class="material-icons">&#xE872;</i></a>
                         </td>
-                    </tr>                         
+                    </tr>
+                    <?php } ?>                         
                 </tbody>
             </table>
 
@@ -348,9 +392,28 @@ function printQuotation(){
                     </tr>
                 </thead>
                 <tbody>
+
+                    <?php if($materials) { foreach ($materials as $material) {
+                        if($material) {?>
+                        <tr>
+                        <?php 
+                        echo '<td class="material_type">'.$material->type.'</td>';
+                        echo '<td class="material_name">'.$material->name.'</td>';
+                        echo '<td class="no_unit">'.$material->no_unit.'</td>';
+                        echo '<td class="unit_rate">'.$material->unit_rate.'</td>';
+                        echo '<td class="price">'.$material->price.'</td>';                        
+                        ?>
+                        <td>
+                            <a class="add" title="Add" data-toggle="tooltip"><i class="material-icons">&#xE03B;</i></a>
+                            <a class="edit" title="Edit" data-toggle="tooltip"><i class="material-icons">&#xE254;</i></a>
+                            <a class="delete" title="Delete" data-toggle="tooltip"><i class="material-icons">&#xE872;</i></a>
+                        </td>
+                        </tr> 
+
+                  <?php } } } else { ?>
                     <tr>
-                        <td>Spare</td>
-                        <td>Rear Mirror</td>
+                        <td class="material_type">Spare</td>
+                        <td class="material_name">Rear Mirror</td>
                         <td class="no_unit">100</td>
                         <td class="unit_rate">5</td>
                         <td class="price">500</td>
@@ -359,7 +422,8 @@ function printQuotation(){
                             <a class="edit" title="Edit" data-toggle="tooltip"><i class="material-icons">&#xE254;</i></a>
                             <a class="delete" title="Delete" data-toggle="tooltip"><i class="material-icons">&#xE872;</i></a>
                         </td>
-                    </tr>                          
+                    </tr>  
+                 <?php } ?>                                   
                 </tbody>
             </table>
 
