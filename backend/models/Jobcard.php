@@ -23,8 +23,7 @@ use yii\behaviors\TimestampBehavior;
  */
 class Jobcard extends \yii\db\ActiveRecord
 {    
-    public $delivrey_time;
-    public $material;
+    public $delivrey_time;   
     /**
      * {@inheritdoc}
      */
@@ -89,6 +88,10 @@ class Jobcard extends \yii\db\ActiveRecord
 
     public function getBranch(){
         return $this->hasOne(Branches::className(), ['id' => 'branch_id']);
+    }
+
+    public function getjcStatus(){
+        return $this->hasOne(JobcardStatus::className(), ['id' => 'status']);
     }
 
     public function getCustomer(){

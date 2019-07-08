@@ -15,7 +15,7 @@ $this->params['breadcrumbs'][] = $this->title;
     <!-- Content Header (Page header) -->
     <section class="content-header">
       <h1>
-       Material Search
+       Material Search ( Type : <?php echo $searchModel->type;?>)
       </h1>
     </section>
     
@@ -29,14 +29,15 @@ $this->params['breadcrumbs'][] = $this->title;
                 <div class="row">
                     <div class="col-md-12"> 
                         <p>                            
-                            <?= Html::textInput("item_name", "", ['placeholder' => 'Veh.Reg. Number', 'id' => 'item_name'])?>
+                            <?= Html::textInput("item_name", "", ['placeholder' => 'Material Name', 'id' => 'item_name'])?>
 
                             <?= Html::button('Search', ['class' => 'btn btn-success', 'id' => 'advanced_search_item']) ?>
-                        </p>
-                  
-                        <?php \yii\widgets\Pjax::begin(); ?>
+                        </p>                  
+                   
                         <?= GridView::widget([
                             'dataProvider' => $dataProvider,
+                            'options' => ['class' => 'grid-view modal-grid'],
+                            'id' => $page_id,
                             'columns' => [
                             ['class' => 'yii\grid\SerialColumn'],                       
                             'namewithPrice',                            
@@ -49,8 +50,7 @@ $this->params['breadcrumbs'][] = $this->title;
                                 ]
                             ],
                             ],
-                            ]); ?>
-                        <?php \yii\widgets\Pjax::end(); ?>
+                            ]); ?>                  
                        
                     </div>
                 </div>             

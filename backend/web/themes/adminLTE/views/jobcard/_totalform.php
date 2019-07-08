@@ -45,13 +45,16 @@ $cur_time = time();
                 <span class="pull-left"><?= Html::button('Print Jobcard', ['onclick' => 'window.open("'.Yii::$app->getUrlManager()->createUrl(['jobcard/print', 'jobcard_id' => $model->id]).'", "_blank");', 'class' => 'btn btn-success']) ?></span>
                 </td>    
                 </tr>
-                 <?php if($model->quotation) { ?> 
-                <tr>               
-                <td colspan="2"> 
+                <tr>  
+                <?php if($model->quotation) { ?> 
+                <td> 
                 <span class="pull-left"><?= Html::button('View Quotation', ['onclick' => 'window.open("'.Yii::$app->getUrlManager()->createUrl(['jobcard/quotation', 'quotation_id' => $model->quotation->id]).'", "_blank");', 'class' => 'btn btn-success']) ?></span>
                 </td>
+                <?php } ?>
+                <td> 
+                <span class="pull-left"><?= Html::button('Custom Quotation', ['onclick' => 'window.open("'.Yii::$app->getUrlManager()->createUrl(['jobcard/temp-quotation', 'jobcard_id' => $model->id]).'", "_blank");', 'class' => 'btn btn-success']) ?></span>
+                </td>  
                 </tr>
-                <?php } ?>  
                 <tr>
                 <td>Total Labour Cost: </td>
                 <td><?php echo "<b>".Yii::$app->common->company->settings->currency->code." ".$model->labourCost."</b>";?></td>

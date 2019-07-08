@@ -20,7 +20,7 @@ $task_net_price_tot = 0;
 $net_price_tot = 0;
 $cur_time = time();
 ?>
-<div class="main-body" id="jobcard_update">
+<div class="main-body" id="jobcard_update_<?php echo $cur_time;?>">
 <?= Breadcrumbs::widget([
         'links' => isset($this->params['breadcrumbs']) ? $this->params['breadcrumbs'] : [],
         ]) ?>

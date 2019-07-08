@@ -200,6 +200,7 @@ function printQuotation(){
     printWindow.document.write('</body></html>');
     printWindow.document.close();
     printWindow.print(); 
+    
     $content.find("#task-table th:last-child, #task-table td:last-child, #material-table th:last-child, #material-table td:last-child").removeClass("hide");
     $content.find("#print").removeClass("hide");
     $content.find(".add-btn").removeClass("hide"); 

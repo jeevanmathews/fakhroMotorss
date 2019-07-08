@@ -58,7 +58,7 @@ $this->params['breadcrumbs'][] = $this->title;
             //'created_date',
             'promised_date',
             'advance_paid',
-            'status',
+            'jcStatus.name',
             //'receipt_num',
             //'sales_manager',
             //'service_advisor',

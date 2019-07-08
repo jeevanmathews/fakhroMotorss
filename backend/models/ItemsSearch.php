@@ -18,7 +18,7 @@ class ItemsSearch extends Items
     {
         return [
             [['model_id', 'variant_id', 'status','supplier_id','itemgroup_id'], 'integer'],
-            [['item_name','item_code'], 'string', 'max' => 300],
+            [['item_name','item_code', 'type'], 'string', 'max' => 300],
             [['current_stock','opening_stock'], 'number'],
             [['created_date'], 'safe'],
         ];
@@ -67,6 +67,7 @@ class ItemsSearch extends Items
             'opening_stock' => $this->opening_stock,
             'created_date' => $this->created_date,
             'status' => $this->status,
+            'type' => $this->type
         ]);
         $query->andFilterWhere(['like', 'item_name', $this->item_name]);
 

@@ -17,6 +17,7 @@ use Yii;
 class JobcardMaterial extends \yii\db\ActiveRecord
 {
     public $discount;
+    public $material_name;
     /**
      * {@inheritdoc}
      */
@@ -45,7 +46,7 @@ class JobcardMaterial extends \yii\db\ActiveRecord
     {
         return [
             'id' => 'ID',
-            'material_id' => 'Material ID',
+            'material_id' => 'Material',
             'material_type' => 'Material Type',
             'num_unit' => 'No of Units',
             'unit_rate' => 'Unit Cost',
@@ -66,6 +67,10 @@ class JobcardMaterial extends \yii\db\ActiveRecord
             $material = Items::find()->where(['id' => $this->material_id, 'type' => 'spares'])->one();
         }
         return $material;
+    }
+
+    public function getMaterial_name(){
+
     }    
 
     public function beforeSave($insert)

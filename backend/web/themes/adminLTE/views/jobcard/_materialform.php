@@ -19,14 +19,10 @@ use backend\models\Items;
                 <div class="col-md-6">
                     <?= $form->field($jobcardMaterial, 'material_type', ['inputOptions' => ["class" => "form-control select2"]])->dropDownList(['accessories' => 'Accessories', 'spares' => 'Spares'], ["prompt" => "Select a Task"]) ?>
                    
-                    <?= $form->field($jobcardMaterial, 'material')->textInput() ?> 
-                    <?= $form->field($jobcardMaterial, 'material_id')->hiddenInput()->label(false) ?> 
-
-                   <span class="pull-right"> <?php echo html::button("Search Material", ["class" => "btn btn-link", 'id' => 'search_item_'.time()])?></span>
-
-                    <?=Html::dropDownList("spares", "", ArrayHelper::map(Items::find()->where(["status" => 1, "type" => "spares"])->all(), 'id', 'namewithPrice'), ["prompt" => "Select a Sparepart", 'class' => 'hide'])?>
-
-                    <?=Html::dropDownList("accessories", "", ArrayHelper::map(Items::find()->where(["status" => 1, "type" => "accessories"])->all(), 'id', 'namewithPrice'), ["prompt" => "Select an Accessory", 'class' => 'hide'])?>                  
+                    <?= $form->field($jobcardMaterial, 'material_name')->textInput(['disabled' => 'disabled', 'value' => (($jobcardMaterial->isNewRecord)?"":$jobcardMaterial->material->nameWithPrice)]) ?> 
+                    
+                    <?= $form->field($jobcardMaterial, 'material_id')->hiddenInput()->label(false) ?>
+                    <span class="pull-right"> <?php echo html::a("Search Material", "javascript:;", ["class" => "search-jcitem", "id" => "search_item_".time()])?></span>
 
                     <?= $form->field($jobcardMaterial, 'unit_rate')->textInput(['maxlength' => true]) ?>
 

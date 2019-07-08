@@ -198,23 +198,51 @@ function validateAttribute(modelName, fieldName, fieldValue, mid, scenario){
         $("[tab_id='"+tabId+"']").find("#jobcardmaterial-unit_rate").val("");
 
     });
-    $(document).on('change', ".accessory,.spare_part:visible", function(){
-        var tabId = $(this).closest(".main-body").attr("tab_id");      
-        var sel = $(this).find("option:selected").html();        
+
+    function jcMaterialChange(item_name){ 
+        var tabId = $("#jobcardmaterial-material_name:visible").closest(".main-body").attr("tab_id");      
+        var sel = item_name;
+
         $("[tab_id='"+tabId+"']").find("#jobcardmaterial-unit_rate").val(sel.split(" ").reverse()[1]);
         $("[tab_id='"+tabId+"']").find("#jobcardmaterial-unit_rate").attr("disabled", "disabled");
         $("[tab_id='"+tabId+"']").find("#jobcardmaterial-num_unit").val("");
         $("[tab_id='"+tabId+"']").find("#jobcardmaterial-rate").val("");
         $("[tab_id='"+tabId+"']").find("#jobcardmaterial-hidden-rate").val("");
-    });
+    }
+
+    function searchItem(){
+        $.ajaxSetup({async: false}); 
+        $.post(jc_item_search_url, {item_name: $("[id*='search-info']:visible").find("#item_name").val()})
+        .done(function( data ) {
+            $(".grid-view").html($(data).find(".grid-view").html()); 
+            $("[id*='search-info']:visible .grid-view").html($(data).find(".grid-view").html());   
+        });
+        $.ajaxSetup({async: true});
+    }
+
+    function selectItem(item_name, item_id){        
+      $(".main-body:visible").find("#jobcardmaterial-material_name").val(item_name);
+      $(".main-body:visible").find("#jobcardmaterial-material_id").val(item_id);
+      jcMaterialChange(item_name);
+      $(".close-modal").trigger("click");            
+    }
+
     $(document).on('keyup', "#jobcardmaterial-num_unit:visible", function(){
         var tabId = $(this).closest(".main-body").attr("tab_id");  
-        var tot = $("[tab_id='"+tabId+"']").find("#jobcardmaterial-unit_rate").val()*$("[tab_id='"+tabId+"']").find("#jobcardmaterial-num_unit").val();
+        var tot = parseFloat($("[tab_id='"+tabId+"']").find("#jobcardmaterial-unit_rate").val())*parseFloat($("[tab_id='"+tabId+"']").find("#jobcardmaterial-num_unit").val());
         $("[tab_id='"+tabId+"']").find("#jobcardmaterial-rate").val(tot);
         $("[tab_id='"+tabId+"']").find("#jobcardmaterial-hidden-rate").val(tot);
         $("[tab_id='"+tabId+"']").find("#jobcardmaterial-rate").attr("disabled", "disabled");
-    });   
+    });
 
+    $(document).on('click', "[id*='search_item_']", function(){ 
+        var elemId = "search-info-"+ $(this).attr("id").replace("search_item_", "");
+        $.post(jc_item_search_url, {"item_type": $(".main-body:visible").find("#jobcardmaterial-material_type").val()})
+        .done(function( data ) {          
+                 $("#"+elemId).html(data);  
+                 $("#"+elemId).modal(); 
+        });
+    });
 
     // Jobcard Total form scripts
 
@@ -263,7 +291,7 @@ function validateAttribute(modelName, fieldName, fieldValue, mid, scenario){
     function showtotDiscount(discount, tabId){
 
         if(discount == "discount_amount"){
-            $("[tab_id='"+tabId+"']").find$("#discount_amount").removeClass("hide");
+            $("[tab_id='"+tabId+"']").find("#discount_amount").removeClass("hide");
             $("[tab_id='"+tabId+"']").find("#discount_percent").addClass("hide");
         }else{
             $("[tab_id='"+tabId+"']").find("#discount_amount").addClass("hide");
@@ -342,16 +370,7 @@ function validateAttribute(modelName, fieldName, fieldValue, mid, scenario){
           $("#"+elemId).html(data);  
           $("#"+elemId).modal(); 
         });
-    });  
-
-    $(document).on('click', "[id*='search_item_']", function(){ 
-        var elemId = "search-info-"+ $(this).attr("id").replace("search_item_", "");
-        $.post(jc_item_search_url)
-        .done(function( data ) {          
-                 $("#"+elemId).html(data);  
-                 $("#"+elemId).modal(); 
-        });
-    });
+    });     
 
     //Jobcard search customer
     $(document).on('keyup', "[id='advanced_search']", function(){    
@@ -379,28 +398,12 @@ function validateAttribute(modelName, fieldName, fieldValue, mid, scenario){
         $.ajaxSetup({async: true});
     }
 
-    function selectItem(item_name, item_id){        
-      $(".main-body:visible").find("#jobcardmaterial-material").val(item_name);
-      $(".main-body:visible").find("#jobcardmaterial-material_id").val(item_id);
-      $(".close-modal").trigger("click");            
-    }
-
     function searchCustomer(){
         $.ajaxSetup({async: false}); 
         $.post(jc_customer_search_url, {cus_name: $("[id*='search-info']:visible").find("#cus_name").val()})
         .done(function( data ) {
             $(".grid-view").html($(data).find(".grid-view").html()); 
             $("[id*='searchcus-info']:visible .grid-view").html($(data).find(".grid-view").html());   
-        });
-        $.ajaxSetup({async: true});
-    }
-
-    function searchItem(){
-        $.ajaxSetup({async: false}); 
-        $.post(jc_item_search_url, {item_name: $("[id*='search-info']:visible").find("#item_name").val()})
-        .done(function( data ) {
-            $(".grid-view").html($(data).find(".grid-view").html()); 
-            $("[id*='search-info']:visible .grid-view").html($(data).find(".grid-view").html());   
         });
         $.ajaxSetup({async: true});
     }
@@ -430,11 +433,11 @@ $(document).on('beforeFilter', '.grid-view', function(event) {
           url: $(".main-body:visible").find(".gridview-filter-form").attr("action"),
           type: 'get',       
           data: $(".main-body:visible").find(".gridview-filter-form").serialize()+'&page_id='+$(".main-body:visible").find(".grid-view").attr("id"),
-          success: function(data) {console.log("dfd")
-            console.log($(data).find('.grid-view').html())
+          success: function(data) {           
              $(".main-body:visible").find(".grid-view").html($(data).find('.grid-view').html())
           }
         });
     $.ajaxSetup({async: true}); 
     return false;
 });
+

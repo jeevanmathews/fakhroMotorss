@@ -240,7 +240,7 @@ class JobcardController extends Controller
                     echo json_encode(["success" => true, "message" => 'Material has been '.$mat_stat.' to this Jobcard.', 'redirect' => Yii::$app->getUrlManager()->createUrl(['jobcard/update', 'id' => $model->id, 'tab' => 'material'])]);
                 exit; } 
             }else{ 
-                echo json_encode(["error" => true, "message" => implode(", ", $jobcardMaterial->getErrors('material_id')), 'redirect' => Yii::$app->getUrlManager()->createUrl(['jobcard/update', 'id' => $model->id, 'tab' => 'material'])]);
+                echo json_encode(["error" => true, "message" => Yii::$app->common->showModelErrors($jobcardMaterial), 'redirect' => Yii::$app->getUrlManager()->createUrl(['jobcard/update', 'id' => $model->id, 'tab' => 'material'])]);
                     exit;
             }   
             $activeTab = 'material';
@@ -564,9 +564,14 @@ class JobcardController extends Controller
             $tempQuotation->created_by = Yii::$app->user->id;
             $tempQuotation->save();
         }       
+        if($quotation){
+            $tasks = json_decode($quotation->task);
+            $materials = json_decode($quotation->material); 
+        }else{
+            $tasks = [];
+            $materials = [];
+        }
         
-        $tasks = json_decode($quotation->task);
-        $materials = json_decode($quotation->material);
         return $this->renderAjax('_temp_quotation',compact('jobcard', 'tasks', 'materials'));
     }
 
@@ -601,15 +606,20 @@ class JobcardController extends Controller
      */
     public function actionSearchItem()
     {
-        $post = Yii::$app->request->post();       
+        $post = Yii::$app->request->post(); 
+        $page_id = "jobcard-materialssearch".time();      
         $searchModel = new ItemsSearch();  
         if(isset($post['item_name'])){
             $searchModel->item_name = $post['item_name'];
+        }
+        if(isset($post['item_type'])){
+            $searchModel->type = $post['item_type'];
         }
         $dataProvider = $searchModel->search(Yii::$app->request->queryParams);
         return $this->renderAjax('_searchitem', [
             'searchModel' => $searchModel,
             'dataProvider' => $dataProvider,
+            'page_id' => $page_id
         ]);
     }
 

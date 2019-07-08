@@ -5,7 +5,6 @@ use yii\grid\GridView;
 use yii\helpers\ArrayHelper;
 use backend\models\Vehiclemodels;
 use backend\models\Variants;
-use yii\widgets\Pjax;
 
 /* @var $this yii\web\View */
 /* @var $searchModel backend\models\ItemsSearch */
@@ -33,7 +32,7 @@ $this->params['breadcrumbs'][] = $this->title;
                         <p>
                             <?= Html::a('Create Items', ['create'], ['class' => 'btn btn-success']) ?>
                         </p>
-                         <?php Pjax::begin(['id'=>'items']); ?>
+                   
                         <?= GridView::widget([
                             'dataProvider' => $dataProvider,
                             'filterModel' => $searchModel,
@@ -73,7 +72,7 @@ $this->params['breadcrumbs'][] = $this->title;
                             ['class' => 'yii\grid\ActionColumn'],
                             ],
                             ]); ?>
-                            <?php Pjax::end(); ?> 
+                    
                         </div>
                     </div>
                 </div>

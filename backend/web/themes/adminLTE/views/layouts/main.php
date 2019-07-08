@@ -522,7 +522,7 @@ $this->registerJs($js, \yii\web\View::POS_HEAD);
       })
       
       $(document).on('click', "a", function(){
-
+        var pagination = false;
         if($(this).hasClass("page_tab")){
           var tab_id = $(this).closest("li").attr("id");           
           $(".nav-item").addClass("active");  
@@ -541,6 +541,9 @@ $this->registerJs($js, \yii\web\View::POS_HEAD);
         else if($(this).hasClass("change_status")){ //Check for other clicks
           return true;
         }
+        else if($(this).hasClass("search-jcitem")){ //Check for other clicks
+          return true;
+        }
         else if($(this).hasClass("generate-quotation")){ //Check for other clicks
           return true;
         }
@@ -552,6 +555,8 @@ $this->registerJs($js, \yii\web\View::POS_HEAD);
           return false;
         }else if($(this).hasClass("folder-tree")){
           return false;
+        }else if($(this).attr("data-page")){
+          pagination = true;
         }
         event.preventDefault();        
 
@@ -585,13 +590,18 @@ $this->registerJs($js, \yii\web\View::POS_HEAD);
           aSync: false,
           dataType: "html",
           success: function(data) {
-            $(".main-body").addClass("hide");
-            $('div[tab_id="'+tabId+'"]').remove();
-            $(".container-body").append($(data));
-            $(document).find(".main-body:visible").attr("tab_id", tabId);
-            $("#"+tabId).find("span").html($(document).find(".main-body:visible").find(".content-header h1").html());
-            //$("#"+tabId).find("span").html(page_id.replace("_","/"));
-            addMandatoryStar();
+            if(pagination && $(".modal").is(":visible")){              
+              $(".modal:visible").find(".grid-view").html($(data).find('.grid-view').html())
+            }else{
+              $(".main-body").addClass("hide");
+              $('div[tab_id="'+tabId+'"]').remove();
+              $(".container-body").append($(data));
+              $(document).find(".main-body:visible").attr("tab_id", tabId);
+              $("#"+tabId).find("span").html($(document).find(".main-body:visible").find(".content-header h1").html());
+              //$("#"+tabId).find("span").html(page_id.replace("_","/"));
+              addMandatoryStar();
+            }
+            
           }});
           $.ajaxSetup({async: true}); 
        
