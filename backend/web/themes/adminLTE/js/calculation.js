@@ -206,6 +206,8 @@ $('body').on('change','.total',function(){
   $('.subtotal').val(subtotal);
   $('.subtotal').trigger('change');
 });
+
+
 $('body').on('change','.subtotal,.discount',function(){
   var gtotal=0;
   var taxtotal=0;
