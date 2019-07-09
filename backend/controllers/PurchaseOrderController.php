@@ -125,7 +125,7 @@ class PurchaseOrderController extends Controller
         $model = Purchaserequest::find()->where(['id'=>$id])->one();
         $model1 = new Purchaseorder();
         $modelpr = new Purchaseorderitems();
-     
+
          if ($model1->load(Yii::$app->request->post()) && $model1->save(false)) {
             $result=Yii::$app->request->post();
             $flag_qty=0;
@@ -159,7 +159,7 @@ class PurchaseOrderController extends Controller
                 $model->process_status='processing';
             }
             $model->save(false);
-            echo json_encode(["success" => true, "message" => "Purchase Order has been created."]);
+             echo json_encode(["success" => true, "message" => "Purchase Order has been created.",'redirect'=>Yii::$app->getUrlManager()->createUrl(['purchase-order/update','id' => $model1->id])]);
             exit;
         }
         return $this->renderAjax('createpo', [
@@ -167,7 +167,6 @@ class PurchaseOrderController extends Controller
             'model'=> $model,
             'modellastnumber'=>$modellastnumber,
             'model1'=> $model1,
-            'type' => 'update',
         ]);
     }
     /**

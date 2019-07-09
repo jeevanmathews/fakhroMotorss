@@ -214,7 +214,7 @@ function validateAttribute(modelName, fieldName, fieldValue, mid, scenario){
         $.ajaxSetup({async: false}); 
         $.post(jc_item_search_url, {item_name: $("[id*='search-info']:visible").find("#item_name").val()})
         .done(function( data ) {
-            $(".grid-view").html($(data).find(".grid-view").html()); 
+           // $(".grid-view").html($(data).find(".grid-view").html()); 
             $("[id*='search-info']:visible .grid-view").html($(data).find(".grid-view").html());   
         });
         $.ajaxSetup({async: true});
@@ -236,7 +236,9 @@ function validateAttribute(modelName, fieldName, fieldValue, mid, scenario){
     });
 
     $(document).on('click', "[id*='search_item_']", function(){ 
+      
         var elemId = "search-info-"+ $(this).attr("id").replace("search_item_", "");
+       console.log(elemId); 
         $.post(jc_item_search_url, {"item_type": $(".main-body:visible").find("#jobcardmaterial-material_type").val()})
         .done(function( data ) {          
                  $("#"+elemId).html(data);  

@@ -830,3 +830,8 @@ h2.heading {
     padding: 9px 9px;
     font-size: 18px;
 }
+/*//disabled*/
+.disabled {
+    pointer-events: none;
+    cursor: not-allowed;
+}

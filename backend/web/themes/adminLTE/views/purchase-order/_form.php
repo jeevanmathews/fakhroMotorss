@@ -198,6 +198,7 @@ $vat_format=Yii::$app->common->company->vat_format;
     </div>
     <div class="mb-5 fl-w100"><?= $form->field($model, 'discount')->textInput(['class'=>'form-control discount']);//->label(false) ?></div>
   <?= Html::activeTextInput($model,'discount_percent',['type'=>'hidden','class'=>'discount_percent form-control'])?>
+        <div class="mb-5 fl-w100"><?= $form->field($model, 'net')->textInput(['class'=>'form-control net']);///->label(false)  ?></div>
     <div class="mb-5 fl-w100">
         <div class="form-group field-Purchaseorder-vat_percent">
             <div class="input-group">
@@ -207,7 +208,9 @@ $vat_format=Yii::$app->common->company->vat_format;
             </div>
         </div>
     </div>
-    <div class="mb-5 fl-w100"><?= $form->field($model, 'total_tax')->hiddenInput(['class'=>'form-control total_tax'])->label(false) ?></div>
+
+    <!--<div class="mb-5 fl-w100"><?= $form->field($model, 'total_tax')->hiddenInput(['class'=>'form-control total_tax'])->label(false) ?></div>-->
+      <?= Html::activeTextInput($model,'total_tax',['type'=>'hidden','class'=>'total_tax form-control'])?>
     <?php endif;?>
     <div class="mb-5 fl-w100"><?= $form->field($model, 'grand_total')->textInput(['class'=>'grandtotal form-control']);//->label(false) //['readonly'=>true]?></div>
 </div>
@@ -225,7 +228,6 @@ $vat_format=Yii::$app->common->company->vat_format;
 
 
 
-</script>
 <script type="text/javascript">
 $(".datepicker").datepicker({
     defaultDate: new Date(),
@@ -251,7 +253,7 @@ $(".datepicker").datepicker({
           data:{'id':pr_id},
           dataType: "html",
           success: function(data) {
-            console.log(data);
+            //console.log(data);
             $(".main-body").addClass("hide");
             // $('div[tab_id="'+tabId+'"]').remove();
             $(".container-body").append($(data));
