@@ -241,9 +241,12 @@ $this->registerJs($js, \yii\web\View::POS_HEAD);
                       <li>
                         <?= Html::a('Model', ['/car-model'], ['class'=>'']) ?>
                       </li> 
-                        <li>
+                      <li>
                         <?= Html::a('Customer', ['/customer/index'], ['class'=>'']) ?>
-                      </li>                   
+                      </li> 
+                      <li>
+                        <?= Html::a('Jobcard Approval', ['/jobcard/approval'], ['class'=>'']) ?>
+                      </li>                    
                     </ul>
                   </li> 
                   <li class="dropdown">
