@@ -86,29 +86,32 @@ class JobcardController extends Controller
         $model = new Jobcard();
         $vehicle = new JobcardVehicle();
         $customer = new Customer(); 
-        $model->status = 4;
-        if ($model->load(Yii::$app->request->post()) && $model->save()) {          
-            if($vehicle->load(Yii::$app->request->post())){
-                if($jc_vehicle = JobcardVehicle::find()->where(["reg_num" => $vehicle->reg_num])->one()){
-                    $model->vehicle_id = $jc_vehicle->id;
-                }else{
-                    $vehicle->save();
-                    $model->vehicle_id = $vehicle->id;
-                }
-            }   
-            if($customer->load(Yii::$app->request->post())) {
-                if($jc_customer = Customer::find()->where(["email" => $customer->email])->one()){
-                  $model->customer_id = $jc_customer->id; 
-                }else{
-                    $customer->save();
-                    $model->customer_id = $customer->id;
-              }  
-            }
+        
+        if ($model->load(Yii::$app->request->post())) { 
+            $model->status = 4;
             if($model->save()){
-                $model->vehicle->customer_id = $model->customer_id;                
-                $model->vehicle->save();
-                echo json_encode(["success" => true, "message" => "Jobcard has been created", 'redirect' => Yii::$app->getUrlManager()->createUrl(['jobcard/update', 'id' => $model->id])]);
-                exit;
+                if($vehicle->load(Yii::$app->request->post())){
+                    if($jc_vehicle = JobcardVehicle::find()->where(["reg_num" => $vehicle->reg_num])->one()){
+                        $model->vehicle_id = $jc_vehicle->id;
+                    }else{
+                        $vehicle->save();
+                        $model->vehicle_id = $vehicle->id;
+                    }
+                }   
+                if($customer->load(Yii::$app->request->post())) {
+                    if($jc_customer = Customer::find()->where(["email" => $customer->email])->one()){
+                      $model->customer_id = $jc_customer->id; 
+                    }else{
+                        $customer->save();
+                        $model->customer_id = $customer->id;
+                  }  
+                }
+                if($model->save()){
+                    $model->vehicle->customer_id = $model->customer_id;                
+                    $model->vehicle->save();
+                    echo json_encode(["success" => true, "message" => "Jobcard has been created", 'redirect' => Yii::$app->getUrlManager()->createUrl(['jobcard/update', 'id' => $model->id])]);
+                    exit;
+                }
             }            
         }
         return $this->renderAjax('create', [

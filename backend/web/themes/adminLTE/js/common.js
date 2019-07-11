@@ -237,7 +237,7 @@ function validateAttribute(modelName, fieldName, fieldValue, mid, scenario){
 
     $(document).on('click', "[id*='search_item_']", function(){ 
       
-        var elemId = "search-info-"+ $(this).attr("id").replace("search_item_", "");
+        var elemId = "search-item-info-"+ $(this).attr("id").replace("search_item_", "");
        console.log(elemId); 
         $.post(jc_item_search_url, {"item_type": $(".main-body:visible").find("#jobcardmaterial-material_type").val()})
         .done(function( data ) {          

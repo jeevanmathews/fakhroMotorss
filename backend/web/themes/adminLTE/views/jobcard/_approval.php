@@ -21,22 +21,23 @@ use backend\models\Employees;
         <div class="row">
         <div class="col-md-6">
             
-            <table class="table table-striped table-bordered detail-view table-hover">
-            <?php foreach ($pending_jobcards as $pending_jobcard) {
-
-                echo "Jobcard No:" .$pending_jobcard->id ;
-
-                echo "Materials : "."</br>";
-
-                foreach ($pending_jobcard->materials as $jcmaterial) {
-                    echo $jcmaterial->material->item_name. " " .$jcmaterial->num_unit;
+            
+            <?php foreach ($pending_jobcards as $pending_jobcard) {                
+                if($pending_jobcard->materials) {
+                    echo "<h5>Jobcard No : " .$pending_jobcard->id ."</h5>";
+                    echo "<h5>Materials : ".Html::button("Approve", ["class" => "btn btn-default", "onclick" => "reduceStock(".$pending_jobcard->id.")"])."</h5>"."</br>";
+                    echo '<table class="table table-striped table-bordered detail-view table-hover">';
+                    echo "<thead><th>Material Name</th><th>Quantity</th></thead>";
+                    foreach ($pending_jobcard->materials as $jcmaterial) {
+                        echo "<tr><td>".Html::a($jcmaterial->material->item_name, ['items/view', 'id' => $jcmaterial->material->id]). "</td><td>" .$jcmaterial->num_unit."</td></tr>";
+                    }
+                    echo "</table>";
+                    echo "<hr/>";
                 }
-
-                echo "</hr>";
                 
             } ?>
                 
-            </table>            
+                        
         </div> 
         </div>             
         </div>
@@ -46,5 +47,8 @@ use backend\models\Employees;
 
 <script type="text/javascript">
 
+function reduceStock(jcid){
+    alert(jcid)
+}
      
 </script>

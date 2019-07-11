@@ -9,8 +9,9 @@ use backend\models\Items;
 /* @var $this yii\web\View */
 /* @var $model backend\models\Jobcard */
 /* @var $form yii\widgets\ActiveForm */
+$time = time();
 ?>
-<?php $form = AutoForm::begin(["id" => "material-".time().(($jobcardMaterial->isNewRecord)?"create":"update")."-form"]); ?>
+<?php $form = AutoForm::begin(["id" => "material-".$time.(($jobcardMaterial->isNewRecord)?"create":"update")."-form"]); ?>
     <div class="box-body">
 
         <div class="row"> 
@@ -22,7 +23,7 @@ use backend\models\Items;
                     <?= $form->field($jobcardMaterial, 'material_name')->textInput(['disabled' => 'disabled', 'value' => (($jobcardMaterial->isNewRecord)?"":$jobcardMaterial->material->nameWithPrice)]) ?> 
                     
                     <?= $form->field($jobcardMaterial, 'material_id')->hiddenInput()->label(false) ?>
-                    <span class="pull-right"> <?php echo html::a("Search Material", "javascript:;", ["class" => "search-jcitem", "id" => "search_item_".time()])?></span>
+                    <span class="pull-right"> <?php echo html::a("Search Material", "javascript:;", ["class" => "search-jcitem", "id" => "search_item_".$time])?></span>
 
                     <?= $form->field($jobcardMaterial, 'unit_rate')->textInput(['maxlength' => true]) ?>
 
@@ -50,6 +51,9 @@ use backend\models\Items;
     </div>
 <?php AutoForm::end(); ?>
 
+<div class="modal" id="search-item-info-<?php echo $time;?>">
+ 
+</div>
 
 <script type="text/javascript">
     $(document).ready(function(){
