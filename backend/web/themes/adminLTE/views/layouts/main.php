@@ -525,7 +525,7 @@ $this->registerJs($js, \yii\web\View::POS_HEAD);
         var pagination = false;
         if($(this).hasClass("page_tab")){
           var tab_id = $(this).closest("li").attr("id");           
-          $(".nav-item").addClass("active");  
+          $("#myTab .nav-item").addClass("active");  
           $(this).closest("li").removeClass("active");
           $(".main-body").addClass("hide");
           $(document).find('div[tab_id="'+tab_id+'"]').removeClass("hide");         
@@ -570,7 +570,7 @@ $this->registerJs($js, \yii\web\View::POS_HEAD);
 
         //Generate Tab        
         if($(this).closest("div").attr("id") == "myNavbar"){
-          $(".nav-item").addClass("active");          
+          $("#myTab .nav-item").addClass("active");          
           var tabId = "tab_id_"+($(".page_tab").length+1);
           $( '<li id="'+tabId+'" class="nav-item"><a class="nav-link page_tab" data-toggle="tab" role="tab" aria-controls="task" aria-selected="false"><span>'+page_id.replace("_","/")+'</span></a><b class="close-tab"><i class="fa fa-times-circle" aria-hidden="true"></i></b></li>' ).appendTo( $( "#myTab" ) );
         }

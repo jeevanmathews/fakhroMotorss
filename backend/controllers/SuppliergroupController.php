@@ -3,7 +3,7 @@
 namespace backend\controllers;
 
 use Yii;
-use backend\models\suppliergroup;
+use backend\models\SupplierGroup;
 use backend\models\suppliergroupSearch;
 use yii\web\Controller;
 use yii\web\NotFoundHttpException;
