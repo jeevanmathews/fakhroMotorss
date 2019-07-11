@@ -27,6 +27,8 @@ use yii\helpers\ArrayHelper;
         </div>
         <div class="col-md-6"> 
             <?= $form->field($model, 'address')->textarea(['rows' => 7]) ?>
+            
+            <?= $form->field($model, 'status')->dropDownList([ '0' => 'Disable', '1' => 'Enable', ], ['prompt' => '']) ?> 
          </div>
     </div>
    </div>
