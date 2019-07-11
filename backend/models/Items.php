@@ -123,4 +123,8 @@ class Items extends \yii\db\ActiveRecord
    public function getNamewithPrice(){
         return $this->item_name." - ".Yii::$app->common->company->settings->currency->code. " " .$this->rate." /unit";
    }
+   public function currentStock($item_id){
+        $model= StockHistory::find()->where(['item_id' => $item_id,'branch_id'=>Yii::$app->user->identity->branch_id])->orderBy('id desc')->limit(1)->one();
+        return(isset($model->current_stock)?$model->current_stock:0);
+   }
 }

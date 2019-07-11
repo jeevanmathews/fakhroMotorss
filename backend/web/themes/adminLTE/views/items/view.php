@@ -48,7 +48,13 @@ $this->params['breadcrumbs'][] = $this->title;
                         ['label'=>'Variant',
                         'value' =>(isset($model->variant) ? $model->variant->name: '')
                         ],
-                        'manufacturing_date',
+                        [
+                            'attribute' => 'Current Stock',
+                            'value' =>function ($model){
+                                return $model->currentStock($model->id).' '.$model->unit->code;
+                            },
+                           
+                            ],
                         ['label'=>'Supplier',
                         'value' =>$model->supplier->name
                         ],

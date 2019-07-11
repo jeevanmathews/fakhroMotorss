@@ -62,6 +62,13 @@ $this->params['breadcrumbs'][] = $this->title;
                                 'value'=>'variant.name',
                                 'filter' => Html::activeDropDownList($searchModel, 'variant_id', ArrayHelper::map(Variants::find()->all(), 'id', 'name'),['class'=>'form-control select2','prompt' => 'Search by Variant']),
                             ],
+                            [
+                            'attribute' => 'Current Stock',
+                            'value' =>function ($model){
+                                return $model->currentStock($model->id).' '.$model->unit->code;
+                            },
+                           
+                            ],
                             // 'opening_stock',
                             // ['label'=>'Unit',
                             //  'value' =>'unit.name'
