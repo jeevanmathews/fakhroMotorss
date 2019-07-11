@@ -86,7 +86,7 @@ class JobcardController extends Controller
         $model = new Jobcard();
         $vehicle = new JobcardVehicle();
         $customer = new Customer(); 
-
+        $model->status = 4;
         if ($model->load(Yii::$app->request->post()) && $model->save()) {          
             if($vehicle->load(Yii::$app->request->post())){
                 if($jc_vehicle = JobcardVehicle::find()->where(["reg_num" => $vehicle->reg_num])->one()){
@@ -688,6 +688,22 @@ class JobcardController extends Controller
         }
 
         echo json_encode(["service_advisors" => $service_advisor_data, "service_managers" => $service_manager_data, "testers" => $tester_data]);exit;
+    }
+
+    /**
+     * Approval of Jobcards in Queue
+     * @return mixed
+     * @throws NotFoundHttpException if the model cannot be found
+     */
+    public function actionApproval(){
+
+
+        $pending_jobcards = Jobcard::find()->where(["status" => 4])->all();
+
+        return $this->renderAjax('_approval', [
+            'pending_jobcards' => $pending_jobcards,
+        ]);
+
     }
 
 
