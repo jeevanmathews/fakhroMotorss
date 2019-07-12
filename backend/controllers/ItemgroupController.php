@@ -66,7 +66,14 @@ class ItemgroupController extends Controller
 	
         if ($model->load(Yii::$app->request->post())) {
 		$Array = Yii::$app->request->post();
+		if(isset($Array['parent_id']))
+		{
 		$res   = end($Array['parent_id']);	
+		}
+		else{
+			$res='add_new';
+		}
+		
 		if($res=='add_new')
 		{
 			$res =0;

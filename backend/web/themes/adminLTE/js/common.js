@@ -443,3 +443,12 @@ $(document).on('beforeFilter', '.grid-view', function(event) {
     return false;
 });
 
+function reduceStock(jcid){
+    $.ajaxSetup({async: false}); 
+    $.post(jc_approval_url, {jobcard_id: jcid})
+    .done(function( data ) {
+        processResponse(data);  
+    });
+    $.ajaxSetup({async: true});    
+}
+

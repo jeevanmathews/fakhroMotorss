@@ -229,6 +229,7 @@ $vat_format=Yii::$app->common->company->vat_format;
 
 
 <script type="text/javascript">
+
 $(".datepicker").datepicker({
     defaultDate: new Date(),
     dateFormat: "dd/mm/yy",
@@ -253,7 +254,8 @@ $(".datepicker").datepicker({
           data:{'id':pr_id},
           dataType: "html",
           success: function(data) {
-            //console.log(data);
+            var formid=$(data).find('.aerp-form').attr('id');
+            
             $(".main-body").addClass("hide");
             // $('div[tab_id="'+tabId+'"]').remove();
             $(".container-body").append($(data));

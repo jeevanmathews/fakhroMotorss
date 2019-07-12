@@ -10,6 +10,7 @@ use yii\grid\GridView;
 $this->title = 'Amc Types';
 $this->params['breadcrumbs'][] = $this->title;
 ?>
+
 <div class="content-main-wrapper main-body" id="amc-type_index">
 
     <section class="content-header">

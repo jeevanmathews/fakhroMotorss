@@ -51,6 +51,7 @@ class Supplier extends \yii\db\ActiveRecord
             'phone' => 'Phone',
             'address' => 'Address',
             'status' => 'Status',
+			'supplier_groupid' => 'Supplier Group',
         ];
     }
      public function getPurchaserequest()

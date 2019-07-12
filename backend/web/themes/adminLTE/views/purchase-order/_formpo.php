@@ -14,7 +14,7 @@ use backend\models\PrefixMaster;
 /* @var $form yii\widgets\ActiveForm */
 $vat_format=Yii::$app->common->company->vat_format;
 ?>
-<?php $form = AutoForm::begin(); ?>
+<?php $form = AutoForm::begin(["id" => "purchase-order-".time().(($model->isNewRecord)?"createpo":"createpo")."-form"]); ?>
 <div class="col-md-6"> 
   <?= $form->field($model1,'pr_id', ['inputOptions' => ["class" => "select_pr form-control select2"]])->dropDownList(ArrayHelper::map(Purchaserequest::find()->where(["status" => 1])->andWhere(['!=', 'process_status', 'completed'])->all(), 'id', 'pr_number'), ["prompt" => "Select PR"]) ?>
 </div>
@@ -22,9 +22,9 @@ $vat_format=Yii::$app->common->company->vat_format;
 <!-- <div class="col-md-6 "> 
   <?= Html::Button('Go', ['class' => 'btn btn-success btn_select_pr pull-left']) ?>
 </div> -->
-<?php AutoForm::end(); ?>
+<?php //AutoForm::end(); ?>
 
-<?php $form = AutoForm::begin(["id" => "purchase-order-".time().(($model->isNewRecord)?"createpo":"update")."-form"]); ?>
+<?php //$form = AutoForm::begin(); ?>
 <div class="box-body">
   <div class="row">
     <div class="col-md-12">
@@ -42,9 +42,9 @@ $vat_format=Yii::$app->common->company->vat_format;
       <?= $form->field($model1, 'supplier_id', ['inputOptions' => ["class" => "supplier_id form-control select2 disabled",'disabled'=>true]])->dropDownList(ArrayHelper::map(Supplier::find()->where(["status" => 1])->all(), 'id', 'name'), ["prompt" => "Select Supplier",'value'=>(isset($model->supplier_id)?$model->supplier_id:'')]) ?>                                     
       <span class="append_here">
         <?php if(!$model1->isNewRecord):
-              echo Html::textarea('supplier_address',$model1->supplier->address,['class'=>'form-control','rows'=>6]);
+              echo Html::textarea('supplier_address',$model1->supplier->address,['class'=>'form-control','rows'=>6,'disabled'=>true]);
             else:
-              echo Html::textarea('supplier_address',$model->supplier->address,['class'=>'form-control','rows'=>6]); 
+              echo Html::textarea('supplier_address',$model->supplier->address,['class'=>'form-control','rows'=>6,'disabled'=>true]); 
             endif;
         ?>
       </span>
@@ -216,7 +216,8 @@ $vat_format=Yii::$app->common->company->vat_format;
 
 </script>
 <script type="text/javascript">
-
+ // var formid=$('.aerp-form').attr('id');
+ // console.log(formid);
 $(document).ready(function() {
      jQuery(this).find('.supplier_id,.supplier_address').attr('disabled');
 });

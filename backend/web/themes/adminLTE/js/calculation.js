@@ -1,8 +1,8 @@
+
 $(document).ready(function() {
 
-
   
-  $('body').on('click','.btn_add_new',function(e){
+  $(document).on('click','.btn_add_new',function(e){
     e.preventDefault();
     var clone = $('.item_row:last').clone();
     clone.find('a.no-display').removeClass('no-display');
@@ -26,11 +26,11 @@ $(document).ready(function() {
         clone.find('select').select2();
         $('.item_table').append(clone);
       });
-$('body').on('click','.remove_row',function(e){
+$(document).on('click','.remove_row',function(e){
  e.preventDefault();
  $(this).closest('tr').remove();
 });
-$('body').on('click','.btn_select_do',function(){
+$(document).on('click','.btn_select_do',function(){
   var do_id=$("#salesinvoice-do_id").val();
   var url=$('.hiddenurl_create').val();
   if(do_id!='' && do_id!='undefined'){
@@ -39,7 +39,7 @@ $('body').on('click','.btn_select_do',function(){
 });
 
 
-$('body').on('change','.select_item_td',function(){
+$(document).on('change','.select_item_td',function(){
   var item_id=$(this).val();
   var thisrow=$(this).closest('tr');
   var data={'item_id':item_id}
@@ -64,20 +64,20 @@ $('body').on('change','.select_item_td',function(){
                 var price=0;
                 var vat=0;
                 var vatrate=0;
-                if($(thisrow).find('.qty').val()!='' && $(thisrow).find('.qty').val()!='undefined'){
-                  qty=$(thisrow).find('.qty').val();
+                if($(thisrow).find('.qty:visible').val()!='' && $(thisrow).find('.qty:visible').val()!='undefined'){
+                  qty=$(thisrow).find('.qty:visible').val();
                 }
-                if($(thisrow).find('.price').val()!='' && $(thisrow).find('.price').val()!='undefined'){
-                  price=$(thisrow).find('.price').val();
+                if($(thisrow).find('.price:visible').val()!='' && $(thisrow).find('.price:visible').val()!='undefined'){
+                  price=$(thisrow).find('.price:visible').val();
                 }
                 
                 total_price=(parseFloat(qty)*parseFloat(price)).toFixed(decimalPlaces);
-                $(thisrow).find('.total_price').val(total_price);
+                $(thisrow).find('.total_price:visible').val(total_price);
 
     // total=net_amount;
 
-    var type=$('.discount_type:checked').val();
-    discount_percentage=$(thisrow).find('.discount_percentage').val();
+    var type=$('.discount_type:visible:checked').val();
+    discount_percentage=$(thisrow).find('.discount_percentage:visible').val();
     if(discount_percentage!='' &&  discount_percentage!='undefined' && typeof discount_percentage!=='undefined' && $.isNumeric(discount_percentage)){
      
      if(type=="percentage"){
@@ -89,32 +89,21 @@ $('body').on('change','.select_item_td',function(){
   }
 
 
-    // if($(thisrow).find('.discount_percentage').val()!='' && $(thisrow).find('.discount_percentage').val()!='undefined' && typeof $(thisrow).find('.discount_percentage').val()!=='undefined'){
-      
-    //     if($(thisrow).find('.discount_percentage').val()=='discount_percent'){
-    //     // discount_amount
-    //      dis=(parseFloat(total_price))*parseFloat(discount_percentage)/100;
-    //     }else{
-    //          dis=discount_percentage; 
-    //     }
-    
-    
-    // }
     net_amount=(parseFloat(total_price)-parseFloat(dis)).toFixed(decimalPlaces);
 
-    if($(thisrow).find('.vatrate').val()!='' &&  $(thisrow).find('.vatrate').val()!='undefined' && typeof $(thisrow).find('.vatrate').val()!=='undefined'){
+    if($(thisrow).find('.vatrate:visible').val()!='' &&  $(thisrow).find('.vatrate:visible').val()!='undefined' && typeof $(thisrow).find('.vatrate:visible').val()!=='undefined'){
      
-      vatrate=$(thisrow).find('.vatrate').val();
+      vatrate=$(thisrow).find('.vatrate:visible').val();
       
     }
     vat=(parseFloat(net_amount))*parseFloat(vatrate)/100;
     total=((parseFloat(net_amount))+ parseFloat(vat)).toFixed(decimalPlaces);
     
-    $(thisrow).find('.discount_amount').val(dis);
-    $(thisrow).find('.tax').val(vat);
-    $(thisrow).find('.net_amount').val(net_amount);
-    $(thisrow).find('.total').val(total);
-    $('.total').trigger('change');
+    $(thisrow).find('.discount_amount:visible').val(dis);
+    $(thisrow).find('.tax:visible').val(vat);
+    $(thisrow).find('.net_amount:visible').val(net_amount);
+    $(thisrow).find('.total:visible').val(total);
+    $('.total:visible').trigger('change');
                 // $(thisrow).find('#salesinvoiceitems-unit_id').val(response.unit_id);
                 
               }
@@ -122,7 +111,7 @@ $('body').on('change','.select_item_td',function(){
 }
 }); 
 // change the total with quantity and price 
-$('body').on('change','.qty,.price,.vatrate,.discount_percentage',function(){
+$(document).on('change','.qty,.price,.vatrate,.discount_percentage',function(){
   var thisrow=$(this).closest('tr');
   var net_amount=0;
   var total=0;
@@ -133,21 +122,21 @@ $('body').on('change','.qty,.price,.vatrate,.discount_percentage',function(){
   var price=0;
   var vat=0;
   var vatrate=0;
-  if($(thisrow).find('.qty').val()!='' && $(thisrow).find('.qty').val()!='undefined'){
-    qty=$(thisrow).find('.qty').val();
+  if($(thisrow).find('.qty:visible').val()!='' && $(thisrow).find('.qty:visible').val()!='undefined'){
+    qty=$(thisrow).find('.qty:visible').val();
      // console.log(parseFloat($(thisrow).find('.remaining_qty').val()) ,parseFloat($(thisrow).find('.qty').val()));
-    if(parseFloat($(thisrow).find('.remaining_qty').val()) < parseFloat($(thisrow).find('.qty').val()) ){
+    if(parseFloat($(thisrow).find('.remaining_qty:visible').val()) < parseFloat($(thisrow).find('.qty:visible').val()) ){
        
-        $(thisrow).find('.qty').parent().parent().append('<span class="error">Cannot exceed the ordered quantity</span>').css('color','red');
-        $(thisrow).find('.qty').val($(thisrow).find('.remaining_qty').val());
-        qty=$(thisrow).find('.remaining_qty').val();
+        $(thisrow).find('.qty:visible').parent().parent().append('<span class="error">Cannot exceed the ordered quantity</span>').css('color','red');
+        $(thisrow).find('.qty:visible').val($(thisrow).find('.remaining_qty:visible').val());
+        qty=$(thisrow).find('.remaining_qty:visible').val();
         //$('.qty').prop('disabled',true);
       }else{
-        $(thisrow).find('.qty').parent().parent().find('.error').html('');
+        $(thisrow).find('.qty:visible').parent().parent().find('.error').html('');
       }
   }
-  if($(thisrow).find('.price').val()!='' && $(thisrow).find('.price').val()!='undefined'){
-    price=$(thisrow).find('.price').val();
+  if($(thisrow).find('.price:visible').val()!='' && $(thisrow).find('.price:visible').val()!='undefined'){
+    price=$(thisrow).find('.price:visible').val();
   }
   
   total_price=(parseFloat(qty)*parseFloat(price)).toFixed(decimalPlaces);
@@ -155,8 +144,8 @@ $('body').on('change','.qty,.price,.vatrate,.discount_percentage',function(){
 
     // total=net_amount;
 
-    var type=$('.discount_type:checked').val();
-    discount_percentage=$(thisrow).find('.discount_percentage').val();
+    var type=$('.discount_type:visible:checked').val();
+    discount_percentage=$(thisrow).find('.discount_percentage:visible').val();
     if(discount_percentage!='' &&  discount_percentage!='undefined' && typeof discount_percentage!=='undefined' && $.isNumeric(discount_percentage)){
      
      if(type=="percentage"){
@@ -167,54 +156,44 @@ $('body').on('change','.qty,.price,.vatrate,.discount_percentage',function(){
     
   }
 
-
-    // if($(thisrow).find('.discount_percentage').val()!='' && $(thisrow).find('.discount_percentage').val()!='undefined' && typeof $(thisrow).find('.discount_percentage').val()!=='undefined'){
-      
-    //     if($(thisrow).find('.discount_percentage').val()=='discount_percent'){
-    //     // discount_amount
-    //      dis=(parseFloat(total_price))*parseFloat(discount_percentage)/100;
-    //     }else{
-    //          dis=discount_percentage; 
-    //     }
-    
-    
-    // }
     net_amount=(parseFloat(total_price)-parseFloat(dis)).toFixed(decimalPlaces);
 
-    if($(thisrow).find('.vatrate').val()!='' &&  $(thisrow).find('.vatrate').val()!='undefined' && typeof $(thisrow).find('.vatrate').val()!=='undefined'){
+    if($(thisrow).find('.vatrate:visible').val()!='' &&  $(thisrow).find('.vatrate:visible').val()!='undefined' && typeof $(thisrow).find('.vatrate:visible').val()!=='undefined'){
      
-      vatrate=$(thisrow).find('.vatrate').val();
+      vatrate=$(thisrow).find('.vatrate:visible').val();
       
     }
     vat=(parseFloat(net_amount))*parseFloat(vatrate)/100;
     total=((parseFloat(net_amount))+ parseFloat(vat)).toFixed(decimalPlaces);
     
-    $(thisrow).find('.discount_amount').val(dis);
-    $(thisrow).find('.tax').val(vat);
-    $(thisrow).find('.net_amount').val(net_amount);
-    $(thisrow).find('.total').val(total);
-    $('.total').trigger('change');
+    $(thisrow).find('.discount_amount:visible').val(dis);
+    $(thisrow).find('.tax:visible').val(vat);
+    $(thisrow).find('.net_amount:visible').val(net_amount);
+    $(thisrow).find('.total:visible').val(total);
+    $('.total:visible').trigger('change');
   });
 // sum up totals to get subtotal
-$('body').on('change','.total',function(){
+$(document).on('change','.total',function(){
   var subtotal=0;
-  $('.total').each(function () {
+  $('.total:visible').each(function () {
     if($.isNumeric($(this).val())){
       subtotal=(parseFloat(subtotal) + parseFloat($(this).val())).toFixed(decimalPlaces);;
     }
   });
-  $('.subtotal').val(subtotal);
-  $('.subtotal').trigger('change');
+  $('.subtotal:visible').val(subtotal);
+  $('.subtotal:visible').trigger('change');
 });
 
 
-$('body').on('change','.subtotal,.discount',function(){
+$(document).on('change','.subtotal,.discount',function(){
+ // var formid=$(this).parents().find('form.aerp-form').attr('id');
+  // console.log(formid);
   var gtotal=0;
   var taxtotal=0;
-  var subtotal= $('.subtotal').val();
-  var discount= $('.discount').val();
-  var type=$('.common_discount_type:checked').val();
-  console.log(type,subtotal);
+  var subtotal= $('.subtotal:visible').val();
+  var discount= $('.discount:visible').val();
+  var type=$('.common_discount_type:visible:checked').val();
+  //console.log($('.subtotal'),type,subtotal,discount);
   if(discount!='' &&  discount!='undefined' && typeof discount!=='undefined' && $.isNumeric(discount)){
    if(type=="percentage"){
     var disamount=parseFloat(subtotal)*parseFloat(discount)/100;
@@ -225,9 +204,10 @@ $('body').on('change','.subtotal,.discount',function(){
 }else{
   gtotal=parseFloat(subtotal).toFixed(decimalPlaces);
 }
- $('.net').val(gtotal);
+ $('.net:visible').val(gtotal);
 if($('.vatper').val()!='' &&  $('.vatper').val()!='undefined' && typeof $('.vatper').val()!=='undefined'){
   var vat_rate=$('.vatper').val();
+  console.log(vat_rate);
   taxtotal=((parseFloat(gtotal)*parseFloat(vat_rate))/100).toFixed(decimalPlaces);
   gtotal=(parseFloat(gtotal)+(parseFloat(gtotal)*parseFloat(vat_rate)/100)).toFixed(decimalPlaces);
 }
@@ -236,18 +216,18 @@ if($('.vatper').val()!='' &&  $('.vatper').val()!='undefined' && typeof $('.vatp
    // }else{
    //      gtotal=subtotal;
    // }
-   $('.grandtotal').val(gtotal);
-   $('.total_tax').val(taxtotal);
+   $('.grandtotal:visible').val(gtotal);
+   $('.total_tax:visible').val(taxtotal);
  });
 // reduce discount from total
 
-$('body').on('click','.common_discount_type',function(){
+$(document).on('click','.common_discount_type',function(){
   var type=$(this).val();
   var grandtotal=0;
   var taxtotal=0;
   var disamount=0;
-  var discount=$('.discount').val();
-  var subtotal=$('.subtotal').val(); 
+  var discount=$('.discount:visible').val();
+  var subtotal=$('.subtotal:visible').val(); 
     // console.log(type,discount,subtotal);
     if(discount!=""){
       if(type=="percentage"){
@@ -257,7 +237,7 @@ $('body').on('click','.common_discount_type',function(){
       }
     }
   grandtotal=(parseFloat(subtotal)-parseFloat(disamount)).toFixed(decimalPlaces);;
-  $('.net').val(grandtotal);
+  $('.net:visible').val(grandtotal);
   if($('.vatper').val()!='' &&  $('.vatper').val()!='undefined' && typeof $('.vatper').val()!=='undefined'){
     var vat_rate=$('.vatper').val();
     taxtotal=((parseFloat(grandtotal)*parseFloat(vat_rate))/100).toFixed(decimalPlaces);
@@ -265,11 +245,11 @@ $('body').on('click','.common_discount_type',function(){
     
   }
   // console.log(taxtotal,grandtotal,vat_rate);
-  $('.total_tax').val(taxtotal);
-  $('.grandtotal').val(grandtotal);
+  $('.total_tax:visible').val(taxtotal);
+  $('.grandtotal:visible').val(grandtotal);
 });
 
-// $('body').on('change','.discount',function(){
+// $(document).on('change','.discount',function(){
 //   var type=$('.common_discount_type:checked').val();
 //   var grandtotal=0;
 //   var taxtotal=0;
@@ -329,7 +309,7 @@ $(document).on('change','.supplier_id',function(){
    });
   }
 }); 
-// $('body').on('change','.total_tax',function(){
+// $(document).on('change','.total_tax',function(){
 //     var type=$('.common_discount_type').val();
 
 //     var discount=$(this).val();

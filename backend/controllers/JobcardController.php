@@ -88,7 +88,7 @@ class JobcardController extends Controller
         $customer = new Customer(); 
         
         if ($model->load(Yii::$app->request->post())) { 
-            $model->status = 4;
+            $model->status = 1;
             if($model->save()){
                 if($vehicle->load(Yii::$app->request->post())){
                     if($jc_vehicle = JobcardVehicle::find()->where(["reg_num" => $vehicle->reg_num])->one()){
@@ -700,9 +700,19 @@ class JobcardController extends Controller
      */
     public function actionApproval(){
 
-
-        $pending_jobcards = Jobcard::find()->where(["status" => 4])->all();
-
+        $pending_jobcards = Jobcard::find()->where(["status" => 1])->all();
+        if($post = Yii::$app->request->post()){
+            if(isset($post['jobcard_id'])){
+                $jobcard = $this->findModel($post['jobcard_id']);                
+                if($jobcard->updateStockDetails('hold')){
+                    $jobcard->status = 2;
+                    if($jobcard->save(false)){
+                        echo json_encode(["success" => true, "message" => "Jobcard has been Approved", 'redirect' => Yii::$app->getUrlManager()->createUrl(['jobcard/approval'])]);
+                        exit;  
+                    }
+                }                
+           }   
+        }   
         return $this->renderAjax('_approval', [
             'pending_jobcards' => $pending_jobcards,
         ]);

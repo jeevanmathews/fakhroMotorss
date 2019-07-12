@@ -22,7 +22,8 @@ use backend\models\Employees;
         <div class="col-md-6">
             
             
-            <?php foreach ($pending_jobcards as $pending_jobcard) {                
+            <?php if($pending_jobcards) {
+                foreach ($pending_jobcards as $pending_jobcard) {                
                 if($pending_jobcard->materials) {
                     echo "<h5>Jobcard No : " .$pending_jobcard->id ."</h5>";
                     echo "<h5>Materials : ".Html::button("Approve", ["class" => "btn btn-default", "onclick" => "reduceStock(".$pending_jobcard->id.")"])."</h5>"."</br>";
@@ -35,8 +36,9 @@ use backend\models\Employees;
                     echo "<hr/>";
                 }
                 
+            } } else{
+                echo "<div class='alert alert-info'>Sorry, No Jobcards for Pending Approval !</div>";
             } ?>
-                
                         
         </div> 
         </div>             
@@ -45,10 +47,4 @@ use backend\models\Employees;
     </section>
 </div>
 
-<script type="text/javascript">
 
-function reduceStock(jcid){
-    alert(jcid)
-}
-     
-</script>

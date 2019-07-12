@@ -202,7 +202,7 @@ class Jobcard extends \yii\db\ActiveRecord
         return true;       
     }
 
-    public function updateStockDetails(){
+    public function updateStockDetails($used_status = "used"){
         foreach($this->materials as $material){
             $tot_reduced = 0;
             $tot_added = 0;
