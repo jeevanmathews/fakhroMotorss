@@ -54,7 +54,7 @@ $vat_format=Yii::$app->common->company->vat_format;
              <?= $form->field($model,'prefix_id', ['inputOptions' => ["class" => "form-control select2"]])->dropDownList(ArrayHelper::map(PrefixMaster::find()->where(["status" => 1])->all(), 'id', 'prefix'), ["prompt" => "Select Prefix",'value'=>$prefix]) ?>
 
              <?= $form->field($model, 'po_expected_date')->textInput(['maxlength' => true,'class'=>'form-control datepicker']) ?>
-             <?= $form->field($model, 'remarks')->textarea(['rows' => 6]) ?>
+             <?= $form->field($model, 'remarks')->textarea(['rows' => 6,'value'=>$model->remarks]) ?>
              <?= $form->field($model, 'po_created_by')->hiddenInput(['value' => \Yii::$app->user->identity->id])->label(false) ?>
              <?= $form->field($model, 'branch_id')->hiddenInput(['value' => Yii::$app->user->identity->branch_id])->label(false) ?>
          </div>

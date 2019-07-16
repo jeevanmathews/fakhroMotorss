@@ -258,6 +258,7 @@ class Jobcard extends \yii\db\ActiveRecord
                                 $stockDistribution->stock_id = $stock_distribution['stock_id'];
                                 $stockDistribution->code = $stock_distribution['code'];
                                 $stockDistribution->opening_stock = 0;
+                                $stockDistribution->used_status = $used_status;
                                 if($stock_distribution['current_stock'] >= $stock_tobe_reduced){
                                     $stockDistribution->previous_stock = $stock_distribution['current_stock']; 
                                     $stockDistribution->reduced_stock = $stock_tobe_reduced;
@@ -307,6 +308,10 @@ class Jobcard extends \yii\db\ActiveRecord
                     } 
                 }
             }
+        }
+        //Update all stock status (to => used) for the jobcard which is invoiced
+        if($used_status == "used"){
+            StockDistribution::updateAll(['used_status' => "used"], 'jobcard_id = '.$this->id.' AND used_status = "hold"');
         }
         return true;  
         

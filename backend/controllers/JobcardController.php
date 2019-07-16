@@ -477,7 +477,7 @@ class JobcardController extends Controller
         $invoice->setAttributes($jobcard->getAttributes());
         $invoice->jobcard_id = $jobcard->id;
         $invoice->created_date = date('Y-m-d h:i:s');      
-        if($invoice->save()){
+        if($invoice->save(false)){
             $jobcard->updateStockDetails();
             //Save Invoice Materials -same as Jobcard Materials
             foreach($jobcard->materials as $material){
@@ -507,7 +507,7 @@ class JobcardController extends Controller
         $quotation->jobcard_id = $jobcard->id;
         $quotation->created_date = date('Y-m-d h:i:s');     
         // var_dump($quotation->getAttributes());die; 
-        if($quotation->save()){
+        if($quotation->save(false)){
             // $jobcard->updateStockDetails();
             //Save quotation Materials -same as Jobcard Materials
             foreach($jobcard->materials as $material){

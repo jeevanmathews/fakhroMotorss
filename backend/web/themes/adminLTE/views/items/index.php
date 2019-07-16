@@ -65,7 +65,7 @@ $this->params['breadcrumbs'][] = $this->title;
                             [
                             'attribute' => 'Current Stock',
                             'value' =>function ($model){
-                                return $model->currentStock($model->id).' '.$model->unit->code;
+                                return (($model->currentStock($model->id))?$model->currentStock($model->id).' '.$model->unit->code:'');
                             },
                            
                             ],

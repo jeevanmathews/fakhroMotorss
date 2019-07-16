@@ -159,7 +159,7 @@ class PurchaseOrderController extends Controller
                 $model->process_status='processing';
             }
             $model->save(false);
-             echo json_encode(["success" => true, "message" => "Purchase Order has been created.",'redirect'=>Yii::$app->getUrlManager()->createUrl(['purchase-order/update','id' => $model1->id])]);
+            echo json_encode(["success" => true, "message" => "Purchase Order has been created.",'redirect'=>Yii::$app->getUrlManager()->createUrl(['purchase-order/update','id' => $model1->id])]);
             exit;
         }
         return $this->renderAjax('createpo', [

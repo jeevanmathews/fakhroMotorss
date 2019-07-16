@@ -249,8 +249,7 @@ function validateAttribute(modelName, fieldName, fieldValue, mid, scenario){
     // Jobcard Total form scripts
 
     $(document).on('click', "[id*='confirm-payment']:visible", function(){     
-        $("."+$(this).attr("id")).modal().show();
-         console.log("hereeeee")
+        $("."+$(this).attr("id")).modal().show();         
     });
 
    
@@ -261,31 +260,30 @@ function validateAttribute(modelName, fieldName, fieldValue, mid, scenario){
       {
         // Filter non-digits from input value.
         this.value = this.value.replace(/\D/g, '');
-      }else{
-        var vat = "<?php echo Yii::$app->common->company->vat_rate;?>";
+      }else{ 
         if($(this).attr("id") =="discount_percent"){
             if(this.value >= 100)
                 $(this).val("");
             else{
                 var total_charge = $("[tab_id='"+tabId+"']").find("#gross-amount").attr("gross-amount") - (($("[tab_id='"+tabId+"']").find("#gross-amount").attr("gross-amount"))*$(this).val()/100);       
-                $("#total_charge").html(total_charge);
+                $("#total_charge").html(total_charge.toFixed(decimal_places));
             }            
         }else{ 
             if(this.value >= parseFloat($("[tab_id='"+tabId+"']").find("#gross-amount").attr("gross-amount")))
                 $(this).val("");
             else{
                 var total_charge = $("[tab_id='"+tabId+"']").find("#gross-amount").attr("gross-amount") - $(this).val();      
-                $("[tab_id='"+tabId+"']").find("#total_charge").html(total_charge);
+                $("[tab_id='"+tabId+"']").find("#total_charge").html(total_charge.toFixed(decimal_places));
             }
         }
-        var vat_value =vat*total_charge/100;
+        var vat_value =vat_rate*total_charge/100;
         var amount_due = total_charge + vat_value;
-        $("[tab_id='"+tabId+"']").find("#vat").html(vat_value);
-        $("[tab_id='"+tabId+"']").find("#amount_due").html(amount_due);
+        $("[tab_id='"+tabId+"']").find("#vat").html(vat_value.toFixed(decimal_places));
+        $("[tab_id='"+tabId+"']").find("#amount_due").html(amount_due.toFixed(decimal_places));
       }
     });
 
-    $("[name='ex_discount']").click(function(){      
+    $(document).on('click', "[name='ex_discount']", function(){      
         var tabId = $(".main-body:visible").attr("tab_id");        
         showtotDiscount($(this).val(), tabId);
     });  

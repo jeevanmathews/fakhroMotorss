@@ -1,3 +1,5 @@
+
+
 <?php
 
 use yii\helpers\Html;
@@ -26,6 +28,7 @@ use backend\models\Itemgroup;
 					<div class="row">
 					<!-- <div class="col-md-6 ">  -->
 					<div class="col-md-6" id="itemlists"> 
+					
                     <?=
 				     $form->field($model, 'type')->dropDownList(
 								['accessories' => 'Accessories', 'spares' => 'Spares','vehicle'=>'Vehicle'],
@@ -52,7 +55,8 @@ use backend\models\Itemgroup;
                                 $("#hidden-field").css("visibility","hidden");
                                 });
                             }else{
-                                
+                                $(".variant").css("display","block");
+								$(".model").css("display","block");
                             }
                             ']	
 								
@@ -71,7 +75,7 @@ use backend\models\Itemgroup;
 
                     <div class="row">
 					
-                        <div class="col-md-6 "> 
+                        <div class="col-md-6 model" style="display:none;"> 
                             <!--<?= $form->field($model, 'model_id')->textInput() ?>-->
                             <?= $form->field($model, 'model_id')->dropDownList(
                                 $itemtypes=ArrayHelper::map(Vehiclemodels::find()->all(), 'id', 'name'),
@@ -79,7 +83,7 @@ use backend\models\Itemgroup;
                                 ?>
                           
                         </div>
-                        <div class="col-md-6">
+                        <div class="col-md-6 variant" style="display:none;">
                             <?= $form->field($model, 'variant_id')->dropDownList(
                          $itemtypes=ArrayHelper::map(Variants::find()->where(['model_id'=>$model->model_id])->all(), 'id', 'name'),
                          ['class' => 'form-control select2 variant_id','prompt'=>'Select Variant']);
@@ -270,7 +274,9 @@ $('body').on('change','.variant_id',function(){
     var display='';
     var typedisplay='';
     var types=$(this).val();
+     console.log(types);
     data={'type':types};
+	
 	if(types == 'spares'){
         typedisplay="Spares";
 		var Url ="<?php echo Yii::$app->getUrlManager()->createUrl(['items/typebyspares']);?>";

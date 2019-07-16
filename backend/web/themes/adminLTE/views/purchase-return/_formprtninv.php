@@ -46,8 +46,8 @@ $vat_format=Yii::$app->common->company->vat_format;
                     <?= $form->field($model1, 'prtn_created_by')->hiddenInput(['value' => \Yii::$app->user->identity->id])->label(false) ?>
                 </div>
                 <div class="col-md-6"> 
-                       <?php if(!$model->isNewRecord):
-                        $number=$model->prtn_number;
+                       <?php if(!$model1->isNewRecord):
+                        $number=$model1->prtn_number;
                       else :
                         $number=(isset($modellastnumber->prtn_number)?$modellastnumber->prtn_number+1:1);
                       endif;?> 
