@@ -8,7 +8,7 @@
     /* @var $this yii\web\View */
     /* @var $dataProvider yii\data\ActiveDataProvider */
 
-    $this->title = 'Set Permission';
+    $this->title = $role. ' : Set Permission';
     $this->params['breadcrumbs'][] = ['label' => 'Roles', 'url' => ['roles/index']];
     $this->params['breadcrumbs'][] = $this->title;
     ?>
@@ -97,8 +97,8 @@
         <div class="row">
         <div class="col-md-8"> 
         <?php $form = AutoForm::begin(["id" => "rolepermission-".time(), 'action' => ['rolepermission/create'],'options' => ['method' => 'post']]); ?>        
-        <ul id="tree2">
-            <li class="first-node"><?php echo Html::checkbox('permission_id[]', false, ['value' => '', 'id' => 'full-prev']);?><a class="folder-tree" href="#">Full Privilege</a>
+        <ul id="tree2<?php echo time();?>">
+            <li class="first-node"><?php echo Html::checkbox('permission_id[]', false, ['value' => '', 'id' => 'full-prev'.time()]);?><a class="folder-tree" href="#">Full Privilege</a>
                 <ul> 
                     <?php foreach ($site_modules as $module => $actions) {
                         $module_name = str_replace("Controller", "", $module);
@@ -133,7 +133,7 @@
         </div>
           <!-- /.box -->
     </section>
-</div>
+
 
 <script>
 $.fn.extend({
@@ -192,16 +192,16 @@ $.fn.extend({
 
 //Initialization of treeviews
 
-$('#tree1').treed();
+$("[id*='tree1']:visible").treed();
 
-$('#tree2').treed({openedClass:'glyphicon-folder-open', closedClass:'glyphicon-folder-close'});
+$("[id*='tree2']:visible").treed({openedClass:'glyphicon-folder-open', closedClass:'glyphicon-folder-close'});
 
-$('#tree3').treed({openedClass:'glyphicon-chevron-right', closedClass:'glyphicon-chevron-down'});
+$("[id*='tree3']:visible").treed({openedClass:'glyphicon-chevron-right', closedClass:'glyphicon-chevron-down'});
 
-$("#full-prev").click(function(){
+$("[id*='full-prev']:visible").click(function(){
     this.checked = (this.checked)?false:true;
     var chck = (this.checked)?false:true;     
-    $(".tree").find("[type=checkbox]").each(function() { 
+    $(".tree:visible").find("[type=checkbox]").each(function() { 
         this.checked = chck;
     });
 });  
@@ -227,9 +227,11 @@ $(".module-prevlg").each(function(){ var module_flag = false; $(this).closest("l
 
 });
 
-if($(".module-prevlg:checked").length == $(".module-prevlg").length){
-    $("#full-prev").attr("checked",true);
+if($(".module-prevlg:checked").length == $(".module-prevlg:visible").length){
+    $("[id*='full-prev']:visible").attr("checked",true);
 }
 </script>
 
+
+</div>
     

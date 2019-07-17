@@ -196,7 +196,8 @@ class PermissionmasterController extends Controller
             'replace_display_texts' => $replace_display_texts,
             'skip_actions' => $skip_actions,
             'skip_modules' => $skip_modules,
-            'activePermissions' => $role->permissionAry
+            'activePermissions' => $role->permissionAry,
+            'role' => $role->name
         ]);
     }
 }

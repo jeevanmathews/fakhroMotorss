@@ -10,6 +10,8 @@ use backend\models\SignupForm;
 use backend\models\Company;
 use backend\models\PrefixMaster;
 use backend\models\User;
+use backend\models\UserRole;
+use backend\models\Roles;
 use yii\helpers\Html;
 use yii\imagine\Image;
 
@@ -149,6 +151,28 @@ class Common extends Component
         $error[] = implode(", ", $errors);
       }
       return ($error)?(implode("</br>", $error)):"";
+    }
+
+    public function setUserPermissions(){
+      $session = Yii::$app->session;
+      $roles = UserRole::find()->where(["user_id" => Yii::$app->user->id])->all();
+      $permissions = [];
+      foreach ($roles as $role) {
+        $role = Roles::findOne($role->role_id);
+        foreach ($role->permissions as $role_permission) {       
+          if(array_key_exists($role_permission->permissionmaster->module, $permissions)){
+            $permission_actions = $permissions[$role_permission->permissionmaster->module];           
+            if(!in_array($role_permission->permissionmaster->action, $permission_actions)){
+              $permission_actions[] = $role_permission->permissionmaster->action;
+            }            
+          }else{
+            $permission_actions = [];
+            $permission_actions[] = $role_permission->permissionmaster->action;            
+          }
+          $permissions[$role_permission->permissionmaster->module] = $permission_actions;
+        }
+      }
+      $session->set('permissions', $permissions);  
     }
 
 
