@@ -106,11 +106,11 @@ $this->params['breadcrumbs'][] = $this->title;
         </div>
           <!-- /.box -->
     </section>
-</div>
+
 
 <script>
 $.fn.extend({
-    treed: function (o) {
+    treed: function (o) {console.log("df")
       
       var openedClass = 'glyphicon-minus-sign';
       var closedClass = 'glyphicon-plus-sign';
@@ -165,12 +165,11 @@ $.fn.extend({
 
 //Initialization of treeviews
 
-$('#tree1').treed();
+$("[id*='tree1']:visible").treed();
 
-$('#tree2').treed({openedClass:'glyphicon-folder-open', closedClass:'glyphicon-folder-close'});
+$("[id*='tree2']:visible").treed({openedClass:'glyphicon-folder-open', closedClass:'glyphicon-folder-close'});
 
-$('#tree3').treed({openedClass:'glyphicon-chevron-right', closedClass:'glyphicon-chevron-down'});
+$("[id*='tree3']:visible").treed({openedClass:'glyphicon-chevron-right', closedClass:'glyphicon-chevron-down'});
 
-     
-
-</script>
+ </script>
+</div>

@@ -121,7 +121,7 @@ class Common extends Component
 
     public function buildTree(array $elements, $parentId = 0, $call="") {
       $branch = array();
-      $idtag = ($parentId == 0 && $call == 1) ? 'id="tree2"' : "";;
+      $idtag = ($parentId == 0 && $call == 1) ? 'id="tree2'.time().'"' : "";;
       echo "<ul $idtag>";
       foreach ($elements as $element) {       
           if ($element['parent'] == $parentId) {
