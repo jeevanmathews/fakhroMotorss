@@ -36,8 +36,9 @@ class ItemgroupController extends Controller
     public function actionIndex($type="accessories")
     {
          $itemgroup = Yii::$app->db->createCommand("select id, parent_id as parent,category_name from itemgroup where type='$type'")->queryAll();
+         $items = Yii::$app->db->createCommand("select id, itemgroup_id as parent,item_name as category_name from items where type='$type'")->queryAll();         
         return $this->renderAjax('index', [
-            'itemgroup' => $itemgroup,
+            'itemgroup' => ($itemgroup +  $items),
             'type' =>$type,
         ]);
     }
