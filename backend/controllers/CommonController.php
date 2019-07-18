@@ -51,5 +51,17 @@ class CommonController extends Controller
 
         return Yii::$app->common->validateEntry(Yii::$app->request->post());
         
-    }   
+    } 
+
+    /**
+     * Permission check for user roles
+     *
+     * @return string
+     */
+    public function actionNoPermission(){
+
+        return $this->renderAjax('/system/no-permission');
+        
+    } 
+  
 }

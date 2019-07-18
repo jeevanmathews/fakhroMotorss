@@ -77,7 +77,7 @@ class PurchaseOrderController extends Controller
         $userId = \Yii::$app->user->identity->id;
         $model = new Purchaseorder();
         $model1 = new Purchaseorderitems();
-       
+       // var_dump($modellastnumber);die;
         if ($model->load(Yii::$app->request->post()) && $model->save(false)) {
             $result=Yii::$app->request->post();
             for($i=0;$i<sizeof($result['Purchaseorderitems']['item_id']);$i++){
@@ -125,7 +125,7 @@ class PurchaseOrderController extends Controller
         $model = Purchaserequest::find()->where(['id'=>$id])->one();
         $model1 = new Purchaseorder();
         $modelpr = new Purchaseorderitems();
-
+         
          if ($model1->load(Yii::$app->request->post()) && $model1->save(false)) {
             $result=Yii::$app->request->post();
             $flag_qty=0;

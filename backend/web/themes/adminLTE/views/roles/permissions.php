@@ -223,6 +223,7 @@ $(".module-prevlg").each(function(){ var module_flag = false; $(this).closest("l
 
     if(module_flag){
         $(this).attr("checked",true);
+        return;
     }
 
 });

@@ -70,7 +70,7 @@ $this->params['breadcrumbs'][] = $this->title;
                              return Html::a(Html::img($this->theme->getUrl("images/".$img),["width" =>  $width, "title" => (($model->status == 1)?"Disable":"Enable")]), ['change-status', 'id'=>$model->id],['class'=>'change_status']);
                           },
                           'roles' => function ($url, $model, $key) {                             
-                             return Html::a('<span class="glyphicon glyphicon-user"></span>', ['roles', 'id'=>$model->id],['title'=>'Roles']);
+                             return ($model->login==1)?Html::a('<span class="glyphicon glyphicon-user"></span>', ['roles', 'id'=>$model->id],['title'=>'Roles']):"";
                           },
                        ]
                        ],

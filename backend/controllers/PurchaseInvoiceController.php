@@ -151,7 +151,7 @@ class PurchaseInvoiceController extends Controller
         $model = GoodsReceiptNote::find()->where(['id'=>$id])->one();
         $model1 = new PurchaseInvoice();
         $modelpr = new PurchaseInvoiceItems();
-    
+       
          if ($model1->load(Yii::$app->request->post()) && $model1->save(false)) {
             $result=Yii::$app->request->post();
             $flag_qty=0;

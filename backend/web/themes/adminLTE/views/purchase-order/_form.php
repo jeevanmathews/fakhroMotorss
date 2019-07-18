@@ -18,9 +18,13 @@ $vat_format=Yii::$app->common->company->vat_format;
 <?php $form = AutoForm::begin(["id" => "purchase-order-".time().(($model->isNewRecord)?"create":"update")."-form"]); ?>
 <div class="box-body">
     <div class="row">
-       <?php //if($model->pr_id): ?>
+       <?php $disabled=''; $disabletrue='';?>
        <div class="mb-20">
-        <?php if(Yii::$app->controller->action->id=='update'  && $model->pr_id){ ?>
+        <?php if(!$model->isNewRecord  && $model->pr_id){ 
+          $disabled='disabled';
+
+          $disabletrue= ',"disabled"=true';
+          ?>
         <div class="col-md-6">
             <div class="form-group field-deliveryorder-do_number required has-error">
                 <div class="input-group">
@@ -33,7 +37,7 @@ $vat_format=Yii::$app->common->company->vat_format;
       <div class="col-md-6"> 
         <?= $form->field($model,'pr_id', ['inputOptions' => ["class" => "select_pr form-control select2"]])->dropDownList(ArrayHelper::map(Purchaserequest::find()->where(["status" => 1])->andWhere(['!=', 'process_status', 'completed'])->all(), 'id', 'pr_number'), ["prompt" => "Select PR"]) ?>
     </div>
-    <?php //if(Yii::$app->controller->action->id=='create'): ?>
+    <?php //if($model->isNewRecord): ?>
        <!--  <div class="col-md-6 "> 
             <?= Html::Button('Go', ['class' => 'btn btn-success btn_select_pr pull-left']) ?>
         </div> -->
@@ -51,7 +55,7 @@ $vat_format=Yii::$app->common->company->vat_format;
                   $prefix=$model->prefix_id;
                 endif;
                 ?>
-             <?= $form->field($model,'prefix_id', ['inputOptions' => ["class" => "form-control select2"]])->dropDownList(ArrayHelper::map(PrefixMaster::find()->where(["status" => 1])->all(), 'id', 'prefix'), ["prompt" => "Select Prefix",'value'=>$prefix]) ?>
+             <?= $form->field($model,'prefix_id', ['inputOptions' => ["class" => "form-control select2"]])->dropDownList(ArrayHelper::map(PrefixMaster::find()->where(["status" => 1])->all(), 'id', 'prefix'), ["prompt" => "Select Prefix",'value'=>$prefix, 'disabled' => (!$model->isNewRecord) ? true  : false]) ?>
 
              <?= $form->field($model, 'po_expected_date')->textInput(['maxlength' => true,'class'=>'form-control datepicker']) ?>
              <?= $form->field($model, 'remarks')->textarea(['rows' => 6,'value'=>$model->remarks]) ?>
@@ -64,10 +68,10 @@ $vat_format=Yii::$app->common->company->vat_format;
            else :
             $number=(isset($modellastnumber->po_number)?$modellastnumber->po_number+1:1);
            endif;?>
-        <?= $form->field($model, 'po_number')->textInput(['maxlength' => true,'value'=>$number]) ?>
-        <?= $form->field($model, 'supplier_id', ['inputOptions' => ["class" => "supplier_id form-control select2"]])->dropDownList(ArrayHelper::map(Supplier::find()->where(["status" => 1])->all(), 'id', 'name'), ["prompt" => "Select Supplier"]) ?>  
+        <?= $form->field($model, 'po_number')->textInput(['maxlength' => true,'value'=>$number,'class'=>'form-control disabled']) ?>
+        <?= $form->field($model, 'supplier_id', ['inputOptions' => ["class" => "supplier_id form-control select2 "]])->dropDownList(ArrayHelper::map(Supplier::find()->where(["status" => 1])->all(), 'id', 'name'), ["prompt" => "Select Supplier",'disabled' => ($model->pr_id) ? 'disabled' : false]) ?>  
         <span class="append_here">
-              <?php if(Yii::$app->controller->action->id=='update'):
+              <?php if(!$model->isNewRecord):
               echo Html::textarea('supplier_address',$model->supplier->address,['class'=>'form-control','rows'=>6]);
               endif;?>
 
@@ -82,7 +86,7 @@ $vat_format=Yii::$app->common->company->vat_format;
             <tr>
                <th>#</th>
                <th>Item</th>
-               <?php if(Yii::$app->controller->action->id=='update' && $model->pr_id){ ?>
+               <?php if(!$model->isNewRecord && $model->pr_id){ ?>
                <th>Requested Quantity</th>
                <?php }?>
                <th>Quantity</th>
@@ -98,7 +102,7 @@ $vat_format=Yii::$app->common->company->vat_format;
            </tr>
        </thead>
        <tbody class="item_table">
-        <?php if(Yii::$app->controller->action->id=='create'): ?>
+        <?php if($model->isNewRecord): ?>
         <tr class="item_row" rid="1">
             <td class=""><?= Html::a('<span><i class="glyphicon glyphicon-trash"></i></span>', ['#'], ['class'=>'remove_row no-display']) ?></td>
             <td><?= $form->field($model1,'item_id[]', ['inputOptions' => ["class" => "select_item_td form-control select2"]])->dropDownList(ArrayHelper::map(Items::find()->where(["status" => 1])->all(), 'id', 'item_name'), ["prompt" => "Select Items"])->label(false) ?></td>
@@ -139,12 +143,12 @@ $vat_format=Yii::$app->common->company->vat_format;
     <tr class="item_row" rid="1">
         <?= $form->field($req, 'id[]')->hiddenInput(['value'=>$req->id])->label(false) ?>
         <td><?= Html::a('<span><i class="glyphicon glyphicon-trash"></i></span>', ['#'], ['class'=>'remove_row no-display']) ?></td>
-        <td><?= $form->field($req,'item_id[]', ['inputOptions' => ["class" => "select_item_td form-control select2"]])->dropDownList(ArrayHelper::map(Items::find()->where(["status" => 1])->all(), 'id', 'item_name'), ['options' => [$req->item_id => ['Selected'=>'selected']]],  ["prompt" => "Select Items"])->label(false) ?></td>
+        <td><?= $form->field($req,'item_id[]', ['inputOptions' => ["class" => "select_item_td form-control select2",'disabled' => ($model->pr_id) ? 'disabled' : false]])->dropDownList(ArrayHelper::map(Items::find()->where(["status" => 1])->all(), 'id', 'item_name'), ['options' => [$req->item_id => ['Selected'=>'selected']]],  ["prompt" => "Select Items"])->label(false) ?></td>
         <?php if($model->pr_id){ ?>
-        <td><?= $form->field($req, 'pr_quantity[]')->textInput(['value'=>(($req->remaining_quantity!=0)?$req->remaining_quantity:$req->quantity),'class'=>'form-control remaining_qty'])->label(false) ?></td>
+        <td><?= $form->field($req, 'pr_quantity[]')->textInput(['value'=>(($req->remaining_quantity!=0)?$req->remaining_quantity:$req->quantity),'class'=>'form-control remaining_qty '.$disabled])->label(false) ?></td>
         <?php } ?>
         <td><?= $form->field($req, 'quantity[]')->textInput(['value'=>$req->quantity,'class'=>'form-control qty'])->label(false) ?></td>
-        <td><?= $form->field($req,'unit_id[]', ['inputOptions' => ["class" => "form-control select2"]])->dropDownList(ArrayHelper::map(Units::find()->where(["status" => 1])->all(), 'id', 'name'), ['options' => [$req->unit_id => ['Selected'=>'selected']]], ["prompt" => "Select unit"])->label(false) ?>
+        <td><?= $form->field($req,'unit_id[]', ['inputOptions' => ["class" => "form-control select2",'disabled' => ($model->pr_id) ? 'disabled' : false]])->dropDownList(ArrayHelper::map(Units::find()->where(["status" => 1])->all(), 'id', 'name'), ['options' => [$req->unit_id => ['Selected'=>'selected']]], ["prompt" => "Select unit"])->label(false) ?>
              <?= Html::activeTextInput($req,'total_price[]',['type'=>'hidden','class'=>'total_price form-control form-control','value'=>$req->total_price])?>
         </td>
       <?php if($vat_format=="inclusive") :?>
@@ -160,15 +164,15 @@ $vat_format=Yii::$app->common->company->vat_format;
             <?= $form->field($req, 'discount_percentage[]')->textInput(['value'=>$req->discount_percentage,'class'=>'form-control discount_percentage'])->label(false) ?>
             <?= Html::activeTextInput($req,'discount_amount[]',['type'=>'hidden','class'=>'discount_amount form-control form-control','value'=>$req->discount_amount])?>
           </td>
-          <td><?= $form->field($req, 'net_amount[]')->textInput(['value'=>$req->net_amount,'class'=>'form-control net_amount'])->label(false) ?></td>
+          <td><?= $form->field($req, 'net_amount[]')->textInput(['value'=>$req->net_amount,'class'=>'form-control net_amount '.$disabled])->label(false) ?></td>
           <td>
            <?= Html::activeTextInput($req,'tax[]',['type'=>'hidden','class'=>'tax form-control form-control','value'=>$req->tax])?>
            <?= $form->field($req, 'vat_rate[]')->textInput(['value'=>$req->vat_rate,'class'=>'form-control vatrate'])->label(false) ?></td>
          <?php endif;?>
         
        
-    <td><?= Html::activeTextInput($req,'price[]',['type'=>'text','class'=>'price form-control form-control','value'=>$req->price])?></td>
-    <td><?= Html::activeTextInput($req,'total[]',['type'=>'text','class'=>'total form-control','value'=>$req->total])?></td>
+    <td><?= Html::activeTextInput($req,'price[]',['type'=>'text','class'=>'price form-control form-control '.$disabled,'value'=>$req->price])?></td>
+    <td><?= Html::activeTextInput($req,'total[]',['type'=>'text','class'=>'total form-control '.$disabled,'value'=>$req->total])?></td>
 </tr>
 
 <?php } endif;?>
@@ -182,7 +186,7 @@ $vat_format=Yii::$app->common->company->vat_format;
 
 
 <div class="w50 pull-right">
-    <div class="mb-5 fl-w100"><?= $form->field($model, 'subtotal')->textInput(['class'=>'subtotal form-control']);//->label(false) ?></div>
+    <div class="mb-5 fl-w100"><?= $form->field($model, 'subtotal')->textInput(['class'=>'subtotal form-control '.$disabled]);//->label(false) ?></div>
     <?php if($vat_format=="exclusive") :?>
     <div class="input-group mb-5">
         <div class="input-group-addon">Discount Type</div>
@@ -198,7 +202,7 @@ $vat_format=Yii::$app->common->company->vat_format;
     </div>
     <div class="mb-5 fl-w100"><?= $form->field($model, 'discount')->textInput(['class'=>'form-control discount']);//->label(false) ?></div>
   <?= Html::activeTextInput($model,'discount_percent',['type'=>'hidden','class'=>'discount_percent form-control'])?>
-        <div class="mb-5 fl-w100"><?= $form->field($model, 'net')->textInput(['class'=>'form-control net']);///->label(false)  ?></div>
+        <div class="mb-5 fl-w100"><?= $form->field($model, 'net')->textInput(['class'=>'form-control net '.$disabled]);///->label(false)  ?></div>
     <div class="mb-5 fl-w100">
         <div class="form-group field-Purchaseorder-vat_percent">
             <div class="input-group">
@@ -212,9 +216,11 @@ $vat_format=Yii::$app->common->company->vat_format;
     <!--<div class="mb-5 fl-w100"><?= $form->field($model, 'total_tax')->hiddenInput(['class'=>'form-control total_tax'])->label(false) ?></div>-->
       <?= Html::activeTextInput($model,'total_tax',['type'=>'hidden','class'=>'total_tax form-control'])?>
     <?php endif;?>
-    <div class="mb-5 fl-w100"><?= $form->field($model, 'grand_total')->textInput(['class'=>'grandtotal form-control']);//->label(false) //['readonly'=>true]?></div>
+    <div class="mb-5 fl-w100"><?= $form->field($model, 'grand_total')->textInput(['class'=>'grandtotal form-control '.$disabled]);//->label(false) //['readonly'=>true]?></div>
 </div>
+<?php if($model->isNewRecord):?>
 <?= Html::Button('<span class="glyphicon glyphicon-plus"></span> Add Items', ['class' => 'btn btn-success btn_add_new pull-left','title'=>'Add Items']) ?>
+<?php endif; ?>
 </div>
 </div>
 </div>
@@ -266,5 +272,9 @@ $(".datepicker").datepicker({
           $.ajaxSetup({async: true}); 
     }
 });
+      jQuery('form').bind('submit', function() {
+        jQuery(this).find(':disabled').removeAttr('disabled');
+    });
+
 </script>
 </div>

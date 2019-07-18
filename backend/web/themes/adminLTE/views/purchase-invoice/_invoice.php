@@ -190,7 +190,7 @@ use yii\widgets\DetailView;
                                 <tr>
                                     <th width="50%" style="border:1px solid #ddd; border-bottom: none; border-top: none;"></th>
                                     <th width="37.5%" style="border:1px solid #ddd; border-bottom: none; border-top: none; padding: 5px 10px; font-size: 14px; font-weight: 700; text-transform: uppercase; text-align: left;">VAT <?php echo Yii::$app->common->company->vat_rate;?>%</th>
-                                    <th width="12.5%" style="border:1px solid #ddd; border-bottom: none; border-top: none; padding: 5px 10px; font-size: 14px; font-weight: 700; text-transform: uppercase; text-align: right;"><?php echo $invoice->tax;?></th>
+                                    <th width="12.5%" style="border:1px solid #ddd; border-bottom: none; border-top: none; padding: 5px 10px; font-size: 14px; font-weight: 700; text-transform: uppercase; text-align: right;"><?php echo $invoice->total_tax;?></th>
                                 </tr>
                                 <?php } ?>
                                 <tr>

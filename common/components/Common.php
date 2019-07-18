@@ -106,7 +106,7 @@ class Common extends Component
 
     public function getPrefix(){
      $process=Yii::$app->controller->id;
-     $company = PrefixMaster::find()->select(['id'])->where(['process'=> $process,'branch_id'=>Yii::$app->user->identity->branch_id,'status'=>1])->one();
+     $company = PrefixMaster::find()->select(['id'])->where(['process'=> $process,'status'=>1])->one();//,'branch_id'=>Yii::$app->user->identity->branch_id
      return $company;
     }
 
@@ -173,6 +173,20 @@ class Common extends Component
         }
       }
       $session->set('permissions', $permissions);  
+    }
+
+    public function checkPermission($controller, $action){
+      $permissions =  Yii::$app->session->get('permissions');
+      if($permissions){
+        if(array_key_exists($controller, $permissions)){
+          $controller_permission = $permissions[$controller];
+          if(in_array($action, $controller_permission)){
+            return true;
+          }
+        }
+      }
+      echo 404;
+      exit; 
     }
 
 

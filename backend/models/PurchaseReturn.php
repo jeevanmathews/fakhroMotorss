@@ -11,6 +11,7 @@ use Yii;
  * @property int $grn_id
  * @property int $inv_id
  * @property int $prefix_id
+ * @property int $branch_id
  * @property string $prtn_number
  * @property string $prtn_created_date
  * @property string $prtn_date
@@ -20,6 +21,7 @@ use Yii;
  * @property string $discount_type
  * @property double $discount
  * @property double $discount_percent
+ * @property double $net
  * @property double $vat_percent
  * @property double $total_tax
  * @property double $grand_total
@@ -42,10 +44,10 @@ class PurchaseReturn extends \yii\db\ActiveRecord
     public function rules()
     {
         return [
-            [['grn_id', 'inv_id', 'prefix_id', 'prtn_created_by', 'supplier_id', 'status'], 'integer'],
+            [['grn_id', 'inv_id', 'prefix_id', 'prtn_created_by', 'supplier_id', 'status','branch_id'], 'integer'],
             [['prefix_id', 'prtn_number', 'prtn_date', 'prtn_created_by', 'supplier_id'], 'required'],
             [['prtn_created_date'], 'safe'],
-            [['subtotal', 'discount', 'discount_percent', 'vat_percent', 'total_tax', 'grand_total'], 'number'],
+            [['subtotal', 'discount', 'discount_percent', 'vat_percent', 'total_tax', 'grand_total','net'], 'number'],
             [['remarks','process_status','discount_type'], 'string'],
             [['prtn_number'], 'string', 'max' => 200],
             [['prtn_date'], 'string', 'max' => 300],

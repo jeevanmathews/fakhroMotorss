@@ -176,8 +176,12 @@ class ItemsController extends Controller
                 $model->itemgroup_id=$itemgroup_id;
             endif;
             $model->save();
+			 if ($modelprice->load(Yii::$app->request->post())) {
             $modelprice->type=Yii::$app->request->post()['Items']['type'];
+			//var_dump($modelprice);
+			//die;
             $modelprice->save(false);
+			 }
             if(isset(Yii::$app->request->post()['Itemfeature']))
             {
             $features=Yii::$app->request->post()['Itemfeature']['feature_id'];

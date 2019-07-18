@@ -30,7 +30,7 @@ $this->params['breadcrumbs'][] = $this->title;
 			'model' => $model,
 			'modelpr' => $modelpr,
 			'model1' => $model1,
-			'type'  =>'update',
+			'modellastnumber'=>$modellastnumber,
 			]) ?>
 		</div>
 	</section>]

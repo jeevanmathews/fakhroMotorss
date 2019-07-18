@@ -14,6 +14,15 @@ use yii\filters\VerbFilter;
  */
 class AmcTypeController extends Controller
 {
+
+    /*Check Permission for this controller actions
+    **/
+    public function beforeAction($action)
+    {       
+        Yii::$app->common->checkPermission('AmcTypeController', Yii::$app->controller->action->id);
+        return parent::beforeAction($action);  
+    }
+
     /**
      * {@inheritdoc}
      */
@@ -42,6 +51,7 @@ class AmcTypeController extends Controller
         if(isset(Yii::$app->request->queryParams['page_id'])){
             $page_id = Yii::$app->request->queryParams['page_id'];
         }
+       
         return $this->renderAjax('index', [
             'searchModel' => $searchModel,
             'dataProvider' => $dataProvider,

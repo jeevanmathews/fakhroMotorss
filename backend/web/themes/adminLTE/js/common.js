@@ -440,7 +440,7 @@ $(document).on('beforeFilter', '.grid-view', function(event) {
     $.ajaxSetup({async: true}); 
     return false;
 });
-
+// Jobcard Approval
 function reduceStock(jcid){
     $.ajaxSetup({async: false}); 
     $.post(jc_approval_url, {jobcard_id: jcid})
@@ -449,4 +449,122 @@ function reduceStock(jcid){
     });
     $.ajaxSetup({async: true});    
 }
+/* Common click function */
+$(document).on('click', "a", function(){
+        var pagination = false;
+        if($(this).hasClass("page_tab")){
+          var tab_id = $(this).closest("li").attr("id");           
+          $("#myTab .nav-item").addClass("active");  
+          $(this).closest("li").removeClass("active");
+          $(".main-body").addClass("hide");
+          $(document).find('div[tab_id="'+tab_id+'"]').removeClass("hide");         
+          return;
+        } else if($(this).hasClass("jc-tabs")){ //Check for other clicks
+          return true;
+        } else if($(this).hasClass("close-modal")){
+          return true;
+        }else if($(this).hasClass("generate-invoice")){
+          $("[class*='confirm-payment']").modal().hide();
+          return true;
+        }
+        else if($(this).hasClass("change_status")){ //Check for other clicks
+          return true;
+        }
+        else if($(this).hasClass("search-jcitem")){ //Check for other clicks
+          return true;
+        }
+        else if($(this).hasClass("generate-quotation")){ //Check for other clicks
+          return true;
+        }
+        else if($(this).hasClass("nav-link")){ //Check for other clicks
+          return true;
+        }else if($(this).hasClass("navbar-brand")){       
+          $(".main-body").addClass("hide");
+          $("#site_dashboard").removeClass("hide");
+          return false;
+        }else if($(this).hasClass("folder-tree")){
+          return false;
+        }else if($(this).attr("data-page")){
+          pagination = true;
+        }
+        event.preventDefault();        
+
+        //Find requested page id
+        //
+        var page_id = $(this).attr("href").split("=")[1].replace("%2F","_"); 
+        //Extract request action only without arguments
+        if(page_id.indexOf("&") != -1){         
+          page_id = page_id.replace(page_id.substr(page_id.indexOf("&")),"");
+        }
+
+        //Generate Tab        
+        if($(this).closest("div").attr("id") == "myNavbar"){
+          $("#myTab .nav-item").addClass("active");          
+          var tabId = "tab_id_"+($(".page_tab").length+1);
+          $( '<li id="'+tabId+'" class="nav-item"><a class="nav-link page_tab" data-toggle="tab" role="tab" aria-controls="task" aria-selected="false"><span>'+page_id.replace("_","/")+'</span></a><b class="close-tab"><i class="fa fa-times-circle" aria-hidden="true"></i></b></li>' ).appendTo( $( "#myTab" ) );
+        }
+
+        if(tabId == undefined){
+         var tabId = $(this).closest(".main-body").attr("tab_id");         
+        }
+          
+         if($('div[tab_id="'+tabId+'"]').length){
+            for(var i=0;i<5;i++){
+              $('div[tab_id="'+tabId+'"]').next("script").remove();
+            }
+          }
+          $.ajaxSetup({async: false}); 
+          $.ajax({
+          url: $(this).attr("href"),
+          aSync: false,
+          dataType: "html",
+          success: function(data) { 
+            if(data == 404){
+              redirectOnceMore( nopermissionUrl, tabId);
+              return false;
+            }
+            if(pagination && $(".modal").is(":visible")){              
+              $(".modal:visible").find(".grid-view").html($(data).find('.grid-view').html())
+            }else{
+              $(".main-body").addClass("hide");
+              $('div[tab_id="'+tabId+'"]').remove();
+              $(".container-body").append($(data));
+              $(document).find(".main-body:visible").attr("tab_id", tabId);
+              $("#"+tabId).find("span").html($(document).find(".main-body:visible").find(".content-header h1").html());
+              //$("#"+tabId).find("span").html(page_id.replace("_","/"));
+              addMandatoryStar();
+            }            
+          }});
+          $.ajaxSetup({async: true}); 
+       
+      });
+
+      $(document).on('click', "[class='close-tab']", function(){
+        //Next or Previous tab to be shown
+        var tab_type = "id";
+        var prev_tab_id = $(this).closest("li").prev("li").attr("id");  
+        if(prev_tab_id == undefined){
+            var prev_tab_id = $(this).closest("li").next("li").attr("id");
+          if(prev_tab_id == undefined){
+            var prev_tab_id = "navbar-header";
+            tab_type = "class";
+          }
+        } 
+        var close_tabId = $(this).closest("li").attr("id");
+        for(var i=0;i<5;i++){
+          $('div[tab_id="'+close_tabId+'"]').next("script").remove();
+        }
+        $(this).closest("li").remove(); 
+        $('div[tab_id="'+close_tabId+'"]').remove();
+        (tab_type == "id")?($("#"+prev_tab_id).find("a").trigger("click")):($("."+prev_tab_id).find("a").trigger("click"));
+      })
+
+      function addMandatoryStar(){
+        $("[aria-required='true']").each(function(){
+          var new_text = "* "+$(this).prev(".input-group-addon").text();
+          if($(this).prev(".input-group-addon").text().indexOf("*") == -1){
+            $(this).prev(".input-group-addon").text(new_text);
+          }
+        });
+      }
 

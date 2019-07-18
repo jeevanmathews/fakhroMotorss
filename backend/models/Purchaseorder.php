@@ -43,8 +43,8 @@ class Purchaseorder extends \yii\db\ActiveRecord
     public function rules()
     {
         return [
-            [['prefix_id', 'po_number', 'po_expected_date', 'po_created_by'], 'required'],//, 'subtotal', 'total_tax', 'grand_total'
-            [['pr_id', 'po_created_by', 'status','branch_id'], 'integer'],
+            [['prefix_id', 'po_number','supplier_id', 'po_expected_date', 'po_created_by'], 'required'],//, 'subtotal', 'total_tax', 'grand_total'
+            [['pr_id', 'po_created_by','supplier_id', 'status','branch_id'], 'integer'],
             [['po_date'], 'safe'],
             [['remarks','process_status','discount_type'], 'string'],
             [['subtotal','discount','discount_percent','vat_percent','total_tax','grand_total','net'], 'number'],

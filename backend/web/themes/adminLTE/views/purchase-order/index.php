@@ -29,7 +29,7 @@ $this->params['breadcrumbs'][] = $this->title;
                     <p>
                         <?= Html::a('Create Purchase Order', ['create'], ['class' => 'btn btn-success']) ?>
                     </p>
-                     <?php Pjax::begin(['id'=>'purchase-order']); ?>
+                    <!--  <?php Pjax::begin(['id'=>'purchase-order']); ?> -->
                     <?= GridView::widget([
                         'dataProvider' => $dataProvider,
                         'filterModel' => $searchModel,
@@ -112,7 +112,7 @@ $this->params['breadcrumbs'][] = $this->title;
                        'class'=>'table table-striped table-bordered table-hover'
                        ],
                        ]); ?>
-                       <?php Pjax::end(); ?> 
+                       <!--<?php Pjax::end(); ?> -->
                    </div>
                </div>
            </div>

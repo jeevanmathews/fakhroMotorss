@@ -100,6 +100,8 @@ class JobcardController extends Controller
                 }   
                 if($customer->load(Yii::$app->request->post())) {
                     if($jc_customer = Customer::find()->where(["email" => $customer->email])->one()){
+                      $jc_customer->load(Yii::$app->request->post()); 
+                      $jc_customer->save(false); 
                       $model->customer_id = $jc_customer->id; 
                     }else{
                         $customer->save();

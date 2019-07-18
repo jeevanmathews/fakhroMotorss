@@ -100,29 +100,14 @@ class PurchaseReturnController extends Controller
      public function actionCreate()
     {
         $branch_id=Yii::$app->common->branchid->branch_id;
+         $modellastnumber = PurchaseReturn::find()->select('prtn_number')->where(['branch_id'=>$branch_id])->orderBy('id desc')->limit(1)->one();
         $userId = \Yii::$app->user->identity->id;
         $model = new PurchaseReturn();
         $model1 = new PurchaseReturnItems();
-        if(Yii::$app->request->post()):
-            $result=Yii::$app->request->post();
-            $model->supplier_id=(int) $result['PurchaseReturn']['supplier_id'];
-            if(isset($result['PurchaseReturn']['discount_type']) && $result['PurchaseReturn']['discount_type']=="percentage" && $result['PurchaseReturn']['discount']!=""){
-               $model->discount_percent= $result['PurchaseReturn']['discount'];
-               $model->discount=0;
-            }
-            if(isset($result['PurchaseReturn']['discount_type'])){
-                $model->discount_type= $result['PurchaseReturn']['discount_type'];
-            }
-            if(isset($result['PurchaseReturn']['vat_percent'])){
-                 $model->vat_percent=$result['PurchaseReturn']['vat_percent'];
-            }
-            // var_dump($result['PurchaseReturn']['supplier_id']);die;
-            // var_dump($model->discount_type);die;
-        endif;
-        // var_dump($result['GoodsReceiptNote']);
-        // var_dump(sizeof($result['Purchaserequestitems']['item_id']));die;
-        if ($model->load(Yii::$app->request->post()) && $model->save(false)) {
+         
 
+        if ($model->load(Yii::$app->request->post()) && $model->save(false)) {
+            $result=Yii::$app->request->post();
             for($i=0;$i<sizeof($result['PurchaseReturnItems']['item_id']);$i++){
                 $model1 = new PurchaseReturnItems();
                 $model1->item_id=$result['PurchaseReturnItems']['item_id'][$i];
@@ -173,32 +158,19 @@ class PurchaseReturnController extends Controller
 
         return $this->renderAjax('create', [
             'model' => $model,
-            'type'=>'create',
+            'modellastnumber'=>$modellastnumber,
             'model1' => $model1,
         ]);
     }
     public function actionCreateprtn($id){
         $branch_id=Yii::$app->common->branchid->branch_id;
+          $modellastnumber = PurchaseReturn::find()->select('prtn_number')->where(['branch_id'=>$branch_id])->orderBy('id desc')->limit(1)->one();
         $model = GoodsReceiptNote::find()->where(['id'=>$id])->one();
         $model1 = new PurchaseReturn();
         $modelpr = new PurchaseReturnItems();
-        if(Yii::$app->request->post()):
-            $result=Yii::$app->request->post();
-            $model1->supplier_id=(int) $result['PurchaseReturn']['supplier_id'];
-            $model1->prtn_created_by=(int) $result['PurchaseReturn']['prtn_created_by'];
-            $model1->grn_id=(int) $result['PurchaseReturn']['grn_id'];
-            if(isset($result['PurchaseReturn']['discount_type']) && $result['PurchaseReturn']['discount_type']=="percentage" && $result['PurchaseReturn']['discount']!=""){
-               $model1->discount_percent= $result['PurchaseReturn']['discount'];
-               $model1->discount=0;
-            }
-            if(isset($result['PurchaseReturn']['discount_type'])){
-                $model1->discount_type= $result['PurchaseReturn']['discount_type'];
-            }
-            if(isset($result['PurchaseReturn']['vat_percent'])){
-                 $model1->vat_percent=$result['PurchaseReturn']['vat_percent'];
-            }
-        endif;
+    
          if ($model1->load(Yii::$app->request->post()) && $model1->save(false)) {
+              $result=Yii::$app->request->post();
              $flag_qty=0;
             $count=0;
             for($i=0;$i<sizeof($result['PurchaseReturnItems']['item_id']);$i++){
@@ -256,17 +228,18 @@ class PurchaseReturnController extends Controller
         return $this->renderAjax('createprtn', [
             'modelpr' => $modelpr,
             'model'=> $model,
+            'modellastnumber'=>$modellastnumber,
             'model1'=> $model1,
-            'type' => 'update',
         ]);
     }
 
      public function actionCreateprtninv($id){
         $branch_id=Yii::$app->common->branchid->branch_id;
-        // var_dump($branch_id);die;
+        $modellastnumber = PurchaseReturn::find()->select('prtn_number')->where(['branch_id'=>$branch_id])->orderBy('id desc')->limit(1)->one();
         $model = PurchaseInvoice::find()->where(['id'=>$id])->one();
         $model1 = new PurchaseReturn();
         $modelpr = new PurchaseReturnItems();
+      
         if(Yii::$app->request->post()):
             $result=Yii::$app->request->post();
             $model1->supplier_id=(int) $result['PurchaseReturn']['supplier_id'];
@@ -343,8 +316,8 @@ class PurchaseReturnController extends Controller
         return $this->renderAjax('createprtninv', [
             'modelpr' => $modelpr,
             'model'=> $model,
+            'modellastnumber'=>$modellastnumber,
             'model1'=> $model1,
-            'type' => 'update',
         ]);
     }
     /**

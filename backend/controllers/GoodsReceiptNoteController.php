@@ -172,7 +172,9 @@ class GoodsReceiptNoteController extends Controller
 		$model = Purchaseorder::find()->where(['id'=>$id])->one();
 		$model1 = new GoodsReceiptNote();
 		$modelpr = new GrnItems();
-
+  		// if(Yii::$app->request->post()):
+    //         var_dump(Yii::$app->request->post());die;
+    //     endif; 
 		 if ($model1->load(Yii::$app->request->post()) && $model1->save(false)) {
 			$result=Yii::$app->request->post();
 			$flag_qty=0;
@@ -200,7 +202,7 @@ class GoodsReceiptNoteController extends Controller
 				
 				$model2->save(false);
 				$count++;
-
+				$modelitem=Items::find()->where(['id'=>$result['GrnItems']['item_id'][$i]])->one();
 				$modelstock = StockHistory::find()->where(['item_id' => $result['GrnItems']['item_id'][$i],'branch_id'=>$branch_id])->orderBy('id desc')->limit(1)->one();
 				$modelstocksave=new StockHistory();
 				$modelstocksave->item_id=$result['GrnItems']['item_id'][$i];
@@ -248,7 +250,6 @@ class GoodsReceiptNoteController extends Controller
 			'model'=> $model,
 			'modellastnumber'=>$modellastnumber,
 			'model1'=> $model1,
-			'type' => 'update',
 		]);
 	}
 	/**

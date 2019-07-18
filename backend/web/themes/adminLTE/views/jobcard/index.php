@@ -57,6 +57,14 @@ $this->params['breadcrumbs'][] = $this->title;
        
             //'created_date',
             'promised_date',
+			    [
+                'label' => 'Created Date',
+                'attribute' => 'id', 
+                 'value' => function($model){
+                    return ($model->created_date)?date('Y/m/d h:i A',strtotime($model->created_date)):"";
+                }
+            ],
+			//'created_date',
             'advance_paid',
             'jcStatus.name',
             //'receipt_num',

@@ -835,3 +835,34 @@ h2.heading {
     pointer-events: none;
     cursor: not-allowed;
 }
+.form-control[disabled], .form-control[readonly], fieldset[disabled] .form-control,.select2-container--default.select2-container--disabled .select2-selection--single{
+  background-color: #ffffff !important;
+}
+
+.error-page {
+    margin: 20px auto;
+    text-align: center;
+}
+.error-page h2 {
+    margin: 0;
+    font-size: 160px;
+    font-weight: 900;
+    line-height: 1;
+}
+.error-page h3 {
+    margin: 0;
+    font-family: 'Roboto Condensed', sans-serif;
+    font-size: 27px;
+    font-weight: 700;
+}
+.error-page h4 {
+    margin: 0;
+    font-family: 'Roboto Condensed', sans-serif;
+    font-size: 16px;
+    font-weight: 400;
+    padding-top: 5px;
+}
+.error-page img {
+    max-width: 315px;
+    max-height: 220px;
+}
