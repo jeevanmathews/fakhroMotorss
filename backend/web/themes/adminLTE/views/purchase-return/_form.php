@@ -18,7 +18,7 @@ $vat_format=Yii::$app->common->company->vat_format;
 <?php $form = AutoForm::begin(["id" => "purchase-return-".time().(($model->isNewRecord)?"create":"update")."-form"]); ?>
 <div class="box-body">
   <div class="row">
-   <?php if($type=='create'): ?>
+   <?php if($model->isNewRecord): ?>
    <div class="mb-20">
 
     <div class="col-md-6"> 
@@ -26,7 +26,7 @@ $vat_format=Yii::$app->common->company->vat_format;
         return (($model->prefix)?$model->prefix->prefix.'-':'').$model['grn_number'];
     }), ["prompt" => "Select GRN"]) ?>
     </div>
-    <?php //if($type=='create'): ?>
+    <?php //if($model->isNewRecord): ?>
    <!--  <div class="col-md-6 "> 
       <?= Html::Button('Go', ['class' => 'btn btn-success btn_select_grn pull-left']) ?>
     </div> -->
@@ -58,7 +58,7 @@ $vat_format=Yii::$app->common->company->vat_format;
         <tr>
           <th>#</th>
           <th>Item</th>
-           <?php if($type=='update' && $model->grn_id!=""): ?>
+           <?php if(!$model->isNewRecord && $model->grn_id!=""): ?>
             <th>Received Quantity</th>
           <?php endif; ?>
           <th>Quantity</th>
@@ -75,7 +75,7 @@ $vat_format=Yii::$app->common->company->vat_format;
 
 
       <tbody class="item_table">
-        <?php if($type=='create'): ?>
+        <?php if($model->isNewRecord): ?>
         <tr class="item_row" rid="1">
           <td class=""><?= Html::a('<span><i class="glyphicon glyphicon-trash"></i></span>', ['#'], ['class'=>'remove_row no-display']) ?></td>
           <td><?= $form->field($model1,'item_id[]', ['inputOptions' => ["class" => "select_item_td form-control select2"]])->dropDownList(ArrayHelper::map(Items::find()->where(["status" => 1])->all(), 'id', 'item_name'), ["prompt" => "Select Items"])->label(false) ?></td>

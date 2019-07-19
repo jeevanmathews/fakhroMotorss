@@ -20,6 +20,11 @@ class RolesController extends Controller
     /**
      * {@inheritdoc}
      */
+	public function beforeAction($action)
+    {       
+        Yii::$app->common->checkPermission('RolesController', Yii::$app->controller->action->id);
+        return parent::beforeAction($action);  
+    }
     public function behaviors()
     {
         return [
@@ -44,9 +49,13 @@ class RolesController extends Controller
         $dataProvider = new ActiveDataProvider([
             'query' => Roles::find()              
         ]);
-
+         $page_id = "make".time();
+        if(isset(Yii::$app->request->queryParams['page_id'])){
+            $page_id = Yii::$app->request->queryParams['page_id'];
+        }
         return $this->renderAjax('index', [
             'dataProvider' => $dataProvider,
+            'page_id'=>$page_id,
         ]);
     }
 
@@ -58,7 +67,7 @@ class RolesController extends Controller
      */
     public function actionView($id)
     {
-        return $this->render('view', [
+        return $this->renderAjax('view', [
             'model' => $this->findModel($id),
         ]);
     }
@@ -76,7 +85,7 @@ class RolesController extends Controller
             return $this->redirect(['index', 'id' => $model->id]);
         }
 
-        return $this->render('create', [
+        return $this->renderAjax('create', [
             'model' => $model,
             'departments'=>$departments
         ]);
@@ -98,7 +107,7 @@ class RolesController extends Controller
             return $this->redirect(['index', 'id' => $model->id]);
         }
 
-        return $this->render('update', [
+        return $this->renderAjax('update', [
             'model' => $model,
             'departments'=>$departments
         ]);

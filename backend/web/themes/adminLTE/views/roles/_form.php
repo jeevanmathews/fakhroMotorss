@@ -10,7 +10,7 @@ use common\components\AutoForm;
 
 <div class="roles-form">
 
-    <?php $form = AutoForm::begin(); ?>
+    <?php $form = AutoForm::begin(["id" => "roles-".time().(($model->isNewRecord)?"create":"update")."-form"]); ?>
     <div class="box-body">
         <div class="row">
             <div class="col-md-6"> 

@@ -9,8 +9,7 @@ use yii\grid\GridView;
 $this->title = 'Roles';
 $this->params['breadcrumbs'][] = $this->title;
 ?>
-<div class="content-main-wrapper main-body">
-
+<div class="content-main-wrapper main-body" id="roles_index">
     <section class="content-header">
       <h1>
         <?= Html::encode($this->title) ?>        
@@ -29,6 +28,7 @@ $this->params['breadcrumbs'][] = $this->title;
 
                     <?= GridView::widget([
                         'dataProvider' => $dataProvider,
+                        'id' => $page_id,
                         'columns' => [
                             ['class' => 'yii\grid\SerialColumn'],     
                             'name',            
