@@ -91,19 +91,14 @@ $this->registerJs($js, \yii\web\View::POS_HEAD);
         </div>
         <div class="collapse navbar-collapse" id="myNavbar">
           <ul class="nav navbar-nav">
-            <li class="dropdown">
+            <li class="dropdown">            
              <?= Html::a('Branches', ['/branches/index'], ['class'=>'']) ?>
            </li>
-           <li class="dropdown">
+           <?php  Yii::$app->common->getMenu();?>
+           <!--<li class="dropdown">
             <a href="#">Masters</a>
-            <ul class="dropdown-menu">
-             
-                      <!-- <li>
-                        <?= Html::a('Permission Master', ['/permissionmaster/index'], ['class'=>'']) ?>
-                      </li> -->                      
-                    <!--   <li>
-                        <?= Html::a('Country', ['/country/index'], ['class'=>'']) ?>
-                      </li> -->
+            <ul class="dropdown-menu">             
+                    
                       <li>
                         <?= Html::a('Currency', ['/currency/index'], ['class'=>'']) ?>
                       </li>
@@ -119,18 +114,14 @@ $this->registerJs($js, \yii\web\View::POS_HEAD);
                       <li>
                         <?= Html::a('Branch Types', ['/branchtypes/index'], ['class'=>'']) ?>
                       </li> 
-                      <!--<li>
-                        <?= Html::a('VAT', ['/vatdetails/index'], ['class'=>'']) ?>
-                      </li> -->
+                     
                       <li>
                         <?= Html::a('Amc Types', ['/amc-type/index'], ['class'=>'']) ?>
                       </li>
                       <li>
                         <?= Html::a('Extended Warranty Types', ['/extended-warranty-type/index'], ['class'=>'']) ?>
                       </li>
-                      <!--<li>
-                        <?= Html::a('Jobcard Status', ['/jobcard-status/index'], ['class'=>'']) ?>
-                      </li>-->
+                     
                       <li>
                         <?= Html::a('Service Type', ['/service-type/index'], ['class'=>'']) ?>
                       </li>
@@ -167,19 +158,7 @@ $this->registerJs($js, \yii\web\View::POS_HEAD);
                       <li>
                         <?= Html::a('Vehicle Type', ['/vehicletype/index'], ['class'=>'']) ?>
                       </li>
-                      <!--<li>
-                        <?= Html::a('Accessory Types', ['/accessoriestype/index'], ['class'=>'']) ?>
-                      </li> -->
-                      <!--<li>
-                        <?= Html::a('Spare Types', ['/sparetypes/index'], ['class'=>'']) ?>
-                      </li>-->                       
-                     <!--  <li>
-                        <?= Html::a('Spare Parts', ['/spareparts/index'], ['class'=>'']) ?>
-                      </li> 
-                      <li>
-                        <?= Html::a('Accessories', ['/accessories/index'], ['class'=>'']) ?>
-                      </li> 
-                       -->                     
+                         
                      
                       <li>
                         <?= Html::a('Vehicle', ['/vehiclemodels/index'], ['class'=>'']) ?>
@@ -203,9 +182,7 @@ $this->registerJs($js, \yii\web\View::POS_HEAD);
                         <?= Html::a('Task Types', ['/tasktype/index'], ['class'=>'']) ?>
                       </li>
 					  
-                     <!--  <li>
-                        <?= Html::a('Item Types', ['/itemtype/index'], ['class'=>'']) ?>
-                      </li> -->
+                     
                       
                     </ul>
                   </li>
@@ -239,9 +216,7 @@ $this->registerJs($js, \yii\web\View::POS_HEAD);
                       <li>
                         <?= Html::a('Jobcard Vehicle', ['/jobcard-vehicle'], ['class'=>'']) ?>
                       </li> 
-                      <!--<li>
-                        <?= Html::a('Make', ['/make'], ['class'=>'']) ?>
-                      </li>-->
+                     
                       <li>
                         <?= Html::a('Manufacturer', ['/manufacturer/index'], ['class'=>'']) ?>
                       </li>
@@ -273,89 +248,7 @@ $this->registerJs($js, \yii\web\View::POS_HEAD);
                         <?= Html::a('Sales Invoice', ['/sales-invoice/index'], ['class'=>'']) ?>
                       </li>
                     </ul>
-                  </li> 
-                <!--<li class="dropdown">
-                  <a href="#">Stock</a>
-                    <ul class="dropdown-menu">                       
-                      <li>
-                        <?= Html::a('Supplier', ['/supplier/index'], ['class'=>'']) ?>
-                      </li>
-                    </ul>
-                  </li>-->
-                <!-- <li>
-                    <?= Html::a('User', ['/user/index'], ['class'=>'']) ?>
-                  </li> -->
-               <!--  <li class="dropdown">
-              <a class="dropdown-toggle" data-toggle="dropdown" href="#">Transactions <span class="caret"></span></a>
-              <ul class="dropdown-menu">
-                <li><a href="#">Page 1-1</a></li>
-                <li><a href="#">Page 1-2</a></li>
-                <li>
-                <a class="dropdown-toggle" data-toggle="dropdown" href="#">Transactions level2 <span class="caret"></span></a>
-                <ul class="dropdown-menu">
-                  <li><a href="#">Page 1-1</a></li>
-                  <li><a href="#">Page 1-2</a></li>
-                  <li>
-                  <a class="dropdown-toggle" data-toggle="dropdown" href="#">Transactions level3 <span class="caret"></span></a>
-                  <ul class="dropdown-menu">
-                    <li><a href="#">Page 1-1</a></li>
-                    <li><a href="#">Page 1-2</a></li>
-                    <li><a href="#">Page 1-3</a></li>
-                  </ul>
-                </li>
-                  <li><a href="#">Page 1-3</a></li>
-                </ul>
-              </li>
-                <li><a href="#">Page 1-3</a></li>
-              </ul>
-            </li> -->
-             <!--    <li><a href="#">Accounts</a></li>
-                <li><a href="#">Online Banking</a></li>              
-                <li><a href="#">Final Reports</a></li>
-                <li><a href="#">Stocks</a></li>             
-                <li><a href="#">Reports</a></li>
-                <li><a href="#">Hot Keys</a></li>
-                <li><a href="#">Downloads</a></li>
-                <li><a href="#">Helps</a></li> -->
-                <!-- <li class="dropdown messages-menu"> -->
-                <!-- <a href="#" class="dropdown-toggle" data-toggle="dropdown"> -->
-                <!-- <i class="fa fa-cubes"></i> Branches -->
-                <!-- <span class="label label-success">4</span> -->
-                <!-- </a> -->
-                <!-- <ul class="dropdown-menu">                  -->
-                <!-- <li> -->
-                <!-- inner menu: contains the actual data -->
-                <!-- <ul class="menu"> -->
-                <!-- <li>start message -->
-                          <!-- <a href="#">
-                            <div class="pull-left">
-                              <img src="dist/img/user2-160x160.jpg" class="img-circle" alt="User Image">
-                            </div>
-                            <h4>
-                              Support Team
-                              <small><i class="fa fa-clock-o"></i> 5 mins</small>
-                            </h4>
-                            <p>Why not buy a new awesome theme?</p>
-                          </a>
-                        </li> -->
-                        <!-- end message -->                 
-                        
-                    <!--     <li>
-                          <a href="#">
-                            <div class="pull-left">
-                              <img src="dist/img/user4-128x128.jpg" class="img-circle" alt="User Image">
-                            </div>
-                            <h4>
-                              Reviewers
-                              <small><i class="fa fa-clock-o"></i> 2 days</small>
-                            </h4>
-                            <p>Why not buy a new awesome theme?</p>
-                          </a>
-                        </li>
-                      </ul>
-                    </li>                    
-                  </ul>
-                </li> -->
+                  </li>  -->           
                 
               </ul>
               <ul class="nav navbar-nav navbar-right">
@@ -390,19 +283,7 @@ $this->registerJs($js, \yii\web\View::POS_HEAD);
                      </p>
                    </li>
                    <!-- Menu Body -->
-                      <!-- <li class="user-body">
-                        <div class="row">
-                          <div class="col-xs-4 text-center">
-                            <a href="#">Followers</a>
-                          </div>
-                          <div class="col-xs-4 text-center">
-                            <a href="#">Sales</a>
-                          </div>
-                          <div class="col-xs-4 text-center">
-                            <a href="#">Friends</a>
-                          </div>
-                        </div>
-                      </li> -->
+                     
                       <!-- Menu Footer-->
                       <li class="user-footer">
                         <div class="pull-left">
@@ -414,10 +295,7 @@ $this->registerJs($js, \yii\web\View::POS_HEAD);
                             'Sign out (' . Yii::$app->user->identity->username . ')',
                             ['class' => 'btn btn-default btn-flat']
                             )
-                            . Html::endForm() ?>
-                          <!--  <div class="pull-right">
-                          <a href="#" class="btn btn-default btn-flat">Sign out</a>
-                        </div> -->
+                            . Html::endForm() ?>                   
                       </div>
                     </li>
                   </ul>
@@ -426,65 +304,8 @@ $this->registerJs($js, \yii\web\View::POS_HEAD);
             </div>
           </div>
         </nav>
-      </header>
-      
-   <!--  <section class="dashboard">
-      <div class="container-fluid">
-        <div class="dashboard-inner">
-          <div class="row table-row">
-            <div class="col-sm-3">
-              <div class="dashboard-left-menu">
-                <div class="dashboard-left-menu-inner">
-                  <h4 class="">Most Viewed Reports</h4>
-                  <a href="#" class="btn-block">New Ledger</a>
-                  <a href="#" class="btn-block">Retail: Bill</a>
-                  <a href="#" class="btn-block">Change Company</a>
-                  <a href="#" class="btn-block">Current Stock</a>
-                  <a href="#" class="btn-block">GST Register & Returns</a>
-                </div>
-                <div class="dashboard-left-menu-inner">
-                  <h4 class="">Recently Viewed Reports</h4>
-                  <a href="#" class="btn-block">Search</a>
-                  <a href="#" class="btn-block">Change Company</a>
-                  <a href="#" class="btn-block">New Company</a>
-                  <a href="#" class="btn-block">Current Stock</a>
-                  <a href="#" class="btn-block">GST Register & Returns</a>
-                </div>
-              </div>
-            </div>
-            <div class="col-sm-6"></div>
-            <div class="col-sm-3">
-              <div class="dashboard-right-menu">
-                <a href="#" class="btn btn-block">Bill-Wholesale</a>
-                <a href="#" class="btn btn-block">Bill-Retail</a>
-                <a href="#" class="btn btn-block">S/R Expiry</a>
-                <a href="#" class="btn btn-block">P/R Expiry</a>
-                <a href="#" class="btn btn-block">Receipt</a>
-              </div>
-            </div>
-          </div>
-          <div class="row table-row">
-            <div class="col-sm-12">
-              <div class="dashboard-bottom-area">
-                <div class="row">
-                  <div class="col-sm-3">
-                    <h4>DEMO COMPANY-DECO</h4>
-                    <h5>Ernakulam</h5>
-                    <h6>Financial Period: Apr., 2018 - Mar., 2019</h6>
-                  </div>
-                  <div class="col-sm-6"></div>
-                  <div class="col-sm-3">
-                    <h4><span>Date</span>: 7 Mar., 2019</h4>
-                    <h4><span>Day</span>: Thursday</h4>
-                    <h4><span>Time</span>: 14:51:17</h4>
-                  </div>
-                </div>
-              </div>
-            </div>
-          </div>
-        </div>
-      </div>
-    </section> -->
+      </header>      
+
     <div class="container container-body">
       
       <ul class="nav nav-tabs closeable-tab" id="myTab" role="tablist">

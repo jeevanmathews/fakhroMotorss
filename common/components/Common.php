@@ -189,5 +189,167 @@ class Common extends Component
       exit; 
     }
 
+    public function getMenu(){
+      // Logged in user permissions
+      $permissions =  Yii::$app->session->get('permissions');
+
+
+
+      /* Check if user has Master Permission*/
+      $masters_menus = [     
+        "CurrencyController" => ['Currency',  '/currency/index'],
+        "UnitsController" => ['Units',  '/units/index'],
+        "SupplierController" => ['Supplier',  '/supplier/index'],
+        "SupplierGroupController" => ['Supplier Groups',  '/suppliergroup/index'],
+        "BranchtypesController" => ['Branch Types',  '/branchtypes/index'],       
+        "AmcTypeController" => ['Amc Types',  '/amc-type/index'],
+        "ExtendedWarrantyTypeController" => ['Extended Warranty Types',  '/extended-warranty-type/index'],
+        "ServiceTypeController" => ['Service Type',  '/service-type/index'],
+        "PrefixMasterController" => ['Prefix',  '/prefix-master/index'],
+      ];
+      $mater_str = '';
+      foreach($masters_menus as $masters_menu => $item){
+        if(isset($permissions[$masters_menu])){        
+          $permission_data = $permissions[$masters_menu];
+          if(in_array("index", $permission_data)){       
+            $mater_str .= '<li>'.Html::a($item[0], [$item[1]], ['class'=>'']).'</li>';
+          }
+        }
+      }
+      if($mater_str){
+        echo '<li class="dropdown"><a href="#">Masters</a><ul class="dropdown-menu">'.$mater_str.'</ul></li>';
+      }
+
+      /* Check if user has Administration Permission*/
+      $administration_menus = [
+        "DepartmentsController" => ['Departments',  '/departments/index'],
+        "DesignationsController" => ['Designations',  '/designations/index'],
+        "RolesController" => ['Roles',  '/roles/index'],
+        "EmployeesController" => ['Staff',  '/employees/index'],
+      ];
+      $admstr_str = '';
+      foreach($administration_menus as $administration_menu => $aditem){
+        if(isset($permissions[$administration_menu])){         
+          $permission_data = $permissions[$administration_menu];
+          if(in_array("index", $permission_data)){        
+            $admstr_str .= '<li>'.Html::a($aditem[0], [$aditem[1]], ['class'=>'']).'</li>';
+          }
+        }
+      }
+      if($admstr_str){
+        echo '<li class="dropdown"><a href="#">Administration</a><ul class="dropdown-menu">'.$admstr_str.'</ul></li>';
+      }
+
+       /* Check if user has Inventory Permission*/
+      $inventory_menus = [
+        "VehicletypeController" => ['Vehicle Type',  '/vehicletype/index'],
+        "VehiclemodelsController" => ['Vehicle',  '/vehiclemodels/index'],
+        "ItemsController" => ['Items', '/items/index'],
+        "ItemgroupController" => ['Accessories', '/itemgroup/index'],
+        "ItemgroupController" => ['Spare Parts', '/itemgroup/index','type' => 'spares'],
+      ];
+      $invtry_str = '';
+      foreach($inventory_menus as $inventory_menu => $initem){
+        if(isset($permissions[$inventory_menu])){         
+          $permission_data = $permissions[$inventory_menu];
+          if(in_array("index", $permission_data)){          
+            $invtry_str .= '<li>'.Html::a($initem[0], [$initem[1]], ['class'=>'']).'</li>';
+          }
+        }
+      }
+      if($invtry_str){
+        $invtry_str = '<li><h4>Products</h4></li>'.$invtry_str;
+      }
+
+      // Service in inventory
+      $services_menus = [
+        "TasksController" => ['Service Tasks', '/tasks/index'],
+        "TaskTypeController" => ['Task Types', '/tasktype/index'],
+      ];
+      $serv_str = '';
+      foreach($services_menus as $services_menu => $servitem){
+        if(isset($permissions[$services_menu])){         
+          $permission_data = $permissions[$services_menu];
+          if(in_array("index", $permission_data)){        
+            $serv_str .= '<li>'.Html::a($servitem[0], [$servitem[1]], ['class'=>'']).'</li>';
+          }
+        }
+      }
+      if($serv_str){
+        $serv_str = '<li><h4>Services</h4>'.$serv_str;
+      }
+      if($invtry_str || $serv_str){ echo '<li class="dropdown"><a href="#">Inventory</a><ul class="dropdown-menu">'.$invtry_str.$serv_str.'</ul></li>';}
+
+      /* Check if user has Purchase Permission*/
+      $purchase_menus = [
+       "PurchaseRequestController" => ['Purchase Requisition', '/purchase-request/index'],
+       "PurchaseOrderController" => ['Purchase Order', '/purchase-order/index'],
+       "GoodsReceiptNoteController" => ['GRN', '/goods-receipt-note/index'],
+       "PurchaseInvoiceController" => ['Purchase Invoice', '/purchase-invoice/index'],
+       "PurchaseReturnController" => ['Purchase return', '/purchase-return/index'],
+      ];
+
+      $purchas_str = '';
+      foreach($purchase_menus as $purchase_menu => $purchasitem){
+        if(isset($permissions[$purchase_menu])){         
+          $permission_data = $permissions[$purchase_menu];
+          if(in_array("index", $permission_data)){     
+            $purchas_str .= '<li>'.Html::a($purchasitem[0], [$purchasitem[1]], ['class'=>'']).'</li>';
+          }
+        }
+      }
+      if($purchas_str){
+        echo '<li class="dropdown"><a href="#">Purchase</a><ul class="dropdown-menu">'.$purchas_str.'</ul></li>';
+      }
+
+      /* Check if user has Jobcard Permission*/
+      $jobcard_menus = [
+        "JobcardController" => ['Jobcard', '/jobcard/index'],
+        "JobcardVehicleController" => ['Jobcard Vehicle', '/jobcard-vehicle'],
+        "ManufacturerController" => ['Manufacturer', '/manufacturer/index'],
+        "CarModelController" => ['Model', '/car-model'],
+        "CustomerController" => ['Customer', '/customer/index'],
+        "JobcardApController" => ['Jobcard Approval', '/jobcard/approval'],
+      ];
+      $jc_str = '';
+      foreach($jobcard_menus as $jobcard_menu => $jcitem){
+        $menu = "";
+        if( $jobcard_menu == "JobcardApController") {$jobcard_menu = "JobcardController"; $menu = "approval";}
+        if(isset($permissions[$jobcard_menu])){ 
+          $permission_data = $permissions[$jobcard_menu];
+          if($menu){
+            if(in_array("approval", $permission_data)){
+              $jc_str .= '<li>'.Html::a($jcitem[0], [$jcitem[1]], ['class'=>'']).'</li>';
+            }
+          } else if(in_array("index", $permission_data)){  
+            $jc_str .= '<li>'.Html::a($jcitem[0], [$jcitem[1]], ['class'=>'']).'</li>';
+          }
+        }
+      }
+      if($jc_str){
+        echo '<li class="dropdown"><a href="#">Jobcard</a><ul class="dropdown-menu">'.$jc_str.'</ul></li>';
+      }
+
+      /* Check if user has Sales Permission*/
+      $sales_menus = [
+        "QuotationController" => [ 'Quotation', '/quotation/index' ],
+        "SalesOrderController" => [ 'Sales Order', '/sales-order/index' ],
+        "DeliveryOrderController" => [ 'Delivery Order', '/delivery-order/index' ],
+        "SalesInvoiceController" => [ 'Sales Invoice', '/sales-invoice/index' ],
+      ];
+
+      $sales_str = '';
+      foreach($sales_menus as $sales_menu => $salesitem){
+        if(isset($permissions[$sales_menu])){       
+          $permission_data = $permissions[$sales_menu];
+          if(in_array("index", $permission_data)){        
+            $sales_str .= '<li>'.Html::a($salesitem[0], [$salesitem[1]], ['class'=>'']).'</li>';
+          }
+        }
+      }
+      if($sales_str){
+        echo '<li class="dropdown"><a href="#">Sales</a><ul class="dropdown-menu">'.$sales_str.'</ul></li>';
+      }
+    }
 
 }
