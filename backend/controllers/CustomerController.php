@@ -17,6 +17,11 @@ class CustomerController extends Controller
     /**
      * {@inheritdoc}
      */
+	public function beforeAction($action)
+    {       
+        Yii::$app->common->checkPermission('CustomerController', Yii::$app->controller->action->id);
+        return parent::beforeAction($action);  
+    } 
     public function behaviors()
     {
         return [

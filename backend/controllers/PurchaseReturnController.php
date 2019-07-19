@@ -22,7 +22,11 @@ class PurchaseReturnController extends Controller
     /**
      * {@inheritdoc}
      */
-    
+    public function beforeAction($action)
+    {       
+        Yii::$app->common->checkPermission('PurchaseReturnController', Yii::$app->controller->action->id);
+        return parent::beforeAction($action);  
+    } 
     public function behaviors()
     {
         return [

@@ -11,7 +11,7 @@ $this->params['breadcrumbs'][] = ['label' => 'Roles', 'url' => ['index']];
 $this->params['breadcrumbs'][] = $this->title;
 \yii\web\YiiAsset::register($this);
 ?>
-<div class="roles-view">
+<div class="roles-view main-body" id="roles_view">
 
     <section class="content-header">
       <h1>

@@ -20,6 +20,12 @@ class SalesOrderController extends Controller
     /**
      * {@inheritdoc}
      */
+
+    public function beforeAction($action)
+    {       
+        Yii::$app->common->checkPermission('SalesOrderController', Yii::$app->controller->action->id);
+        return parent::beforeAction($action);  
+    } 
     public function behaviors()
     {
         return [

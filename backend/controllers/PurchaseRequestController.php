@@ -18,6 +18,12 @@ class PurchaseRequestController extends Controller
     /**
      * {@inheritdoc}
      */
+
+    public function beforeAction($action)
+    {       
+        Yii::$app->common->checkPermission('PurchaseRequestController', Yii::$app->controller->action->id);
+        return parent::beforeAction($action);  
+    } 
     public function behaviors()
     {
         return [

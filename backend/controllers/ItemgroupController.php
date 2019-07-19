@@ -17,6 +17,11 @@ class ItemgroupController extends Controller
     /**
      * {@inheritdoc}
      */
+	public function beforeAction($action)
+    {       
+        Yii::$app->common->checkPermission('ItemgroupController', Yii::$app->controller->action->id);
+        return parent::beforeAction($action);  
+    }
     public function behaviors()
     {
         return [

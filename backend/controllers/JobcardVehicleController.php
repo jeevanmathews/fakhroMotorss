@@ -17,6 +17,11 @@ class JobcardVehicleController extends Controller
     /**
      * {@inheritdoc}
      */
+	public function beforeAction($action)
+    {       
+        Yii::$app->common->checkPermission('JobcardVehicleController', Yii::$app->controller->action->id);
+        return parent::beforeAction($action);  
+    } 
     public function behaviors()
     {
         return [
