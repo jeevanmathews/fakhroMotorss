@@ -25,7 +25,10 @@ $this->params['breadcrumbs'][] = $this->title;
         <div class="row">
         <div class="col-md-12"> 
         <p>
-        <?= Html::a('Create Departments', ['create'], ['class' => 'btn btn-success']) ?>
+        <?php if(Yii::$app->common->checkPermission('DepartmentsController', 'create', 'true')){
+            echo Html::a('Create Departments', ['create'], ['class' => 'btn btn-success']);
+        } ?>        
+
         </p>
 
         <?= GridView::widget([
@@ -34,12 +37,10 @@ $this->params['breadcrumbs'][] = $this->title;
             'id' => $page_id,
             'columns' => [
                 ['class' => 'yii\grid\SerialColumn'],
-
-                // 'id',
                 'name',
-                // 'status',
-
-                ['class' => 'yii\grid\ActionColumn'],
+                ['class' => 'yii\grid\ActionColumn',
+                'template' => ((Yii::$app->common->checkPermission('DepartmentsController', 'update', 'true')?'{update}':'').(Yii::$app->common->checkPermission('DepartmentsController', 'delete', 'true')?'{delete}':'')),
+                ],
             ],
             'tableOptions' => [
             'id' => 'theDatatable',

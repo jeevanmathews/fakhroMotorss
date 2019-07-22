@@ -20,6 +20,7 @@ use Yii;
  * @property string $discount_type
  * @property double $discount
  * @property double $discount_percent
+ * @property double $net
  * @property double $vat_percent
  * @property double $total_tax
  * @property double $grand_total

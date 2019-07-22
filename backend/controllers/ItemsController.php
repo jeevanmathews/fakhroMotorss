@@ -323,8 +323,9 @@ class ItemsController extends Controller
                  // ->asArray()
                  // ->all();
     }
-    public function actionItemprice(){
-        $id=Yii::$app->request->post('item_id');
+    public function actionItemprice($id){
+        // $id=Yii::$app->request->post('id');
+        // var_dump($id);die;
         $model = $this->findModel($id);
         $data['item_id']=$id;
         $data['selling_price']=$model->pricing->selling_price;

@@ -58,7 +58,7 @@ $this->params['breadcrumbs'][] = $this->title;
                         'value' =>function ($model){
                             return utf8_decode($model->department->name);
                         }
-                    ], 
+                        ], 
 
                         [
                         'attribute' => 'status',

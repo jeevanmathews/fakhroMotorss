@@ -42,16 +42,19 @@ $(document).on('click','.btn_select_do',function(){
 $(document).on('change','.select_item_td',function(){
   var item_id=$(this).val();
   var thisrow=$(this).closest('tr');
-  var data={'item_id':item_id}
+  var data={'id':item_id}
   var url=hiddenurl_itemprice;//$('.hiddenurl_itemprice').val();
+ 
   if(item_id!='' && item_id!='undefined'){
+     // console.log(item_id);
     $.ajax({
-      'type':'post',
-            'url':url,//"<?php echo Yii::$app->getUrlManager()->createUrl(['items/itemprice']);?>",
-            'data':data,
+            type:'post',
+            url:url+'&id='+item_id,//"<?php echo Yii::$app->getUrlManager()->createUrl(['items/itemprice']);?>",
+            data:data,
             success:function(s){
-              //console.log(s);
+             
               var response = JSON.parse(s);
+              // console.log(response);
               $(thisrow).find('.price').val((response.selling_price).toFixed(decimalPlaces));
               $(thisrow).find('.vatrate').val(response.vat);
                 // var thisrow=$(this).closest('tr');

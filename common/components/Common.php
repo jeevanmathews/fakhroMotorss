@@ -175,8 +175,9 @@ class Common extends Component
       $session->set('permissions', $permissions);  
     }
 
-    public function checkPermission($controller, $action){
+    public function checkPermission($controller, $action, $return="page"){
       $permissions =  Yii::$app->session->get('permissions');
+      $action =  str_replace("-", "", $action);
       if($permissions){
         if(array_key_exists($controller, $permissions)){
           $controller_permission = $permissions[$controller];
@@ -184,9 +185,12 @@ class Common extends Component
             return true;
           }
         }
-      }
-      echo 404;
-      exit; 
+      }if($return == "page"){
+        echo 404;
+        exit; 
+      }else{
+        return false;
+      }      
     }
 
     public function getMenu(){

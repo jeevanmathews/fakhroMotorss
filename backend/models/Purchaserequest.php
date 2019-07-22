@@ -19,6 +19,7 @@ use Yii;
  * @property string $discount_type
  * @property double $discount
  * @property double $discount_percent
+ * @property double $net
  * @property double $vat_percent
  * @property double $total_tax
  * @property double $grand_total
@@ -44,7 +45,7 @@ class Purchaserequest extends \yii\db\ActiveRecord
         return [
             [['prefix_id','pr_number', 'requested_by', 'supplier_id', 'request_date', 'expected_date'], 'required'],//,'subtotal','total_tax','grand_total'
             [['requested_by', 'supplier_id', 'status','branch_id'], 'integer'],//'subtotal','discount','discount_percent','vat_percent','total_tax','grand_total',
-            [['subtotal','discount','discount_percent','vat_percent','total_tax','grand_total'], 'number'],
+            [['subtotal','discount','discount_percent','net','vat_percent','total_tax','grand_total'], 'number'],
             [['remarks','process_status','discount_type'], 'string'],
             [['pr_number', 'request_date', 'expected_date'], 'string', 'max' => 200],
         ];

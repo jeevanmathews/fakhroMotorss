@@ -20,6 +20,7 @@ use Yii;
  * @property string $discount_type
  * @property double $discount
  * @property double $discount_percent
+ * @property double $net
  * @property double $vat_percent
  * @property double $total_tax
  * @property double $grand_total
@@ -47,7 +48,7 @@ class SalesInvoice extends \yii\db\ActiveRecord
             [['prefix_id', 'inv_number', 'inv_date', 'inv_created_by', 'customer_id'], 'required'],
             [['inv_created_date'], 'safe'],
             [['remarks','process_status','discount_type'], 'string'],
-            [['subtotal','discount','discount_percent','vat_percent','total_tax','grand_total'], 'number'],
+            [['subtotal','discount','discount_percent','net','vat_percent','total_tax','grand_total'], 'number'],
             [['inv_number'], 'string', 'max' => 200],
             [['inv_date'], 'string', 'max' => 300],
            

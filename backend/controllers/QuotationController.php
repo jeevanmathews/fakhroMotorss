@@ -44,9 +44,14 @@ class QuotationController extends Controller
     {
         $searchModel = new QuotationSearch();
         $dataProvider = $searchModel->search(Yii::$app->request->queryParams);
+        $page_id = "quotation".time();
+        if(isset(Yii::$app->request->queryParams['page_id'])){
+            $page_id = Yii::$app->request->queryParams['page_id'];
+        }
         return $this->renderAjax('index', [
             'searchModel' => $searchModel,
             'dataProvider' => $dataProvider,
+            'page_id' => $page_id
         ]);
     }
 	
@@ -77,10 +82,10 @@ class QuotationController extends Controller
         
         $model = new  Quotation();
         $model1 = new  QuotationItems();
-        // if(Yii::$app->request->post()):
-        //     $result=Yii::$app->request->post();
-        //     // var_dump($result);die;
-        // endif;
+        if(Yii::$app->request->post()):
+            $result=Yii::$app->request->post();
+            // var_dump($result);die;
+        endif;
         // var_dump($result['Purchaserequest']);
         // var_dump(sizeof($result[' Quotation']['item_id']));die;
         if ($model->load(Yii::$app->request->post()) && $model->save(false)) {
