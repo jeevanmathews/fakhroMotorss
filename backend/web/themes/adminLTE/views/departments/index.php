@@ -43,6 +43,7 @@ $this->params['breadcrumbs'][] = $this->title;
                 ],
             ],
             'tableOptions' => [
+			
             'id' => 'theDatatable',
             'class'=>'table table-striped table-bordered table-hover'
             ],

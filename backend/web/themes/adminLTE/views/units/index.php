@@ -25,7 +25,10 @@ $this->params['breadcrumbs'][] = $this->title;
             <div class="row">
                 <div class="col-md-12"> 
                     <p>
-                        <?= Html::a('Create Units', ['create'], ['class' => 'btn btn-success']) ?>
+                        
+				   <?php if(Yii::$app->common->checkPermission('UnitsController', 'create', 'true')){
+						echo Html::a('Create Units', ['create'], ['class' => 'btn btn-success']);
+					} ?>  
                     </p>
 
                     <?= GridView::widget([
@@ -47,13 +50,16 @@ $this->params['breadcrumbs'][] = $this->title;
                           [
                         'attribute' => 'status',
                         'value' =>function ($model){
+							
                             return ($model->status == 1)?"Enabled":"Disabled";
                         },
                         'filter' => Html::activeDropDownList($searchModel, 'status', ["1"=>"Enable", "0" => "Disable"],['class'=>'form-control','prompt' => 'Search by Status']),
                         ],
 
                         ['class' => 'yii\grid\ActionColumn',
-                        'template' => '{update}{view}{changeStatus}',
+						'template' => ((Yii::$app->common->checkPermission('UnitsController', 'update', 'true')?'{update}':'').(Yii::$app->common->checkPermission('UnitsController', 'changestatus', 'true')?'{changeStatus}':'').(Yii::$app->common->checkPermission('UnitsController', 'view', 'true')?'{view}':'')),
+
+						
                         'buttons' => [
                         'changeStatus' => function ($url, $model, $key) {
                            $img = ($model->status == 1)?"button_cross.png":"button_tick_alt.png";

@@ -82,10 +82,10 @@ class QuotationController extends Controller
         
         $model = new  Quotation();
         $model1 = new  QuotationItems();
-        if(Yii::$app->request->post()):
-            $result=Yii::$app->request->post();
-            // var_dump($result);die;
-        endif;
+        // if(Yii::$app->request->post()):
+        //     $result=Yii::$app->request->post();
+        //     var_dump($result);die;
+        // endif;
         // var_dump($result['Purchaserequest']);
         // var_dump(sizeof($result[' Quotation']['item_id']));die;
         if ($model->load(Yii::$app->request->post()) && $model->save(false)) {
@@ -182,7 +182,7 @@ class QuotationController extends Controller
         $model = $this->findModel($id);
         $model->status = ($model->status == 0)?1:0;
         if($model->save()){
-            echo json_encode(["success" => true, "message" => "Purchase Requisition Status has been changed.",'redirect'=>Yii::$app->getUrlManager()->createUrl(['purchase-request/index'])]);
+            echo json_encode(["success" => true, "message" => "Status has been changed.",'redirect'=>Yii::$app->getUrlManager()->createUrl(['purchase-request/index'])]);
             exit;
         }
     }

@@ -75,7 +75,7 @@ class SalesOrderController extends Controller
     {
         $userId = \Yii::$app->user->identity->id;
         $branch_id=Yii::$app->user->identity->branch_id;
-        $modellastnumber = Quotation::find()->select('qtn_number')->where(['branch_id'=>$branch_id])->orderBy('id desc')->limit(1)->one();
+        $modellastnumber = SalesOrder::find()->select('so_number')->where(['branch_id'=>$branch_id])->orderBy('id desc')->limit(1)->one();
         $model = new SalesOrder();
         $model1 = new SalesOrderItems();
         if ($model->load(Yii::$app->request->post()) && $model->save(false)) {
@@ -113,19 +113,24 @@ class SalesOrderController extends Controller
         $model1 = new SalesOrder();
         $modelpr = new SalesOrderItems();
         $branch_id=Yii::$app->user->identity->branch_id;
-        $modellastnumber = Quotation::find()->select('qtn_number')->where(['branch_id'=>$branch_id])->orderBy('id desc')->limit(1)->one();
-
-         if ($model1->load(Yii::$app->request->post()) && $model1->save(false)) {
+        $modellastnumber = SalesOrder::find()->select('so_number')->where(['branch_id'=>$branch_id])->orderBy('id desc')->limit(1)->one();
+        if(Yii::$app->request->post()){
+            var_dump(Yii::$app->request->post());die;
+        }
+         if ($model1->load(Yii::$app->request->post()) && $model1->save()) {
             $result=Yii::$app->request->post();
              $flag_qty=0;
             for($i=0;$i<sizeof($result['SalesOrderItems']['item_id']);$i++){
                 $model2 = new SalesOrderItems();
+
+
+                $model2->item_id=$result['SalesOrderItems']['item_id'][$i];
+                $model2->quantity=$result['SalesOrderItems']['quantity'][$i];
+                $model2->pr_quantity=$result['SalesOrderItems']['pr_quantity'][$i];
+                $model2->remaining_quantity=$model2->pr_quantity-$model2->quantity;
                 if($model2->remaining_quantity==0){
                     $flag_qty++;
                 }
-                $model2->item_id=$result['SalesOrderItems']['item_id'][$i];
-                $model2->quantity=$result['SalesOrderItems']['quantity'][$i];
-                $model2->qtn_quantity=$result['QuotationItems']['quantity'][$i];
                 $model2->price=$result['SalesOrderItems']['price'][$i];
                 $model2->unit_id=$result['SalesOrderItems']['unit_id'][$i];
                 $model2->total_price =$result['SalesOrderItems']['total_price'][$i];
@@ -136,8 +141,7 @@ class SalesOrderController extends Controller
                 $model2->vat_rate=(isset($result['SalesOrderItems']['vat_rate'])?$result['SalesOrderItems']['vat_rate'][$i]:NULL);
                 $model2->tax=(isset($result['SalesOrderItems']['tax'])?$result['SalesOrderItems']['tax'][$i]:NULL);
                 $model2->total=$result['SalesOrderItems']['total'][$i];
-                $model2->so_id=$model1->id;
-                
+                $model2->po_id=$model1->id;
                 $model2->save(false);
             }
             if($flag_qty==$count){
@@ -216,7 +220,6 @@ class SalesOrderController extends Controller
 
         return $this->renderAjax('update', [
             'model' => $model,
-            'type'  =>'update',
         ]);
     }
 

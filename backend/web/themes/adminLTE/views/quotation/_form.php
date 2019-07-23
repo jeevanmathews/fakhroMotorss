@@ -74,7 +74,7 @@ $vat_format=Yii::$app->common->company->vat_format;
                    <?= Html::activeTextInput($model1,'vat_rate[]',['type'=>'hidden','class'=>'vatrate'])?>
                    <?= Html::activeTextInput($model1,'tax[]',['type'=>'hidden','class'=>'tax'])?>
                  <?php endif;?>
-                 <?= Html::activeTextInput($model1,'total[]',['type'=>'hidden','class'=>'total'])?>
+                 
                  <?= Html::activeTextInput($model1,'total_price[]',['type'=>'hidden','class'=>'total_price'])?>
                </td>
                <td><?= $form->field($model1, 'price[]')->textInput(['class'=>'form-control price'])->label(false) ?>
@@ -90,11 +90,11 @@ $vat_format=Yii::$app->common->company->vat_format;
                   </label>
                 </div>
                 <?= $form->field($model1, 'discount_percentage[]')->textInput(['class'=>'form-control discount_percentage'])->label(false) ?>
-                <input type="hidden" id="QuotationItems-discount_amount" class="discount_amount" name="QuotationItems[discount_amount][]">
+                   <?= Html::activeTextInput($model1,'discount_amount[]',['type'=>'hidden','class'=>'discount_amount'])?>
               </td>
               <td><?= $form->field($model1, 'net_amount[]')->textInput(['class'=>'form-control net_amount'])->label(false) ?></td>
               <td>
-               <input type="hidden" id="QuotationItems-tax" class="tax" name="QuotationItems[tax][]">
+              <?= Html::activeTextInput($model1,'tax[]',['type'=>'hidden','class'=>'tax'])?>
                <?= $form->field($model1, 'vat_rate[]')->textInput(['class'=>'form-control vatrate'])->label(false) ?></td>
              <?php endif;?>
              <td><?= $form->field($model1, 'total[]')->textInput(['class'=>'form-control total'])->label(false) ?></td>
@@ -114,7 +114,7 @@ $vat_format=Yii::$app->common->company->vat_format;
               <?= Html::activeTextInput($req,'vat_rate[]',['type'=>'hidden','class'=>'vatrate','value'=>$req->vat_rate])?>
               <?= Html::activeTextInput($req,'tax[]',['type'=>'hidden','class'=>'tax','value'=>$req->tax])?>
             <?php endif;?>
-            <?= Html::activeTextInput($req,'total[]',['type'=>'hidden','class'=>'total','value'=>$req->total])?>
+       
             <?= Html::activeTextInput($req,'total_price[]',['type'=>'hidden','class'=>'total_price','value'=>$req->total_price])?>
             </td>
             <td><?= $form->field($req, 'price[]')->textInput(['value'=>$req->price,'class'=>'form-control price'])->label(false) ?>
@@ -131,7 +131,7 @@ $vat_format=Yii::$app->common->company->vat_format;
               </label>
             </div>
             <?= $form->field($req, 'discount_percentage[]')->textInput(['value'=>$req->discount_percentage,'class'=>'form-control discount_percentage'])->label(false) ?>
-            <input type="hidden" id="QuotationItems-discount_amount" value="<?=$req->discount_amount?>" class="discount_amount" name="QuotationItems[discount_amount][]">
+               <?= Html::activeTextInput($req,'discount_amount[]',['type'=>'hidden','class'=>'discount_amount','value'=>$req->discount_amount])?>
             </td>
             <td><?= $form->field($req, 'net_amount[]')->textInput(['value'=>$req->net_amount,'class'=>'form-control net_amount'])->label(false) ?></td>
             <td>
@@ -173,7 +173,7 @@ $vat_format=Yii::$app->common->company->vat_format;
              <div class="mb-5 fl-w100"><?= $form->field($model, 'net')->textInput(['class'=>'form-control net disabled']);///->label(false)  ?></div>
     
             <div class="mb-5 fl-w100">
-            <div class="form-group field-Quotation-total_tax">
+            <div class="form-group field-Quotation-">
             <div class="input-group">
               <div class="input-group-addon">VAT %</div>
                <?= Html::activeTextInput($model,'vat_percent',['type'=>'hidden','class'=>'vatper form-control','value'=>(($vat_format=="exclusive")?Yii::$app->common->company->vat_rate:0)])?>
@@ -206,8 +206,11 @@ $( function() {
     changeYear: true,
     yearRange: "1930:2030",
   });
-});
-$(".datepicker").datepicker("setDate", new Date());
+
+$(".datepicker").datepicker("setDate", new Date());});
 $(document).find('select').select2();
+    jQuery('form').bind('submit', function() {
+        jQuery(this).find(':disabled').removeAttr('disabled');
+    });
 </script>
 </div>

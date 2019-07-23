@@ -24,7 +24,9 @@ $this->params['breadcrumbs'][] = $this->title;
         <div class="row">
         <div class="col-md-12"> 
         <p>
-        <?= Html::a('Create Currency', ['create'], ['class' => 'btn btn-success']) ?>
+		<?php if(Yii::$app->common->checkPermission('CurrencyController', 'create', 'true')){
+            echo Html::a('Create Currency', ['create'], ['class' => 'btn btn-success']);
+        } ?> 
         </p>
 
             <?= GridView::widget([
@@ -45,7 +47,9 @@ $this->params['breadcrumbs'][] = $this->title;
                     'created_at',
 
                     ['class' => 'yii\grid\ActionColumn',
-                    'template' => '{update}{changeStatus}',
+					'template' => ((Yii::$app->common->checkPermission('CurrencyController', 'update', 'true')?'{update}':'').(Yii::$app->common->checkPermission('CurrencyController', 'changestatus', 'true')?'{changeStatus}':'')),
+
+					
                     'buttons' => [
                         'changeStatus' => function ($url, $model, $key) {
                            $img = ($model->status == 1)?"button_cross.png":"button_tick_alt.png";

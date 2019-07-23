@@ -210,7 +210,7 @@ $(document).on('change','.subtotal,.discount',function(){
  $('.net:visible').val(gtotal);
 if($('.vatper').val()!='' &&  $('.vatper').val()!='undefined' && typeof $('.vatper').val()!=='undefined'){
   var vat_rate=$('.vatper').val();
-  console.log(vat_rate);
+  // console.log(vat_rate);
   taxtotal=((parseFloat(gtotal)*parseFloat(vat_rate))/100).toFixed(decimalPlaces);
   gtotal=(parseFloat(gtotal)+(parseFloat(gtotal)*parseFloat(vat_rate)/100)).toFixed(decimalPlaces);
 }
@@ -220,7 +220,7 @@ if($('.vatper').val()!='' &&  $('.vatper').val()!='undefined' && typeof $('.vatp
    //      gtotal=subtotal;
    // }
    $('.grandtotal:visible').val(gtotal);
-   $('.total_tax:visible').val(taxtotal);
+   $('.total_tax').val(taxtotal);
  });
 // reduce discount from total
 
@@ -248,7 +248,7 @@ $(document).on('click','.common_discount_type',function(){
     
   }
   // console.log(taxtotal,grandtotal,vat_rate);
-  $('.total_tax:visible').val(taxtotal);
+  $('.total_tax').val(taxtotal);
   $('.grandtotal:visible').val(grandtotal);
 });
 

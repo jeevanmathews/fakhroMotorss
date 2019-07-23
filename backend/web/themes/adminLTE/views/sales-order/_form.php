@@ -31,7 +31,11 @@ $vat_format=Yii::$app->common->company->vat_format;
     <div class="row">
 
       <div class="col-md-6"> 
+         <?php $disabled=''; $disabletrue='';?>
          <?php if($model->isNewRecord):
+          $disabled='disabled';
+
+          $disabletrue= ',"disabled"=true';
             $prefix=(isset(Yii::$app->common->prefix)?Yii::$app->common->prefix->id:'');
           else :
             $prefix=$model->prefix_id;
@@ -39,7 +43,7 @@ $vat_format=Yii::$app->common->company->vat_format;
           ?> 
         <?= $form->field($model,'prefix_id', ['inputOptions' => ["class" => "form-control select2"]])->dropDownList(ArrayHelper::map(PrefixMaster::find()->where(["status" => 1])->all(), 'id', 'prefix'), ["prompt" => "Select Prefix",'value'=>$prefix]) ?>
 
-        <?= $form->field($model, 'customer_id', ['inputOptions' => ["class" => "form-control select2"]])->dropDownList(ArrayHelper::map(Customer::find()->where(["status" => 1])->all(), 'id', 'name'), ["prompt" => "Select Customer"]) ?>  
+        <?= $form->field($model, 'customer_id', ['inputOptions' => ["class" => "form-control select2"]])->dropDownList(ArrayHelper::map(Customer::find()->where(["status" => 1])->all(), 'id', 'name'), ["prompt" => "Select Customer",'disabled' => ($model->qtn_id) ? 'disabled' : false]) ?>  
          <?= $form->field($model, 'remarks')->textarea(['rows' => 6]) ?>
         <?= $form->field($model, 'so_created_by')->hiddenInput(['value' => \Yii::$app->user->identity->id])->label(false) ?>
          <?= $form->field($model, 'branch_id')->hiddenInput(['value' => Yii::$app->user->identity->branch_id])->label(false) ?>
@@ -119,7 +123,7 @@ $vat_format=Yii::$app->common->company->vat_format;
         <tr class="item_row" rid="1">
           <?= $form->field($req, 'id[]')->hiddenInput(['value'=>$req->id])->label(false) ?>
           <td><?= Html::a('<span><i class="glyphicon glyphicon-trash"></i></span>', ['#'], ['class'=>'remove_row no-display']) ?></td>
-          <td><?= $form->field($req,'item_id[]', ['inputOptions' => ["class" => "select_item_id form-control select2"]])->dropDownList(ArrayHelper::map(Items::find()->where(["status" => 1])->all(), 'id', 'item_name'), ['options' => [$req->item_id => ['Selected'=>'selected']]],  ["prompt" => "Select Items"])->label(false) ?></td>
+          <td><?= $form->field($req,'item_id[]', ['inputOptions' => ["class" => "select_item_id form-control select2"]])->dropDownList(ArrayHelper::map(Items::find()->where(["status" => 1])->all(), 'id', 'item_name'), ['options' => [$req->item_id => ['Selected'=>'selected']]],  ["prompt" => "Select Items",'disabled' => ($model->qtn_id) ? 'disabled' : false])->label(false) ?></td>
           <?php if($model->qtn_id){ ?>
           <td><?= $form->field($req, 'qtn_quantity[]')->textInput(['value'=>(($req->remaining_quantity!=0)?$req->remaining_quantity:$req->quantity),'class'=>'form-control remaining_qty'])->label(false) ?></td>
           <?php } ?>
