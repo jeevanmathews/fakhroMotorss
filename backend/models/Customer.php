@@ -16,6 +16,7 @@ use Yii;
  */
 class Customer extends \yii\db\ActiveRecord
 {
+    public $customer_alt_id;
     /**
      * {@inheritdoc}
      */
@@ -33,6 +34,7 @@ class Customer extends \yii\db\ActiveRecord
             [['name'], 'required'],
             ['email', 'email'],
             [['email'], 'unique'],
+            ['customer_alt_id', 'safe'],
             [['name', 'contact_name', 'contact_number', 'email', 'alt_phone'], 'string', 'max' => 300],
         ];
     }

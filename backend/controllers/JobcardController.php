@@ -99,22 +99,28 @@ class JobcardController extends Controller
             $model->status = 1;
             if($model->save()){
                 if($vehicle->load(Yii::$app->request->post())){
-                    if($jc_vehicle = JobcardVehicle::find()->where(["reg_num" => $vehicle->reg_num])->one()){
-                        $model->vehicle_id = $jc_vehicle->id;
+                    if($vehicle->vehicle_alt_id){ //new vehicle picked 
+                        $changed_vehicle = JobcardVehicle::findOne($vehicle->vehicle_alt_id);
+                        if($changed_vehicle->load(Yii::$app->request->post())){
+                           $changed_vehicle->save(); 
+                           $vehicle = $changed_vehicle;
+                        }
                     }else{
                         $vehicle->save();
-                        $model->vehicle_id = $vehicle->id;
                     }
+                    $model->vehicle_id = $vehicle->id;                    
                 }   
                 if($customer->load(Yii::$app->request->post())) {
-                    if($jc_customer = Customer::find()->where(["email" => $customer->email])->one()){
-                      $jc_customer->load(Yii::$app->request->post()); 
-                      $jc_customer->save(false); 
-                      $model->customer_id = $jc_customer->id; 
+                    if($customer->customer_alt_id){ //new customer picked
+                        $changed_customer = Customer::findOne($customer->customer_alt_id);
+                        if($changed_customer->load(Yii::$app->request->post())){
+                           $changed_customer->save(); 
+                           $customer = $changed_customer;
+                        }
                     }else{
                         $customer->save();
-                        $model->customer_id = $customer->id;
-                  }  
+                    }
+                    $model->customer_id = $customer->id;
                 }
                 if($model->save()){
                     $model->vehicle->customer_id = $model->customer_id;                
@@ -260,18 +266,32 @@ class JobcardController extends Controller
         }        
         if ($model->load(Yii::$app->request->post()) && $model->save()) {
             if($vehicle->load(Yii::$app->request->post())){
-                if($vehicle->save()){
-                    if($customer->load(Yii::$app->request->post())) {
-                        if($customer->save()){
-                            $model->customer_id = $customer->id;
-                            $model->vehicle_id = $vehicle->id;
-                            $model->save();
-                        }   
-                    }                    
+                if($vehicle->vehicle_alt_id){ //new vehicle picked 
+                    $changed_vehicle = JobcardVehicle::findOne($vehicle->vehicle_alt_id);
+                    if($changed_vehicle->load(Yii::$app->request->post())){
+                       $changed_vehicle->save(); 
+                       $vehicle = $changed_vehicle;
+                    }
+                }else{
+                    $vehicle->save();
                 }
-            } 
+            }                     
+            if($customer->load(Yii::$app->request->post())) {
+                if($customer->customer_alt_id){ //new customer picked
+                    $changed_customer = Customer::findOne($customer->customer_alt_id);
+                    if($changed_customer->load(Yii::$app->request->post())){
+                       $changed_customer->save(); 
+                       $customer = $changed_customer;
+                    }
+                }else{
+                    $customer->save();
+                }                     
+            }   
+            $model->customer_id = $customer->id;
+            $model->vehicle_id = $vehicle->id;
+            $model->save();
             $model->vehicle->customer_id = $model->customer_id;                
-            $model->vehicle->save();  
+            $model->vehicle->save();
 
             echo json_encode(["success" => true, "message" => "Jobcard has been updated"]);
             exit;
@@ -658,7 +678,7 @@ class JobcardController extends Controller
     public function actionVehicleInfo($vehicle_id){
         $vehicle = JobcardVehicle::findOne($vehicle_id);//print_r($vehicle);exit;
         if($vehicle){
-            echo json_encode(['jobcardvehicle-reg_num' => $vehicle->reg_num, 'jobcardvehicle-chasis_num' => $vehicle->chasis_num, 'jobcardvehicle-lpo_num' => $vehicle->lpo_num, 'jobcardvehicle-vin' => $vehicle->vin, 'jobcardvehicle-wo_num' => $vehicle->wo_num, 'jobcardvehicle-make_id' => $vehicle->make_id, 'jobcardvehicle-model_id' => $vehicle->model_id, 'jobcardvehicle-color' => $vehicle->color, 'customer-name' => ($vehicle->customer)?$vehicle->customer->name:"", 'customer-contact_number' => ($vehicle->customer)?$vehicle->customer->contact_number:"", 'jobcardvehicle-vehicle_type' => $vehicle->vehicle_type]);
+            echo json_encode(['jobcardvehicle-reg_num' => $vehicle->reg_num, 'jobcardvehicle-chasis_num' => $vehicle->chasis_num, 'jobcardvehicle-lpo_num' => $vehicle->lpo_num, 'jobcardvehicle-vin' => $vehicle->vin, 'jobcardvehicle-wo_num' => $vehicle->wo_num, 'jobcardvehicle-make_id' => $vehicle->make_id, 'jobcardvehicle-model_id' => $vehicle->model_id, 'jobcardvehicle-color' => $vehicle->color, 'customer-name' => ($vehicle->customer)?$vehicle->customer->name:"", 'customer-contact_number' => ($vehicle->customer)?$vehicle->customer->contact_number:"", 'jobcardvehicle-vehicle_type' => $vehicle->vehicle_type, 'jobcardvehicle-vehicle_alt_id' => $vehicle->id]);
             exit;
         }
     }
@@ -666,7 +686,7 @@ class JobcardController extends Controller
     public function actionCustomerInfo($customer_id){
         $customer = Customer::findOne($customer_id);
         if($customer){
-            echo json_encode(['customer-name' => $customer->name, 'customer-contact_name' => $customer->contact_name, 'customer-contact_number' => $customer->contact_number, 'customer-alt_phone' => $customer->alt_phone, 'customer-email' => $customer->email, 'customer-address'  => $customer->address]);
+            echo json_encode(['customer-name' => $customer->name, 'customer-contact_name' => $customer->contact_name, 'customer-contact_number' => $customer->contact_number, 'customer-alt_phone' => $customer->alt_phone, 'customer-email' => $customer->email, 'customer-address'  => $customer->address, 'customer-customer_alt_id' => $customer->id]);
             exit;
         }
     }

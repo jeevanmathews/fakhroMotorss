@@ -186,7 +186,7 @@ class PermissionmasterController extends Controller
         }
         $replace_display_texts = ['index' => 'Listing', 'changestatus' => 'Status Change', 'createinv' =>  'Generate Invoice via GRN', 'createpoinv' => 'Generate Invoice via PO', 'createpo' => 'Generate PO from PR', 'createprtn' => 'Generate PR via GRN', 'createprtninv' => 'Generate PR via Invoice', 'createinv' => 'Generate Invoice via Sales Order', 'createso' => 'Generate Sales Order via Quotation', ]; 
 
-        $skip_actions = ['makes', 'models', '_index', '_create', '_delete', 'lists', 'accessories', 'spares', 'variantsbymodel', 'featuresbyvariant', 'import', 'podetails', 'prdetails', 'single', 'signup', 'uniqueemail'];//, 'itemprice'
+        $skip_actions = ['_index', '_create', '_delete', 'lists', 'accessories', 'spares', 'variantsbymodel', 'featuresbyvariant', 'import', 'podetails', 'prdetails', 'single', 'signup', 'uniqueemail'];//, 'itemprice'
         
         $skip_modules = ['Common', 'Site']; 
 

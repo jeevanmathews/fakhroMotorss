@@ -78,7 +78,9 @@ $time = time();
 
                     <?= $form->field($vehicle, 'ew_expiry_kms')->textInput(['maxlength' => true]) ?>
 
-                     <?= $form->field($vehicle, 'service_schedule')->textInput(['maxlength' => true, 'class' => "form-control datepicker"]) ?>
+                    <?= $form->field($vehicle, 'service_schedule')->textInput(['maxlength' => true, 'class' => "form-control datepicker"]) ?>
+
+                    <?= Html::activeHiddenInput($vehicle, 'vehicle_alt_id')?>            
 
                 </div>                
             </div>
@@ -149,7 +151,9 @@ $time = time();
 
                     <?= $form->field($customer, 'email')->textInput() ?>   
 
-                    <?= $form->field($customer, 'address')->textarea(['rows' => 4]) ?>            
+                    <?= $form->field($customer, 'address')->textarea(['rows' => 4]) ?> 
+
+                    <?= Html::activeHiddenInput($customer, 'customer_alt_id')?>            
 
                 </div>
             </div>
