@@ -25,7 +25,7 @@ $vat_format=Yii::$app->common->company->vat_format;
                           $prefix=$model->prefix_id;
                         endif;
                         ?>
-                    <?= $form->field($model,'prefix_id', ['inputOptions' => ["class" => "form-control select2"]])->dropDownList(ArrayHelper::map(PrefixMaster::find()->where(["status" => 1])->all(), 'id', 'prefix'), ["prompt" => "Select Prefix",'value'=>$prefix]) ?>
+                    <?= $form->field($model,'prefix_id', ['inputOptions' => ["class" => "form-control select2",'disabled'=>true]])->dropDownList(ArrayHelper::map(PrefixMaster::find()->where(["status" => 1])->all(), 'id', 'prefix'), ["prompt" => "Select Prefix",'value'=>$prefix]) ?>
                     
                     <?= $form->field($model, 'expected_date')->textInput(['maxlength' => true, 'class' => "form-control datepicker"]) ?>
 
@@ -43,7 +43,7 @@ $vat_format=Yii::$app->common->company->vat_format;
                     else :
                     $number=(isset($modellastnumber->pr_number)?$modellastnumber->pr_number+1:1);
                     endif;?>
-                    <?= $form->field($model, 'pr_number')->textInput(['maxlength' => true,'value'=>$number]) ?>
+                    <?= $form->field($model, 'pr_number')->textInput(['maxlength' => true,'value'=>$number,'class'=>'form-control disabled']) ?>
                     <?= $form->field($model, 'supplier_id', ['inputOptions' => ["class" => "supplier_id form-control select2"]])->dropDownList(ArrayHelper::map(Supplier::find()->where(["status" => 1])->all(), 'id', 'name'), ["prompt" => "Select Supplier"]) ?>                                     
                 <span class="append_here"></span>
                 </div> 
@@ -144,16 +144,16 @@ $vat_format=Yii::$app->common->company->vat_format;
                             <input type="radio" name="Purchaserequest[discount_type]" class="common_discount_type"  value="amount"> Amount
                         </label>
                     </div>
-                </div>
+                
                 <div class="mb-5 fl-w100"><?= $form->field($model, 'discount')->hiddenInput(['class'=>'form-control discount'])->label(false) ?></div>
                 <?= Html::activeTextInput($model,'discount_percent',['type'=>'hidden','class'=>'discount_percent form-control'])?>
-                <div class="mb-5 fl-w100"><?= $form->field($model, 'net')->textInput(['class'=>'form-control net disabled']);///->label(false)  ?></div>
+                <div class="mb-5 fl-w100"><?= $form->field($model, 'net')->hiddenInput(['class'=>'form-control net disabled'])->label(false);///->label(false)  ?></div>
                 <div class="mb-5 fl-w100">
                     <div class="form-group field-Purchaserequest-vat_percent">
                         <div class="input-group">
-                            <div class="input-group-addon">VAT %</div>
+                            <!-- <div class="input-group-addon">VAT %</div> -->
                              <?= Html::activeTextInput($model,'vat_percent',['type'=>'hidden','class'=>'vatper','value'=>(($vat_format=="exclusive")?Yii::$app->common->company->vat_rate:0)])?>
-                            <?= Html::textInput('vatt', (($vat_format=="exclusive")?Yii::$app->common->company->vat_rate:0), ['class' => 'form-control','disabled'=>'true']) ?>
+                            <?= Html::hiddenInput('vatt', (($vat_format=="exclusive")?Yii::$app->common->company->vat_rate:0), ['class' => 'form-control','disabled'=>'true']) ?>
             
                              </div>
                     </div>
@@ -161,6 +161,7 @@ $vat_format=Yii::$app->common->company->vat_format;
                 <div class="mb-5 fl-w100"><?= $form->field($model, 'total_tax')->hiddenInput(['class'=>'form-control total_tax'])->label(false) ?></div>
                 <?php// endif;?>
                 <div class="mb-5 fl-w100"><?= $form->field($model, 'grand_total')->hiddenInput(['class'=>'form-control grandtotal'])->label(false) //['readonly'=>true]?></div>
+            </div>
             </div>
             </div>
             </div>

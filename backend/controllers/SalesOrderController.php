@@ -114,9 +114,9 @@ class SalesOrderController extends Controller
         $modelpr = new SalesOrderItems();
         $branch_id=Yii::$app->user->identity->branch_id;
         $modellastnumber = SalesOrder::find()->select('so_number')->where(['branch_id'=>$branch_id])->orderBy('id desc')->limit(1)->one();
-        if(Yii::$app->request->post()){
-            var_dump(Yii::$app->request->post());die;
-        }
+        // if(Yii::$app->request->post()){
+        //     var_dump(Yii::$app->request->post());die;
+        // }
          if ($model1->load(Yii::$app->request->post()) && $model1->save()) {
             $result=Yii::$app->request->post();
              $flag_qty=0;
@@ -170,10 +170,9 @@ class SalesOrderController extends Controller
     public function actionUpdate($id)
     {
         $model = $this->findModel($id);
-         if(Yii::$app->request->post()):
-            $result=Yii::$app->request->post();
-            // var_dump($result);die;
-        endif;
+        //  if(Yii::$app->request->post()){
+        //     var_dump(Yii::$app->request->post());die;
+        // }
         if ($model->load(Yii::$app->request->post()) && $model->save()) {
             $flag_qty=0;
              $count=0;

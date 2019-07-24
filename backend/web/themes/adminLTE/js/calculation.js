@@ -25,6 +25,7 @@ $(document).ready(function() {
         // clone.find('select').select2('destroy');
         clone.find('select').select2();
         $('.item_table').append(clone);
+        clone.find('select').select2();
       });
 $(document).on('click','.remove_row',function(e){
  e.preventDefault();

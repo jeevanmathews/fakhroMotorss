@@ -153,7 +153,7 @@ $vat_format=Yii::$app->common->company->vat_format;
 
 
             <div class="w50 pull-right">
-            <div class="mb-5 fl-w100"><?= $form->field($model, 'subtotal')->textInput(['class'=>'form-control subtotal']);//->label(false) ?></div>
+            <div class="mb-5 fl-w100"><?= $form->field($model, 'subtotal')->textInput(['class'=>'form-control subtotal disabled']);//->label(false) ?></div>
             <?php if($vat_format=="exclusive") :?>
             <div class="input-group mb-15">
               <div class="input-group-addon">Discount Type</div>
@@ -183,7 +183,7 @@ $vat_format=Yii::$app->common->company->vat_format;
             </div>
             <?= $form->field($model, 'total_tax')->hiddenInput(['class'=>'form-control total_tax'])->label(false) ?>
             <?php endif;?>
-            <div class="mb-5 fl-w100"><?= $form->field($model, 'grand_total')->textInput(['class'=>'form-control grandtotal']);//->label(false) //['readonly'=>true]?></div>
+            <div class="mb-5 fl-w100"><?= $form->field($model, 'grand_total')->textInput(['class'=>'form-control grandtotal disabled']);//->label(false) //['readonly'=>true]?></div>
             </div>
             <?= Html::Button('<span class="glyphicon glyphicon-plus"></span> Add Items', ['class' => 'btn btn-success btn_add_new pull-left','title'=>'Add Items']) ?>
           </div>
