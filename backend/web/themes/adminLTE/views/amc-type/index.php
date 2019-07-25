@@ -25,7 +25,9 @@ $this->params['breadcrumbs'][] = $this->title;
         <div class="row">
         <div class="col-md-12"> 
     <p>
-        <?= Html::a('Create Amc Type', ['create'], ['class' => 'btn btn-success']) ?>
+		    <?php if(Yii::$app->common->checkPermission('AmcTypeController', 'create', 'true')){
+            echo Html::a('Create Amc Type', ['create'], ['class' => 'btn btn-success']);
+        } ?> 
     </p>
 
     <?= GridView::widget([
@@ -45,7 +47,8 @@ $this->params['breadcrumbs'][] = $this->title;
 
                 ],
                 ['class' => 'yii\grid\ActionColumn',
-                'template' => '{update}{changeStatus}',
+				'template' => ((Yii::$app->common->checkPermission('AmcTypeController', 'update', 'true')?'{update}':'').(Yii::$app->common->checkPermission('AmcTypeController', 'changestatus', 'true')?'{changeStatus}':'')),
+
                 'buttons' => [
                         'changeStatus' => function ($url, $model, $key) {
                            $img = ($model->status == 1)?"button_cross.png":"button_tick_alt.png";

@@ -185,6 +185,9 @@ $(".datepicker").datepicker({
   });
   $(".datepicker").datepicker("setDate", new Date());
   $(document).find('select').select2();
+  jQuery('form').bind('submit', function() {
+        jQuery(this).find(':disabled').removeAttr('disabled');
+    });
 
 
 </script>

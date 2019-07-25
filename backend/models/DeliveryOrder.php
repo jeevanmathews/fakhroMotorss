@@ -46,7 +46,7 @@ class DeliveryOrder extends \yii\db\ActiveRecord
         return [
           [['branch_id','prefix_id','so_number', 'so_expected_date', 'so_created_by','customer_id','grand_total'], 'required'],//, 'subtotal', 'total_tax', 'grand_total'
             [['qtn_id', 'so_created_by', 'status','branch_id','customer_id'], 'integer'],
-            [['subtotal','discount','discount_percent','vat_percent','total_tax','grand_total'],'number'],
+            [['subtotal','discount','net','discount_percent','vat_percent','total_tax','grand_total'],'number'],
             [['so_date'], 'safe'],
             [['so_number'], 'string', 'max' => 200],
             [['so_expected_date'], 'string', 'max' => 300],

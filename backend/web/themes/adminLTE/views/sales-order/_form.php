@@ -132,7 +132,7 @@ $vat_format=Yii::$app->common->company->vat_format;
           <?php if($model->qtn_id){ ?>
           <td><?= $form->field($req, 'qtn_quantity[]')->textInput(['value'=>(($req->remaining_quantity!=0)?$req->remaining_quantity:$req->quantity),'class'=>'form-control remaining_qty '.$disabled])->label(false) ?></td>
           <?php } ?>
-          <td><?= $form->field($req, 'quantity[]')->textInput(['value'=>$req->quantity,'class'=>'form-control qty '])->label(false) ?></td>
+          <td><?= $form->field($req, 'quantity[]')->textInput(['value'=>(($req->remaining_quantity!=0)?$req->remaining_quantity:$req->quantity),'class'=>'form-control qty '])->label(false) ?></td>
            
           <td><?= $form->field($req,'unit_id[]', ['inputOptions' => ["class" => "form-control select2",'disabled' => ($model->qtn_id) ? 'disabled' : false]])->dropDownList(ArrayHelper::map(Units::find()->where(["status" => 1])->all(), 'id', 'name'), ['options' => [$req->unit_id => ['Selected'=>'selected']]], ["prompt" => "Select unit"])->label(false) ?>
             <!-- <input type="hidden" id="salesorderitems-price" class="form-control price" value="<?=$req->price?>" name="SalesOrderItems[price][]"> -->
@@ -250,5 +250,9 @@ $(".datepicker").datepicker({
           $.ajaxSetup({async: true}); 
     }
 });
+      jQuery('form').bind('submit', function() {
+        jQuery(this).find(':disabled').removeAttr('disabled');
+    });
+
 </script>
 </div>

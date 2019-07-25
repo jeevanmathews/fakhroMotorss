@@ -26,7 +26,9 @@ $this->params['breadcrumbs'][] = $this->title;
         <div class="col-md-12">
 
     <p>
-        <?= Html::a('Create Extended Warranty Type', ['create'], ['class' => 'btn btn-success']) ?>
+		  <?php if(Yii::$app->common->checkPermission('ExtendedWarrantyTypeController', 'create', 'true')){
+            echo Html::a('Create Extended Warranty Type', ['create'], ['class' => 'btn btn-success']);
+        } ?> 
     </p>
 
     <?= GridView::widget([
@@ -46,7 +48,8 @@ $this->params['breadcrumbs'][] = $this->title;
 
                 ],
                 ['class' => 'yii\grid\ActionColumn',
-                'template' => '{update}{changeStatus}',
+				'template' => ((Yii::$app->common->checkPermission('ExtendedWarrantyTypeController', 'update', 'true')?'{update}':'').(Yii::$app->common->checkPermission('ExtendedWarrantyTypeController', 'changestatus', 'true')?'{changeStatus}':'')),
+
                 'buttons' => [
                         'changeStatus' => function ($url, $model, $key) {
                            $img = ($model->status == 1)?"button_cross.png":"button_tick_alt.png";
