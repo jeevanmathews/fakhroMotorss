@@ -30,7 +30,10 @@ $this->params['breadcrumbs'][] = $this->title;
         <div class="row">
         <div class="col-md-12"> 
     <p>
-        <?= Html::a('Create Vehicles', ['create'], ['class' => 'btn btn-success']) ?>
+        
+			<?php if(Yii::$app->common->checkPermission('VehiclemodelsController', 'create', 'true')){
+					echo Html::a('Create Vehicles', ['create'], ['class' => 'btn btn-success']);
+				} ?> 
     </p>
 
     <?= GridView::widget([
@@ -60,7 +63,7 @@ $this->params['breadcrumbs'][] = $this->title;
                 'filter' => ''
             ],  
             [   'class' => 'yii\grid\ActionColumn',
-                'template' => '{view}{update}{changeStatus}', 
+				'template' => ((Yii::$app->common->checkPermission('VehiclemodelsController', 'update', 'true')?'{update}':'').(Yii::$app->common->checkPermission('VehiclemodelsController', 'changestatus', 'true')?'{changeStatus}':'').(Yii::$app->common->checkPermission('DesignationsController', 'view', 'true')?'{view}':'')),
                 'header'=>'Actions',
                 'buttons' => [
                         'changeStatus' => function ($url, $model, $key) {

@@ -26,7 +26,11 @@ $this->params['breadcrumbs'][] = $this->title;
             <div class="row">
                 <div class="col-md-12"> 
                     <p>
-                        <?= Html::a('Create Tasks', ['create'], ['class' => 'btn btn-success']) ?>
+
+						  <?php if(Yii::$app->common->checkPermission('TasksController', 'create', 'true')){
+							echo Html::a('Create Tasks', ['create'], ['class' => 'btn btn-success']);
+						} ?> 
+						
                     </p>
 
                     <?= GridView::widget([
@@ -53,6 +57,8 @@ $this->params['breadcrumbs'][] = $this->title;
             //'status',
 
                         ['class' => 'yii\grid\ActionColumn'],
+						'template' => ((Yii::$app->common->checkPermission('TasksController', 'update', 'true')?'{update}':'').(Yii::$app->common->checkPermission('TasksController', 'delete', 'true')?'{delete}':'').(Yii::$app->common->checkPermission('TasksController', 'view', 'true')?'{view}':'')),
+
                         ],
                         'tableOptions' => [
                         'id' => 'theDatatable',

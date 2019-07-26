@@ -30,7 +30,10 @@ $this->params['breadcrumbs'][] = $this->title;
                 <div class="row">
                     <div class="col-md-12"> 
                         <p>
-                            <?= Html::a('Create Items', ['create'], ['class' => 'btn btn-success']) ?>
+					<?php if(Yii::$app->common->checkPermission('ItemsController', 'create', 'true')){
+					echo Html::a('Create Items', ['create'], ['class' => 'btn btn-success']);
+				} ?> 
+							
                         </p>
                    
                         <?= GridView::widget([
@@ -76,7 +79,10 @@ $this->params['breadcrumbs'][] = $this->title;
                             // 'created_date',
                 //'status',
 
-                            ['class' => 'yii\grid\ActionColumn'],
+                            ['class' => 'yii\grid\ActionColumn',
+							'template' => ((Yii::$app->common->checkPermission('ItemsController', 'update', 'true')?'{update}':'').(Yii::$app->common->checkPermission('ItemsController', 'delete', 'true')?'{delete}':'').(Yii::$app->common->checkPermission('ItemsController', 'view', 'true')?'{view}':'')),
+
+							],
                             ],
                             ]); ?>
                     
