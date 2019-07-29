@@ -50,7 +50,7 @@ class JobcardInvoice extends \yii\db\ActiveRecord
     {
         return [
             [['jobcard_id', 'meter_reading', 'fuel_level', 'promised_date', 'created_date'], 'required'],
-            [['jobcard_id', 'customer_id', 'vehicle_id', 'meter_reading', 'service_manager', 'service_advisor', 'service_type', 'next_service_type', 'tested_by', 'status'], 'integer'],
+            [['jobcard_id', 'customer_id', 'vehicle_id', 'meter_reading', 'service_manager', 'service_advisor', 'service_type', 'next_service_type', 'tested_by', 'status', 'created_by'], 'integer'],
             [['advance_paid', 'labour_cost', 'material_cost', 'gross_amount', 'discount', 'total_charge', 'tax', 'amount_due'], 'number'],
             [['comment'], 'string'],
             [['created_date'], 'safe'],

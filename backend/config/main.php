@@ -20,6 +20,9 @@ return [
             ],
         ],
     'components' => [
+        'session' => [
+        'timeout' => 60*60*24*14, // 2 weeks, 3600 - 1 hour, Default 1440
+        ],
         'request' => [
             'csrfParam' => '_csrf_backend',
         ],

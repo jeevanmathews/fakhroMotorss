@@ -82,9 +82,9 @@ class DeliveryOrderController extends Controller
         $modellastnumber = SalesOrder::find()->select('so_number')->where(['branch_id'=>$branch_id])->orderBy('id desc')->limit(1)->one();
         $model = new DeliveryOrder();
         $model1 = new DeliveryOrderItems();
-        if (Yii::$app->request->post()):
-            var_dump(Yii::$app->request->post());die;
-        endif;
+        // if (Yii::$app->request->post()):
+        //     var_dump(Yii::$app->request->post());die;
+        // endif;
         if ($model->load(Yii::$app->request->post()) && $model->save(false)) {
             $result=Yii::$app->request->post();
             for($i=0;$i<sizeof($result['DeliveryOrderItems']['item_id']);$i++){
@@ -124,9 +124,9 @@ class DeliveryOrderController extends Controller
         $modelpr = new DeliveryOrderItems();
         $branch_id=Yii::$app->user->identity->branch_id;
         $modellastnumber = SalesOrder::find()->select('so_number')->where(['branch_id'=>$branch_id])->orderBy('id desc')->limit(1)->one();
-         if (Yii::$app->request->post()):
-            var_dump(Yii::$app->request->post());die;
-        endif;
+        //  if (Yii::$app->request->post()):
+        //     var_dump(Yii::$app->request->post());die;
+        // endif;
         if ($model1->load(Yii::$app->request->post()) && $model1->save(false)) {
             $flag_qty=0;
             $count=0;

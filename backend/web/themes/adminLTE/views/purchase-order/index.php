@@ -27,7 +27,9 @@ $this->params['breadcrumbs'][] = $this->title;
             <div class="row">
                 <div class="col-md-12"> 
                     <p>
-                        <?= Html::a('Create Purchase Order', ['create'], ['class' => 'btn btn-success']) ?>
+						  <?php if(Yii::$app->common->checkPermission('PurchaseOrderController', 'create', 'true')){
+							echo Html::a('Create Purchase Order', ['create'], ['class' => 'btn btn-success']);
+						} ?> 
                     </p>
                     <!--  <?php Pjax::begin(['id'=>'purchase-order']); ?> -->
                     <?= GridView::widget([
@@ -71,7 +73,8 @@ $this->params['breadcrumbs'][] = $this->title;
                         ],
 
                         ['class' => 'yii\grid\ActionColumn',
-                        'template' => '{update}{view}{changeStatus}',
+						'template' => ((Yii::$app->common->checkPermission('PurchaseOrderController', 'update', 'true')?'{update}':'').(Yii::$app->common->checkPermission('PurchaseOrderController', 'delete', 'true')?'{delete}':'').(Yii::$app->common->checkPermission('PurchaseOrderController', 'view', 'true')?'{view}':'').(Yii::$app->common->checkPermission('PurchaseOrderController', 'changestatus', 'true')?'{changeStatus}':'')),
+
                         'buttons' => [
                         'changeStatus' => function ($url, $model, $key) {
                            $img = ($model->status == 1)?"button_cross.png":"button_tick_alt.png";

@@ -97,6 +97,7 @@ class JobcardController extends Controller
         
         if ($model->load(Yii::$app->request->post())) { 
             $model->status = 1;
+            $model->created_by = Yii::$app->user->id;
             if($model->save()){
                 if($vehicle->load(Yii::$app->request->post())){
                     if($vehicle->vehicle_alt_id){ //new vehicle picked 
@@ -506,7 +507,8 @@ class JobcardController extends Controller
         $invoice = new JobcardInvoice();
         $invoice->setAttributes($jobcard->getAttributes());
         $invoice->jobcard_id = $jobcard->id;
-        $invoice->created_date = date('Y-m-d h:i:s');      
+        $invoice->created_date = date('Y-m-d h:i:s'); 
+        $invoice->created_by = Yii::$app->user->id;     
         if($invoice->save(false)){
             $jobcard->updateStockDetails();
             //Save Invoice Materials -same as Jobcard Materials
@@ -535,7 +537,8 @@ class JobcardController extends Controller
         $quotation = new JobcardQuotation();
         $quotation->setAttributes($jobcard->getAttributes());
         $quotation->jobcard_id = $jobcard->id;
-        $quotation->created_date = date('Y-m-d h:i:s');     
+        $quotation->created_date = date('Y-m-d h:i:s');   
+        $quotation->created_by = Yii::$app->user->id;      
         // var_dump($quotation->getAttributes());die; 
         if($quotation->save(false)){
             // $jobcard->updateStockDetails();

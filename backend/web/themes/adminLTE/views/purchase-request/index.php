@@ -32,7 +32,10 @@ $this->params['breadcrumbs'][] = $this->title;
         <div class="row">
           <div class="col-md-12"> 
             <p>
-              <?= Html::a('Create Purchase requisition', ['create'], ['class' => 'btn btn-success']) ?>
+			  <?php if(Yii::$app->common->checkPermission('PurchaseRequestController', 'create', 'true')){
+							echo Html::a('Create Purchase requisition', ['create'], ['class' => 'btn btn-success']);
+						} ?> 
+			  
             </p>
             <?php Pjax::begin(['id'=>'purchase-request']); ?>
             <?= GridView::widget([
@@ -86,7 +89,8 @@ $this->params['breadcrumbs'][] = $this->title;
                         // 'filter' => Html::activeDropDownList($searchModel, 'process_status', ["pending"=>"Pending", "processing" => "Processing",'completed'=>"Completed"],['class'=>'form-control','prompt' => 'Search by Status']),
                         // ],
               ['class' => 'yii\grid\ActionColumn',
-              'template' => '{update}{view}{changeStatus}',
+			  'template' => ((Yii::$app->common->checkPermission('PurchaseRequestController', 'update', 'true')?'{update}':'').(Yii::$app->common->checkPermission('PurchaseRequestController', 'delete', 'true')?'{delete}':'').(Yii::$app->common->checkPermission('PurchaseRequestController', 'view', 'true')?'{view}':'').(Yii::$app->common->checkPermission('PurchaseRequestController', 'changestatus', 'true')?'{changeStatus}':'')),
+
               'buttons' => [
               'changeStatus' => function ($url, $model, $key) {
                $img = ($model->status == 1)?"button_cross.png":"button_tick_alt.png";
