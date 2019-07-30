@@ -79,11 +79,23 @@ $this->params['breadcrumbs'][] = $this->title;
                             // 'created_date',
                 //'status',
 
-                            ['class' => 'yii\grid\ActionColumn',
-							'template' => ((Yii::$app->common->checkPermission('ItemsController', 'update', 'true')?'{update}':'').(Yii::$app->common->checkPermission('ItemsController', 'delete', 'true')?'{delete}':'').(Yii::$app->common->checkPermission('ItemsController', 'view', 'true')?'{view}':'')),
+       //                      ['class' => 'yii\grid\ActionColumn',
+							// 'template' => ((Yii::$app->common->checkPermission('ItemsController', 'update', 'true')?'{update}':'').(Yii::$app->common->checkPermission('ItemsController', 'delete', 'true')?'{delete}':'').(Yii::$app->common->checkPermission('ItemsController', 'view', 'true')?'{view}':'')),
 
-							],
+							// ],
+                             ['class' => 'yii\grid\ActionColumn',
+                                'template' => ((Yii::$app->common->checkPermission('ItemsController', 'update', 'true')?'{update}':'').(Yii::$app->common->checkPermission('ItemsController', 'changestatus', 'true')?'{changeStatus}':'').(Yii::$app->common->checkPermission('ItemsController', 'view', 'true')?'{view}':'')),
+                                'buttons' => [
+                                        'changeStatus' => function ($url, $model, $key) {
+                                             $img = ($model->status == 1)?"button_cross.png":"button_tick_alt.png";
+                                             $width = ($model->status == 1)?"25":"20";
+                                            return Html::a(Html::img($this->theme->getUrl("images/".$img),["width" =>  $width, "title" => (($model->status == 1)?"Disable":"Enable")]), ['change-status', 'id'=>$model->id]);
+                                        },
+                                    ]
+                                ],
                             ],
+
+
                             ]); ?>
                     
                         </div>

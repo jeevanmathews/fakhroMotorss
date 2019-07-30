@@ -131,7 +131,14 @@ class DepartmentsController extends Controller
         }        
         exit;
     }
-
+    public function actionChangeStatus($id){
+        $model = $this->findModel($id);
+        $model->status = ($model->status == 0)?1:0;
+         if($model->save()){
+            echo json_encode(["success" => true, "message" => "Status has been changed", 'redirect' => Yii::$app->getUrlManager()->createUrl(['items/index'])]);
+         exit;
+     }
+    }
     /**
      * Deletes an existing Departments model.
      * If deletion is successful, the browser will be redirected to the 'index' page.

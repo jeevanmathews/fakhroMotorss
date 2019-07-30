@@ -323,6 +323,14 @@ class ItemsController extends Controller
                  // ->asArray()
                  // ->all();
     }
+      public function actionChangeStatus($id){
+        $model = $this->findModel($id);
+        $model->status = ($model->status == 0)?1:0;
+         if($model->save()){
+            echo json_encode(["success" => true, "message" => "Status has been changed", 'redirect' => Yii::$app->getUrlManager()->createUrl(['items/index'])]);
+         exit;
+     }
+    }
     public function actionItemprice($id){
         // $id=Yii::$app->request->post('id');
         // var_dump($id);die;
@@ -342,6 +350,8 @@ class ItemsController extends Controller
      * @return Items the loaded model
      * @throws NotFoundHttpException if the model cannot be found
      */
+
+  
     protected function findModel($id)
     {
         if (($model = Items::findOne($id)) !== null) {

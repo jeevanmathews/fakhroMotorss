@@ -172,6 +172,7 @@ $vat_format=Yii::$app->common->company->vat_format;
       </div>
       <div class="mb-5 fl-w100"><?= $form->field($model, 'discount')->textInput(['class'=>'form-control discount']) ?></div>
         <?= Html::activeTextInput($model,'discount_percent[]',['type'=>'hidden','class'=>'discount_percent form-control','value'=>$model->discount_percent])?>
+       <div class="mb-5 fl-w100"><?= $form->field($model, 'net')->textInput(['class'=>'form-control net disabled']);///->label(false)  ?></div>
       <div class="mb-5 fl-w100">
         <div class="form-group field-SalesOrder-total_tax">
           <div class="input-group">

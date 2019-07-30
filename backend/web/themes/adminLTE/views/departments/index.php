@@ -38,9 +38,19 @@ $this->params['breadcrumbs'][] = $this->title;
             'columns' => [
                 ['class' => 'yii\grid\SerialColumn'],
                 'name',
+                // ['class' => 'yii\grid\ActionColumn',
+                // 'template' => ((Yii::$app->common->checkPermission('DepartmentsController', 'update', 'true')?'{update}':'').(Yii::$app->common->checkPermission('DepartmentsController', 'delete', 'true')?'{delete}':'')),
+                // ],
                 ['class' => 'yii\grid\ActionColumn',
-                'template' => ((Yii::$app->common->checkPermission('DepartmentsController', 'update', 'true')?'{update}':'').(Yii::$app->common->checkPermission('DepartmentsController', 'delete', 'true')?'{delete}':'')),
-                ],
+                                'template' => ((Yii::$app->common->checkPermission('DepartmentsController', 'update', 'true')?'{update}':'').(Yii::$app->common->checkPermission('DepartmentsController', 'changestatus', 'true')?'{changeStatus}':'')),
+                                'buttons' => [
+                                        'changeStatus' => function ($url, $model, $key) {
+                                             $img = ($model->status == 1)?"button_cross.png":"button_tick_alt.png";
+                                             $width = ($model->status == 1)?"25":"20";
+                                            return Html::a(Html::img($this->theme->getUrl("images/".$img),["width" =>  $width, "title" => (($model->status == 1)?"Disable":"Enable")]), ['change-status', 'id'=>$model->id]);
+                                        },
+                                    ]
+                                ],
             ],
             'tableOptions' => [
 			
