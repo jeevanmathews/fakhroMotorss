@@ -12,6 +12,7 @@ use backend\models\PrefixMaster;
 use backend\models\User;
 use backend\models\UserRole;
 use backend\models\Roles;
+use backend\models\Log;
 use yii\helpers\Html;
 use yii\imagine\Image;
 
@@ -176,6 +177,17 @@ class Common extends Component
     }
 
     public function checkPermission($controller, $action, $return="page"){
+
+      // Log the action
+      if($return == "page"){
+        $log = new Log();
+        $log->controller = $controller;
+        $log->action = $action;
+        $log->query_string = $_SERVER['QUERY_STRING'];
+        $log->loggedin_user = Yii::$app->user->id; 
+        $log->save();
+      }      
+
       $permissions =  Yii::$app->session->get('permissions');
       $action =  str_replace("-", "", $action);
       if($permissions){
