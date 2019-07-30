@@ -102,7 +102,7 @@ class TasksController extends Controller
 		$model->total_time = $total_min; 
 			if($model->save())
             {
-                if(isset($res['jobcard_id'])){
+                if($res['jobcard_id'] != ""){
                     if($task_id = $model->assignTask($res['jobcard_id'])){
                         echo json_encode(["success" => true, "message" => "Task has been created", 'redirect' => Yii::$app->getUrlManager()->createUrl(['jobcard/update', 'id' => $res['jobcard_id'], 'taskId' => $task_id])]);exit;
                         exit;
