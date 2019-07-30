@@ -57,7 +57,7 @@ $this->params['breadcrumbs'][] = $this->title;
             //'status',
 
                         ['class' => 'yii\grid\ActionColumn'],
-						'template' => ((Yii::$app->common->checkPermission('TasksController', 'update', 'true')?'{update}':'').(Yii::$app->common->checkPermission('TasksController', 'delete', 'true')?'{delete}':'').(Yii::$app->common->checkPermission('TasksController', 'view', 'true')?'{view}':'')),
+						//'template' => ((Yii::$app->common->checkPermission('TasksController', 'update', 'true')?'{update}':'').(Yii::$app->common->checkPermission('TasksController', 'delete', 'true')?'{delete}':'').(Yii::$app->common->checkPermission('TasksController', 'view', 'true')?'{view}':'')),
 
                         ],
                         'tableOptions' => [
