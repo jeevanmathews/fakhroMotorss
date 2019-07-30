@@ -100,6 +100,8 @@ class TasksController extends Controller
 		
 		$total_min = $day_in_min+$hour_in_min+$min;
 		$model->total_time = $total_min; 
+
+        $model->billable = ($model->billable != "yes")?"no":"yes";
 			if($model->save())
             {
                 if($res['jobcard_id'] != ""){
