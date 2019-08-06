@@ -91,9 +91,17 @@ use backend\models\Branches
                                                 <td width="60%" style="padding: 3px 0; font-size: 14px;">: <?php echo $invoice->id;?></td>
                                             </tr>
                                             <tr>
-                                                <td width="40%" style="padding: 3px 0; font-size: 14px; font-weight: 700;">Date</td>
+                                                <td width="40%" style="padding: 3px 0; font-size: 14px; font-weight: 700;">Issue Date</td>
                                                 <td width="60%" style="padding: 3px 0; font-size: 14px;">: <?php echo date("d-m-Y");?></td>
                                             </tr>
+                                            <tr>
+                                                <td width="40%" style="padding: 3px 0; font-size: 14px; font-weight: 700;">Promised Date</td>
+                                                <td width="60%" style="padding: 3px 0; font-size: 14px;">: <?php echo $invoice->promised_date;?></td>
+                                            </tr>
+                                            <tr>
+                                                <td width="40%" style="padding: 3px 0; font-size: 14px; font-weight: 700;">Currency</td>
+                                                <td width="60%" style="padding: 3px 0; font-size: 14px;">: <?php echo Yii::$app->common->company->settings->currency->code;?> </td>
+                                            </tr>                                            
                                             <tr>
                                                 <td width="40%" style="padding: 3px 0; font-size: 14px; font-weight: 700;">Repair Order No</td>
                                                 <td width="60%" style="padding: 3px 0; font-size: 14px;">: </td>
@@ -153,6 +161,7 @@ use backend\models\Branches
                             ],
                             [                           
                                 'attribute' => 'tax_rate',
+                                'label' => 'VAT(%)',
                                 'value'=>function ($model, $key, $index, $widget){
                                     if(Yii::$app->common->company->vat_format == "exclusive"){
                                         return "NA";
@@ -164,10 +173,12 @@ use backend\models\Branches
                             ],
                             [
                                 'attribute' => 'tax_amount',
+                                'label' => 'VAT',
                                 'visible' => ((Yii::$app->common->company->vat_format == "exclusive")?false:true),
                             ],                                  
                             [                           
                                 'attribute' => 'billing_rate',
+                                'label' => 'Total',
                                 'visible' => ((Yii::$app->common->company->vat_format == "exclusive")?false:true),
                                 'value'=>function ($model, $key, $index, $widget) use (&$billing_rate) {
                                     if($model->billable == "yes"){
@@ -188,9 +199,45 @@ use backend\models\Branches
                         'summary' => "",              
                         'columns' => [
                             ['class' => 'yii\grid\SerialColumn'],
-                            'material_type',
-                            'material.item_name', 
-                            'num_unit',
+                            [
+                            'encodeLabel' => false,
+                             'label' => '
+                                        <table class="not_brdr">
+                                            <tbody><tr>
+                                                <td style="border-bottom:1px solid #ddd; ">Item Code</td>
+                                            </tr>
+                                            <tr>
+                                                 <td>Description</td>
+                                            </tr>
+                                        </tbody></table>
+                                   ',
+                            'format' => 'html',
+                            'value' => function($model, $key, $index, $widget){
+                                $widget->header = '<th width="20%" style="padding-left: 0">
+                                        <table class="not_brdr">
+                                            <tbody><tr>
+                                                <td style="border-bottom:1px solid #ddd; ">Item Code</td>
+                                            </tr>
+                                            <tr>
+                                                 <td>Description</td>
+                                            </tr>
+                                        </tbody></table>
+                                   </th>';
+                                return ($model->material->item_code?$model->material->item_code."<br/>":"").$model->material->item_name;
+                            }
+                           ],  
+                           [
+                            'label' => 'UOM',
+                            'value' => function($model){
+                                return $model->material->unit->name;
+                            }
+                           ], 
+                            [
+                                'label' => 'QTY',
+                                'value' => function($model){
+                                    return $model->num_unit;
+                                }
+                            ],
                             [
                                 'attribute' => 'unit_rate',
                                 'value'=>function ($model, $key, $index, $widget){
@@ -224,6 +271,7 @@ use backend\models\Branches
                             ],
                             [                           
                                 'attribute' => 'tax_rate',
+                                'label' => 'VAT(%)',
                                 'value'=>function ($model, $key, $index, $widget){
                                     if(Yii::$app->common->company->vat_format == "exclusive"){
                                         return "NA";
@@ -236,10 +284,12 @@ use backend\models\Branches
                             ],
                             [
                                 'attribute' => 'tax_amount',
+                                'label' => 'VAT',
                                 'visible' => ((Yii::$app->common->company->vat_format == "exclusive")?false:true),
                             ],                          
                             [                      
-                                'attribute' => 'rate',
+                                'attribute' => 'rate',   
+                                'label' => 'Total',                           
                                 'value'=>function ($model, $key, $index, $widget) use (&$rate) {
                                     //$rate += $model->rate;
                                     //$widget->footer = "<b>".Yii::$app->common->company->settings->currency->code." ".$rate."</b>";
