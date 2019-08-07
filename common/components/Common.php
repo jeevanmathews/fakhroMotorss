@@ -222,6 +222,7 @@ class Common extends Component
         "ExtendedWarrantyTypeController" => ['Extended Warranty Types',  '/extended-warranty-type/index'],
         "ServiceTypeController" => ['Service Type',  '/service-type/index'],
         "PrefixMasterController" => ['Prefix',  '/prefix-master/index'],
+        'LogController' => ['Log', '/log/index'],
       ];
       $mater_str = '';
       foreach($masters_menus as $masters_menu => $item){

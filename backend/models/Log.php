@@ -29,7 +29,7 @@ class Log extends \yii\db\ActiveRecord
     {
         return [
             [['controller', 'action', 'query_string', 'loggedin_user'], 'required'],
-            [['controller', 'action', 'query_string'], 'string', 'max' => 200],
+            [['controller', 'action', 'query_string', 'date'], 'string', 'max' => 200],
         ];
     }
 
@@ -44,5 +44,17 @@ class Log extends \yii\db\ActiveRecord
             'action' => 'Action',
             'query_string' => 'Query String',
         ];
+    }
+
+    public function getLoggedinuser(){
+        return $this->hasOne(User::className(), ['id' => 'loggedin_user']);
+    }
+
+    public function beforeSave($insert)
+    {
+         if (parent::beforeSave($insert)) {
+            $this->date = date("Y-m-d h:i:s");
+            return true;
+        }
     }
 }

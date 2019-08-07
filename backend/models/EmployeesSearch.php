@@ -17,8 +17,8 @@ class EmployeesSearch extends Employees
     public function rules()
     {
         return [
-            [['id', 'designation_id', 'login', 'user_id', 'status'], 'integer'],
-            [['first_name', 'last_name', 'address', 'email', 'phone', 'date_of_joining', 'date_of_birth', 'created_date'], 'safe'],
+            [['id', 'login', 'user_id', 'status'], 'integer'],
+            [['first_name', 'designation_id', 'last_name', 'address', 'email', 'phone', 'date_of_joining', 'date_of_birth', 'created_date'], 'safe'],
         ];
     }
 
@@ -41,6 +41,7 @@ class EmployeesSearch extends Employees
     public function search($params)
     {
         $query = Employees::find();
+        $query->joinWith(['designation']);
 
         // add conditions that should always apply here
 
@@ -60,8 +61,7 @@ class EmployeesSearch extends Employees
         $query->andFilterWhere([
             'id' => $this->id,
             'date_of_joining' => $this->date_of_joining,
-            'date_of_birth' => $this->date_of_birth,        
-            'designation_id' => $this->designation_id,
+            'date_of_birth' => $this->date_of_birth,
             'login' => $this->login,
             'user_id' => $this->user_id,
             'created_date' => $this->created_date,
@@ -70,6 +70,7 @@ class EmployeesSearch extends Employees
 
         $query->andFilterWhere(['like', 'first_name', $this->first_name])
             ->andFilterWhere(['like', 'last_name', $this->last_name])
+            ->andFilterWhere(['like', 'designations.name', $this->designation_id])
             ->andFilterWhere(['like', 'address', $this->address])
             ->andFilterWhere(['like', 'email', $this->email])
             ->andFilterWhere(['like', 'phone', $this->phone]);
