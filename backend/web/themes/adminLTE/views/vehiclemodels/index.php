@@ -63,7 +63,8 @@ $this->params['breadcrumbs'][] = $this->title;
                 'filter' => ''
             ],  
             [   'class' => 'yii\grid\ActionColumn',
-				'template' => ((Yii::$app->common->checkPermission('VehiclemodelsController', 'update', 'true')?'{update}':'').(Yii::$app->common->checkPermission('VehiclemodelsController', 'changestatus', 'true')?'{changeStatus}':'').(Yii::$app->common->checkPermission('DesignationsController', 'view', 'true')?'{view}':'')),
+				'template' => ((Yii::$app->common->checkPermission('VehiclemodelsController', 'update', 'true')?'{update}':'')
+				.(Yii::$app->common->checkPermission('VehiclemodelsController', 'changestatus', 'true')?'{changeStatus}':'').(Yii::$app->common->checkPermission('DesignationsController', 'view', 'true')?'{view}':'')),
                 'header'=>'Actions',
                 'buttons' => [
                         'changeStatus' => function ($url, $model, $key) {

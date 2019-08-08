@@ -141,13 +141,16 @@ use backend\models\Branches
                                 'value'=>function ($model, $key, $index, $widget) use (&$task_total) {
                                     //$task_total += $model->task_rate;
                                     //$widget->footer = "<b>".$task_total."</b>";
-                                    return $model->task_rate;
+                                    return number_format($model->task_rate, Yii::$app->common->company->settings->decimal_places);
                                 },                          
                             ],
                             [
                                 'attribute' => 'discount_amount',
                                 'label' => 'Discount',
                                 'visible' => ((Yii::$app->common->company->vat_format == "exclusive")?false:true),
+                                'value'=>function ($model){
+                                    return number_format($model->discount_amount, Yii::$app->common->company->settings->decimal_places);
+                                }
                             ],
                             [
                                 'label' => 'Net Price',
@@ -155,7 +158,7 @@ use backend\models\Branches
                                     $task_net_price = ((Yii::$app->common->company->vat_format == "exclusive")?$model->task_rate:($model->task_rate-$model->discount_amount));
                                     //$task_net_price_tot += $task_net_price;
                                     //$widget->footer = "<b>".$task_net_price_tot."</b>";
-                                    return $task_net_price;                             
+                                    return number_format($task_net_price, Yii::$app->common->company->settings->decimal_places);                             
                                 },
                                 'visible' => ((Yii::$app->common->company->vat_format == "exclusive")?false:true),                          
                             ],
@@ -175,6 +178,9 @@ use backend\models\Branches
                                 'attribute' => 'tax_amount',
                                 'label' => 'VAT',
                                 'visible' => ((Yii::$app->common->company->vat_format == "exclusive")?false:true),
+                                'value'=>function ($model){
+                                    return number_format($model->tax_amount, Yii::$app->common->company->settings->decimal_places);
+                                }
                             ],                                  
                             [                           
                                 'attribute' => 'billing_rate',
@@ -185,7 +191,7 @@ use backend\models\Branches
                                         //$billing_rate += $model->billing_rate;
                                     }
                                     //$widget->footer = "<b>".Yii::$app->common->company->settings->currency->code." ".$billing_rate."</b>";
-                                    return ($model->billable == "yes")?(Yii::$app->common->company->settings->currency->code." ".$model->billing_rate) :"NA";
+                                    return ($model->billable == "yes")?(Yii::$app->common->company->settings->currency->code." ".number_format($model->billing_rate, Yii::$app->common->company->settings->decimal_places)) :"NA";
                                 },                          
                             ],
                         ],
@@ -242,7 +248,7 @@ use backend\models\Branches
                                 'attribute' => 'unit_rate',
                                 'value'=>function ($model, $key, $index, $widget){
                                     //$widget->footer = "<b>Materials Totals</b>";
-                                    return $model->unit_rate ;
+                                    return number_format($model->unit_rate, Yii::$app->common->company->settings->decimal_places) ;
                                 },  
                             ],                       
                             [                            
@@ -251,13 +257,16 @@ use backend\models\Branches
                                 'value'=>function ($model, $key, $index, $widget) use (&$mat_total) {
                                     //$mat_total += $model->total;
                                     //$widget->footer = "<b>".$mat_total."</b>";
-                                    return $model->total;
+                                    return number_format($model->total, Yii::$app->common->company->settings->decimal_places);
                                 },                          
                             ],
                             [
                                 'attribute' => 'discount_amount',
                                 'label' => 'Discount',
                                 'visible' => ((Yii::$app->common->company->vat_format == "exclusive")?false:true),
+                                'value'=>function ($model){                                 
+                                    return number_format($model->discount_amount, Yii::$app->common->company->settings->decimal_places);
+                                }
                             ],
                             [
                                 'label' => 'Net Price',
@@ -265,7 +274,7 @@ use backend\models\Branches
                                     $net_price = ((Yii::$app->common->company->vat_format == "exclusive")?$model->total:($model->total-$model->discount_amount));
                                     //$net_price_tot += $net_price;
                                     //$widget->footer = "<b>".$net_price_tot."</b>";
-                                    return $net_price;                              
+                                    return number_format($net_price, Yii::$app->common->company->settings->decimal_places);                              
                                 },      
                                 'visible' => ((Yii::$app->common->company->vat_format == "exclusive")?false:true),                  
                             ],
@@ -286,6 +295,9 @@ use backend\models\Branches
                                 'attribute' => 'tax_amount',
                                 'label' => 'VAT',
                                 'visible' => ((Yii::$app->common->company->vat_format == "exclusive")?false:true),
+                                'value'=>function ($model){                                 
+                                    return number_format($model->tax_amount, Yii::$app->common->company->settings->decimal_places);
+                                }
                             ],                          
                             [                      
                                 'attribute' => 'rate',   
@@ -293,7 +305,7 @@ use backend\models\Branches
                                 'value'=>function ($model, $key, $index, $widget) use (&$rate) {
                                     //$rate += $model->rate;
                                     //$widget->footer = "<b>".Yii::$app->common->company->settings->currency->code." ".$rate."</b>";
-                                    return Yii::$app->common->company->settings->currency->code." ".$model->rate ;
+                                    return Yii::$app->common->company->settings->currency->code." ".number_format($model->rate, Yii::$app->common->company->settings->decimal_places) ;
                                 },  
                                 'visible' => ((Yii::$app->common->company->vat_format == "exclusive")?false:true),                          
                             ], 
@@ -330,7 +342,7 @@ use backend\models\Branches
 
                                 <tr>
                                     <th width="50%" style="border:1px solid #ddd; border-bottom: none; border-top: none;"></th>
-                                    <th width="37.5%" style="border:1px solid #ddd; border-bottom: none; border-top: none; padding: 5px 10px; font-size: 14px; font-weight: 700; text-transform: uppercase; text-align: left;">Total <?php echo (Yii::$app->common->company->vat_format == "exclusive")?"Excluding":"Including";?> VAT</th>
+                                    <th width="37.5%" style="border:1px solid #ddd; border-bottom: none; border-top: none; padding: 5px 10px; font-size: 14px; font-weight: 700; text-transform: uppercase; text-align: left;"> <?php echo (Yii::$app->common->company->vat_format == "exclusive")?"Total Excluding VAT":"Net Invoice Value";?> </th>
                                     <th width="12.5%" style="border:1px solid #ddd; border-bottom: none; border-top: none; padding: 5px 10px; font-size: 14px; font-weight: 700; text-transform: uppercase; text-align: right;"><?php echo $invoice->total_charge;?></th>
                                 </tr>
                                 <?php if(Yii::$app->common->company->vat_format == "exclusive"){ ?>
@@ -342,7 +354,7 @@ use backend\models\Branches
                                 <?php } ?>
                                 <tr>
                                     <th width="50%" style="border:1px solid #ddd; border-top: none;"></th>
-                                    <th width="37.5%" style="border:1px solid #ddd; border-top: none; padding: 5px 10px; font-size: 14px; font-weight: 700; text-transform: uppercase; text-align: left;">Amount Due</th>
+                                    <th width="37.5%" style="border:1px solid #ddd; border-top: none; padding: 5px 10px; font-size: 14px; font-weight: 700; text-transform: uppercase; text-align: left;">Balance Due</th>
                                     <th width="12.5%" style="border:1px solid #ddd; border-top: none; padding: 5px 10px; font-size: 14px; font-weight: 700; text-transform: uppercase; text-align: right;"><?php echo $invoice->amount_due;?>      
                                     </th>
                                 </tr>
