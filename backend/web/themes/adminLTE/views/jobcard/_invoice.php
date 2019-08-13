@@ -318,47 +318,51 @@ use backend\models\Branches
                         <td width="100%">
                             <table width="100%" cellpadding="0" cellspacing="0" style="border-collapse: collapse;">
                                 <tr>
-                                    <th width="50%" style="border:1px solid #ddd; border-bottom: none;"></th>
                                     <th width="37.5%" style="border:1px solid #ddd; border-bottom: none; padding: 5px 10px; font-size: 14px; font-weight: 700; text-transform: uppercase; text-align: left;"></th>
+                                    <th width="50%" style="border:1px solid #ddd; border-bottom: none;"></th>
                                     <th width="12.5%" style="border:1px solid #ddd; border-bottom: none; padding: 5px 10px; font-size: 14px; font-weight: 700; text-transform: uppercase; text-align: right;"></th>
                                 </tr>
                                 <tr>
-                                    <th width="50%" style="border:1px solid #ddd; border-bottom: none; border-top: none;"></th>
                                     <th width="37.5%" style="border:1px solid #ddd; border-bottom: none; border-top: none; padding: 5px 10px; font-size: 14px; font-weight: 700; text-transform: uppercase; text-align: left;"></th>
+                                    <th width="50%" style="border:1px solid #ddd; border-bottom: none; border-top: none;"></th>                                    
                                     <th width="12.5%" style="border:1px solid #ddd; border-bottom: none; border-top: none; padding: 5px 10px; font-size: 14px; font-weight: 700; text-transform: uppercase; text-align: right;"></th>
                                 </tr>
                                 <tr>
-                                    <th width="50%" style="border:1px solid #ddd; border-bottom: none; border-top: none;"></th>
                                     <th width="37.5%" style="border:1px solid #ddd; border-bottom: none; border-top: none; padding: 5px 10px; font-size: 14px; font-weight: 700; text-transform: uppercase; text-align: left;">Gross</th>
-                                    <th width="12.5%" style="border:1px solid #ddd; border-bottom: none; border-top: none; padding: 5px 10px; font-size: 14px; font-weight: 700; text-transform: uppercase; text-align: right;"><?php echo $invoice->gross_amount;?></th>
+                                    <th width="50%" style="border:1px solid #ddd; border-bottom: none; border-top: none;"></th>                                   
+                                    <th width="12.5%" style="border:1px solid #ddd; border-bottom: none; border-top: none; padding: 5px 10px; font-size: 14px; font-weight: 700; text-transform: uppercase; text-align: right;"><?php echo number_format($invoice->gross_amount, Yii::$app->common->company->settings->decimal_places);?></th>
                                 </tr>
                                 <?php if(Yii::$app->common->company->vat_format == "exclusive" && $invoice->discount != 0){ ?>
                                 <tr>
-                                    <th width="50%" style="border:1px solid #ddd; border-bottom: none; border-top: none;"></th>
                                     <th width="37.5%" style="border:1px solid #ddd; border-bottom: none; border-top: none; padding: 5px 10px; font-size: 14px; font-weight: 700; text-transform: uppercase; text-align: left;">Discount</th>
+                                    <th width="50%" style="border:1px solid #ddd; border-bottom: none; border-top: none;"></th>                                    
                                     <th width="12.5%" style="border:1px solid #ddd; border-bottom: none; border-top: none; padding: 5px 10px; font-size: 14px; font-weight: 700; text-transform: uppercase; text-align: right;"><?php echo $invoice->discount;?></th>
                                 </tr>
                                 <?php } ?>
 
                                 <tr>
-                                    <th width="50%" style="border:1px solid #ddd; border-bottom: none; border-top: none;"></th>
                                     <th width="37.5%" style="border:1px solid #ddd; border-bottom: none; border-top: none; padding: 5px 10px; font-size: 14px; font-weight: 700; text-transform: uppercase; text-align: left;"> <?php echo (Yii::$app->common->company->vat_format == "exclusive")?"Total Excluding VAT":"Net Invoice Value";?> </th>
+                                    <th width="50%" style="border:1px solid #ddd; border-bottom: none; border-top: none;"></th>                                    
                                     <th width="12.5%" style="border:1px solid #ddd; border-bottom: none; border-top: none; padding: 5px 10px; font-size: 14px; font-weight: 700; text-transform: uppercase; text-align: right;"><?php echo $invoice->total_charge;?></th>
                                 </tr>
                                 <?php if(Yii::$app->common->company->vat_format == "exclusive"){ ?>
                                 <tr>
-                                    <th width="50%" style="border:1px solid #ddd; border-bottom: none; border-top: none;"></th>
                                     <th width="37.5%" style="border:1px solid #ddd; border-bottom: none; border-top: none; padding: 5px 10px; font-size: 14px; font-weight: 700; text-transform: uppercase; text-align: left;">VAT <?php echo Yii::$app->common->company->vat_rate;?>%</th>
+                                    <th width="50%" style="border:1px solid #ddd; border-bottom: none; border-top: none;"></th>                                    
                                     <th width="12.5%" style="border:1px solid #ddd; border-bottom: none; border-top: none; padding: 5px 10px; font-size: 14px; font-weight: 700; text-transform: uppercase; text-align: right;"><?php echo $invoice->tax;?></th>
                                 </tr>
                                 <?php } ?>
                                 <tr>
-                                    <th width="50%" style="border:1px solid #ddd; border-top: none;"></th>
                                     <th width="37.5%" style="border:1px solid #ddd; border-top: none; padding: 5px 10px; font-size: 14px; font-weight: 700; text-transform: uppercase; text-align: left;">Balance Due</th>
-                                    <th width="12.5%" style="border:1px solid #ddd; border-top: none; padding: 5px 10px; font-size: 14px; font-weight: 700; text-transform: uppercase; text-align: right;"><?php echo $invoice->amount_due;?>      
+                                    <th width="50%" style="border:1px solid #ddd; border-top: none;"></th>
+                                    <th width="12.5%" style="border:1px solid #ddd; border-top: none; padding: 5px 10px; font-size: 14px; font-weight: 700; text-transform: uppercase; text-align: right;"><?php $amount_due = number_format($invoice->amount_due, Yii::$app->common->company->settings->decimal_places); echo $amount_due;?>      
                                     </th>
                                 </tr>
-                                
+                                <tr>
+                                    <th width="37.5%" style="border:1px solid #ddd; border-top: none; padding: 5px 10px; font-size: 14px; font-weight: 700; text-transform: uppercase; text-align: left;">Balance in Words</th>
+                                    <th colspan="2" width="62.5%" style="border:1px solid #ddd; border-top: none; padding: 5px 10px; font-size: 14px; font-weight: 700; text-transform: uppercase; text-align: right;"><?php echo Yii::$app->common->company->settings->currency->code." ".Yii::$app->common->convertNum("$amount_due");?>      
+                                    </th>
+                                </tr>
                             </table>
                         </td>
                     </tr>
