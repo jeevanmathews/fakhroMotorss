@@ -10,6 +10,7 @@ $this->title = $model->id;
 $this->params['breadcrumbs'][] = ['label' => 'GRN', 'url' => ['index']];
 $this->params['breadcrumbs'][] = $this->title;
 \yii\web\YiiAsset::register($this);
+$cur_time = time();
 ?>
 <div class="delivery-order-view main-body" id="delivery-order_view">
 <?= Breadcrumbs::widget([
@@ -59,6 +60,10 @@ $this->params['breadcrumbs'][] = $this->title;
                     </div>
                 </div>
             </div>
+              <span class="pull-left">
+                     <?= Html::button('Confirm Payment', ['class' => 'btn btn-success', 'id' => 'confirm-payment-'.$cur_time]) ?>    
+                    
+                    </span>
             <div class="box-body">
                 <div class="row">
                     <div class="col-md-12">

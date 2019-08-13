@@ -107,7 +107,7 @@ class DeliveryOrderController extends Controller
                 
                 $model1->save(false);
             }
-            echo json_encode(["success" => true, "message" => "Delivery Order has been created", 'redirect' => Yii::$app->getUrlManager()->createUrl(['delivery-order/update','id' => $model->id])]);
+            echo json_encode(["success" => true, "message" => "Delivery Order has been created", 'redirect' => Yii::$app->getUrlManager()->createUrl(['delivery-order/view','id' => $model->id])]);
             exit;
 
         }
@@ -162,7 +162,7 @@ class DeliveryOrderController extends Controller
                 $model->process_status='processing';
             }
             $model->save(false);
-            echo json_encode(["success" => true, "message" => "Delivery Order has been created."]);
+              echo json_encode(["success" => true, "message" => "Delivery Order has been created", 'redirect' => Yii::$app->getUrlManager()->createUrl(['delivery-order/view','id' => $model->id])]);
             exit;
         }
         return $this->renderAjax('createdo', [
