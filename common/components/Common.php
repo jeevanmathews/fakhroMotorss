@@ -209,8 +209,6 @@ class Common extends Component
       // Logged in user permissions
       $permissions =  Yii::$app->session->get('permissions');
 
-
-
       /* Check if user has Master Permission*/
       $masters_menus = [     
         "CurrencyController" => ['Currency',  '/currency/index'],
