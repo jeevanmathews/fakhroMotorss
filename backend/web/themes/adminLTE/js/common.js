@@ -413,6 +413,22 @@ function validateAttribute(modelName, fieldName, fieldValue, mid, scenario){
         $.ajaxSetup({async: true});
     }
 
+
+     // Report search
+    $(document).on('keyup', "[name='report_branch_id']", function(){
+        searchServiceReport();
+    });
+
+    function searchServiceReport(){
+      $.ajaxSetup({async: false}); 
+        $.post(jc_customer_search_url, {branch_id: $("[name*='report_branch_id']:visible").val(), date_from: $("[name*='date_from']:visible").val(), date_to: $("[name*='date_to']:visible").val()})
+        .done(function( data ) {          
+            $("[id*='report_service']:visible .grid-view").html($(data).find(".grid-view").html());   
+        });
+        $.ajaxSetup({async: true});
+
+    }
+
     //status change a tag click
       $(document).on('click', ".change_status", function(e){ 
          var tabId = $(this).closest(".main-body").attr("tab_id");

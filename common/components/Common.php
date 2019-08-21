@@ -365,6 +365,26 @@ class Common extends Component
       if($sales_str){
         echo '<li class="dropdown"><a href="#">Sales</a><ul class="dropdown-menu">'.$sales_str.'</ul></li>';
       }
+
+       /* Check if user has Purchase Permission*/
+      $report_menus = [
+       "belowstockitems" => ['BelowStock Items', '/reports/belowstock-items'],
+       "service" => ['Service Report', '/reports/service'],
+       "purchaseorder" => ['Purchase Order Report', '/reports/purchase-order'],      
+      ];
+      $reports_str = '';
+      foreach($report_menus as $report_menu => $reportitem){
+        if(isset($permissions['ReportsController'])){         
+          $permission_data = $permissions['ReportsController'];
+          if(in_array($report_menu, $permission_data)){     
+            $reports_str .= '<li>'.Html::a($reportitem[0], [$reportitem[1]], ['class'=>'']).'</li>';
+          }
+        }
+      }
+      if($reports_str){
+        echo '<li class="dropdown"><a href="#">Reports</a><ul class="dropdown-menu">'.$reports_str.'</ul></li>';
+      }
+
     }
 
     // returns the number as an anglicized string
