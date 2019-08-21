@@ -28,7 +28,9 @@ $this->params['breadcrumbs'][] = $this->title;
         <div class="row">
         <div class="col-md-12"> 
         <p>
-            <?= Html::a('Create Jobcard Vehicle', ['create'], ['class' => 'btn btn-success']) ?>
+            <?php if(Yii::$app->common->checkPermission('JobcardVehicleController', 'create', 'true')){
+            echo Html::a('Create Jobcard Vehicle', ['create'], ['class' => 'btn btn-success']);
+        } ?> 
         </p>
 
             <?= GridView::widget([
@@ -79,7 +81,10 @@ $this->params['breadcrumbs'][] = $this->title;
                     //'ew_expiry_date',
                     //'service_schedule',
 
-                    ['class' => 'yii\grid\ActionColumn'],
+                    ['class' => 'yii\grid\ActionColumn',
+
+                     'template' => ((Yii::$app->common->checkPermission('JobcardVehicleController', 'update', 'true')?'{update}':'').(Yii::$app->common->checkPermission('JobcardVehicleController', 'delete', 'true')?'{delete}':'').(Yii::$app->common->checkPermission('JobcardVehicleController', 'view', 'true')?'{view}':'')),
+                    ]
                 ],
             ]); ?>
 

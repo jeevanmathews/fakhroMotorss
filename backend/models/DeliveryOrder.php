@@ -11,10 +11,10 @@ use Yii;
  * @property int $so_id
  * @property int $prefix_id
  * @property int $branch_id
- * @property string $so_number
- * @property string $so_date
- * @property string $so_expected_date
- * @property int $so_created_by
+ * @property string $do_number
+ * @property string $do_date
+ * @property string $do_date
+ * @property int $do_created_by
  * @property int $customer_id
  * @property double $subtotal
  * @property string $discount_type
@@ -44,12 +44,12 @@ class DeliveryOrder extends \yii\db\ActiveRecord
     public function rules()
     {
         return [
-          [['branch_id','prefix_id','so_number', 'so_expected_date', 'so_created_by','customer_id','grand_total'], 'required'],//, 'subtotal', 'total_tax', 'grand_total'
-            [['qtn_id', 'so_created_by', 'status','branch_id','customer_id'], 'integer'],
+          [['branch_id','prefix_id','do_number', 'do_date', 'do_created_by','customer_id','grand_total'], 'required'],//, 'subtotal', 'total_tax', 'grand_total'
+            [['so_id', 'do_created_by', 'status','branch_id','customer_id'], 'integer'],
             [['subtotal','discount','net','discount_percent','vat_percent','total_tax','grand_total'],'number'],
-            [['so_date'], 'safe'],
-            [['so_number'], 'string', 'max' => 200],
-            [['so_expected_date'], 'string', 'max' => 300],
+            [['do_date'], 'safe'],
+            [['do_number'], 'string', 'max' => 200],
+            [['do_date'], 'string', 'max' => 300],
         ];
     }
 
@@ -81,7 +81,10 @@ class DeliveryOrder extends \yii\db\ActiveRecord
     {
         return $this->hasOne(SalesOrder::className(), ['id' => 'so_id']);
     }
-
+  public function getInvoice()
+    {
+        return $this->hasOne(SalesInvoice::className(), ['do_id' => 'id']);
+    }
     public function getUser()
     {
         return $this->hasOne(User::className(), ['id' => 'do_created_by']);

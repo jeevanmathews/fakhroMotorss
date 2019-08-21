@@ -10,7 +10,7 @@ use backend\models\DeliveryOrder;
 use yii\web\Controller;
 use yii\web\NotFoundHttpException;
 use yii\filters\VerbFilter;
-
+use yii\data\ActiveDataProvider;
 /**
  * SalesInvoiceController implements the CRUD actions for SalesInvoice model.
  */
@@ -104,6 +104,7 @@ class SalesInvoiceController extends Controller
         $model1 = new SalesInvoiceItems();
         if ($model->load(Yii::$app->request->post()) && $model->save(false)) {
             $result=Yii::$app->request->post();
+            $model->updateStockDetails();
             for($i=0;$i<sizeof($result['SalesInvoiceItems']['item_id']);$i++){
                 $model1 = new SalesInvoiceItems();
                 $model1->item_id=$result['SalesInvoiceItems']['item_id'][$i];
@@ -118,11 +119,7 @@ class SalesInvoiceController extends Controller
                 $model1->vat_rate=(isset($result['SalesInvoiceItems']['vat_rate'])?$result['SalesInvoiceItems']['vat_rate'][$i]:NULL);
                 $model1->tax=(isset($result['SalesInvoiceItems']['tax'])?$result['SalesInvoiceItems']['tax'][$i]:NULL);
                 $model1->total=$result['SalesInvoiceItems']['total'][$i];
-
                 $model1->inv_id=$model->id;
-
-
-                
                 $model1->save(false);
             }
             echo json_encode(["success" => true, "message" => "Invoice has been created", 'redirect' => Yii::$app->getUrlManager()->createUrl(['sales-invoice/update','id' => $model->id])]);
@@ -186,6 +183,9 @@ class SalesInvoiceController extends Controller
             'modellastnumber'=>$modellastnumber
         ]);
     }
+
+   
+
     /**
      * Updates an existing SalesInvoice model.
      * If update is successful, the browser will be redirected to the 'view' page.

@@ -47,7 +47,7 @@ $cur_time = time();
                                  ['label'=>'DO Number',
                                 'value'=>(($model->prefix)?$model->prefix->prefix.'-'.$model->do_number:''),
                                 ],
-                                ['label'=>'Supplier',
+                                ['label'=>'customer',
                                 'value'=>$model->customer->name
                                 ],
                                 'do_created_date',
@@ -60,10 +60,15 @@ $cur_time = time();
                     </div>
                 </div>
             </div>
-              <span class="pull-left">
-                     <?= Html::button('Confirm Payment', ['class' => 'btn btn-success', 'id' => 'confirm-payment-'.$cur_time]) ?>    
-                    
-                    </span>
+            <?php if($model->payment_confirmation==1): ?>
+                 <span class="pull-left">
+                         <?= Html::button('View Invoice', ['onclick' => 'window.open("'.Yii::$app->getUrlManager()->createUrl(['sales-invoice/invoice', 'id' => $model->invoice->id]).'", "_blank");', 'class' => 'btn btn-success']) ?>
+                </span>
+            <?php else : ?>
+                 <span class="pull-left">
+                         <?= Html::button('Confirm Payment', ['class' => 'btn btn-success', 'id' => 'confirm-payment-'.$cur_time]) ?>    
+                </span>
+             <?php endif; ?>
             <div class="box-body">
                 <div class="row">
                     <div class="col-md-12">
@@ -138,6 +143,27 @@ $cur_time = time();
 
 
 </div>
+</div>
+<div class="modal confirm-payment-<?php echo $cur_time;?>" tabindex="-1" role="dialog"> 
+    <div class="modal-content">
+    <div class="content-main-wrapper">
+    <!-- Content Header (Page header) -->
+    <section class="content-header">
+      Click "Generate Invoice" button to update stocks and confirm this payment. 
+    </section>    
+    <section class="content">
+        <div class="box box-default">  
+        <div class="row">
+            <div class="col-md-12"> 
+            <p>
+                <?= Html::a('Generate Invoice', ['delivery-order/generate-invoice', 'do_id' => $model->id], ['class' => 'btn btn-success generate-invoice-sales','target'=>'_blank']) ?>
+            </p>            
+            </div>
+        </div>
+    </div>
+    </section>
+    </div>
+    </div>  
 </div>
 <!-- /.box -->
 </section>

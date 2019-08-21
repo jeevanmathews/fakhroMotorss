@@ -108,6 +108,14 @@ class CarModelController extends Controller
         ]);
     }
 
+      public function actionChangeStatus($id){
+        $model = $this->findModel($id);
+        $model->status = ($model->status == 0)?1:0;
+        $model->save();
+        echo json_encode(["success" => true, "message" => "Status has been updated"]);
+            exit;
+    }
+
     /**
      * Deletes an existing CarModel model.
      * If deletion is successful, the browser will be redirected to the 'index' page.

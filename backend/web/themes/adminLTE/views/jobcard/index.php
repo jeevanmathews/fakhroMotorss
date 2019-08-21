@@ -25,7 +25,9 @@ $this->params['breadcrumbs'][] = $this->title;
         <div class="row">
         <div class="col-md-12"> 
     <p>
-        <?= Html::a('Create Jobcard', ['create'], ['class' => 'btn btn-success']) ?>
+        <?php if(Yii::$app->common->checkPermission('JobcardController', 'create', 'true')){
+            echo Html::a('Create Jobcard', ['create'], ['class' => 'btn btn-success']);
+        } ?> 
     </p>
 
     <?= GridView::widget([
@@ -77,7 +79,7 @@ $this->params['breadcrumbs'][] = $this->title;
             //'customer_id',
 
             ['class' => 'yii\grid\ActionColumn',
-            'template' => Yii::$app->common->listViewActions('jobcard'),
+            'template' => ((Yii::$app->common->checkPermission('JobcardController', 'update', 'true')?'{update}':'').(Yii::$app->common->checkPermission('JobcardController', 'view', 'true')?'{view}':'')),
             'buttons' => [
             'mytasks' => function ($url, $model, $key) {
                 return Html::a('My Tasks', ['mytasks'], ['style'=> 'color:#3c8dbc;    text-decoration: underline;']);

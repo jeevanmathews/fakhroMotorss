@@ -46,8 +46,8 @@ $this->params['breadcrumbs'][] = $this->title;
                                  ['label'=>'Invoice Number',
                                 'value'=>(($model->prefix)?$model->prefix->prefix.'-'.$model->inv_number:''),
                                 ],
-                                ['label'=>'Supplier',
-                                'value'=>$model->supplier->name
+                                ['label'=>'Customer',
+                                'value'=>$model->customer->name
                                 ],
                                 'inv_created_date',
                                 // 'po_expected_date',
@@ -72,8 +72,8 @@ $this->params['breadcrumbs'][] = $this->title;
                                 <thead>
                                     <tr>
                                         <th>Item</th>
-                                        <?php if($model->po_id): ?>
-                                        <th>Requested Quantity</th>
+                                        <?php if($model->do_id): ?>
+                                        <th>Ordered Quantity</th>
                                         <?php endif; ?>
                                         <th>Quantity</th>
                                         <th>Unit</th>
@@ -87,12 +87,12 @@ $this->params['breadcrumbs'][] = $this->title;
                                 <tbody class="item_table">
 
                                     <?php
-                                    if($model->grnitems):
-                                        foreach ($model->grnitems as $req) { ?>
+                                    if($model->invoiceitems):
+                                        foreach ($model->invoiceitems as $req) { ?>
                                     <tr class="item_row" rid="1">
                                         <td><?= $req->item->item_name?></td>
-                                        <?php if($model->po_id): ?>
-                                        <td><?=$req->po_quantity?></td>
+                                        <?php if($model->do_id): ?>
+                                        <td><?=$req->do_quantity?></td>
                                          <?php endif; ?>
                                         <td><?=$req->quantity?></td>
                                         <td><?= $req->unit->name?></td>

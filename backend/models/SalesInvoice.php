@@ -107,13 +107,14 @@ class SalesInvoice extends \yii\db\ActiveRecord
             $stock = new StockHistory();
             $stock->type = $invoiceitems->material_type;
             $stock->item_id = $invoiceitems->material_id;
-            $stock->jobcard_id = $this->id;
+            $stock->order_id = $this->id;
+            $stock->source_type='sales-invoice';
             $stock->branch_id = $this->branch_id; 
             $stock->previous_stock = $prev_stock->current_stock;
             $stock->date = date("Y-m-d");
-            if(StockHistory::find()->where(["type" => $invoiceitems->material_type, "jobcard_id" => $this->id, 'item_id' => $invoiceitems->material_id, 'branch_id' => $this->branch_id])->count()){
+            if(StockHistory::find()->where(["type" => $invoiceitems->material_type, "order_id" => $this->id, 'item_id' => $invoiceitems->material_id, 'branch_id' => $this->branch_id])->count()){
                 // Stock corrections done earlier
-                $prev_stocks = StockHistory::find()->where(["type" => $invoiceitems->material_type, "jobcard_id" => $this->id, 'item_id' => $invoiceitems->material_id, 'branch_id' => $this->branch_id])->all();
+                $prev_stocks = StockHistory::find()->where(["type" => $invoiceitems->material_type, "order_id" => $this->id, 'item_id' => $invoiceitems->material_id, 'branch_id' => $this->branch_id])->all();
                 foreach($prev_stocks as $jc_stock){
                     $tot_reduced += $jc_stock->reduced_stock;
                     $tot_added += $jc_stock->opening_stock;
@@ -150,11 +151,11 @@ class SalesInvoice extends \yii\db\ActiveRecord
                                 $stockDistribution = new StockDistribution();
                                 $stockDistribution->item_id = $stock->item_id;
                                 $stockDistribution->type = $stock->type;            
-                                $stockDistribution->jobcard_id = $stock->jobcard_id;
+                                $stockDistribution->order_id = $stock->order_id;
                                 $stockDistribution->stock_id = $stock_distribution['stock_id'];
                                 $stockDistribution->code = $stock_distribution['code'];
                                 $stockDistribution->opening_stock = 0;
-                                $stockDistribution->used_status = $used_status;
+                                // $stockDistribution->used_status = $used_status;
                                 if($stock_distribution['current_stock'] >= $stock_tobe_reduced){
                                     $stockDistribution->previous_stock = $stock_distribution['current_stock']; 
                                     $stockDistribution->reduced_stock = $stock_tobe_reduced;
@@ -173,13 +174,13 @@ class SalesInvoice extends \yii\db\ActiveRecord
 
                     } else if($stock->opening_stock != 0){//Case 2 Return stock
                         $return_distribution = $stock->opening_stock;
-                        $stock_distributions = Yii::$app->db->createCommand("SELECT * FROM `stock_distribution` WHERE `jobcard_id` = ".$stock->jobcard_id." order by id desc")->queryAll();
+                        $stock_distributions = Yii::$app->db->createCommand("SELECT * FROM `stock_distribution` WHERE `order_id` = ".$stock->order_id." order by id desc")->queryAll();
                         foreach($stock_distributions as $stock_distribution){
                             if($return_distribution > 0){
                                 $stockDistribution = new StockDistribution();
                                 $stockDistribution->item_id = $stock->item_id;
                                 $stockDistribution->type = $stock->type;            
-                                $stockDistribution->jobcard_id = $stock->jobcard_id;
+                                $stockDistribution->order_id = $stock->order_id;
                                 $stockDistribution->stock_id = $stock_distribution['stock_id'];
                                 $stockDistribution->code = $stock_distribution['code'];
 
@@ -206,9 +207,9 @@ class SalesInvoice extends \yii\db\ActiveRecord
             }
         }
         //Update all stock status (to => used) for the jobcard which is invoiced
-        if($used_status == "used"){
-            StockDistribution::updateAll(['used_status' => "used"], 'jobcard_id = '.$this->id.' AND used_status = "hold"');
-        }
+        // if($used_status == "used"){
+        //     StockDistribution::updateAll(['used_status' => "used"], 'order_id = '.$this->id.' AND used_status = "hold"');
+        // }
         return true;  
         
     }    

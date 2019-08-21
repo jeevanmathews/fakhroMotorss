@@ -27,7 +27,9 @@ $this->params['breadcrumbs'][] = $this->title;
         <div class="col-md-12"> 
 
     <p>
-        <?= Html::a('Create Car Model', ['create'], ['class' => 'btn btn-success']) ?>
+        <?php if(Yii::$app->common->checkPermission('CarModelController', 'create', 'true')){
+            echo Html::a('Create Car Model', ['create'], ['class' => 'btn btn-success']);
+        } ?>
     </p>
 
     <?= GridView::widget([
@@ -36,7 +38,7 @@ $this->params['breadcrumbs'][] = $this->title;
         'id' => $page_id,
         'columns' => [
             ['class' => 'yii\grid\SerialColumn'],
-            'id',   
+            // 'id',   
             [
                 'attribute' => 'manufacturer', 
                 'filter' => Html::activeDropDownList($searchModel, 'make_id', ArrayHelper::map(Manufacturer::find()->where(['status' => 1])->all(), 'id', 'name'),['class'=>'form-control','prompt' => 'Search by Manufacturer']),
@@ -53,7 +55,7 @@ $this->params['breadcrumbs'][] = $this->title;
                 ],
 
               ['class' => 'yii\grid\ActionColumn',
-                'template' => '{update}{changeStatus}',
+                'template' => ((Yii::$app->common->checkPermission('CarModelController', 'update', 'true')?'{update}':'').(Yii::$app->common->checkPermission('CarModelController', 'changestatus', 'true')?'{changeStatus}':'')),
                 'buttons' => [
                         'changeStatus' => function ($url, $model, $key) {
                            $img = ($model->status == 1)?"button_cross.png":"button_tick_alt.png";

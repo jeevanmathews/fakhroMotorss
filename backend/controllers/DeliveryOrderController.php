@@ -7,6 +7,9 @@ use backend\models\DeliveryOrder;
 use backend\models\DeliveryOrderSearch;
 use backend\models\DeliveryOrderItems;
 use backend\models\SalesOrder;
+use backend\models\SalesInvoice;
+use backend\models\SalesInvoiceItems;
+use backend\models\PrefixMaster;
 use yii\web\Controller;
 use yii\web\NotFoundHttpException;
 use yii\filters\VerbFilter;
@@ -172,6 +175,55 @@ class DeliveryOrderController extends Controller
             'modellastnumber'=>$modellastnumber,
             ]);
     }
+
+    
+     public function actionGenerateInvoice($do_id){
+        $do = $this->findModel($do_id);
+        $do->payment_confirmation=1;
+
+        $branch_id=Yii::$app->user->identity->branch_id;
+        $lastInvoiceNumber = SalesInvoice::find()->select('inv_number')->where(['branch_id'=>$branch_id])->orderBy('id desc')->limit(1)->one();
+        $prefix= PrefixMaster::find()->select(['id'])->where(['process'=> 'sales-invoice','status'=>1])->one();
+        $invoice = new SalesInvoice();
+        $invoice->setAttributes($do->getAttributes());
+        $invoice->do_id = $do->id;
+        $invoice->prefix_id = (isset($prefix)?$prefix->id:'');
+        $invoice->inv_number=(isset($lastInvoiceNumber->inv_number)?$lastInvoiceNumber->inv_number+1:1);
+        $invoice->inv_created_date = date('Y-m-d h:i:s'); 
+        $invoice->inv_date =$do->do_date; 
+        $invoice->inv_created_by = Yii::$app->user->id;   
+        if($invoice->save(false)){
+         foreach($do->orderitems as $material){
+                $invoice_material = new SalesInvoiceItems();
+                $invoice_material->setAttributes($material->getAttributes());
+                $invoice_material->inv_id = $invoice->id;
+                $invoice_material->do_quantity = $material->quantity;
+                $invoice_material->total_price = $material->total_price;
+                $invoice_material->save(false);
+        }
+            $do->save(); 
+            Yii::$app->session->setFlash('success', 'Invoice has been generated.');
+            return $this->redirect(['sales-invoice/invoice', 'id' => $invoice->id]);
+        } 
+        // var_dump($do->orderitems);die; 
+
+        // if($invoice->save(false)){
+        //     $this->updateStockDetails();
+        //     //Save Invoice Materials -same as Jobcard Materials
+        //     foreach($do->orderitems as $material){
+        //         $invoice_material = new SalesInvoiceItems();
+        //         $invoice_material->setAttributes($material->getAttributes());
+        //         $invoice_material->invoice_id = $invoice->id;
+        //         $invoice_material->save();
+        //     }
+
+        //     //Save Invoice Tasks -same as Jobcard Tasks
+           
+        //     Yii::$app->session->setFlash('success', 'Invoice has been generated.');
+        //     return $this->redirect(['invoice', 'invoice_id' => $invoice->id]);
+        // }//else{echo "nops";print_r($invoice->getErrors());exit;}
+    }
+
     /**
      * Updates an existing DeliveryOrder model.
      * If update is successful, the browser will be redirected to the 'view' page.

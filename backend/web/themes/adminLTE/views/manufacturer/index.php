@@ -27,7 +27,9 @@ $this->params['breadcrumbs'][] = $this->title;
         <div class="row">
         <div class="col-md-12"> 
         <p>
-         <?= Html::a('Create Manufacturer', ['create'], ['class' => 'btn btn-success']) ?>
+         <?php if(Yii::$app->common->checkPermission('ManufacturerController', 'create', 'true')){
+            echo Html::a('Create Manufacturer', ['create'], ['class' => 'btn btn-success']);
+        } ?>
         </p>
     <?= GridView::widget([
         'dataProvider' => $dataProvider,
@@ -55,7 +57,7 @@ $this->params['breadcrumbs'][] = $this->title;
             ],
 
             ['class' => 'yii\grid\ActionColumn',
-            'template' => '{update}{view}{changeStatus}',
+            'template' => ((Yii::$app->common->checkPermission('ManufacturerController', 'update', 'true')?'{update}':'').(Yii::$app->common->checkPermission('ManufacturerController', 'changestatus', 'true')?'{changeStatus}':'').(Yii::$app->common->checkPermission('ManufacturerController', 'view', 'true')?'{view}':'')),
               'buttons' => [
                         'changeStatus' => function ($url, $model, $key) {
                            $img = ($model->status == 1)?"button_cross.png":"button_tick_alt.png";
