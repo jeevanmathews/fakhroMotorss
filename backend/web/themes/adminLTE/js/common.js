@@ -252,6 +252,11 @@ function validateAttribute(modelName, fieldName, fieldValue, mid, scenario){
         $("."+$(this).attr("id")).modal().show();         
     });
 
+     $(document).on('click', "[class*='generate-invoice-sales']:visible", function(){  
+     // alert();   
+        $("[class*='modal']:visible").modal().hide();         
+    });
+
    
     $(document).on('keyup', "#discount_amount,#discount_percent:visible", function(){ 
       var tabId = $(".main-body:visible").attr("tab_id");  
